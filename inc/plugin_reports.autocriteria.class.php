@@ -5,24 +5,24 @@
   ----------------------------------------------------------------------
   GLPI - Gestionnaire Libre de Parc Informatique
   Copyright (C) 2003-2008 by the INDEPNET Development Team.
-  
+
   http://indepnet.net/   http://glpi-project.org/
   ----------------------------------------------------------------------
-  
+
   LICENSE
-  
+
   This file is part of GLPI.
-  
+
   GLPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
-  
+
   GLPI is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with GLPI; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -41,19 +41,19 @@
 abstract class AutoCriteria {
 	//Criteria's internal name
 	private $name = "";
-	
+
 	//Label of the criteria (refers to an entry in the locale file)
 	private $criterias_labels = array ();
 
 	//Parameters are stored as name => value
 	private $parameters = array ();
-	
+
 	//Field in the SQL request (can be table.field)
 	private $sql_field = "";
 
 	//Report in which the criteria will be added to
 	private $report = null;
-	
+
 	/**
 	 * Contructor
 	 * @param report the report in which the criteria is added
@@ -76,7 +76,7 @@ abstract class AutoCriteria {
 	}
 
 	//-------------- Getters ------------------//
-	
+
 	/**
 	 * Get report object
 	 */
@@ -92,14 +92,14 @@ abstract class AutoCriteria {
 	{
 		return $this->parameters[$this->name];
 	}
-	
+
 	/**
 	 * Get sql_field associated with the criteria
 	 * @return the sql_field associated with the criteria
 	 */
 	function getSqlField()
 	{
-		return $this->sql_field;	
+		return $this->sql_field;
 	}
 
 	/**
@@ -109,7 +109,7 @@ abstract class AutoCriteria {
 	 */
 	function getParameter($parameter)
 	{
-		return $this->parameters[$parameter];	
+		return $this->parameters[$parameter];
 	}
 
 	/**
@@ -177,7 +177,7 @@ abstract class AutoCriteria {
 	{
 		$this->report = $report;
 	}
-	
+
 	/**
 	 * Set criteria's parameters
 	 * @parameter the parameters
@@ -185,7 +185,7 @@ abstract class AutoCriteria {
 	function setParameters($parameters) {
 		$this->parameters = $parameters;
 	}
-	
+
 	/**
 	 * Add a new parameter to the criteria
 	 * If parameter exists, it overwrites the existing values
@@ -203,7 +203,7 @@ abstract class AutoCriteria {
 	function setSqlField($sql_field) {
 		$this->sql_field = $sql_field;
 	}
-	
+
 	/**
 	 * Set criteria's name
 	 * @param criteria's name
@@ -212,7 +212,7 @@ abstract class AutoCriteria {
 	{
 		$this->name = $name;
 	}
-	
+
 	/**
 	 * Add a label to the criteria
 	 * @param name criteria's name
@@ -229,7 +229,7 @@ abstract class AutoCriteria {
 	abstract public function setDefaultValues();
 
 	//-------------- Other ------------------//
-	
+
 	/**
 	 * Add GET & POST values in order to get pager & export working correctly
 	 * @param fields : criterias's values to be set
@@ -267,15 +267,18 @@ class GenericDropdownCriteria extends AutoCriteria {
 
 	//Drodown table
 	private $table = "";
-	
+
 	//Should display dropdown's childrens value
 	private $childrens = false;
 
 	///Use entity restriction in the dropdown ? (default is current entity)
 	private $entity_restrict = -1;
-	
+
 	//Display dropdown comments
 	private $displayComments = false;
+
+   // search for zero if true, else treat zero as "all" (no criteria)
+   private $searchzero = false;
 
 	function __construct($report, $name, $table, $label = '') {
 		parent :: __construct($report, $name);
@@ -284,7 +287,7 @@ class GenericDropdownCriteria extends AutoCriteria {
 	}
 
 	/**
-	 * Get criteria's related table 
+	 * Get criteria's related table
 	 */
 	public function getTable()
 	{
@@ -297,8 +300,15 @@ class GenericDropdownCriteria extends AutoCriteria {
 	public function setWithChildrens() {
 		global $CFG_GLPI;
 		if (in_array($this->getTable(), $CFG_GLPI["dropdowntree_tables"]))
-			$this->childrens = true;
+         $this->childrens = true;
 	}
+
+   /**
+    * Will display dropdown childrens (in table in hierarchical)
+    */
+   public function setSearchZero() {
+      $this->searchzero = true;
+   }
 
 	/**
 	 * Set default criteria value to 0 and entity restriction to current entity only
@@ -322,7 +332,7 @@ class GenericDropdownCriteria extends AutoCriteria {
 	public function setNoDisplayComments () {
 		$this->displayComments = false;
 	}
-	
+
 	/**
 	 * Get display comments status
 	 */
@@ -330,7 +340,7 @@ class GenericDropdownCriteria extends AutoCriteria {
 	{
 		return $this->displayComments;
 	}
-	
+
 	/**
 	 * Change criteria's label
 	 * @param label the new label to display
@@ -341,9 +351,9 @@ class GenericDropdownCriteria extends AutoCriteria {
 		if ($name == '')
 			$this->criterias_labels[$this->name] = $label;
 		else
-			$this->criterias_labels[$name] = $label; 	
+			$this->criterias_labels[$name] = $label;
 	}
-	
+
 	/**
 	 * Change entity restriction
 	 * Values are :
@@ -373,7 +383,7 @@ class GenericDropdownCriteria extends AutoCriteria {
 	{
 		return $this->entity_restrict;
 	}
-	
+
 	/**
 	 * Get criteria's subtitle
 	 */
@@ -386,7 +396,7 @@ class GenericDropdownCriteria extends AutoCriteria {
 	 */
 	public function displayCriteria() {
 		global $LANG;
-		
+
 		$this->getReport()->startColumn();
 		echo $this->getCriteriaLabel();
 		$this->getReport()->endColumn();
@@ -397,9 +407,9 @@ class GenericDropdownCriteria extends AutoCriteria {
 	}
 
 	/**
-	 * Display dropdown 
+	 * Display dropdown
 	 */
-	public function displayDropdownCriteria() {	
+	public function displayDropdownCriteria() {
 		dropdownValue($this->getTable(), $this->getName(), $this->getParameterValue(), $this->getDisplayComments(), $this->getEntityRestrict());
 	}
 
@@ -407,10 +417,13 @@ class GenericDropdownCriteria extends AutoCriteria {
 	 * Get SQL code associated with the criteria
 	 */
 	public function getSqlCriteriasRestriction($link = 'AND') {
-		if (!$this->childrens)
-			return $link . " " . $this->getSqlField() . "=" . $this->getParameterValue() . " ";
-		else
-			return $link . " " . $this->getSqlField() . " IN (" . implode(',', getSonsOfTreeItem($this->getTable(), $this->getParameterValue())) . ") ";
+      if ($this->getParameterValue() || $this->searchzero) {
+         if (!$this->childrens) {
+            return $link . " " . $this->getSqlField() . "=" . $this->getParameterValue() . " ";
+         } else {
+            return $link . " " . $this->getSqlField() . " IN (" . implode(',', getSonsOfTreeItem($this->getTable(), $this->getParameterValue())) . ") ";
+         }
+      }
 	}
 }
 
@@ -651,7 +664,7 @@ class TicketCategoryCriteria extends GenericDropdownCriteria {
 	}
 }
 
-/** 
+/**
  * User selection criteria
  */
 class UserCriteria extends GenericDropdownCriteria {
@@ -694,7 +707,7 @@ class EnterpriseCriteria extends GenericDropdownCriteria {
 		//Add enterprise includes
 		include_once(GLPI_ROOT."/inc/enterprise.class.php");
 		include_once(GLPI_ROOT."/inc/enterprise.function.php");
-		
+
 		parent :: __construct($report, "FK_enterprise", "glpi_enterprises", $LANG['financial'][26]);
 	}
 }
@@ -708,7 +721,7 @@ class RequestTypeCriteria extends GenericDropdownCriteria {
 		//No need to specify a sql field, because priorities are not stored in DB
 		parent :: __construct($report, "request_type", "", $LANG['job'][44]);
 	}
-	
+
 	//Dropdown priorities is not a generic dropdown, so the function needs to be overwritten
 	public function displayDropdownCriteria() {
 		dropdownRequestType($this->getName(),$this->getParameterValue());
