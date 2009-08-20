@@ -5,24 +5,24 @@
   ----------------------------------------------------------------------
   GLPI - Gestionnaire Libre de Parc Informatique
   Copyright (C) 2003-2008 by the INDEPNET Development Team.
-  
+
   http://indepnet.net/   http://glpi-project.org/
   ----------------------------------------------------------------------
-  
+
   LICENSE
-  
+
   This file is part of GLPI.
-  
+
   GLPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
-  
+
   GLPI is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with GLPI; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -36,7 +36,7 @@
 
 /**
 * Class to create, execute and display a new record
-* The class stores a collection of criterias and 
+* The class stores a collection of criterias and
 * manage :
 * 	- criterias selection form
 *	- query executing using with criterias restriction
@@ -52,7 +52,7 @@ class AutoReport {
 	private $name = "";
 	private $subname = "";
 	private $cpt = 0;
-	
+
 	function __construct($name) {
 		$this->name = $name;
 		includeLocales($this->name);
@@ -60,23 +60,23 @@ class AutoReport {
 
 	//-------------- Setters ------------------//
 	/**
-	* Set column mappings : when a column's value cannot be 
+	* Set column mappings : when a column's value cannot be
 ²	* displays as it is, but needs to be replaced by another one
 	* @param columns_mappings the columns new values
 	**/
 	function setColumnsMappings($columns_mappings) {
 		$this->columns_mapping = $columns_mappings;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * Defined "GROUP BY" columns
 	 * for output improvment
 	 * first line displayed in bold
 	 * next lines not displayed
-	 * 
+	 *
 	 * $colmuns : column name or array of column names
-	 * 
+	 *
 	 */
 	function setGroupBy($columns) {
 		if (is_array($columns)) {
@@ -85,7 +85,7 @@ class AutoReport {
 			$this->group_by = array($columns);
 		}
 	}
-	
+
 	/**
 	* Set columns names (label to be displayed)
 	* @param columns an array which contains
@@ -94,11 +94,11 @@ class AutoReport {
 	function setColumnsNames($columns) {
 		$this->columns = $columns;
 	}
-	
+
 	/**
 	* Set sql request to be executed
 	* @param sql the sql request as a string
-	**/	
+	**/
 	function setSqlRequest($sql) {
 		$this->sql = $sql;
 	}
@@ -131,12 +131,12 @@ class AutoReport {
 			$subname .= $prefix.$criteria->getSubName();
 			$prefix = " - ";
 		}
-			
+
 		$this->subname = $subname;
 	}
 
 	//------------- Other -------------//
-	
+
 	/**
 	* Indicates if the criteria's form is validated or not
 	* @return true if form is validated
@@ -200,13 +200,24 @@ class AutoReport {
 				echo "<tr class='tab_bg_2' valign='center'><td align='center'><form method='POST' action='" .
 				$_SERVER["PHP_SELF"] . "?start=$start'>\n";
 
-				$param = "";
-				foreach ($_POST as $key => $val) {
-					echo "<input type='hidden' name='$key' value='$val' >";
-					if (!empty ($param))
-						$param .= "&amp;";
-					$param .= "$key=" . urlencode($val);
-				}
+            $param = "";
+            foreach ($_POST as $key => $val) {
+               if (is_array($val)) {
+                  foreach ($val as $k => $v) {
+                     echo "<input type='hidden' name='".$key."[$k]' value='$v' >";
+                     if (!empty ($param)) {
+                        $param .= "&";
+                     }
+                     $param .= $key."[".$k."]=".urlencode($v);
+                  }
+               } else {
+                  echo "<input type='hidden' name='$key' value='$val' >";
+                  if (!empty ($param)) {
+                     $param .= "&";
+                  }
+                  $param .= "$key=" . urlencode($val);
+               }
+            }
 
 				displayOutputFormat();
 				echo "</form></td></tr>";
@@ -225,7 +236,7 @@ class AutoReport {
 
 			echo displaySearchNewLine($output_type);
 			$num = 1;
-			
+
 			// fill $sqlcols with default sql query fields so we can validate $columns
 			$sqlcols = array();
 			for ($i = 0; $i < $nbcols; $i++) {
@@ -233,17 +244,17 @@ class AutoReport {
 				$sqlcols[] = $colname;
 			}
 			// if $columns is not empty, display $columns
-			if (!empty($this->columns)){	
+			if (!empty($this->columns)){
 				foreach ($this->columns as $colname => $coltitle) {
 					// display only $columns that are valid
 					if (in_array($colname, $sqlcols)) {
 	 					echo displaySearchHeaderItem($output_type, $coltitle, $num);
 						$colsname[] = $colname;
-					} 
+					}
 				}
 			}
 			// else display default columns from SQL query
-			else {	
+			else {
 				foreach ($sqlcols as $colname => $coltitle) {
 					echo displaySearchHeaderItem($output_type, $coltitle, $num);
 				}
@@ -334,20 +345,20 @@ class AutoReport {
 			//If form is validated, then display the bookmark button
 			if ($this->criteriasValidated())
 			{
-				
+
 				//Add parameters to uri to be saved as bookmarks
 				$_SERVER["REQUEST_URI"] = $this->buildBookmarkUrl();
 				showSaveBookmarkButton(BOOKMARK_SEARCH,(isStat($this->name)?PLUGIN_REPORTS_STAT_TYPE:PLUGIN_REPORTS_REPORT_TYPE));
 			}
 
 			echo "</th></tr>\n";
-			
+
 			//Display each criteria's html selection item
 			foreach ($this->criterias as $criteria)
 				$criteria->displayCriteria();
-				
+
 			$this->closeColumn();
-				
+
 			echo "<tr class='tab_bg_2'><td colspan='4' align='center'><input type='submit' name='find' value=\"" . $LANG["buttons"][0] . "\" class='submit'></td>";
 			echo "</tr>";
 			echo "</table></div></form>";
@@ -357,7 +368,7 @@ class AutoReport {
 	function manageCriteriasValues() {
 		foreach ($this->criterias as $criteria)
 			$criteria->manageCriteriaValues();
-			
+
 		//If selectio form is validated, then stores it
 		if (isset ($_GET['find']) || isset ($_POST['find'])) {
 			$_POST['find'] = true;
@@ -368,7 +379,7 @@ class AutoReport {
 	 * Append date and time restriction in an sql request
 	 * @param fields the fields to be restricted
 	 * @param params the values to be used
-	 * @param link with previous condition 
+	 * @param link with previous condition
 	 */
 	function addSqlCriteriasRestriction($link = 'AND') {
 		$sql = "";
@@ -387,19 +398,19 @@ class AutoReport {
 	**/
 	function buildBookmarkUrl()
 	{
-		 $bookmark_criterias='?find=1';	 
+		 $bookmark_criterias='?find=1';
 		 foreach ($this->criterias as $criteria)
 		 	$bookmark_criterias.= $criteria->getBookmarkUrl();
-		 
+
 		 return $_SERVER["REQUEST_URI"].$bookmark_criterias;
-	}	
+	}
 
 	/**
 	* Add a new criteria to the report
 	**/
 	function addCriteria($criteria)
 	{
-		$this->criterias[] = $criteria;	
+		$this->criterias[] = $criteria;
 	}
 
 	/**
