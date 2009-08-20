@@ -413,10 +413,11 @@ class GenericDropdownCriteria extends AutoCriteria {
 		dropdownValue($this->getTable(), $this->getName(), $this->getParameterValue(), $this->getDisplayComments(), $this->getEntityRestrict());
 	}
 
-	/**
-	 * Get SQL code associated with the criteria
-	 */
-	public function getSqlCriteriasRestriction($link = 'AND') {
+   /**
+    * Get SQL code associated with the criteria
+    */
+   public function getSqlCriteriasRestriction($link = 'AND') {
+
       if ($this->getParameterValue() || $this->searchzero) {
          if (!$this->childrens) {
             return $link . " " . $this->getSqlField() . "=" . $this->getParameterValue() . " ";
@@ -424,7 +425,9 @@ class GenericDropdownCriteria extends AutoCriteria {
             return $link . " " . $this->getSqlField() . " IN (" . implode(',', getSonsOfTreeItem($this->getTable(), $this->getParameterValue())) . ") ";
          }
       }
-	}
+      // Zero => means all => no criteria
+      return '';
+   }
 }
 
 /**
