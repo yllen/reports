@@ -31,59 +31,57 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-function plugin_get_headings_reports($type,$ID,$withtemplate){
-	global $LANG;
-	
-	if ($type==PROFILE_TYPE){
-		$prof = new Profile();
-		if ($ID>0 && $prof->getFromDB($ID) && $prof->fields['interface']!='helpdesk') {
-			return array(
-				1 => $LANG['plugin_reports']['title'][1],
-			);
-		} 
-	} 
-	return false;
-}	
+function plugin_get_headings_reports($type,$ID,$withtemplate) {
+   global $LANG;
 
-function plugin_headings_actions_reports($type){
-
-	switch ($type){
-		case PROFILE_TYPE :
-			return array(
-				1 => "plugin_headings_reports",
-			);
-		break;
-	}
-	return false;
+   if ($type==PROFILE_TYPE) {
+      $prof = new Profile();
+      if ($ID>0 && $prof->getFromDB($ID) && $prof->fields['interface']!='helpdesk') {
+         return array(1 => $LANG['plugin_reports']['title'][1]);
+      }
+   }
+   return false;
 }
 
-function plugin_headings_reports($type,$ID,$withtemplate=0){
-	global $CFG_GLPI;
-	
-	switch ($type){
-		case PROFILE_TYPE :
-			//Check if new reports added
-			plugin_reports_updatePluginRights(GLPI_ROOT."/plugins/reports/report");
-			
-			$prof=new ReportProfile();	
-			if (!$prof->getFromDB($ID)){
-				plugin_reports_createaccess($ID);
-			}				
-			$prof->showForm($CFG_GLPI["root_doc"]."/plugins/reports/front/plugin_reports.profile.php",$ID);
-		break;
-	}
+function plugin_headings_actions_reports($type) {
+
+   switch ($type) {
+      case PROFILE_TYPE :
+         return array(1 => "plugin_headings_reports");
+         break;
+   }
+   return false;
+}
+
+function plugin_headings_reports($type,$ID,$withtemplate=0) {
+   global $CFG_GLPI;
+
+   switch ($type) {
+      case PROFILE_TYPE :
+         //Check if new reports added
+         plugin_reports_updatePluginRights(GLPI_ROOT."/plugins/reports/report");
+
+         $prof=new ReportProfile();
+         if (!$prof->getFromDB($ID)) {
+            plugin_reports_createaccess($ID);
+         }
+         $prof->showForm($CFG_GLPI["root_doc"]."/plugins/reports/front/plugin_reports.profile.php",$ID);
+         break;
+   }
 }
 
 // Hook done on delete item case
-function plugin_pre_item_delete_reports($input){
-	if (isset($input["_item_type_"]))
-		switch ($input["_item_type_"]){
-			case PROFILE_TYPE :
-				// Manipulate data if needed 
-				$ReportProfile=new ReportProfile;
-				$ReportProfile->cleanProfiles($input["ID"]);
-				break;
-		}
-	return $input;
+function plugin_pre_item_delete_reports($input) {
+
+   if (isset($input["_item_type_"])) {
+      switch ($input["_item_type_"]) {
+         case PROFILE_TYPE :
+            // Manipulate data if needed 
+            $ReportProfile=new ReportProfile;
+            $ReportProfile->cleanProfiles($input["ID"]);
+            break;
+      }
+   }
+   return $input;
 }
 ?>
