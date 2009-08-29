@@ -58,6 +58,11 @@ class AutoReport {
 		includeLocales($this->name);
 	}
 
+   //-------------- Getters ------------------//
+   function getCriterias() {
+   	return $this->criterias;
+   }
+   
 	//-------------- Setters ------------------//
 	/**
 	* Set column mappings : when a column's value cannot be
@@ -446,7 +451,8 @@ class AutoReport {
 				echo "<td></td>";
 				$this->cpt++;
 			}
-			echo "</tr>";
+			$this->cpt=0;
+         echo "</tr>";
 		}
 	}
 }
