@@ -115,7 +115,7 @@ function plugin_version_reports() {
    global $LANG;
 
    return array ('name' => $LANG['plugin_reports']['title'][1],
-                 'version' => '1.3.0',
+                 'version' => '1.3.1',
                  'author' => 'Nelly LASSON',
                  'homepage' => 'http://glpi-project.org/wiki/doku.php?id=' . 
                                substr($_SESSION["glpilanguage"], 0, 2) . ':plugins:pluginslist',

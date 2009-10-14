@@ -193,7 +193,11 @@ class AutoReport {
 			$start = 0;
 		}
 
-		if ($output_type == PDF_OUTPUT_PORTRAIT || $output_type == PDF_OUTPUT_LANDSCAPE) {
+      if ($nbtot == 0) {
+         commonHeader($title, $_SERVER['PHP_SELF'], "utils", "report");
+         echo "<div align='center'><font class='red b'>".$LANG['search'][15]."</font></div>";
+         commonFooter();
+      } else if ($output_type == PDF_OUTPUT_PORTRAIT || $output_type == PDF_OUTPUT_LANDSCAPE) {
 			include (GLPI_ROOT . "/lib/ezpdf/class.ezpdf.php");
 		} else
 			if ($output_type == HTML_OUTPUT) {
@@ -233,7 +237,7 @@ class AutoReport {
 
 		plugin_reports_checkRight($this->name, "r");
 
-		if ($res) {
+		if ($res && $nbtot >0) {
 			$nbcols = $DB->num_fields($res);
 			$nbrows = $DB->numrows($res);
 
