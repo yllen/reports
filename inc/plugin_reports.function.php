@@ -142,35 +142,6 @@ function plugin_reports_updatePluginRights($path) {
 }
 
 
-function dropdownSoftwareWithLicense($soft) {
-   global $DB, $LANG;
-
-   $query = "SELECT `glpi_softwares`.`name`, `glpi_softwares`.`id` 
-             FROM `glpi_softwareslicenses` 
-             LEFT JOIN `glpi_softwares` 
-                  ON `glpi_softwareslicenses`.`softwares_id` = `glpi_softwares`.`id`
-             LEFT JOIN `glpi_entities` 
-                  ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)
-             WHERE `glpi_softwareslicenses`.`entities_id` 
-                           IN(" . $_SESSION['glpiactiveentities_string'] . ")
-             GROUP BY `glpi_softwares`.`name`";
-   $result = $DB->query($query);
-
-   if ($DB->numrows($result)) {
-      echo "<select name='soft'>";
-      while ($data = $DB->fetch_array($result)) {
-         echo "<option value='" . $data["id"] . "'";
-         if ($data["id"]==$soft) {
-            echo " selected = 'selected'";
-         }
-         echo ">" . $data["name"];
-         echo "</option>";
-      }
-      echo "</select>";
-   }
-}
-
-
 function getPriorityLabelsArray() {
 
    return array("1" => getPriorityName(1),

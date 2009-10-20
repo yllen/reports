@@ -723,6 +723,49 @@ class PriorityCriteria extends AutoCriteria {
 
 
 /**
+ * Dropdown for softwares with license
+ */
+class SoftwareWithLicenseCriteria extends GenericDropdownCriteria {
+
+   function __construct($report) { // varaible = objet rapport
+      global $LANG;
+      parent::__construct($report, "softwares_id", "glpi_softwares", $LANG['help'][31]);
+   }
+
+   function displayDropdownCriteria() {
+      global $DB, $LANG;
+
+      $query = "SELECT `glpi_softwares`.`name`, `glpi_softwares`.`id` 
+                FROM `glpi_softwareslicenses` 
+                LEFT JOIN `glpi_softwares` 
+                     ON `glpi_softwareslicenses`.`softwares_id` = `glpi_softwares`.`id`
+                LEFT JOIN `glpi_entities` 
+                     ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)
+                WHERE `glpi_softwareslicenses`.`entities_id` 
+                           IN(" . $_SESSION['glpiactiveentities_string'] . ")
+                GROUP BY `glpi_softwares`.`name`";
+      $result = $DB->query($query);
+   
+      if ($DB->numrows($result)) {
+         echo "<select name='".$this->getName()."'>";
+         while ($data = $DB->fetch_array($result)) {
+            echo "<option value='" . $data["id"] . "'";
+            if ($data["id"] == $this->getParameterValue()) {
+               echo " selected = 'selected'";
+            }
+            echo ">" . $data["name"];
+            echo "</option>";
+         }
+         echo "</select>";
+      } else {
+         echo "<font class='red b'>".$LANG['search'][15]."</font>";
+      }
+   }
+}
+
+
+
+/**
  * Ticket status selection criteria
  */
 class TicketStatusCriteria extends GenericDropdownCriteria {
