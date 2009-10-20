@@ -31,8 +31,8 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['licenses'][1]="Detailed license report";
-$LANG['plugin_reports']['licenses'][2]="Bought version";
-$LANG['plugin_reports']['licenses'][3]="Used version";
+$LANG['plugin_reports']['licenses'][1] = "Detailed license report";
+$LANG['plugin_reports']['licenses'][2] = "Bought version";
+$LANG['plugin_reports']['licenses'][3] = "Used version";
 
 ?>
