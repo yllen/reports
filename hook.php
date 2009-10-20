@@ -31,17 +31,18 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-function plugin_get_headings_reports($type,$ID,$withtemplate) {
+function plugin_get_headings_reports($type,$id,$withtemplate) {
    global $LANG;
 
    if ($type==PROFILE_TYPE) {
       $prof = new Profile();
-      if ($ID>0 && $prof->getFromDB($ID) && $prof->fields['interface']!='helpdesk') {
+      if ($id>0 && $prof->getFromDB($id) && $prof->fields['interface']!='helpdesk') {
          return array(1 => $LANG['plugin_reports']['title'][1]);
       }
    }
    return false;
 }
+
 
 function plugin_headings_actions_reports($type) {
 
@@ -53,7 +54,8 @@ function plugin_headings_actions_reports($type) {
    return false;
 }
 
-function plugin_headings_reports($type,$ID,$withtemplate=0) {
+
+function plugin_headings_reports($type,$id,$withtemplate=0) {
    global $CFG_GLPI;
 
    switch ($type) {
@@ -62,13 +64,14 @@ function plugin_headings_reports($type,$ID,$withtemplate=0) {
          plugin_reports_updatePluginRights(GLPI_ROOT."/plugins/reports/report");
 
          $prof=new ReportProfile();
-         if (!$prof->getFromDB($ID)) {
-            plugin_reports_createaccess($ID);
+         if (!$prof->getFromDB($id)) {
+            plugin_reports_createaccess($id);
          }
-         $prof->showForm($CFG_GLPI["root_doc"]."/plugins/reports/front/plugin_reports.profile.php",$ID);
+         $prof->showForm($CFG_GLPI["root_doc"]."/plugins/reports/front/plugin_reports.profile.php",$id);
          break;
    }
 }
+
 
 // Hook done on delete item case
 function plugin_pre_item_delete_reports($input) {
@@ -77,8 +80,8 @@ function plugin_pre_item_delete_reports($input) {
       switch ($input["_item_type_"]) {
          case PROFILE_TYPE :
             // Manipulate data if needed 
-            $ReportProfile=new ReportProfile;
-            $ReportProfile->cleanProfiles($input["ID"]);
+            $ReportProfile = new ReportProfile;
+            $ReportProfile->cleanProfiles($input["id"]);
             break;
       }
    }

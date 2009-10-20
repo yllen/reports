@@ -34,54 +34,60 @@
 // ----------------------------------------------------------------------
 
 function defaultValueExists($report, $criteria) {
-	global $DB;
-	$query = "SELECT ID FROM `glpi_plugin_reports_defaultvalues` WHERE report='$report' AND criteria='$criteria'";
-	$result = $DB->query($query);
-	if ($DB->numrows() == 1)
-		return $DB->result($result,0,"ID");
-	else
-		return 0;	
+   global $DB;
+
+   $query = "SELECT `id`
+             FROM `glpi_plugin_reports_defaultvalues`
+             WHERE `report` = '$report'
+                   AND `criteria` = '$criteria'";
+   $result = $DB->query($query);
+
+   if ($DB->numrows() == 1) {
+      return $DB->result($result,0,"id");
+   }
+   return 0;
 }
+
 
 function putDefaultValue($report, $criteria, $value) {
-	$defaultvalueID = defaultValueExists($report,$criteria); 
-	$defaultvalue = new ReportDefaultValue;
 
-	$input["report"]=$report;
-	$input["criteria"]=$criteria;
-	$input["value"]=$value;
+   $defaultvalueID = defaultValueExists($report,$criteria); 
+   $defaultvalue = new ReportDefaultValue;
 
-	if (!$defaultvalueID)
-		$defaultvalue->add($input);
-	else
-	{
-		$input["ID"]=$defaultvalueID;
-		$defaultvalue->update($input);
-	}
+   $input["report"]=$report;
+   $input["criteria"]=$criteria;
+   $input["value"]=$value;
+
+   if (!$defaultvalueID) {
+      $defaultvalue->add($input);
+   } else {
+      $input["id"]=$defaultvalueID;
+      $defaultvalue->update($input);
+   }
 }
 
-function removeDefaultValue($report,$criteria)
-{
-	$defaultvalueID = defaultValueExists($report,$criteria); 
-	if ($defaultvalueID)
-	{
-		$defaultvalue = new ReportDefaultValue;
-		$input["ID"]=$defaultvalueID;
-		$defaultvalue->delete($input);
-	}
+
+function removeDefaultValue($report,$criteria) {
+
+   $defaultvalueID = defaultValueExists($report,$criteria); 
+   if ($defaultvalueID) {
+      $defaultvalue = new ReportDefaultValue;
+      $input["id"]=$defaultvalueID;
+      $defaultvalue->delete($input);
+   }
 }
 
-function getAllDefaultValuesByReport($resport)
-{
-	
-	$defaultValues = array();
-	$results = getAllDatasFromTable($defaultvalue->table,"report='$report'");
-	foreach ($results as $result)
-	{
-		$tmp = new ReportDefaultValue;
-		$tmp->fields = $result;
-		$defaultValues[] = $tmp;
-	}
-	return $defaultValues;
+
+function getAllDefaultValuesByReport($resport) {
+
+   $defaultValues = array();
+   $results = getAllDatasFromTable($defaultvalue->table,"report='$report'");
+   foreach ($results as $result) {
+      $tmp = new ReportDefaultValue;
+      $tmp->fields = $result;
+      $defaultValues[] = $tmp;
+   }
+   return $defaultValues;
 }
+
 ?>

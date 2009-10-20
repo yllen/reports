@@ -1,6 +1,5 @@
 <?php
 
-
 /*
    ----------------------------------------------------------------------
    GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,12 +32,11 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array("profile");
+$NEEDED_ITEMS=array('profile');
 
-if(!defined('GLPI_ROOT')){
-	define('GLPI_ROOT', '../../..'); 
-}
+define('GLPI_ROOT', '../../..'); 
 include_once (GLPI_ROOT . "/inc/includes.php");
+
 checkRight("profile","r");
 
 usePlugin('reports',true);
@@ -47,64 +45,78 @@ commonHeader($LANG['plugin_reports']['config'][1], $_SERVER["PHP_SELF"],"config"
 
 $tab = plugin_reports_updatePluginRights("../report");
 
-if(!isset($_POST["report"])) $report='';	
-else $report=$_POST["report"];
-
-if (isset($_POST["delete"])){
-	checkRight("profile","w");
-
-	$DB->query("UPDATE glpi_plugin_reports_profiles SET $report=NULL");
-}
-else  if (isset($_POST["update"])){
-	checkRight("profile","w");
-	
-	$prof = new ReportProfile();
-	foreach ($_POST as $key => $value) if (is_numeric($key))
-		$prof->update(array("ID"=>$key, $report=>$value));
+$report='';
+if (isset($_POST["report"])) {
+   $report=$_POST["report"];
 }
 
-echo "<div align='center'><form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
-echo "<table class='tab_cadre' cellpadding='5'><tr><th colspan='2'><a href='plugin_reports.config.form.php'>";
-echo $LANG['plugin_reports']['config'][1]."</a><br />&nbsp;<br />" . $LANG['plugin_reports']['config'][8] . "</th></tr>\n";
+if (isset($_POST["delete"])) {
+   checkRight("profile","w");
+
+   $DB->query("UPDATE 
+              `glpi_plugin_reports_profiles` 
+              SET `$report` = NULL");
+
+} else  if (isset($_POST["update"])) {
+   checkRight("profile","w");
+
+   $prof = new ReportProfile();
+   foreach ($_POST as $key => $value) {
+      if (is_numeric($key)) {
+         $prof->update(array("id"=>$key, 
+                             $report=>$value));
+      }
+   }
+}
+
+echo "<div class='center'><form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
+echo "<table class='tab_cadre'><tr><th colspan='2'><a href='plugin_reports.config.form.php'>";
+echo $LANG['plugin_reports']['config'][1]."</a><br>&nbsp;<br>";
+echo $LANG['plugin_reports']['config'][8] . "</th></tr>\n";
 
 echo "<tr class='tab_bg_1'><td>" . $LANG['plugin_reports']['config'][10] . "&nbsp;: ";
-$query="SELECT ID, name FROM glpi_profiles ORDER BY name";
+$query = "SELECT `id`, `name`
+          FROM `glpi_profiles`
+          ORDER BY `name`";
 $result=$DB->query($query);
 
 echo "<select name='report'>";
 foreach($tab as $key => $value) {
-	echo "<option value='".$key."' ".($report==$key?"selected":"").">".$LANG['plugin_reports'][$key][1]."</option>";
+   echo "<option value='".$key."' ".($report==$key?"selected":"").">".
+          $LANG['plugin_reports'][$key][1]."</option>";
 }
 echo "</select>";
-echo "<td><input type='submit' value=\"".$LANG["buttons"][2]."\" class='submit' ></td></tr>";
+echo "<td><input type='submit' value='".$LANG['buttons'][2]."' class='submit' ></td></tr>";
 echo "</table></form></div>";
 
-if ($report){
-		echo "<div align='center'>";
-		echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>\n";
-		echo "<table class='tab_cadre' cellpadding='5'>\n"; 
-		echo "<tr><th colspan='2'>".$LANG['plugin_reports']['config'][9].": </th></tr>\n";
+if ($report) {
+   echo "<div class='center'>";
+   echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>\n";
+   echo "<table class='tab_cadre'>\n"; 
+   echo "<tr><th colspan='2'>".$LANG['plugin_reports']['config'][9].": </th></tr>\n";
 
-		$query="SELECT ID,profile,$report FROM glpi_plugin_reports_profiles";
-		$result=$DB->query($query);
-		while ($data=$DB->fetch_assoc($result)){
-				echo "<tr class='tab_bg_1'><td>" . $data['profile'] . "&nbsp: </td><td>";
-				dropdownNoneReadWrite($data['ID'],$data[$report],1,1,0);
-				echo "</td></tr>\n";
-		}
-		
-		if (haveRight("profile","w")){
-			echo "<tr class='tab_bg_1'><td colspan='2' align='center'>";
-			echo "<input type='hidden' name='report' value=$report>";
-			echo "<input type='submit' name='update' value=\"".$LANG["buttons"][7]."\" class='submit'>&nbsp;";
-			echo "<input type='submit' name='delete' value=\"".$LANG["buttons"][6]."\" class='submit'>";
-			echo "</td></tr>\n";
-		}
+   $query = "SELECT `id`, `profile`, `$report`
+             FROM `glpi_plugin_reports_profiles`";
 
-		echo "</table></form></div>\n";	
+   $result=$DB->query($query);
+   while ($data=$DB->fetch_assoc($result)) {
+      echo "<tr class='tab_bg_1'><td>" . $data['profile'] . "&nbsp: </td><td>";
+      dropdownNoneReadWrite($data['id'],$data[$report],1,1,0);
+      echo "</td></tr>\n";
+   }
+
+   if (haveRight("profile","w")) {
+      echo "<tr class='tab_bg_1'><td colspan='2' class='center'>";
+      echo "<input type='hidden' name='report' value=$report>";
+      echo "<input type='submit' name='update' value='".$LANG['buttons'][7]."' class='submit'>&nbsp;";
+      echo "<input type='submit' name='delete' value='".$LANG['buttons'][6]."' class='submit'>";
+      echo "</td></tr>\n";
+   }
+
+   echo "</table></form></div>\n";	
 
 }
 
 commonFooter();
-?>
 
+?>

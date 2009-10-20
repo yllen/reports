@@ -31,17 +31,18 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']["title"][1]="Reports";
+$LANG['plugin_reports']['title'][1] =  "Reports";
 
-$LANG['plugin_reports']['config'][1]="Konfiguration des Plugins";
-$LANG['plugin_reports']['config'][4]="Rechtevergabe";
-$LANG['plugin_reports']['config'][8]="Rechtevergabe nach Report";
-$LANG['plugin_reports']['config'][9]="profil Rechte";
-$LANG['plugin_reports']['config'][10]="Report";
-$LANG['plugin_reports']['config'][11]="Konfiguration Report";
+$LANG['plugin_reports']['config'][1]   = "Konfiguration des Plugins";
+$LANG['plugin_reports']['config'][4]   = "Rechtevergabe";
+$LANG['plugin_reports']['config'][8]   = "Rechtevergabe nach Report";
+$LANG['plugin_reports']['config'][9]   = "profil Rechte";
+$LANG['plugin_reports']['config'][10]  = "Report";
+$LANG['plugin_reports']['config'][11]  = "Konfiguration Report";
 
-$LANG['plugin_reports']["reports"][1]="Search criterias";
-$LANG['plugin_reports']['subname']['date-interval']="Date interval";
-$LANG['plugin_reports']['subname']['time-interval']="Time interval";
+$LANG['plugin_reports']['reports'][1]  = "Search criterias";
+
+$LANG['plugin_reports']['subname']['date-interval']   = "Date interval";
+$LANG['plugin_reports']['subname']['time-interval']   = "Time interval";
 
 ?>

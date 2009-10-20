@@ -1,6 +1,5 @@
 <?php
 
-
 /*
    ----------------------------------------------------------------------
    GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,17 +32,19 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array("profile");
+$NEEDED_ITEMS=array('profile');
+
 define('GLPI_ROOT', '../../..'); 
 include_once (GLPI_ROOT . "/inc/includes.php");
+
 checkRight("profile","w");
 
 $prof=new ReportProfile();
 
 //Save profile
 if (isset ($_POST['update_user_profile'])) {
-	$prof->update($_POST);	
+   $prof->update($_POST);	
 }
 glpi_header($_SERVER['HTTP_REFERER']);
-?>
 
+?>

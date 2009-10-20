@@ -1,6 +1,5 @@
 <?php
 
-
 /*
  ----------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,9 +31,10 @@
 // Original Author of file: 
 // Purpose of file:
 // ----------------------------------------------------------------------
-$REPORT_SEARCH_OPTION['date_mod']['datatype'] = 'datetime';
+
+$REPORT_SEARCH_OPTION['date_mod']['datatype']            = 'datetime';
 $REPORT_SEARCH_OPTION['internal_device_id']['data_type'] = 'internal_device_id';
-$REPORT_SEARCH_OPTION['computer_id']['data_type'] = 'itemlink';
-$REPORT_SEARCH_OPTION['computer_id']['type'] = COMPUTER_TYPE;
+$REPORT_SEARCH_OPTION['computer_id']['data_type']        = 'itemlink';
+$REPORT_SEARCH_OPTION['computer_id']['type']             = COMPUTER_TYPE;
 
 ?>

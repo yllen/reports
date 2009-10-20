@@ -30,17 +30,18 @@
 // Original Author of file: BALPE Dévi
 // Purpose of file:
 // ----------------------------------------------------------------------
-$LANG['plugin_reports']["title"][1]="Reports";
+$LANG['plugin_reports']['title'][1] = "Reports";
 
-$LANG['plugin_reports']["config"][1]="Reports plugin configuration";
-$LANG['plugin_reports']["config"][4]="Rights management by profil";
-$LANG['plugin_reports']["config"][8]="Rights management by report";
-$LANG['plugin_reports']["config"][9]="Profils rights";
-$LANG['plugin_reports']["config"][10]="Report";
-$LANG['plugin_reports']["config"][11]="Report configuration";
+$LANG['plugin_reports']['config'][1]   = "Reports plugin configuration";
+$LANG['plugin_reports']['config'][4]   = "Rights management by profil";
+$LANG['plugin_reports']['config'][8]   = "Rights management by report";
+$LANG['plugin_reports']['config'][9]   = "Profils rights";
+$LANG['plugin_reports']['config'][10]  = "Report";
+$LANG['plugin_reports']['config'][11]  = "Report configuration";
 
-$LANG['plugin_reports']["reports"][1]="Search criterias";
-$LANG['plugin_reports']['subname']['date-interval']="Date interval";
-$LANG['plugin_reports']['subname']['time-interval']="Time interval";
+$LANG['plugin_reports']['reports'][1]  = "Search criterias";
+
+$LANG['plugin_reports']['subname']['date-interval']   = "Date interval";
+$LANG['plugin_reports']['subname']['time-interval']   = "Time interval";
 
 ?>

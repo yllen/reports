@@ -1,4 +1,5 @@
 <?php
+
 /*
   ----------------------------------------------------------------------
   GLPI - Gestionnaire Libre de Parc Informatique
@@ -32,56 +33,82 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-if (!defined('GLPI_ROOT')){
-	die("Sorry. You can't access directly to this file");
-	}
+if (!defined('GLPI_ROOT')) {
+   die("Sorry. You can't access directly to this file");
+}
 
 include_once (GLPI_ROOT . "/inc/includes.php");
-	
+
+function plugin_reports_install() {
+   global $DB;
+
+   if (TableExists('glpi_plugin_reports_profiles')) { //1.1 ou 1.2
+      if (FieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
+         $query = "ALTER TABLE `glpi_plugin_reports_profiles` 
+                   CHANGE `ID` `id` int(11) NOT NULL auto_increment";
+      } 
+   } else {
+      $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_profiles` (
+                  `id` int(11) NOT NULL auto_increment,
+                  `profile` varchar(255) NOT NULL,
+                PRIMARY KEY (`id`)) 
+                ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+   }
+   $DB->query($query) or die($DB->error());
+
+   return true;
+}
+
 
 function plugin_reports_uninstall() {
-	$DB = new DB;
-	$tables = array("glpi_plugin_reports_profiles");
-	foreach ($tables as $table)	
-		$query = "DROP TABLE IF EXISTS `$table`;";
-	$DB->query($query) or die($DB->error());
+   $DB = new DB;
+
+   $tables = array("glpi_plugin_reports_profiles");
+   foreach ($tables as $table) {
+      $query = "DROP TABLE IF EXISTS `$table`";
+   }
+   $DB->query($query) or die($DB->error());
 }
 
-function plugin_reports_changeprofile()
-{
-	$prof=new ReportProfile();
-	if($prof->getFromDB($_SESSION['glpiactiveprofile']['ID']))
-		$_SESSION["glpi_plugin_reports_profile"]=$prof->fields;
-	else
-		unset($_SESSION["glpi_plugin_reports_profile"]);
+
+function plugin_reports_changeprofile() {
+
+   $prof=new ReportProfile();
+   if ($prof->getFromDB($_SESSION['glpiactiveprofile']['id'])) {
+      $_SESSION["glpi_plugin_reports_profile"]=$prof->fields;
+   } else {
+      unset($_SESSION["glpi_plugin_reports_profile"]);
+   }
 }
 
-function plugin_reports_haveRight($module,$right){
-	$matches=array(
-			""  => array("","r","w"), // ne doit pas arriver normalement
-			"r" => array("r","w"),
-			"w" => array("w"),
-			"1" => array("1"),
-			"0" => array("0","1"), // ne doit pas arriver non plus
-		      );
-		      
-	if (isset($_SESSION["glpi_plugin_reports_profile"][$module])&&in_array($_SESSION["glpi_plugin_reports_profile"][$module],$matches[$right]))
-		return true;
-	else return false;
+
+function plugin_reports_haveRight($module,$right) {
+
+   $matches = array(""  => array("","r","w"), // ne doit pas arriver normalement
+                    "r" => array("r","w"),
+                    "w" => array("w"),
+                    "1" => array("1"),
+                    "0" => array("0","1")); // ne doit pas arriver non plus
+
+   if (isset($_SESSION["glpi_plugin_reports_profile"][$module])
+       && in_array($_SESSION["glpi_plugin_reports_profile"][$module],$matches[$right])) {
+      return true;
+   }
+   return false;
 }
+
 
 function plugin_reports_checkRight($module, $right) {
-	global $CFG_GLPI;
+   global $CFG_GLPI;
 
-	if (!plugin_reports_haveRight($module, $right)) {
-		// Gestion timeout session
-		if (!isset ($_SESSION["glpiID"])) {
-			glpi_header($CFG_GLPI["root_doc"] . "/index.php");
-			exit ();
-		}
-
-		displayRightError();
-	}
+   if (!plugin_reports_haveRight($module, $right)) {
+      // Gestion timeout session
+      if (!isset ($_SESSION["glpiID"])) {
+         glpi_header($CFG_GLPI["root_doc"] . "/index.php");
+         exit ();
+      }
+      displayRightError();
+   }
 }
 
 ?>

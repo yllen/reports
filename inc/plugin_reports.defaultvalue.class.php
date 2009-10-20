@@ -1,4 +1,5 @@
 <?php
+
 /*
   ----------------------------------------------------------------------
   GLPI - Gestionnaire Libre de Parc Informatique
@@ -33,35 +34,37 @@
 // ----------------------------------------------------------------------
 
 class ReportDefaultValue extends CommonDBTM {
-	
-	function __construct()
-	{
-		$this->table="glpi_plugin_reports_defaultvalues";
-    	$this->type=-1;
-	}
 
-	//if report is deleted
-	function cleanDefaultValues($report) {
-	
-		global $DB;
-		$query = "DELETE FROM glpi_plugin_reports_values WHERE report='$report' ";
-		$DB->query($query);
-	}
-	
-	function getCriteria()
-	{
-		return $this->fields["criteria"];
-	}
+   function __construct() {
+      $this->table="glpi_plugin_reports_defaultvalues";
+      $this->type=-1;
+   }
 
-	function getValue()
-	{
-		return $this->fields["value"];
-	}
-	
-	function getReport()
-	{
-		return $this->fields["report"];
-	}
+
+   //if report is deleted
+   function cleanDefaultValues($report) {
+      global $DB;
+
+      $query = "DELETE 
+                FROM `glpi_plugin_reports_values`
+                WHERE `report` = '$report' ";
+      $DB->query($query);
+   }
+
+
+   function getCriteria() {
+      return $this->fields["criteria"];
+   }
+
+
+   function getValue() {
+      return $this->fields["value"];
+   }
+
+
+   function getReport() {
+      return $this->fields["report"];
+   }
 }
-	
+
 ?>
