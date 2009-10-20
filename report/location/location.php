@@ -41,29 +41,28 @@
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=0; // Really a big SQL request
 
-$NEEDED_ITEMS=array("search");
+$NEEDED_ITEMS=array('search');
+
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
 // Instantiate Report with Name
-$report = new AutoReport('location');
+$report = new AutoReport();
 
 // Columns title (optional), from $LANG
-$report->setColumnsNames(array (
-	"entity" => $LANG["entity"][0],
-	"location" => $LANG["common"][15]
-	));
-
-// Group by
-$report->setGroupBy('entity');
+$report->setColumnsNames(array('entity'   => $LANG["entity"][0],
+                               'location' => $LANG["common"][15]));
 
 // SQL statement
-$report->setSqlRequest(
-	"SELECT glpi_entities.completename AS entity, glpi_dropdown_locations.completename AS location" .
-	" FROM glpi_dropdown_locations LEFT JOIN glpi_entities ON (glpi_dropdown_locations.FK_entities=glpi_entities.ID)" . 
-		getEntitiesRestrictRequest(" WHERE ", "glpi_dropdown_locations") .
-	" ORDER BY glpi_entities.completename, glpi_dropdown_locations.completename");
+$query = "SELECT `glpi_entities`.`completename` AS entity, 
+                 `glpi_locations`.`completename` AS location
+          FROM `glpi_locations`
+          LEFT JOIN `glpi_entities` ON (`glpi_locations`.`entities_id` = `glpi_entities`.`id`)" .
+          getEntitiesRestrictRequest(" WHERE ", "glpi_locations") ."
+          ORDER BY entity, location";
 
-// Render
+$report->setGroupBy('entity');
+$report->setSqlRequest($query);
 $report->execute();
+
 ?>
