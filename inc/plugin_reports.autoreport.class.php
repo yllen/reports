@@ -52,9 +52,13 @@ class AutoReport {
    private $subname = "";
    private $cpt = 0;
 
-   function __construct($name) {
+   function __construct($name='') {
 
-      $this->name = $name;
+      if (empty($name)) {
+         $this->name = basename($_SERVER['SCRIPT_NAME'],'.php');
+      } else {
+         $this->name = $name;
+      }
       includeLocales($this->name);
    }
 

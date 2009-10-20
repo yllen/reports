@@ -43,7 +43,7 @@ $DBCONNECTION_REQUIRED=0;
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
-$report = new AutoReport("licenses");
+$report = new AutoReport();
 
 $license = new SoftwareWithLicenseCriteria($report);
 
