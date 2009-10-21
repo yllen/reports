@@ -30,6 +30,7 @@
 // Original Author of file: WoitiX
 // Purpose of file:
 // ----------------------------------------------------------------------
-$LANG['plugin_reports']["globalhisto"][1]="Totale geschiedenis(voor Test / Voorbeeld)";
+
+$LANG['plugin_reports']['globalhisto'][1] = "Totale geschiedenis(voor Test / Voorbeeld)";
 
 ?>

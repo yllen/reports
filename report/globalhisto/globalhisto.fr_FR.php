@@ -9,7 +9,7 @@
 
  LICENSE
 
-	This file is part of GLPI.
+   This file is part of GLPI.
 
     GLPI is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,5 +30,7 @@
 // Original Author of file: Remi Collet
 // Purpose of file:
 // ----------------------------------------------------------------------
-$LANG['plugin_reports']["globalhisto"][1]="Historique global (Test / example uniquement)";
+
+$LANG['plugin_reports']['globalhisto'][1] = "Historique global (Test / example uniquement)";
+
 ?>

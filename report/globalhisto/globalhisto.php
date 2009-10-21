@@ -32,8 +32,8 @@
  * Original Author of file: Remi Collet
  * 
  * Purpose of file: 
- * 		Generate location report
- * 		Illustrate use of simpleReport
+ *    Generate location report
+ *    Illustrate use of simpleReport
  * ----------------------------------------------------------------------
  */ 
 
@@ -41,11 +41,12 @@
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=0; // Really a big SQL request
 
-$NEEDED_ITEMS=array("search");
+$NEEDED_ITEMS = array('search');
+
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
-$report = new AutoReport("globalhisto");
+$report = new AutoReport();
 
 //Report's search criterias
 //Possible current values are :
@@ -58,45 +59,40 @@ new DateIntervalCriteria($report,"date_mod");
 $report->displayCriteriasForm($_SERVER['PHP_SELF']);
 
 //If criterias have been validated
-if ($report->criteriasValidated())
-{
-	$report->setSubNameAuto();
+if ($report->criteriasValidated()) {
+   $report->setSubNameAuto();
 
-	//Names of the columns to be displayed
-	$colnumsnames = array (
-		"ID"=>$LANG['common'][2],
-		"date_mod" => $LANG["common"][27],
-		"user_name" => $LANG["common"][34],
-		"linked_action" => $LANG["event"][19]
-		);
-	$report->setColumnsNames($colnumsnames);
-	
-	//Colunmns mappings if needed
-	$columns_mappings = array ('linked_action'=>array(
-		HISTORY_DELETE_ITEM => $LANG["log"][22],
-		HISTORY_RESTORE_ITEM => $LANG["log"][23],
-		HISTORY_ADD_DEVICE => $LANG["devices"][25],
-		HISTORY_UPDATE_DEVICE => $LANG["log"][28],
-		HISTORY_DELETE_DEVICE => $LANG["devices"][26],
-		HISTORY_INSTALL_SOFTWARE => $LANG["software"][44],
-		HISTORY_UNINSTALL_SOFTWARE => $LANG["software"][45],
-		HISTORY_DISCONNECT_DEVICE => $LANG["central"][6],
-		HISTORY_CONNECT_DEVICE => $LANG["log"][55],
-		HISTORY_OCS_IMPORT => $LANG["ocsng"][7],
-		HISTORY_OCS_DELETE => $LANG["ocsng"][46],
-		HISTORY_OCS_LINK => $LANG["ocsng"][47],
-		HISTORY_OCS_IDCHANGED => $LANG["ocsng"][48],
-		HISTORY_LOG_SIMPLE_MESSAGE => ""
-		));
-	$report->setColumnsMappings($columns_mappings);
-	
-	$query = "SELECT ID,date_mod,user_name,linked_action FROM glpi_history ";
-	$query.= $report->addSqlCriteriasRestriction("WHERE");
-	$query.=" ORDER BY date_mod";
-	
-	$report->setSqlRequest($query);
+   //Names of the columns to be displayed
+   $report->setColumnsNames(array('id'            => $LANG['common'][2],
+                                  'date_mod'      => $LANG['common'][27],
+                                  'user_name'     => $LANG['common'][34],
+                                  'linked_action' => $LANG['event'][19]));
 
-	$report->execute();
+   //Colunmns mappings if needed
+   $columns_mappings 
+      = array('linked_action' => array(HISTORY_DELETE_ITEM        => $LANG['log'][22],
+                                       HISTORY_RESTORE_ITEM       => $LANG['log'][23],
+                                       HISTORY_ADD_DEVICE         => $LANG['devices'][25],
+                                       HISTORY_UPDATE_DEVICE      => $LANG['log'][28],
+                                       HISTORY_DELETE_DEVICE      => $LANG['devices'][26],
+                                       HISTORY_INSTALL_SOFTWARE   => $LANG['software'][44],
+                                       HISTORY_UNINSTALL_SOFTWARE => $LANG['software'][45],
+                                       HISTORY_DISCONNECT_DEVICE  => $LANG['central'][6],
+                                       HISTORY_CONNECT_DEVICE     => $LANG['log'][55],
+                                       HISTORY_OCS_IMPORT         => $LANG['ocsng'][7],
+                                       HISTORY_OCS_DELETE         => $LANG['ocsng'][46],
+                                       HISTORY_OCS_LINK           => $LANG['ocsng'][47],
+                                       HISTORY_OCS_IDCHANGED      => $LANG['ocsng'][48],
+                                       HISTORY_LOG_SIMPLE_MESSAGE => ""));
+   $report->setColumnsMappings($columns_mappings);
+
+   $query = "SELECT `id`, `date_mod`, `user_name`, `linked_action`
+             FROM `glpi_logs` ".
+             $report->addSqlCriteriasRestriction("WHERE")."
+             ORDER BY `date_mod`";
+
+   $report->setSqlRequest($query);
+   $report->execute();
 }
 
 commonFooter();
