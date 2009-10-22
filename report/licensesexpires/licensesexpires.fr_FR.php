@@ -31,7 +31,7 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['licensesexpires'][1]="Liste des licences par expiration";
-$LANG['plugin_reports']['licensesexpires'][2]="Nom de la licence";
-$LANG['plugin_reports']['licensesexpires'][3]="Logiciel - version achetée";
+$LANG['plugin_reports']['licensesexpires'][1] = "Liste des licences par expiration";
+$LANG['plugin_reports']['licensesexpires'][2] = "Nom de la licence";
+$LANG['plugin_reports']['licensesexpires'][3] = "Logiciel - version achetée";
 ?>

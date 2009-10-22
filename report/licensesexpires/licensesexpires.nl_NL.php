@@ -30,9 +30,9 @@
 // Original Author of file: WoitiX
 // Purpose of file:
 // ----------------------------------------------------------------------
-global $LANG;
-$LANG['plugin_reports']['licensesexpires'][1]="Licentie per afloop datum";
-$LANG['plugin_reports']['licensesexpires'][2]="Licentie naam";
-$LANG['plugin_reports']['licensesexpires'][3]="Software - koop versie";
+
+$LANG['plugin_reports']['licensesexpires'][1] = "Licentie per afloop datum";
+$LANG['plugin_reports']['licensesexpires'][2] = "Licentie naam";
+$LANG['plugin_reports']['licensesexpires'][3] = "Software - koop versie";
 
 ?>

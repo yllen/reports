@@ -30,9 +30,9 @@
 // Original Author of file: Remi Collet
 // Purpose of file:
 // ----------------------------------------------------------------------
-global $LANG;
-$LANG['plugin_reports']['licensesexpires'][1]="Licenses by expiration date";
-$LANG['plugin_reports']['licensesexpires'][2]="License name";
-$LANG['plugin_reports']['licensesexpires'][3]="Software - buy version";
+
+$LANG['plugin_reports']['licensesexpires'][1] = "Licenses by expiration date";
+$LANG['plugin_reports']['licensesexpires'][2] = "License name";
+$LANG['plugin_reports']['licensesexpires'][3] = "Software - buy version";
 
 ?>

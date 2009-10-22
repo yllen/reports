@@ -44,56 +44,47 @@ $DBCONNECTION_REQUIRED = 0;
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-if (isset ($_POST["display_type"])) {
-	$output_type = $_POST["display_type"];
-} else {
-	$output_type = HTML_OUTPUT;
-}
+$report = new AutoReport();
 
-includeLocales("licensesexpires");
+$report->setColumnsNames(array('expire'       => $LANG['financial'][88],
+                               'name'         => $LANG['plugin_reports']['licensesexpires'][2],
+                               'software'     => $LANG['plugin_reports']['licensesexpires'][3],
+                               'serial'       => $LANG['common'][19],
+                               'completename' => $LANG['entity'][0],
+                               'comments'     => $LANG['common'][25],
+                               'ordinateur'   => $LANG['help'][25]));
 
-plugin_reports_checkRight("licensesexpires", "r");
-checkSeveralRightsAnd(array (
-	COMPUTER_TYPE => "r",
-	SOFTWARE_TYPE => "r"
-));
+$query = "SELECT `glpi_softwareslicenses`.`expire`,
+                 `glpi_softwareslicenses`.`name`,
+                 CONCAT(`glpi_softwares`.`name`,' - ',buyversion.`name`) AS software,
+                 `glpi_softwareslicenses`.`serial`,
+                 `glpi_entities`.`completename`,
+                 `glpi_softwareslicenses`.`comment`,
+                 `glpi_computers`.`name` AS ordinateur
+          FROM `glpi_softwareslicenses`
+          LEFT JOIN `glpi_softwares` 
+               ON (`glpi_softwareslicenses`.`softwares_id` = `glpi_softwares`.`id`)
+          LEFT JOIN `glpi_softwareslicensestypes` 
+            ON (`glpi_softwareslicensestypes`.`id`=`glpi_softwareslicenses`.`softwareslicensestypes_id`)
+          LEFT JOIN `glpi_softwaresversions` AS buyversion 
+               ON (buyversion.`id` = `glpi_softwareslicenses`.`softwaresversions_id_buy`)
+          LEFT JOIN `glpi_infocoms` 
+               ON (`glpi_infocoms`.`items_id` = `glpi_softwareslicenses`.`id`)
+          LEFT JOIN `glpi_entities` 
+               ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)
+          LEFT JOIN `glpi_computers` 
+               ON (`glpi_softwareslicenses`.`computers_id` = `glpi_computers`.`id`) 
+          WHERE `glpi_softwares`.`is_deleted` = '0' 
+                AND `glpi_softwares`.`is_template` = '0'
+                AND `glpi_infocoms`.`itemtype` = " . SOFTWARELICENSE_TYPE . "
+                AND (`glpi_softwareslicenses`.`otherserial` != '' 
+                     OR `glpi_infocoms`.`immo_number` !='') " .
+                getEntitiesRestrictRequest(' AND ', 'glpi_softwareslicenses') ."
+          ORDER BY `glpi_softwareslicenses`.`expire`, `name`";
 
-simpleReport(
-	// Report Name
-	"licensesexpires",
+$report->setGroupBy(array('expire',
+                          'name'));
+$report->setSqlRequest($query);
+$report->execute();
 
-	// SQL statement
-	"SELECT glpi_softwarelicenses.expire,
-		glpi_softwarelicenses.name,
-		CONCAT(glpi_software.name,' - ',buyversion.name) AS software,
-		glpi_softwarelicenses.serial,
-		glpi_entities.completename,
-		glpi_softwarelicenses.comments,
-		glpi_computers.name AS ordinateur
-	FROM glpi_softwarelicenses
-	LEFT JOIN glpi_software ON (glpi_softwarelicenses.sID=glpi_software.ID)
-	LEFT JOIN glpi_dropdown_licensetypes ON (glpi_dropdown_licensetypes.ID=glpi_softwarelicenses.type)
-	LEFT JOIN glpi_softwareversions AS buyversion ON (buyversion.ID=glpi_softwarelicenses.buy_version)
-	LEFT JOIN glpi_infocoms ON (glpi_infocoms.FK_device=glpi_softwarelicenses.ID)
-	LEFT JOIN glpi_entities ON (glpi_software.FK_entities = glpi_entities.ID)
-	LEFT JOIN glpi_computers ON (glpi_softwarelicenses.FK_computers=glpi_computers.ID) 
-	WHERE glpi_software.deleted=0 
-		AND glpi_software.is_template='0'
-		AND glpi_infocoms.device_type=" . SOFTWARELICENSE_TYPE . "
-		AND (glpi_softwarelicenses.otherserial!='' OR glpi_infocoms.num_immo !='')	" .
-	getEntitiesRestrictRequest(' AND ', 'glpi_softwarelicenses') ."
-	ORDER BY glpi_softwarelicenses.expire, name",
-	
-	array (
-		"expire" => $LANG["financial"][88],
-		"name" => $LANG['plugin_reports']['licensesexpires'][2],
-		"software" => $LANG['plugin_reports']['licensesexpires'][3],
-		"serial" => $LANG["common"][19],
-		"completename" => $LANG["entity"][0],
-		"comments" => $LANG["common"][25],
-		"ordinateur" => $LANG['help'][25]
-	),
-	"",
-	array("expire","name")
-);
 ?>
