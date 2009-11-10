@@ -423,7 +423,7 @@ class GenericDropdownCriteria extends AutoCriteria {
     * Get criteria's subtitle
     */
    public function getSubName() {
-      return " " . $this->getCriteriaLabel() . " : " . 
+      return " " . $this->getCriteriaLabel() . " : " .
               getDropdownName($this->getTable(), $this->getParameterValue());
    }
 
@@ -461,8 +461,8 @@ class GenericDropdownCriteria extends AutoCriteria {
          if (!$this->childrens) {
             return $link . " " . $this->getSqlField() . "=" . $this->getParameterValue() . " ";
          } else {
-            return $link . " " . $this->getSqlField() . 
-                   " IN (" . implode(',', getSonsOfTreeItem($this->getTable(), 
+            return $link . " " . $this->getSqlField() .
+                   " IN (" . implode(',', getSonsOfTreeItem($this->getTable(),
                                                             $this->getParameterValue())) . ") ";
          }
       }
@@ -561,8 +561,8 @@ class DateIntervalCriteria extends AutoCriteria {
 
 
    public function getSqlCriteriasRestriction($link = 'AND') {
-      return $link . " " . 
-             $this->getSqlField() . " >= '" . $this->getParameter("startdate") . " 00:00:00' AND " . 
+      return $link . " " .
+             $this->getSqlField() . " >= '" . $this->getParameter("startdate") . " 00:00:00' AND " .
              $this->getSqlField() . "<='" . $this->getParameter("enddate") . " 23:59:59' ";
    }
 
@@ -570,9 +570,9 @@ class DateIntervalCriteria extends AutoCriteria {
    function getSubName() {
       global $LANG;
 
-      return (isset($LANG['plugin_reports']['subname'][$this->getName()]) 
+      return (isset($LANG['plugin_reports']['subname'][$this->getName()])
               ? $LANG['plugin_reports']['subname'][$this->getName()] : '') .
-             " (" . convDate($this->getParameter("startdate")) . "," . 
+             " (" . convDate($this->getParameter("startdate")) . "," .
                 convDate($this->getParameter("enddate")) . ")";
    }
 
@@ -635,7 +635,7 @@ class TimeIntervalCriteria extends AutoCriteria {
                  AND TIME(" .$this->getSqlField(). ") < '" .$this->getParameter('endtime'). ":00'";
       } else {
          // ex time < 08:00:00 or 18:00:00 <= time
-         return " $link (TIME(". $this->getSqlField().") >= '".$this->getParameter('starttime').":00' 
+         return " $link (TIME(". $this->getSqlField().") >= '".$this->getParameter('starttime').":00'
                          OR TIME(".$this->getSqlField().") < '".$this->getParameter('endtime').":00')";
       }
    }
@@ -644,7 +644,7 @@ class TimeIntervalCriteria extends AutoCriteria {
    function getSubName() {
       global $LANG;
 
-      return " " . (isset ($LANG['plugin_reports']['subname'][$this->getName()]) 
+      return " " . (isset ($LANG['plugin_reports']['subname'][$this->getName()])
                     ? $LANG['plugin_reports']['subname'][$this->getName()] : '') .
              " (" . $this->getParameter('starttime') . "," . $this->getParameter('endtime') . ")";
    }
@@ -735,17 +735,17 @@ class SoftwareWithLicenseCriteria extends GenericDropdownCriteria {
    function displayDropdownCriteria() {
       global $DB, $LANG;
 
-      $query = "SELECT `glpi_softwares`.`name`, `glpi_softwares`.`id` 
-                FROM `glpi_softwareslicenses` 
-                LEFT JOIN `glpi_softwares` 
+      $query = "SELECT `glpi_softwares`.`name`, `glpi_softwares`.`id`
+                FROM `glpi_softwareslicenses`
+                LEFT JOIN `glpi_softwares`
                      ON `glpi_softwareslicenses`.`softwares_id` = `glpi_softwares`.`id`
-                LEFT JOIN `glpi_entities` 
+                LEFT JOIN `glpi_entities`
                      ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)
-                WHERE `glpi_softwareslicenses`.`entities_id` 
+                WHERE `glpi_softwareslicenses`.`entities_id`
                            IN(" . $_SESSION['glpiactiveentities_string'] . ")
                 GROUP BY `glpi_softwares`.`name`";
       $result = $DB->query($query);
-   
+
       if ($DB->numrows($result)) {
          echo "<select name='".$this->getName()."'>";
          while ($data = $DB->fetch_array($result)) {
@@ -877,8 +877,7 @@ class EnterpriseCriteria extends GenericDropdownCriteria {
       global $LANG;
 
       //Add enterprise includes
-      include_once(GLPI_ROOT."/inc/enterprise.class.php");
-      include_once(GLPI_ROOT."/inc/enterprise.function.php");
+      include_once(GLPI_ROOT."/inc/supplier.class.php");
 
       parent :: __construct($report, "suppliers_id", "glpi_suppliers", $LANG['financial'][26]);
    }

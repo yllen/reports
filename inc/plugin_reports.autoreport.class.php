@@ -186,7 +186,7 @@ class AutoReport {
          $output_type = HTML_OUTPUT;
       }
 
-      $title = (isset ($LANG['plugin_reports'][$this->name][1]) 
+      $title = (isset ($LANG['plugin_reports'][$this->name][1])
                 ? $LANG['plugin_reports'][$this->name][1] : $LANG['plugin_reports']['config'][10]);
 
       if ($this->subname) {
@@ -297,7 +297,7 @@ class AutoReport {
             foreach ($colsname as $colname) {
 
                //If value needs to be modified on the fly
-               if (isset ($this->columns_mapping[$colname]) 
+               if (isset ($this->columns_mapping[$colname])
                    && isset ($this->columns_mapping[$colname][$row[$colname]])) {
 
                   $new_value = $this->columns_mapping[$colname][$row[$colname]];
@@ -307,11 +307,11 @@ class AutoReport {
                if (!in_array($colname, $this->group_by)) {
                   echo displaySearchItem($output_type, $row[$colname], $num, $row_num);
                } else if ($crt == $prev) {
-                  echo displaySearchItem($output_type, 
-                                         ($output_type == CSV_OUTPUT ? $row[$colname] : ""), 
+                  echo displaySearchItem($output_type,
+                                         ($output_type == CSV_OUTPUT ? $row[$colname] : ""),
                                          $num, $row_num);
                } else if ($output_type == HTML_OUTPUT) {
-                  echo displaySearchItem($output_type, "<strong>" . $row[$colname] . "</strong>", 
+                  echo displaySearchItem($output_type, "<strong>" . $row[$colname] . "</strong>",
                                          $num, $row_num);
                } else {
                   echo displaySearchItem($output_type, $row[$colname], $num, $row_num);
@@ -342,10 +342,10 @@ class AutoReport {
       //Display commonHeader is output is HTML
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
          if (isStat($this->name)) {
-            commonHeader($LANG['plugin_reports'][$this->name][1], $_SERVER['PHP_SELF'], 
+            commonHeader($LANG['plugin_reports'][$this->name][1], $_SERVER['PHP_SELF'],
                          "maintain", "stat");
          } else {
-            commonHeader($LANG['plugin_reports'][$this->name][1], $_SERVER['PHP_SELF'], 
+            commonHeader($LANG['plugin_reports'][$this->name][1], $_SERVER['PHP_SELF'],
                          "utils", "report");
          }
       } else {
@@ -365,7 +365,7 @@ class AutoReport {
          if ($this->criteriasValidated()) {
             //Add parameters to uri to be saved as bookmarks
             $_SERVER["REQUEST_URI"] = $this->buildBookmarkUrl();
-            showSaveBookmarkButton(BOOKMARK_SEARCH,
+            Bookmark::showSaveButton(BOOKMARK_SEARCH,
                          (isStat($this->name)?PLUGIN_REPORTS_STAT_TYPE:PLUGIN_REPORTS_REPORT_TYPE));
          }
          echo "</th></tr>\n";
