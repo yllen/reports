@@ -68,17 +68,12 @@ $query = "SELECT `glpi_softwareslicenses`.`expire`,
             ON (`glpi_softwareslicensestypes`.`id`=`glpi_softwareslicenses`.`softwareslicensestypes_id`)
           LEFT JOIN `glpi_softwaresversions` AS buyversion 
                ON (buyversion.`id` = `glpi_softwareslicenses`.`softwaresversions_id_buy`)
-          LEFT JOIN `glpi_infocoms` 
-               ON (`glpi_infocoms`.`items_id` = `glpi_softwareslicenses`.`id`)
           LEFT JOIN `glpi_entities` 
                ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)
           LEFT JOIN `glpi_computers` 
                ON (`glpi_softwareslicenses`.`computers_id` = `glpi_computers`.`id`) 
           WHERE `glpi_softwares`.`is_deleted` = '0' 
-                AND `glpi_softwares`.`is_template` = '0'
-                AND `glpi_infocoms`.`itemtype` = " . SOFTWARELICENSE_TYPE . "
-                AND (`glpi_softwareslicenses`.`otherserial` != '' 
-                     OR `glpi_infocoms`.`immo_number` !='') " .
+                AND `glpi_softwares`.`is_template` = '0' " .
                 getEntitiesRestrictRequest(' AND ', 'glpi_softwareslicenses') ."
           ORDER BY `glpi_softwareslicenses`.`expire`, `name`";
 

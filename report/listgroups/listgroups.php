@@ -57,12 +57,12 @@ $query = "SELECT `glpi_entities`.`completename`,
                  `glpi_users`.`name` AS login, 
                  `glpi_users`.`firstname`,
                  `glpi_users`.`realname`
-          FROM `glpi_groups_users`
-          LEFT JOIN `glpi_users` ON (`glpi_groups_users`.`users_id` = `glpi_users`.`id`)
-          LEFT JOIN `glpi_groups` ON (`glpi_groups_users`.`groups_id` = `glpi_groups`.`id`)
-          LEFT JOIN `glpi_entities` ON (`glpi_groups`.`entities_id` = `glpi_entities`.`id`)
-          WHERE `glpi_users`.`is_deleted` = '0' ".
-                getEntitiesRestrictRequest(" AND ", "glpi_groups") ."
+          FROM `glpi_groups`
+          LEFT JOIN `glpi_groups_users` ON (`glpi_groups_users`.`groups_id` = `glpi_groups`.`id`)
+          LEFT JOIN `glpi_users` ON (`glpi_groups_users`.`users_id` = `glpi_users`.`id`
+                                     AND `glpi_users`.`is_deleted` = '0' )
+          LEFT JOIN `glpi_entities` ON (`glpi_groups`.`entities_id` = `glpi_entities`.`id`)".
+          getEntitiesRestrictRequest(" WHERE ", "glpi_groups") ."
           ORDER BY `completename`, groupname, login";
 
 $report->setGroupBy(array('completename',
