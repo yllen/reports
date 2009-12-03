@@ -32,19 +32,39 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array('profile');
-
-define('GLPI_ROOT', '../../..'); 
-include_once (GLPI_ROOT . "/inc/includes.php");
-
-checkRight("profile","w");
-
-$prof=new ReportProfile();
-
-//Save profile
-if (isset ($_POST['update_user_profile'])) {
-   $prof->update($_POST);	
+if (!defined('GLPI_ROOT')) {
+   define('GLPI_ROOT', '../../..'); 
 }
-glpi_header($_SERVER['HTTP_REFERER']);
+
+include_once (GLPI_ROOT . "/inc/includes.php");
+usePlugin('reports');
+
+checkSeveralRightsOr(array("config" => "w", "profile" => "w"));
+commonHeader($LANG['common'][12],$_SERVER['PHP_SELF'],"config","plugins");
+
+echo "<div class='center'>";
+echo "<table class='tab_cadre'>";
+echo "<tr><th>".$LANG['plugin_reports']['config'][1]."</th></tr>";
+
+if (haveRight("profile","w")) {
+   echo "<tr class='tab_bg_1 center'><td>";
+   echo "<a href='report.form.php'>".$LANG['plugin_reports']['config'][8]."</a>";
+   echo "</td/></tr>\n";
+}
+if (haveRight("config","w")) {
+   $raps = searchReport("../report");
+   foreach ($raps as $key => $val) {
+      if (is_file(getReportConfigPage('..',$key))) {
+         echo "<tr class='tab_bg_1 center'><td>";
+         echo "<a href='../report/$key/".$val.".config".".php'>".
+                $LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports'][$key][1];
+         echo "</a></td/></tr>";
+      }
+   }
+}
+
+echo "</table></div>";
+
+commonFooter();
 
 ?>

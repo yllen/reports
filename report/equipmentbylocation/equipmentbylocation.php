@@ -46,24 +46,24 @@ $NEEDED_ITEMS = array('search');
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
-$report = new AutoReport();
+$report = new PluginReportsAutoReport();
 
 $report->setColumnsNames(array('entity'            => $LANG['entity'][0],
                                'location'          => $LANG['common'][15],
                                'computernumber'    => $LANG['Menu'][0],
-                               'networkingnumber'  => $LANG['Menu'][1],
+                               'networknumber'  => $LANG['Menu'][1],
                                'monitornumber'     => $LANG['Menu'][3],
                                'printernumber'     => $LANG['Menu'][2],
-                               'peripheralsnumber' => $LANG['Menu'][16],
-                               'phonesnumber'      => $LANG['Menu'][34]));
+                               'peripheralnumber' => $LANG['Menu'][16],
+                               'phonenumber'      => $LANG['Menu'][34]));
 
-$query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networkingnumber`,
-                 i.`monitornumber`, i.`printernumber`, j.`peripheralsnumber`, l.`phonesnumber`
-          FROM (SELECT g.`entity`, g.`location`, g.`computernumber`, g.`networkingnumber`,
+$query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`,
+                 i.`monitornumber`, i.`printernumber`, j.`peripheralnumber`, l.`phonenumber`
+          FROM (SELECT g.`entity`, g.`location`, g.`computernumber`, g.`networknumber`,
                        g.`monitornumber`, h.`printernumber`, g.`id`
-                FROM (SELECT e.`entity`, e.`location`, e.`computernumber`, e.`networkingnumber`,
+                FROM (SELECT e.`entity`, e.`location`, e.`computernumber`, e.`networknumber`,
                              f.`monitornumber`, e.`id`
-                      FROM (SELECT c.`entity`, c.`location`, c.`computernumber`, d.`networkingnumber`,
+                      FROM (SELECT c.`entity`, c.`location`, c.`computernumber`, d.`networknumber`,
                                    c.`id`
                             FROM (SELECT a.`entity`, a.`location`, b.`computernumber`, a.`id`
                                   FROM (SELECT `glpi_entities`.`completename` AS entity, 
@@ -79,7 +79,7 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networkingnumb
                                                    GROUP BY `glpi_computers`.`locations_id`) b 
                                        ON (a.id = b.id)
                                  ) c
-                            LEFT OUTER JOIN (SELECT count(*) AS networkingnumber, 
+                            LEFT OUTER JOIN (SELECT count(*) AS networknumber, 
                                                     `glpi_networkequipments`.`locations_id` AS id 
                                              FROM `glpi_networkequipments`
                                              GROUP BY `glpi_networkequipments`.`locations_id`) d 
@@ -97,12 +97,12 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networkingnumb
                                  GROUP BY `glpi_printers`.`locations_id`) h 
                      ON (g.id = h.id)
                ) i
-          LEFT OUTER JOIN (SELECT count(*) AS peripheralsnumber, 
+          LEFT OUTER JOIN (SELECT count(*) AS peripheralnumber, 
                                   `glpi_peripherals`.`locations_id` AS id 
                               FROM `glpi_peripherals` 
                               GROUP BY `glpi_peripherals`.`locations_id`) j 
                ON (i.id = j.id)
-          LEFT OUTER JOIN (SELECT count(*) AS phonesnumber, 
+          LEFT OUTER JOIN (SELECT count(*) AS phonenumber, 
                                   `glpi_phones`.`locations_id` AS id 
                            FROM `glpi_phones` 
                            GROUP BY `glpi_phones`.`locations_id`) l 

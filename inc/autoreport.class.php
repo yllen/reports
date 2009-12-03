@@ -41,7 +41,7 @@
 *	- query executing using with criterias restriction
 * 	- result display & export (HTML, PDF, CSV, SLK)
 **/
-class AutoReport {
+class PluginReportsAutoReport {
 
    private $criterias = array ();
    private $columns = array ();
@@ -366,7 +366,7 @@ class AutoReport {
             //Add parameters to uri to be saved as bookmarks
             $_SERVER["REQUEST_URI"] = $this->buildBookmarkUrl();
             Bookmark::showSaveButton(BOOKMARK_SEARCH,
-                         (isStat($this->name)?PLUGIN_REPORTS_STAT_TYPE:PLUGIN_REPORTS_REPORT_TYPE));
+                                     (isStat($this->name)?PLUGIN_REPORTS_STAT:PLUGIN_REPORTS_REPORT));
          }
          echo "</th></tr>\n";
 

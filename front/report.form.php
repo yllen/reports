@@ -43,7 +43,8 @@ usePlugin('reports',true);
 
 commonHeader($LANG['plugin_reports']['config'][1], $_SERVER["PHP_SELF"],"config","plugins");
 
-$tab = plugin_reports_updatePluginRights("../report");
+$prof = new PluginReportsProfile();
+$tab = $prof->updatePluginRights("../report");
 
 $report='';
 if (isset($_POST["report"])) {
@@ -60,7 +61,6 @@ if (isset($_POST["delete"])) {
 } else  if (isset($_POST["update"])) {
    checkRight("profile","w");
 
-   $prof = new ReportProfile();
    foreach ($_POST as $key => $value) {
       if (is_numeric($key)) {
          $prof->update(array("id"=>$key, 
@@ -70,7 +70,7 @@ if (isset($_POST["delete"])) {
 }
 
 echo "<div class='center'><form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
-echo "<table class='tab_cadre'><tr><th colspan='2'><a href='plugin_reports.config.form.php'>";
+echo "<table class='tab_cadre'><tr><th colspan='2'><a href='config.form.php'>";
 echo $LANG['plugin_reports']['config'][1]."</a><br>&nbsp;<br>";
 echo $LANG['plugin_reports']['config'][8] . "</th></tr>\n";
 

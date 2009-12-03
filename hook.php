@@ -58,16 +58,16 @@ function plugin_headings_actions_reports($type) {
 function plugin_headings_reports($type,$id,$withtemplate=0) {
    global $CFG_GLPI;
 
+   $prof = new PluginReportsProfile();
    switch ($type) {
       case PROFILE_TYPE :
          //Check if new reports added
-         plugin_reports_updatePluginRights(GLPI_ROOT."/plugins/reports/report");
+         $prof->updatePluginRights(GLPI_ROOT."/plugins/reports/report");
 
-         $prof=new ReportProfile();
          if (!$prof->getFromDB($id)) {
-            plugin_reports_createaccess($id);
+            $prof->createaccess($id);
          }
-         $prof->showForm($CFG_GLPI["root_doc"]."/plugins/reports/front/plugin_reports.profile.php",$id);
+         $prof->showForm($CFG_GLPI["root_doc"]."/plugins/reports/front/profile.form.php",$id);
          break;
    }
 }
@@ -87,4 +87,38 @@ function plugin_pre_item_delete_reports($input) {
    }
    return $input;
 }
+
+
+function plugin_reports_install() {
+   global $DB;
+
+   if (TableExists('glpi_plugin_reports_profiles')) { //1.1 ou 1.2
+      if (FieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
+         $query = "ALTER TABLE `glpi_plugin_reports_profiles` 
+                   CHANGE `ID` `id` int(11) NOT NULL auto_increment";
+      } 
+   } else {
+      $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_profiles` (
+                  `id` int(11) NOT NULL auto_increment,
+                  `profile` varchar(255) NOT NULL,
+                PRIMARY KEY (`id`)) 
+                ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+   }
+   $DB->query($query) or die($DB->error());
+
+   return true;
+}
+
+
+function plugin_reports_uninstall() {
+   $DB = new DB;
+
+   $tables = array("glpi_plugin_reports_profiles");
+   foreach ($tables as $table) {
+      $query = "DROP TABLE IF EXISTS `$table`";
+   }
+   $DB->query($query) or die($DB->error());
+}
+
+
 ?>

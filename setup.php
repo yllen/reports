@@ -46,26 +46,31 @@ function plugin_init_reports() {
    $plugin = new plugin;
 
    //Define only for bookmarks
-   registerPluginType('reports', 'PLUGIN_REPORTS_REPORT_TYPE', 3050, 
-                      array('classname'  => '',
+   registerPluginType('reports', 'PLUGIN_REPORTS_REPORT', 'PluginReportsReport', 
+                      array('classname'  => 'PluginReportsReport',
                             'tablename'  => '',
                             'formpage'   => '',
                             'searchpage' => '',
                             'typename'   => $LANG['plugin_reports']['title'][1]));
 
-   registerPluginType('reports', 'PLUGIN_REPORTS_STAT_TYPE', 3051, 
-                      array('classname'  => '',
+   registerPluginType('reports', 'PLUGIN_REPORTS_STAT', 'PluginReportsStat', 
+                      array('classname'  => 'PluginReportsStat',
                             'tablename'  => '',
                             'formpage'   => '',
                             'searchpage' => '',
                             'typename'   => $LANG['Menu'][13]));
 
-   $PLUGIN_HOOKS['change_profile']['reports'] = 'plugin_reports_changeprofile';
+   registerPluginType('reports', 'PLUGIN_REPORTS_PROFILE', 'PluginReportsProfile',
+                      array ('classname' => 'PluginReportsProfile',
+                             'tablename' => 'glpi_plugin_reports_profiles'));
+
+
+   $PLUGIN_HOOKS['change_profile']['reports'] = array('PluginReportsProfile','changeprofile');
 
    if (haveRight("config", "w")) {
       $PLUGIN_HOOKS['headings']['reports']        = 'plugin_get_headings_reports';
       $PLUGIN_HOOKS['headings_action']['reports'] = 'plugin_headings_actions_reports';
-      $PLUGIN_HOOKS['config_page']['reports']     = 'front/plugin_reports.config.form.php';
+      $PLUGIN_HOOKS['config_page']['reports']     = 'front/config.form.php';
    }
    $PLUGIN_HOOKS['menu_entry']['reports']      = false;
    $PLUGIN_HOOKS['pre_item_delete']['reports'] = 'plugin_pre_item_delete_reports';
@@ -125,6 +130,49 @@ function plugin_version_reports() {
 
 function plugin_reports_check_config() {
    return true;
+}
+
+
+function plugin_reports_haveRight($module,$right) {
+
+   $matches = array(""  => array("","r","w"), // ne doit pas arriver normalement
+                    "r" => array("r","w"),
+                    "w" => array("w"),
+                    "1" => array("1"),
+                    "0" => array("0","1")); // ne doit pas arriver non plus
+
+   if (isset($_SESSION["glpi_plugin_reports_profile"][$module])
+       && in_array($_SESSION["glpi_plugin_reports_profile"][$module],$matches[$right])) {
+      return true;
+   }
+   return false;
+}
+
+
+function plugin_reports_checkRight($module, $right) {
+   global $CFG_GLPI;
+
+   if (!plugin_reports_haveRight($module, $right)) {
+      // Gestion timeout session
+      if (!isset ($_SESSION["glpiID"])) {
+         glpi_header($CFG_GLPI["root_doc"] . "/index.php");
+         exit ();
+      }
+      displayRightError();
+   }
+}
+
+
+
+// Optional : check prerequisites before install : may print errors or add to message after redirect
+function plugin_reports_check_prerequisites() {
+   global $LANG;
+
+   if (GLPI_VERSION < 0.80) {
+      echo "GLPI version not compatible need 0.80";
+   } else {
+      return true;
+   }
 }
 
 ?>

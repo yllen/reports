@@ -110,38 +110,6 @@ function simpleReport($name, $sql, $cols = array (), $subname = "", $group = arr
 }
 
 
-/**
- * Create access rights for an user
- * @param id the user id
- */
-function plugin_reports_createaccess($id) {
-   global $DB;
-
-   $Profile = new Profile();
-   $Profile->GetfromDB($id);
-   $name = $Profile->fields["profil"];
-
-   $query = "INSERT INTO 
-             `glpi_plugin_reports_profiles` (`id`, `profile`) 
-             VALUES ('$id', '$name');";
-   $DB->query($query);
-}
-
-
-/**
- * Look for all the plugins, and update rights if necessary
- */
-function plugin_reports_updatePluginRights($path) {
-
-   $prof = new ReportProfile();
-   $prof->getEmpty();
-   $tab = searchReport($path, 1);
-   $prof->updateRights(-1, $tab);
-
-   return $tab;
-}
-
-
 function getPriorityLabelsArray() {
 
    return array("1" => getPriorityName(1),

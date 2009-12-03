@@ -33,12 +33,10 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-class ReportProfile extends CommonDBTM {
+class PluginReportsProfile extends CommonDBTM {
 
-   function __construct() {
-      $this->table="glpi_plugin_reports_profiles";
-      $this->type=-1;
-   }
+   public $table = "glpi_plugin_reports_profiles";
+   public $type  = PLUGIN_REPORTS_PROFILE;
 
 
    //if profile deleted
@@ -140,6 +138,50 @@ class ReportProfile extends CommonDBTM {
                   WHERE `id` NOT IN (SELECT `id`
                                      FROM `glpi_profiles`)");
    }
+
+
+   static function changeprofile() {
+
+      $prof = new self();
+      if ($prof->getFromDB($_SESSION['glpiactiveprofile']['id'])) {
+         $_SESSION["glpi_plugin_reports_profile"]=$prof->fields;
+      } else {
+         unset($_SESSION["glpi_plugin_reports_profile"]);
+      }
+   }
+
+
+   /**
+    * Create access rights for an user
+    * @param id the user id
+    */
+   function createaccess($id) {
+      global $DB;
+
+      $Profile = new Profile();
+      $Profile->GetfromDB($id);
+      $name = $Profile->fields["profil"];
+
+      $query = "INSERT INTO 
+                `glpi_plugin_reports_profiles` (`id`, `profile`) 
+                VALUES ('$id', '$name');";
+      $DB->query($query);
+   }
+
+
+   /**
+    * Look for all the plugins, and update rights if necessary
+    */
+   function updatePluginRights($path) {
+
+      $this->getEmpty();
+      $tab = searchReport($path, 1);
+      $this->updateRights(-1, $tab);
+   
+      return $tab;
+   }
+
+
 }
 
 ?>
