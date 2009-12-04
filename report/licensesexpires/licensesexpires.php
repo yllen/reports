@@ -44,7 +44,7 @@ $DBCONNECTION_REQUIRED = 0;
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-$report = new AutoReport();
+$report = new PluginReportsAutoReport();
 
 $report->setColumnsNames(array('expire'       => $LANG['financial'][88],
                                'name'         => $LANG['plugin_reports']['licensesexpires'][2],
@@ -54,28 +54,28 @@ $report->setColumnsNames(array('expire'       => $LANG['financial'][88],
                                'comments'     => $LANG['common'][25],
                                'ordinateur'   => $LANG['help'][25]));
 
-$query = "SELECT `glpi_softwareslicenses`.`expire`,
-                 `glpi_softwareslicenses`.`name`,
+$query = "SELECT `glpi_softwarelicenses`.`expire`,
+                 `glpi_softwarelicenses`.`name`,
                  CONCAT(`glpi_softwares`.`name`,' - ',buyversion.`name`) AS software,
-                 `glpi_softwareslicenses`.`serial`,
+                 `glpi_softwarelicenses`.`serial`,
                  `glpi_entities`.`completename`,
-                 `glpi_softwareslicenses`.`comment`,
+                 `glpi_softwarelicenses`.`comment`,
                  `glpi_computers`.`name` AS ordinateur
-          FROM `glpi_softwareslicenses`
+          FROM `glpi_softwarelicenses`
           LEFT JOIN `glpi_softwares` 
-               ON (`glpi_softwareslicenses`.`softwares_id` = `glpi_softwares`.`id`)
-          LEFT JOIN `glpi_softwareslicensestypes` 
-            ON (`glpi_softwareslicensestypes`.`id`=`glpi_softwareslicenses`.`softwareslicensestypes_id`)
-          LEFT JOIN `glpi_softwaresversions` AS buyversion 
-               ON (buyversion.`id` = `glpi_softwareslicenses`.`softwaresversions_id_buy`)
+               ON (`glpi_softwarelicenses`.`softwares_id` = `glpi_softwares`.`id`)
+          LEFT JOIN `glpi_softwarelicensetypes` 
+            ON (`glpi_softwarelicensetypes`.`id`=`glpi_softwarelicenses`.`softwarelicensetypes_id`)
+          LEFT JOIN `glpi_softwareversions` AS buyversion 
+               ON (buyversion.`id` = `glpi_softwarelicenses`.`softwareversions_id_buy`)
           LEFT JOIN `glpi_entities` 
                ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)
           LEFT JOIN `glpi_computers` 
-               ON (`glpi_softwareslicenses`.`computers_id` = `glpi_computers`.`id`) 
+               ON (`glpi_softwarelicenses`.`computers_id` = `glpi_computers`.`id`) 
           WHERE `glpi_softwares`.`is_deleted` = '0' 
                 AND `glpi_softwares`.`is_template` = '0' " .
-                getEntitiesRestrictRequest(' AND ', 'glpi_softwareslicenses') ."
-          ORDER BY `glpi_softwareslicenses`.`expire`, `name`";
+                getEntitiesRestrictRequest(' AND ', 'glpi_softwarelicenses') ."
+          ORDER BY `glpi_softwarelicenses`.`expire`, `name`";
 
 $report->setGroupBy(array('expire',
                           'name'));

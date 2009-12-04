@@ -59,7 +59,7 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      dropdownPriority($this->getName(), $this->getParameterValue(), 1);
+      Ticket::dropdownPriority($this->getName(), $this->getParameterValue(), 1);
       $this->getReport()->endColumn();
    }
 
@@ -71,9 +71,9 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
          $priority = $LANG['common'][66];
       } else {
          if ($this->getParameterValue() < 0) {
-            $priority = $LANG['search'][16] . getPriorityName(abs($this->getParameterValue()));
+            $priority = $LANG['search'][16] . Ticket::getPriorityName(abs($this->getParameterValue()));
          } else {
-            $priority = getPriorityName($this->getParameterValue());
+            $priority = Ticket::getPriorityName($this->getParameterValue());
          }
       }
       return " " . $this->getCriteriaLabel() . " : " . $priority;

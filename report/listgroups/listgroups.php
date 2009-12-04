@@ -43,7 +43,7 @@ $DBCONNECTION_REQUIRED=0; // not really a big SQL request
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
-$report = new AutoReport();
+$report = new PluginReportsAutoReport();
 //$group = new GroupCriteria($report);
 
 $report->setColumnsNames(array('completename' => $LANG["entity"][0],

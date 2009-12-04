@@ -43,11 +43,11 @@ $DBCONNECTION_REQUIRED=0;
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
-$report = new AutoReport();
+$report = new PluginReportsAutoReport();
 
-$license = new SoftwareWithLicenseCriteria($report);
+$license = new PluginReportsSoftwareWithLicenseCriteria($report);
 
-$license->setSqlField("`glpi_softwareslicenses`.`softwares_id`");
+$license->setSqlField("`glpi_softwarelicenses`.`softwares_id`");
 
 $report->displayCriteriasForm($_SERVER['PHP_SELF']);
 
@@ -67,26 +67,26 @@ if ($report->criteriasValidated()
                                    "comment" => $LANG['common'][25],
                                    "name"    => $LANG['help'][25]));
 
-   $query = "SELECT `glpi_softwareslicenses`.`name` AS license, 
-                    `glpi_softwareslicenses`.`serial`, 
-                    `glpi_softwareslicenses`.`number` AS nombre,
-                    `glpi_softwareslicensestypes`.`name` AS type,
+   $query = "SELECT `glpi_softwarelicenses`.`name` AS license, 
+                    `glpi_softwarelicenses`.`serial`, 
+                    `glpi_softwarelicenses`.`number` AS nombre,
+                    `glpi_softwarelicensetypes`.`name` AS type,
                     buyversion.`name` AS buy,
                     useversion.`name` AS used,
-                    `glpi_softwareslicenses`.`expire`, 
-                    `glpi_softwareslicenses`.`comment`,
+                    `glpi_softwarelicenses`.`expire`, 
+                    `glpi_softwarelicenses`.`comment`,
                     `glpi_computers`.`name`
-             FROM `glpi_softwareslicenses`
+             FROM `glpi_softwarelicenses`
              LEFT JOIN `glpi_softwares` 
-                  ON (`glpi_softwareslicenses`.`softwares_id` = `glpi_softwares`.`id`)
+                  ON (`glpi_softwarelicenses`.`softwares_id` = `glpi_softwares`.`id`)
              LEFT JOIN `glpi_computers`
-                  ON (`glpi_computers`.`id` = `glpi_softwareslicenses`.`computers_id`)
-             LEFT JOIN `glpi_softwaresversions` AS buyversion 
-                  ON (buyversion.`id` = `glpi_softwareslicenses`.`softwaresversions_id_buy`)
-             LEFT JOIN `glpi_softwaresversions` AS useversion 
-                  ON (useversion.`id` = `glpi_softwareslicenses`.`softwaresversions_id_use`)
-             LEFT JOIN `glpi_softwareslicensestypes` 
-                  ON (`glpi_softwareslicensestypes`.`id`=`glpi_softwareslicenses`.`softwareslicensestypes_id`)
+                  ON (`glpi_computers`.`id` = `glpi_softwarelicenses`.`computers_id`)
+             LEFT JOIN `glpi_softwareversions` AS buyversion 
+                  ON (buyversion.`id` = `glpi_softwarelicenses`.`softwareversions_id_buy`)
+             LEFT JOIN `glpi_softwareversions` AS useversion 
+                  ON (useversion.`id` = `glpi_softwarelicenses`.`softwareversions_id_use`)
+             LEFT JOIN `glpi_softwarelicensetypes` 
+                  ON (`glpi_softwarelicensetypes`.`id`=`glpi_softwarelicenses`.`softwarelicensetypes_id`)
              LEFT JOIN `glpi_entities` 
                   ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)".
              $report->addSqlCriteriasRestriction("WHERE")."

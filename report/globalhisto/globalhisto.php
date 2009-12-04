@@ -46,14 +46,14 @@ $NEEDED_ITEMS = array('search');
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
-$report = new AutoReport();
+$report = new PluginReportsAutoReport();
 
 //Report's search criterias
 //Possible current values are :
 //	- date-interval
 //	- time-interval
 //	- group
-new DateIntervalCriteria($report,"date_mod");
+new PluginReportsDateIntervalCriteria($report,"date_mod");
 
 //Display criterias form is needed
 $report->displayCriteriasForm($_SERVER['PHP_SELF']);

@@ -69,7 +69,7 @@ function includeLocales($report_name) {
 
    $prefix = GLPI_ROOT . "/plugins/reports/report/". $report_name ."/" . $report_name;
 
-   if (isset ($_SESSION["glpilanguage"]) 
+   if (isset ($_SESSION["glpilanguage"])
        && file_exists($prefix . "." . $CFG_GLPI["languages"][$_SESSION["glpilanguage"]][1])) {
 
       include_once  ($prefix . "." . $CFG_GLPI["languages"][$_SESSION["glpilanguage"]][1]);
@@ -88,7 +88,7 @@ function includeLocales($report_name) {
  * @param name name of the report
  * @param sql the sql query to execute
  * @param cols the columns and their name to display
- * @param subname second level of name to display 
+ * @param subname second level of name to display
  * @param group an array which contains all the fields to use in GROUP BY sql instruction
  */
 function simpleReport($name, $sql, $cols = array (), $subname = "", $group = array ()) {
@@ -112,11 +112,11 @@ function simpleReport($name, $sql, $cols = array (), $subname = "", $group = arr
 
 function getPriorityLabelsArray() {
 
-   return array("1" => getPriorityName(1),
-                "2" => getPriorityName(2),
-                "3" => getPriorityName(3),
-                "4" => getPriorityName(4),
-                "5" => getPriorityName(5));
+   return array("1" => Ticket::getPriorityName(1),
+                "2" => Ticket::getPriorityName(2),
+                "3" => Ticket::getPriorityName(3),
+                "4" => Ticket::getPriorityName(4),
+                "5" => Ticket::getPriorityName(5));
 }
 
 
@@ -127,27 +127,27 @@ function displayOutputFormat() {
    global $LANG,$CFG_GLPI;
 
    echo "<select name='display_type'>";
-   echo "<option value='" . PDF_OUTPUT_LANDSCAPE . "'>" . $LANG['buttons'][27] . " " . 
+   echo "<option value='" . PDF_OUTPUT_LANDSCAPE . "'>" . $LANG['buttons'][27] . " " .
           $LANG['common'][68] . "</option>";
-   echo "<option value='" . PDF_OUTPUT_PORTRAIT . "'>" . $LANG['buttons'][27] . " " . 
+   echo "<option value='" . PDF_OUTPUT_PORTRAIT . "'>" . $LANG['buttons'][27] . " " .
           $LANG['common'][69] . "</option>";
    echo "<option value='" . SYLK_OUTPUT . "'>" . $LANG['buttons'][28] . "</option>";
    echo "<option value='" . CSV_OUTPUT . "'>" . $LANG['buttons'][44] . "</option>";
-   echo "<option value='-" . PDF_OUTPUT_LANDSCAPE . "'>" . $LANG['buttons'][29] . " " . 
+   echo "<option value='-" . PDF_OUTPUT_LANDSCAPE . "'>" . $LANG['buttons'][29] . " " .
           $LANG['common'][68] . "</option>";
-   echo "<option value='-" . PDF_OUTPUT_PORTRAIT . "'>" . $LANG['buttons'][29] . " " . 
+   echo "<option value='-" . PDF_OUTPUT_PORTRAIT . "'>" . $LANG['buttons'][29] . " " .
           $LANG['common'][69] . "</option>";
    echo "<option value='-" . SYLK_OUTPUT . "'>" . $LANG['buttons'][30] . "</option>";
    echo "<option value='-" . CSV_OUTPUT . "'>" . $LANG['buttons'][45] . "</option>";
    echo "</select>";
-   echo "&nbsp;<input type='image' name='export' src='" . $CFG_GLPI["root_doc"] . 
-         "/pics/greenbutton.png' title='" . $LANG['buttons'][31] . "' value='" . 
+   echo "&nbsp;<input type='image' name='export' src='" . $CFG_GLPI["root_doc"] .
+         "/pics/greenbutton.png' title='" . $LANG['buttons'][31] . "' value='" .
          $LANG['buttons'][31] . "'>";
 }
 
 
 function getReportConfigPage($path,$report_name) {
-   return $path."/report/$report_name/".$report_name.".config".".php";	
+   return $path."/report/$report_name/".$report_name.".config".".php";
 }
 
 ?>
