@@ -36,7 +36,7 @@
 class PluginReportsProfile extends CommonDBTM {
 
    public $table = "glpi_plugin_reports_profiles";
-   public $type  = PLUGIN_REPORTS_PROFILE;
+   public $type  = 'PluginReportsProfile';
 
 
    //if profile deleted
@@ -53,16 +53,14 @@ class PluginReportsProfile extends CommonDBTM {
    function showForm($target,$id){
       global $LANG,$DB;
 
-      if (!haveRight("profile","r")) {
-         return false;
-      }
-      $canedit=haveRight("profile","w");
-
-      if ($id){
-         $this->getFromDB($id);
+      if ($id > 0){
+         $this->check($id,'r');
       } else {
+         $this->check(-1,'w');
          $this->getEmpty();
       }
+
+      $canedit=$this->can($id,'w');
 
       echo "<form action='$target' method='post'>";
       echo "<table class='tab_cadre_fixe'>"; 

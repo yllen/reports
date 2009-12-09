@@ -46,23 +46,23 @@ function plugin_init_reports() {
    $plugin = new plugin;
 
    //Define only for bookmarks
-   registerPluginType('reports', 'PLUGIN_REPORTS_REPORT', 'PluginReportsReport', 
-                      array('classname'  => 'PluginReportsReport',
-                            'tablename'  => '',
-                            'formpage'   => '',
-                            'searchpage' => '',
-                            'typename'   => $LANG['plugin_reports']['title'][1]));
+   Plugin::registerClass('PluginReportsReport', 
+                         array('classname'  => 'PluginReportsReport',
+                               'tablename'  => '',
+                               'formpage'   => '',
+                               'searchpage' => '',
+                               'typename'   => $LANG['plugin_reports']['title'][1]));
 
-   registerPluginType('reports', 'PLUGIN_REPORTS_STAT', 'PluginReportsStat', 
-                      array('classname'  => 'PluginReportsStat',
-                            'tablename'  => '',
-                            'formpage'   => '',
-                            'searchpage' => '',
-                            'typename'   => $LANG['Menu'][13]));
+   Plugin::registerClass('PluginReportsStat', 
+                         array('classname'  => 'PluginReportsStat',
+                               'tablename'  => '',
+                               'formpage'   => '',
+                               'searchpage' => '',
+                               'typename'   => $LANG['Menu'][13]));
 
-   registerPluginType('reports', 'PLUGIN_REPORTS_PROFILE', 'PluginReportsProfile',
-                      array ('classname' => 'PluginReportsProfile',
-                             'tablename' => 'glpi_plugin_reports_profiles'));
+   Plugin::registerClass('PluginReportsProfile',
+                         array ('classname' => 'PluginReportsProfile',
+                                'tablename' => 'glpi_plugin_reports_profiles'));
 
 
    $PLUGIN_HOOKS['change_profile']['reports'] = array('PluginReportsProfile','changeprofile');

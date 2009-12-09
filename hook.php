@@ -3,7 +3,7 @@
  ----------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
  Copyright (C) 2003-2008 by the INDEPNET Development Team.
- 
+
  http://indepnet.net/   http://glpi-project.org/
  ----------------------------------------------------------------------
 
@@ -31,12 +31,11 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-function plugin_get_headings_reports($type,$id,$withtemplate) {
+function plugin_get_headings_reports($item,$withtemplate) {
    global $LANG;
 
-   if ($type==PROFILE_TYPE) {
-      $prof = new Profile();
-      if ($id>0 && $prof->getFromDB($id) && $prof->fields['interface']!='helpdesk') {
+   if (get_class($item)=='Profile') {
+      if ($prof->fields['interface']!='helpdesk') {
          return array(1 => $LANG['plugin_reports']['title'][1]);
       }
    }
@@ -44,10 +43,10 @@ function plugin_get_headings_reports($type,$id,$withtemplate) {
 }
 
 
-function plugin_headings_actions_reports($type) {
+function plugin_headings_actions_reports($item) {
 
-   switch ($type) {
-      case PROFILE_TYPE :
+   switch (get_class($item)) {
+      case 'Profile' :
          return array(1 => "plugin_headings_reports");
          break;
    }
@@ -55,15 +54,16 @@ function plugin_headings_actions_reports($type) {
 }
 
 
-function plugin_headings_reports($type,$id,$withtemplate=0) {
+function plugin_headings_reports($item, $withtemplate=0) {
    global $CFG_GLPI;
 
    $prof = new PluginReportsProfile();
-   switch ($type) {
-      case PROFILE_TYPE :
+   switch (get_class($item)) {
+      case 'Profile' :
          //Check if new reports added
          $prof->updatePluginRights(GLPI_ROOT."/plugins/reports/report");
 
+         $id = $item->getField('id');
          if (!$prof->getFromDB($id)) {
             $prof->createaccess($id);
          }
@@ -78,9 +78,9 @@ function plugin_pre_item_delete_reports($input) {
 
    if (isset($input["_item_type_"])) {
       switch ($input["_item_type_"]) {
-         case PROFILE_TYPE :
-            // Manipulate data if needed 
-            $ReportProfile = new ReportProfile;
+         case 'Profile' :
+            // Manipulate data if needed
+            $ReportProfile = new PluginReportsProfile;
             $ReportProfile->cleanProfiles($input["id"]);
             break;
       }
@@ -94,14 +94,14 @@ function plugin_reports_install() {
 
    if (TableExists('glpi_plugin_reports_profiles')) { //1.1 ou 1.2
       if (FieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
-         $query = "ALTER TABLE `glpi_plugin_reports_profiles` 
+         $query = "ALTER TABLE `glpi_plugin_reports_profiles`
                    CHANGE `ID` `id` int(11) NOT NULL auto_increment";
-      } 
+      }
    } else {
       $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_profiles` (
                   `id` int(11) NOT NULL auto_increment,
                   `profile` varchar(255) NOT NULL,
-                PRIMARY KEY (`id`)) 
+                PRIMARY KEY (`id`))
                 ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
    }
    $DB->query($query) or die($DB->error());
