@@ -32,8 +32,6 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array('profile');
-
 define('GLPI_ROOT', '../../..'); 
 include_once (GLPI_ROOT . "/inc/includes.php");
 
@@ -101,7 +99,7 @@ if ($report) {
    $result=$DB->query($query);
    while ($data=$DB->fetch_assoc($result)) {
       echo "<tr class='tab_bg_1'><td>" . $data['profile'] . "&nbsp: </td><td>";
-      dropdownNoneReadWrite($data['id'],$data[$report],1,1,0);
+      Profil::dropdownNoneReadWrite($data['id'],$data[$report],1,1,0);
       echo "</td></tr>\n";
    }
 

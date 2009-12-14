@@ -41,7 +41,6 @@
 $USEDBREPLICATE = 1;
 $DBCONNECTION_REQUIRED = 0; // Not really a big SQL request
 
-$NEEDED_ITEMS = array('group', 'search', 'user');
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
@@ -89,7 +88,7 @@ function displaySearchForm() {
    echo "<tr class='tab_bg_1 center'>";
    echo "<td>";
    echo $LANG["common"][35] . " :";
-   dropdownValue("glpi_groups", "group", $_GET["group"], 1, $_SESSION["glpiactive_entity"]);
+   Dropdown::dropdownValue("glpi_groups", "group", $_GET["group"], 1, $_SESSION["glpiactive_entity"]);
    echo "</td>";
 
    // Display Reset search
@@ -207,15 +206,16 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
  * @result the resultset of all the devices found
  */
 function displayUserDevices($type, $result) {
-   global $DB, $CFG_GLPI, $LANG, $INFOFORM_PAGES;
+   global $DB, $CFG_GLPI, $LANG;
 
    $item = new $type();
    $cansee = haveTypeRight($type, "r");
    while ($data = $DB->fetch_array($result)) {
       $link = $data["name"];
-      $link = "<a href='" . $CFG_GLPI["root_doc"] . "/" . $INFOFORM_PAGES[$type] . "?id=" . 
-             $data["id"] . "'>" . $link . (($CFG_GLPI["is_ids_visible"] || empty ($link)) ? " (" . 
-             $data["id"] . ")" : "") . "</a>";
+      $url = getItemTypeFormURL("$type");
+      $link = "<a href='" . $url . "?id=" . $data["id"] . "'>" . $link . 
+               (($CFG_GLPI["is_ids_visible"] || empty ($link)) ? " (" . $data["id"] . ")" : "") . 
+               "</a>";
       $linktype = "";
       if (isset ($groups[$data["groups_id"]])) {
          $linktype = $LANG["common"][35] . " " . $groups[$data["groups_id"]];

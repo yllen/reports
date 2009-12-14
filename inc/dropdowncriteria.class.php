@@ -206,8 +206,8 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
     */
    public function displayDropdownCriteria() {
 
-      dropdownValue($this->getTable(), $this->getName(), $this->getParameterValue(), 
-                    $this->getDisplayComments(), $this->getEntityRestrict());
+      Dropdown::dropdownValue($this->getTable(), $this->getName(), $this->getParameterValue(), 
+                              $this->getDisplayComments(), $this->getEntityRestrict());
    }
 
 

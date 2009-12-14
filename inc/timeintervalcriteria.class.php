@@ -67,7 +67,7 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      dropdownHours("starttime", $this->getParameter('starttime'));
+      Dropdown::showHours("starttime", $this->getParameter('starttime'));
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -75,7 +75,7 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      dropdownHours("endtime", $this->getParameter('endtime'));
+      Dropdown::showHours("endtime", $this->getParameter('endtime'));
       $this->getReport()->endColumn();
    }
 

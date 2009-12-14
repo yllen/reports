@@ -77,7 +77,7 @@ class PluginReportsProfile extends CommonDBTM {
             echo "<td>".$LANG['Menu'][13]."</td>";	
          }
          echo "<td>".$LANG['plugin_reports'][$key][1]." :</td><td>";
-         dropdownNoneReadWrite($key,(isset($this->fields[$key])?$this->fields[$key]:''),1,1,0);
+         Profile::dropdownNoneReadWrite($key,(isset($this->fields[$key])?$this->fields[$key]:''),1,1,0);
          echo "</td></tr>";	
       }
 

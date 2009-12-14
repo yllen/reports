@@ -45,12 +45,12 @@ class PluginReportsTicketStatusCriteria extends PluginReportsDropdownCriteria {
 
 
    function getSubName() {
-      return " " . $this->getCriteriaLabel() . " : " . getStatusName($this->getParameterValue());
+      return " " . $this->getCriteriaLabel() . " : " . Ticket::getStatus($this->getParameterValue());
    }
 
 
    public function displayDropdownCriteria() {
-      dropdownStatus($this->getName(), $this->getParameterValue());
+      Ticket::dropdownStatus($this->getName(), $this->getParameterValue());
    }
 
 }

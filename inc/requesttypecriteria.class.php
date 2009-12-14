@@ -48,7 +48,7 @@ class PluginReportsRequestTypeCriteria extends PluginReportsDropdownCriteria {
 
    //Dropdown priorities is not a generic dropdown, so the function needs to be overwritten
    public function displayDropdownCriteria() {
-      dropdownRequestType($this->getName(),$this->getParameterValue());
+      Dropdown::dropdownValue('glpi_requesttypes', $this->getName(),$this->getParameterValue());
    }
 
 

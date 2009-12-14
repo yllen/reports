@@ -32,8 +32,6 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$NEEDED_ITEMS=array('profile');
-
 define('GLPI_ROOT', '../../..'); 
 include_once (GLPI_ROOT . "/inc/includes.php");
 
