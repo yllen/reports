@@ -32,156 +32,176 @@
 // ----------------------------------------------------------------------
 
 function cmpStat ($a, $b) {
-	return $a["tot"]-$b["tot"];
+   return $a["tot"] - $b["tot"];
 }
 function doStatBis ($table, $entities, $header) {
-	global $DB, $LANG;
-	
-	// Compute stat
-	$counts=array();
-	foreach ($entities as $entity) {
-		// Count for this entity
-		$sql = "SELECT state,count(*) as cpt FROM " . $table . 
-			" WHERE deleted=0 AND is_template=0 AND FK_entities=" . $entity . " GROUP BY state";
-		$result = $DB->query($sql);
-		$counts[$entity]=array();
-		while ($data = $DB->fetch_array($result)) {
-			$counts[$entity][$data["state"]]=$data["cpt"];
-		}
-	
-		$counts[$entity]["tot"]=0;
-		foreach ($header as $id => $name) {
-			if (isset($counts[$entity][$id]))
-				$counts[$entity]["tot"] += $counts[$entity][$id];
-			else  
-				$counts[$entity][$id]=0;
-		}
-	}
-	
-	// Sort result
-	uasort($counts,"cmpStat");
-	
-	// Display result
-	$total["tot"]=0;
-	foreach ($header as $id => $name) $total[$id]=0;
+   global $DB, $LANG;
 
-	foreach ($counts as $entity => $count) if ($count["tot"]){
-		$Ent = new Entity();
-		$Ent->getFromDB($entity);
+   // Compute stat
+   $counts = array();
+   foreach ($entities as $entity) {
+      // Count for this entity
+      $sql = "SELECT `states_id`, count(*) AS cpt 
+              FROM `$table`
+              WHERE `is_deleted` = '0'
+                    AND `is_template` = '0'
+                    AND `entities_id` = '$entity' 
+              GROUP BY `states_id`";
 
-		echo "<tr class='tab_bg_2'><td align='left'>";
-		if ($entity)
-			echo $Ent->fields["name"] . "</td>";
-		else
-			echo $LANG["entity"][2] . "</td>";
+      $result = $DB->query($sql);
+      $counts[$entity] = array();
+      while ($data = $DB->fetch_array($result)) {
+         $counts[$entity][$data["state"]] = $data["cpt"];
+      }
 
-		echo "<td align='right'>" . $count["tot"] . "</td>";
-		$total["tot"] += $count["tot"];		
-		foreach ($header as $id => $name) {
-			echo "<td align='right'>" . $count[$id] . "</td>";
-			$total[$id] += $count[$id];		
-		}
-		echo "</tr>\n";
-	}
+      $counts[$entity]["tot"] = 0;
+      foreach ($header as $id => $name) {
+         if (isset($counts[$entity][$id])) {
+            $counts[$entity]["tot"] += $counts[$entity][$id];
+         } else {
+            $counts[$entity][$id] = 0;
+         }
+      }
+   }
 
-	// Display total
-	if (count($entities)>1) {
-		echo "<tr class='tab_bg_1'><td align='left'>" . $LANG['plugin_reports']['pcsbyentity'][3] . "</td>";
-		echo "<td align='right'>" . $total["tot"] . "</td>";
-		foreach ($header as $id => $name) {
-			echo "<td align='right'>" . $total[$id] . "</td>";
-		}
-		echo "</tr>\n";		
-	}
+   // Sort result
+   uasort($counts,"cmpStat");
+
+   // Display result
+   $total["tot"] = 0;
+   foreach ($header as $id => $name) {
+      $total[$id] = 0;
+   }
+   foreach ($counts as $entity => $count) {
+      if ($count["tot"]) {
+         $Ent = new Entity();
+         $Ent->getFromDB($entity);
+
+         echo "<tr class='tab_bg_2'><td class='left'>";
+         if ($entity) {
+            echo $Ent->fields["name"] . "</td>";
+         } else {
+            echo $LANG["entity"][2] . "</td>";
+         }
+         echo "<td class='right'>" . $count["tot"] . "</td>";
+         $total["tot"] += $count["tot"];
+         foreach ($header as $id => $name) {
+            echo "<td class='right'>" . $count[$id] . "</td>";
+            $total[$id] += $count[$id];		
+         }
+      }
+      echo "</tr>\n";
+   }
+
+   // Display total
+   if (count($entities) >1) {
+      echo "<tr class='tab_bg_1'><td class='left'>".$LANG['plugin_reports']['pcsbyentity'][3]."</td>";
+      echo "<td class='right'>" . $total["tot"] . "</td>";
+      foreach ($header as $id => $name) {
+         echo "<td class='right'>" . $total[$id] . "</td>";
+      }
+      echo "</tr>\n";
+   }
 }
+
 
 function doStat ($table, $entity, $header, $level=0) {
-	global $DB, $LANG;
-	
-	$Ent = new Entity();
-	$Ent->getFromDB($entity);
+   global $DB, $LANG;
 
-	// Count for this entity
-	$sql = "SELECT state,count(*) as cpt FROM " . $table . 
-		" WHERE deleted=0 AND is_template=0 AND FK_entities=" . $entity . " GROUP BY state";
-	$result = $DB->query($sql);
-	$count=array();
-	while ($data = $DB->fetch_array($result)) {
-		$count[$data["state"]]=$data["cpt"];
-	}
+   $Ent = new Entity();
+   $Ent->getFromDB($entity);
 
-	$count["tot"]=0;
-	foreach ($header as $id => $name) {
-		if (isset($count[$id]))
-			$count["tot"] += $count[$id];
-		else  
-			$count[$id]=0;
-	}
+   // Count for this entity
+   $sql = "SELECT `states_id`, count(*) AS cpt 
+           FROM `$table`
+           WHERE `is_deleted` = '0'
+                 AND `is_template` = '0'
+                 AND `entities_id` = '$entity'
+           GROUP BY `states_id`";
 
-	// Display counters for this entity
-	if ($count["tot"]>0) {
-		echo "<tr class='tab_bg_2'><td align='left'>";
-		for ($i=0 ; $i<$level ; $i++) echo "&nbsp;&nbsp;&nbsp;";
-		if ($entity) {
-			echo $Ent->fields["name"] . "</td>";
-		}
-		else
-			echo $LANG["entity"][2] . "</td>";
+   $result = $DB->query($sql);
+   $count = array();
+   while ($data = $DB->fetch_array($result)) {
+      $count[$data["states_id"]] = $data["cpt"];
+   }
 
-		echo "<td align='right'>" . $count["tot"] . "</td>";
-		foreach ($header as $id => $name) {
-			echo "<td align='right'>" . $count[$id] . "</td>";
-		}
-		echo "</tr>\n";
-	}
+   $count["tot"] = 0;
+   foreach ($header as $id => $name) {
+      if (isset($count[$id])) {
+         $count["tot"] += $count[$id];
+      } else {
+         $count[$id] = 0;
+      }
+   }
 
-	// Call for Childs
-	$save=$count["tot"];
-	doStatChilds($table,$entity, $header, $count, $level+1);
+   // Display counters for this entity
+   if ($count["tot"] >0) {
+      echo "<tr class='tab_bg_2'><td class='left'>";
+      for ($i=0 ; $i<$level ; $i++) {
+         echo "&nbsp;&nbsp;&nbsp;";
+      }
+      if ($entity) {
+         echo $Ent->fields["name"] . "</td>";
+      }else {
+         echo $LANG["entity"][2] . "</td>";
+      }
+      echo "<td class='right'>" . $count["tot"] . "</td>";
+      foreach ($header as $id => $name) {
+         echo "<td class='right'>" . $count[$id] . "</td>";
+      }
+      echo "</tr>\n";
+   }
 
-	// Display total (Current+Childs)
-	if ($save != $count["tot"]) {
-		echo "<tr class='tab_bg_1'><td align='left'>";
-		for ($i=0 ; $i<$level ; $i++) echo "&nbsp;&nbsp;&nbsp;";
-		echo $LANG['plugin_reports']['pcsbyentity'][3] . " ";
+   // Call for Childs
+   $save = $count["tot"];
+   doStatChilds($table,$entity, $header, $count, $level+1);
 
-		if ($entity) 
-			echo $Ent->fields["name"] . "</td>";
-		else
-			echo $LANG["entity"][2] . "</td>";
-		
-		echo "<td align='right'>" . $count["tot"] . "</td>";
-		foreach ($header as $id => $name) {
-			echo "<td align='right'>" . $count[$id] . "</td>";
-		}			
-		echo "</tr>\n";
-	}
-	
-	return $count;
+   // Display total (Current+Childs)
+   if ($save != $count["tot"]) {
+      echo "<tr class='tab_bg_1'><td class='left'>";
+      for ($i=0 ; $i<$level ; $i++) {
+         echo "&nbsp;&nbsp;&nbsp;";
+      }
+      echo $LANG['plugin_reports']['pcsbyentity'][3] . " ";
+
+      if ($entity) {
+         echo $Ent->fields["name"] . "</td>";
+      } else {
+         echo $LANG["entity"][2] . "</td>";
+      }
+      echo "<td class='right'>" . $count["tot"] . "</td>";
+      foreach ($header as $id => $name) {
+         echo "<td class='right'>" . $count[$id] . "</td>";
+      }
+      echo "</tr>\n";
+   }
+   return $count;
 }
 
-function doStatChilds($table, $entity, $header, &$total, $level) {
-	global $DB, $LANG;
-	
-	// Search child entities
-	$sql = "SELECT ID FROM glpi_entities WHERE parentID=" . $entity . " ORDER BY name";
-	$result = $DB->query($sql);
-	
-	while ($data = $DB->fetch_array($result)) {
-		$fille=doStat($table, $data["ID"], $header, $level);
 
-		foreach ($header as $id => $name){
-			$total[$id] += $fille[$id];	
-		} 
-		$total["tot"] += $fille["tot"];	
-	}	
+function doStatChilds($table, $entity, $header, &$total, $level) {
+   global $DB, $LANG;
+
+   // Search child entities
+   $sql = "SELECT `id`
+           FROM `glpi_entities`
+           WHERE `entities_id` = '$entity'
+           ORDER BY `name`";
+   $result = $DB->query($sql);
+
+   while ($data = $DB->fetch_array($result)) {
+      $fille = doStat($table, $data["id"], $header, $level);
+      foreach ($header as $id => $name) {
+         $total[$id] += $fille[$id];	
+      } 
+      $total["tot"] += $fille["tot"];	
+   }
 }
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0;
+$USEDBREPLICATE = 1;
+$DBCONNECTION_REQUIRED = 0;
 
-$NEEDED_ITEMS=array("entity");
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
@@ -189,68 +209,74 @@ includeLocales("pcsbyentity");
 plugin_reports_checkRight("pcsbyentity","r");
 commonHeader($LANG['plugin_reports']['pcsbyentity'][1],$_SERVER['PHP_SELF'],"utils","report");
 
-echo "<div align='center'>";
+echo "<div class='center'>";
 
 // ---------- Form ------------
 echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'>";
 echo "<table class='tab_cadre' cellpadding='5'>\n";
-echo "<tr class='tab_bg_1' align='center'><th colspan='2'>" . $LANG['plugin_reports']['pcsbyentity'][1] . "</th></tr>\n";
-echo "<tr class='tab_bg_1'><td align='right'>" . $LANG['plugin_reports']['pcsbyentity'][2] . "&nbsp;:&nbsp;</td>";
-echo "<td><select name='type'><option value=''>---</option>";
+echo "<tr class='tab_bg_1 center'><th colspan='2'>" . $LANG['plugin_reports']['pcsbyentity'][1] . 
+      "</th></tr>\n";
+echo "<tr class='tab_bg_1'><td class='right'>" . $LANG['plugin_reports']['pcsbyentity'][2] . 
+      "&nbsp;:&nbsp;</td>";
+echo "<td><select name='type'><option value=''>-----</option>";
 
-$choix=array(
-	COMPUTER_TYPE => $LANG["Menu"][0], 
-	MONITOR_TYPE => $LANG["Menu"][3],
-	PRINTER_TYPE => $LANG["Menu"][2], 
-	NETWORKING_TYPE => $LANG["title"][6],
-	PHONE_TYPE => $LANG["help"][35]);
+$choix = array('Computer'         => $LANG["Menu"][0], 
+               'Monitor'          => $LANG["Menu"][3],
+               'Printer'          => $LANG["Menu"][2], 
+               'NetworkEquipment' => $LANG["title"][6],
+               'Phone'            => $LANG["help"][35]);
 
 foreach ($choix as $id => $name) {
-	if (haveTypeRight($id, "r")) {
-		echo "<option value='" . $id;
-		if(isset($_POST["type"]) && $_POST["type"]==$id)
-			echo "' selected='selected'>";
-		else
-			echo "'>";
-		echo $name . "</option>";
-	}		
+   if (haveTypeRight($id, "r")) {
+      echo "<option value='" . $id;
+      if (isset($_POST["type"]) && $_POST["type"]==$id) {
+         echo "' selected='selected'>";
+      } else {
+         echo "'>";
+      }
+      echo $name . "</option>";
+   }
 }
 echo "</select></td></tr>\n";
 
-if (count($_SESSION["glpiactiveentities"])>1) {
-	echo "<tr class='tab_bg_1'><td align='right'>" . $LANG['plugin_reports']['pcsbyentity'][5] . "&nbsp;:&nbsp;</td>";
-	echo "<td><select name='sort'><option value='0'>".$LANG['plugin_reports']['pcsbyentity'][6]."</option>";
-	echo "<option value='1'>".$LANG['plugin_reports']['pcsbyentity'][7]."</option></select></td></tr>\n";	
+if (count($_SESSION["glpiactiveentities"]) > 1) {
+   echo "<tr class='tab_bg_1'><td class='right'>" . $LANG['plugin_reports']['pcsbyentity'][5] . 
+         "&nbsp;:&nbsp;</td>";
+   echo "<td><select name='sort'><option value='0'>".$LANG['plugin_reports']['pcsbyentity'][6].
+         "</option>";
+   echo "<option value='1'>".$LANG['plugin_reports']['pcsbyentity'][7]."</option></select></td></tr>\n";	
 }
 
-echo "<tr class='tab_bg_1' align='center'><td colspan='2'><input type='submit' value='Valider' class='submit' />";
+echo "<tr class='tab_bg_1 center'><td colspan='2'><input type='submit' value='valider' class='submit'/>";
 echo "</td></tr>\n";
 echo "</table>\n</form></div>\n";
 
 // --------------- Result -------------
-if(isset($_POST["type"]) && $_POST["type"]>0)
-{
-	echo "<table class='tab_cadre'>\n";
-	
-	echo "<tr><th>".$LANG["entity"][0]. "</th>" .
-		"<th>&nbsp;" . $LANG['plugin_reports']['pcsbyentity'][3] . "&nbsp;</th>" .
-		"<th>&nbsp;" . $LANG['plugin_reports']['pcsbyentity'][4] . "&nbsp;</th>";
+if (isset($_POST["type"]) && $_POST["type"] != '') {
+   echo "<table class='tab_cadre'>\n";
 
-	$sql = "SELECT ID,name FROM glpi_dropdown_state ORDER BY ID";
-	$result = $DB->query($sql);
-	$header[0]=$LANG['plugin_reports']['pcsbyentity'][4];
-	while ($data = $DB->fetch_array($result)) {
-		$header[$data["ID"]]=$data["name"];
-		echo "<th>&nbsp;" . $data["name"] . "&nbsp;</th>";
-	}
-	echo "</tr>\n";
-	
-	if(isset($_POST["sort"]) && $_POST["sort"]>0)
-		doStatBis($LINK_ID_TABLE[$_POST["type"]], $_SESSION["glpiactiveentities"], $header);
-	else
-		doStat($LINK_ID_TABLE[$_POST["type"]], $_SESSION["glpiactive_entity"], $header);
-	
-	echo "</table></div>";
+   echo "<tr><th>".$LANG["entity"][0]. "</th>" .
+         "<th>&nbsp;" . $LANG['plugin_reports']['pcsbyentity'][3] . "&nbsp;</th>" .
+         "<th>&nbsp;" . $LANG['plugin_reports']['pcsbyentity'][4] . "&nbsp;</th>";
+
+   $sql = "SELECT `id`, `name`
+           FROM `glpi_states`
+           ORDER BY `id`";
+   $result = $DB->query($sql);
+
+   $header[0] = $LANG['plugin_reports']['pcsbyentity'][4];
+   while ($data = $DB->fetch_array($result)) {
+      $header[$data["id"]] = $data["name"];
+      echo "<th>&nbsp;" . $data["name"] . "&nbsp;</th>";
+   }
+   echo "</tr>\n";
+
+   if (isset($_POST["sort"]) && $_POST["sort"] >0) {
+      doStatBis(getTableForItemType($_POST["type"]), $_SESSION["glpiactiveentities"], $header);
+   } else {
+      doStat(getTableForItemType($_POST["type"]), $_SESSION["glpiactive_entity"], $header);
+   }	
+   echo "</table></div>";
 }
 
 commonFooter();

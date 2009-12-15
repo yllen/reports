@@ -35,7 +35,7 @@ function plugin_get_headings_reports($item,$withtemplate) {
    global $LANG;
 
    if (get_class($item)=='Profile') {
-      if ($prof->fields['interface']!='helpdesk') {
+      if ($item->fields['interface']!='helpdesk') {
          return array(1 => $LANG['plugin_reports']['title'][1]);
       }
    }
@@ -92,6 +92,7 @@ function plugin_pre_item_delete_reports($input) {
 function plugin_reports_install() {
    global $DB;
 
+   $query = '';
    if (TableExists('glpi_plugin_reports_profiles')) { //1.1 ou 1.2
       if (FieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
          $query = "ALTER TABLE `glpi_plugin_reports_profiles`
@@ -104,20 +105,28 @@ function plugin_reports_install() {
                 PRIMARY KEY (`id`))
                 ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
    }
-   $DB->query($query) or die($DB->error());
+   if ($query) {
+      $DB->query($query) or die($DB->error());
+   }
+
 
    return true;
 }
 
 
 function plugin_reports_uninstall() {
-   $DB = new DB;
+   global $DB;
 
-   $tables = array("glpi_plugin_reports_profiles");
+   $tables = array('glpi_plugin_reports_profiles',
+                   'glpi_plugin_reports_doublons_backlist',
+                   'glpi_plugin_reports_doublons_backlists');
+
    foreach ($tables as $table) {
       $query = "DROP TABLE IF EXISTS `$table`";
+      $DB->query($query) or die($DB->error());
    }
-   $DB->query($query) or die($DB->error());
+
+   return true;
 }
 
 

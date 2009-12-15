@@ -243,7 +243,7 @@ function displayUserDevices($type, $result) {
       }
       echo "</td><td class='center'>";
       if (isset ($data["suppliers_id"]) && !empty ($data["suppliers_id"])) {
-         echo getDropdownName("glpi_suppliers", $data["suppliers_id"]);
+         echo Dropdown::getDropdownName("glpi_suppliers", $data["suppliers_id"]);
       } else {
          echo '&nbsp;';
       }

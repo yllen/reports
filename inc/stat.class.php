@@ -35,7 +35,7 @@
 
 class PluginReportsStat extends CommonGLPI {
 
-   public $type  = PLUGIN_REPORTS_STAT;
+   public $type  = 'PluginReportsStat';
 
 
    /**

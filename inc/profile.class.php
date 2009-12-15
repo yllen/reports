@@ -4,24 +4,24 @@
   ----------------------------------------------------------------------
   GLPI - Gestionnaire Libre de Parc Informatique
   Copyright (C) 2003-2008 by the INDEPNET Development Team.
-  
+
   http://indepnet.net/   http://glpi-project.org/
   ----------------------------------------------------------------------
-  
+
   LICENSE
-  
+
   This file is part of GLPI.
-  
+
   GLPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
-  
+
   GLPI is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with GLPI; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -43,10 +43,18 @@ class PluginReportsProfile extends CommonDBTM {
    function cleanProfiles($id) {
       global $DB;
 
-      $query = "DELETE 
+      $query = "DELETE
                 FROM `glpi_plugin_reports_profiles`
                 WHERE `id` = '$id' ";
       $DB->query($query);
+   }
+
+   static function canCreate() {
+      return haveRight('profile', 'w');
+   }
+
+   static function canView() {
+      return haveRight('profile', 'r');
    }
 
 
@@ -57,13 +65,12 @@ class PluginReportsProfile extends CommonDBTM {
          $this->check($id,'r');
       } else {
          $this->check(-1,'w');
-         $this->getEmpty();
       }
 
       $canedit=$this->can($id,'w');
 
       echo "<form action='$target' method='post'>";
-      echo "<table class='tab_cadre_fixe'>"; 
+      echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='3' class='center b'>".
              $LANG['plugin_reports']['config'][4]." ".$this->fields["profile"]."</th></tr>";
 
@@ -74,11 +81,11 @@ class PluginReportsProfile extends CommonDBTM {
          if (strpos($key,'stat') === false) {
             echo "<td>".$LANG['Menu'][6]."</td>";
          } else {
-            echo "<td>".$LANG['Menu'][13]."</td>";	
+            echo "<td>".$LANG['Menu'][13]."</td>";
          }
          echo "<td>".$LANG['plugin_reports'][$key][1]." :</td><td>";
          Profile::dropdownNoneReadWrite($key,(isset($this->fields[$key])?$this->fields[$key]:''),1,1,0);
-         echo "</td></tr>";	
+         echo "</td></tr>";
       }
 
       if ($canedit) {
@@ -97,11 +104,11 @@ class PluginReportsProfile extends CommonDBTM {
       global $DB;
 
       // Add missing profiles
-      $DB->query("INSERT INTO 
-                  `glpi_plugin_reports_profiles` (`id`, `profile`) 
+      $DB->query("INSERT INTO
+                  `glpi_plugin_reports_profiles` (`id`, `profile`)
                   (SELECT `id`, `name`
                    FROM `glpi_profiles`
-                   WHERE `id` NOT IN (SELECT `id` 
+                   WHERE `id` NOT IN (SELECT `id`
                                       FROM `glpi_plugin_reports_profiles`))");
 
       $current_rights = $this->fields;
@@ -110,8 +117,8 @@ class PluginReportsProfile extends CommonDBTM {
       foreach($current_rights as $right => $value) {
          if (!isset($rights[$right])) {
             // Delete the columns for old reports
-            $DB->query("ALTER TABLE 
-                        `".$this->table."` 
+            $DB->query("ALTER TABLE
+                        `".$this->table."`
                         DROP COLUMN `".$right."`");
          } else {
             unset($rights[$right]);
@@ -120,19 +127,19 @@ class PluginReportsProfile extends CommonDBTM {
 
       foreach ($rights as $key=>$right) {
          // Add the column for new report
-         $DB->query("ALTER TABLE 
-                     `".$this->table."` 
+         $DB->query("ALTER TABLE
+                     `".$this->table."`
                      ADD COLUMN `".$key."` char(1) DEFAULT NULL");
          // Add "read" write to Super-admin
-         $DB->query("UPDATE 
-                     `".$this->table."` 
-                     SET `".$key."`='r' 
+         $DB->query("UPDATE
+                     `".$this->table."`
+                     SET `".$key."`='r'
                      WHERE `id` = '4'");
       }
 
       // Delete unused profiles
-      $DB->query("DELETE 
-                  FROM `glpi_plugin_reports_profiles` 
+      $DB->query("DELETE
+                  FROM `glpi_plugin_reports_profiles`
                   WHERE `id` NOT IN (SELECT `id`
                                      FROM `glpi_profiles`)");
    }
@@ -160,8 +167,8 @@ class PluginReportsProfile extends CommonDBTM {
       $Profile->GetfromDB($id);
       $name = $Profile->fields["profil"];
 
-      $query = "INSERT INTO 
-                `glpi_plugin_reports_profiles` (`id`, `profile`) 
+      $query = "INSERT INTO
+                `glpi_plugin_reports_profiles` (`id`, `profile`)
                 VALUES ('$id', '$name');";
       $DB->query($query);
    }
@@ -175,7 +182,7 @@ class PluginReportsProfile extends CommonDBTM {
       $this->getEmpty();
       $tab = searchReport($path, 1);
       $this->updateRights(-1, $tab);
-   
+
       return $tab;
    }
 

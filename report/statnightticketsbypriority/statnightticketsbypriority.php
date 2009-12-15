@@ -42,50 +42,48 @@ $DBCONNECTION_REQUIRED=0; // Really a big SQL request
 
 define('GLPI_ROOT', '../../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
+//include (GLPI_ROOT . "/plugins/reports/inc/function.php"); 
 
-$report = new AutoReport("statnightticketsbypriority");
+$report = new PluginReportsAutoReport("statnightticketsbypriority");
 
 //Report's search criterias
-new DateIntervalCriteria($report,"gt.date");
+new PluginReportsDateIntervalCriteria($report,"`glpi_tickets`.`date`");
 
-$timeInterval = new TimeIntervalCriteria($report,"gt.date");
+$timeInterval = new PluginReportsTimeIntervalCriteria($report,"`glpi_tickets`.`date`");
 
 //Criterias default values 
 $timeInterval->setStartTime("19:00");
-$timeInterval->setEndTime("07:00");
+$timeInterval->setEndtime("07:00");
 
 //Display criterias form is needed
 $report->displayCriteriasForm($_SERVER['PHP_SELF']);
 
 //If criterias have been validated
-if ($report->criteriasValidated())
-{
-	$report->setSubNameAuto();
+if ($report->criteriasValidated()) {
+   $report->setSubNameAuto();
 
-	//Names of the columns to be displayed
-	$colnumsnames = array ("priority" => $LANG["joblist"][2],
-							"date" => $LANG["reports"][60],
-							"ID"=>$LANG['common'][2],
-							"name" => $LANG["common"][57],
-							"groupname" => $LANG["common"][35]
-						  );
-	$report->setColumnsNames($colnumsnames);
-	
-	//Colunmns mappings if needed
-	$columns_mappings = array("priority"=>getPriorityLabelsArray());
-	$report->setColumnsMappings($columns_mappings);
-	
-	$query = "SELECT gt.priority as priority,gt.date as date, gt.ID as ID, gt.name as name, glpi_groups.name as groupname " .
-	"FROM glpi_tracking as gt " .
-	"LEFT JOIN glpi_groups ON (gt.assign_group=glpi_groups.ID) ";
-	$query.= $report->addSqlCriteriasRestriction("WHERE");
-	$query.= "AND gt.status NOT IN (\"old_done\", \"old_notdone\") " .
-		"ORDER BY priority DESC, date ASC";
-	
-	$report->setSqlRequest($query);
+   //Names of the columns to be displayed
+   $colnumsnames = array ("priority"  => $LANG["joblist"][2],
+                          "date"      => $LANG["reports"][60],
+                          "id"        =>$LANG['common'][2],
+                          "tname"      => $LANG["common"][57],
+                          "groupname" => $LANG["common"][35]);
+   $report->setColumnsNames($colnumsnames);
 
-	$report->execute();
+   //Colunmns mappings if needed
+   $columns_mappings = array("priority" => getPriorityLabelsArray());
+   $report->setColumnsMappings($columns_mappings);
+
+   $query = "SELECT `glpi_tickets`.`priority`, `glpi_tickets`.`date` , `glpi_tickets`.`id`, 
+                    `glpi_tickets`.`name` AS tname, `glpi_groups`.`name` as groupname
+             FROM `glpi_tickets`
+             LEFT JOIN `glpi_groups` ON (`glpi_tickets`.`groups_id_assign` = `glpi_groups`.`id`) ".
+             $report->addSqlCriteriasRestriction("WHERE") ."
+                   AND `glpi_tickets`.`status` NOT IN ('old_done', 'old_notdone')
+             ORDER BY priority DESC, date ASC";
+
+   $report->setSqlRequest($query);
+   $report->execute();
 }
-
 
 ?>

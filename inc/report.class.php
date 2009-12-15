@@ -35,7 +35,7 @@
 
 class PluginReportsReport extends CommonGLPI {
 
-   public $type  = PLUGIN_REPORTS_REPORT;
+   public $type  = 'PluginReportsReport';
 
 
    /**

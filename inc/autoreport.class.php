@@ -366,7 +366,7 @@ class PluginReportsAutoReport {
             //Add parameters to uri to be saved as bookmarks
             $_SERVER["REQUEST_URI"] = $this->buildBookmarkUrl();
             Bookmark::showSaveButton(BOOKMARK_SEARCH,
-                                     (isStat($this->name)?PLUGIN_REPORTS_STAT:PLUGIN_REPORTS_REPORT));
+                                     (isStat($this->name)?'PluginReportsStat':'PluginReportsReport'));
          }
          echo "</th></tr>\n";
 
