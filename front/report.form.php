@@ -99,7 +99,7 @@ if ($report) {
    $result=$DB->query($query);
    while ($data=$DB->fetch_assoc($result)) {
       echo "<tr class='tab_bg_1'><td>" . $data['profile'] . "&nbsp: </td><td>";
-      Profil::dropdownNoneReadWrite($data['id'],$data[$report],1,1,0);
+      Profile::dropdownNoneReadWrite($data['id'],$data[$report],1,1,0);
       echo "</td></tr>\n";
    }
 
