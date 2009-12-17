@@ -181,7 +181,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    public function getSubName() {
 
       return " " . $this->getCriteriaLabel() . " : " .
-              getDropdownName($this->getTable(), $this->getParameterValue());
+              Dropdown::getDropdownName($this->getTable(), $this->getParameterValue());
    }
 
 
