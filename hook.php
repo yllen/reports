@@ -74,18 +74,16 @@ function plugin_headings_reports($item, $withtemplate=0) {
 
 
 // Hook done on delete item case
-function plugin_pre_item_delete_reports($input) {
+function plugin_pre_item_purge_reports($item) {
 
-   if (isset($input["_item_type_"])) {
-      switch ($input["_item_type_"]) {
-         case 'Profile' :
-            // Manipulate data if needed
-            $ReportProfile = new PluginReportsProfile;
-            $ReportProfile->cleanProfiles($input["id"]);
-            break;
-      }
+   switch (get_class($item)) {
+      case 'Profile' :
+         // Manipulate data if needed
+         $ReportProfile = new PluginReportsProfile;
+         $ReportProfile->cleanProfiles($item-getField('id'));
+         break;
    }
-   return $input;
+   return $item;
 }
 
 

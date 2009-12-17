@@ -30,18 +30,18 @@
 /*
  * ----------------------------------------------------------------------
  * Original Author of file:
- * 
- * Purpose of file: 
- * 		
+ *
+ * Purpose of file:
+ *
  * ----------------------------------------------------------------------
- */ 
+ */
 //$NEEDED_ITEMS = array("enterprise");
 //Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=0; // Really a big SQL request
 
-define('GLPI_ROOT', '../../../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
+define('GLPI_ROOT', '../../../..');
+include (GLPI_ROOT . "/inc/includes.php");
 
 $report = new PluginReportsAutoReport("statticketsbypriority");
 
@@ -67,13 +67,13 @@ if ($report->criteriasValidated()) {
    $columns_mappings = array("priority" => getPriorityLabelsArray());
    $report->setColumnsMappings($columns_mappings);
 
-   $query = "SELECT `glpi_tickets`.`priority`, DATE(`glpi_tickets`.`date`) AS date, 
-                    `glpi_tickets`.`id`, `glpi_tickets`.`name` AS tname, 
+   $query = "SELECT `glpi_tickets`.`priority`, DATE(`glpi_tickets`.`date`) AS date,
+                    `glpi_tickets`.`id`, `glpi_tickets`.`name` AS tname,
                     `glpi_groups`.`name` AS groupname
              FROM `glpi_tickets`
              LEFT JOIN `glpi_groups` ON (`glpi_tickets`.`groups_id_assign` = `glpi_groups`.`id`) ".
              $report->addSqlCriteriasRestriction("WHERE")."
-                   AND `glpi_tickets`.`status` NOT IN ('old_done', 'old_notdone')
+                   AND `glpi_tickets`.`status` NOT IN ('closed', 'solved')
              ORDER BY priority DESC, date ASC";
 
    $report->setSqlRequest($query);

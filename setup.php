@@ -4,7 +4,7 @@
  ----------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
  Copyright (C) 2003-2008 by the INDEPNET Development Team.
- 
+
  http://indepnet.net/   http://glpi-project.org/
  ----------------------------------------------------------------------
 
@@ -46,14 +46,14 @@ function plugin_init_reports() {
    $plugin = new plugin;
 
    //Define only for bookmarks
-   Plugin::registerClass('PluginReportsReport', 
+   Plugin::registerClass('PluginReportsReport',
                          array('classname'  => 'PluginReportsReport',
                                'tablename'  => '',
                                'formpage'   => '',
                                'searchpage' => '',
                                'typename'   => $LANG['plugin_reports']['title'][1]));
 
-   Plugin::registerClass('PluginReportsStat', 
+   Plugin::registerClass('PluginReportsStat',
                          array('classname'  => 'PluginReportsStat',
                                'tablename'  => '',
                                'formpage'   => '',
@@ -73,7 +73,7 @@ function plugin_init_reports() {
       $PLUGIN_HOOKS['config_page']['reports']     = 'front/config.form.php';
    }
    $PLUGIN_HOOKS['menu_entry']['reports']      = false;
-   $PLUGIN_HOOKS['pre_item_delete']['reports'] = 'plugin_pre_item_delete_reports';
+   $PLUGIN_HOOKS['pre_item_purge']['reports'] = 'plugin_pre_item_purge_reports';
 
    $rightreport = array ();
    $rightstats = array ();
@@ -85,7 +85,7 @@ function plugin_init_reports() {
          } else {
             $tmp = $report;
          }
-         //If the report's name contains 'stat' then display it in the statistics page 
+         //If the report's name contains 'stat' then display it in the statistics page
          //(instead of Report page)
          if (isStat($report)) {
             $rightstats["report/$report/" . $report . ".php"] = $tmp;
@@ -124,7 +124,7 @@ function plugin_version_reports() {
                 'version'  => '1.4.0',
                 'author'   => 'Nelly LASSON',
                 'homepage' => 'https://forge.indepnet.net/projects/show/reports',
-                'minGlpiVersion' => '0.80'); 
+                'minGlpiVersion' => '0.80');
 }
 
 

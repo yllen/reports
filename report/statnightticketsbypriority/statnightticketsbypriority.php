@@ -30,19 +30,19 @@
 /*
  * ----------------------------------------------------------------------
  * Original Author of file: Benoit Machiavello
- * 
- * Purpose of file: 
+ *
+ * Purpose of file:
  * 		Generate group members report
  * ----------------------------------------------------------------------
- */ 
+ */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=0; // Really a big SQL request
 
-define('GLPI_ROOT', '../../../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
-//include (GLPI_ROOT . "/plugins/reports/inc/function.php"); 
+define('GLPI_ROOT', '../../../..');
+include (GLPI_ROOT . "/inc/includes.php");
+//include (GLPI_ROOT . "/plugins/reports/inc/function.php");
 
 $report = new PluginReportsAutoReport("statnightticketsbypriority");
 
@@ -51,7 +51,7 @@ new PluginReportsDateIntervalCriteria($report,"`glpi_tickets`.`date`");
 
 $timeInterval = new PluginReportsTimeIntervalCriteria($report,"`glpi_tickets`.`date`");
 
-//Criterias default values 
+//Criterias default values
 $timeInterval->setStartTime("19:00");
 $timeInterval->setEndtime("07:00");
 
@@ -74,12 +74,12 @@ if ($report->criteriasValidated()) {
    $columns_mappings = array("priority" => getPriorityLabelsArray());
    $report->setColumnsMappings($columns_mappings);
 
-   $query = "SELECT `glpi_tickets`.`priority`, `glpi_tickets`.`date` , `glpi_tickets`.`id`, 
+   $query = "SELECT `glpi_tickets`.`priority`, `glpi_tickets`.`date` , `glpi_tickets`.`id`,
                     `glpi_tickets`.`name` AS tname, `glpi_groups`.`name` as groupname
              FROM `glpi_tickets`
              LEFT JOIN `glpi_groups` ON (`glpi_tickets`.`groups_id_assign` = `glpi_groups`.`id`) ".
              $report->addSqlCriteriasRestriction("WHERE") ."
-                   AND `glpi_tickets`.`status` NOT IN ('old_done', 'old_notdone')
+                   AND `glpi_tickets`.`status` NOT IN ('solved', 'closed')
              ORDER BY priority DESC, date ASC";
 
    $report->setSqlRequest($query);
