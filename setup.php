@@ -48,21 +48,14 @@ function plugin_init_reports() {
    //Define only for bookmarks
    Plugin::registerClass('PluginReportsReport',
                          array('classname'  => 'PluginReportsReport',
-                               'tablename'  => '',
-                               'formpage'   => '',
-                               'searchpage' => '',
                                'typename'   => $LANG['plugin_reports']['title'][1]));
 
    Plugin::registerClass('PluginReportsStat',
                          array('classname'  => 'PluginReportsStat',
-                               'tablename'  => '',
-                               'formpage'   => '',
-                               'searchpage' => '',
                                'typename'   => $LANG['Menu'][13]));
 
    Plugin::registerClass('PluginReportsProfile',
-                         array ('classname' => 'PluginReportsProfile',
-                                'tablename' => 'glpi_plugin_reports_profiles'));
+                         array ('classname' => 'PluginReportsProfile'));
 
 
    $PLUGIN_HOOKS['change_profile']['reports'] = array('PluginReportsProfile','changeprofile');
