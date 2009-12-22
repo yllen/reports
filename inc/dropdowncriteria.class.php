@@ -39,6 +39,7 @@
  */
 class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
+   // TODO review this to use itemtype class as primary option
    //Drodown table
    private $table = "";
 
@@ -70,6 +71,13 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
       return $this->table;
    }
 
+   /**
+    * Get criteria's related table
+    */
+   public function getItemType() {
+      return getItemTypeForTable($this->table);
+   }
+
 
    /**
     * Will display dropdown childrens (in table in hierarchical)
@@ -77,9 +85,10 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    public function setWithChildrens() {
       global $CFG_GLPI;
 
-      if (in_array($this->getTable(), $CFG_GLPI["dropdowntree_tables"])) {
+      //if (in_array($this->getTable(), $CFG_GLPI["dropdowntree_tables"])) {
+         // TODO find a solution ti check is children exists
          $this->childrens = true;
-      }
+      //}
    }
 
 
@@ -206,8 +215,11 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
     */
    public function displayDropdownCriteria() {
 
-      Dropdown::dropdownValue($this->getTable(), $this->getName(), $this->getParameterValue(), 
-                              $this->getDisplayComments(), $this->getEntityRestrict());
+      Dropdown::show($this->getItemType(),
+                     array('name'     => $this->getName(),
+                           'value'    => $this->getParameterValue(),
+                           'comments' => $this->getDisplayComments(),
+                           'entity'   => $this->getEntityRestrict()));
    }
 
 

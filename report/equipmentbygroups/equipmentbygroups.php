@@ -31,9 +31,9 @@
 /*
  * ----------------------------------------------------------------------
  * Original Author of file: Walid Nouh
- * 
- * Purpose of file: 
- * 		
+ *
+ * Purpose of file:
+ *
  * ----------------------------------------------------------------------
  */
 
@@ -56,9 +56,9 @@ $_GET = getValues($_GET, $_POST);
 displaySearchForm();
 
 $sql = "SELECT `id` AS group_id, `name` AS group_name
-        FROM `glpi_groups` 
-        WHERE `entities_id` = " . $_SESSION["glpiactive_entity"] . ($_GET["group"] ? " 
-              AND `glpi_groups`.`id` = " . $_GET["group"] : "") . " 
+        FROM `glpi_groups`
+        WHERE `entities_id` = " . $_SESSION["glpiactive_entity"] . ($_GET["group"] ? "
+              AND `glpi_groups`.`id` = " . $_GET["group"] : "") . "
         ORDER BY `name`";
 $result = $DB->query($sql);
 
@@ -88,14 +88,16 @@ function displaySearchForm() {
    echo "<tr class='tab_bg_1 center'>";
    echo "<td>";
    echo $LANG["common"][35] . " :";
-   Dropdown::dropdownValue("glpi_groups", "group", $_GET["group"], 1, $_SESSION["glpiactive_entity"]);
+   Dropdown::show('Group', array('name =>' => "group",
+                                 'value'   => $_GET["group"],
+                                 'entity'  => $_SESSION["glpiactive_entity"]));
    echo "</td>";
 
    // Display Reset search
    echo "<td>";
-   echo "<a href='" . $CFG_GLPI["root_doc"] . 
+   echo "<a href='" . $CFG_GLPI["root_doc"] .
          "/plugins/reports/report/equipmentbygroups/equipmentbygroups.php?reset_search=reset_search'>".
-         "<img title='" . $LANG["buttons"][16] . "' alt='" . $LANG["buttons"][16] . "' src='" . 
+         "<img title='" . $LANG["buttons"][16] . "' alt='" . $LANG["buttons"][16] . "' src='" .
          $CFG_GLPI["root_doc"] . "/pics/reset.png' class='calendrier'></a>";
    echo "</td>";
 
@@ -135,12 +137,12 @@ function resetSearch() {
 function getAllUsersInGroup($group_id, $entity) {
    global $DB, $LANG;
 
-   $sql = "SELECT `glpi_users`.`id` AS user_id, `glpi_users`.`name` as user_name 
-           FROM `glpi_users`, `glpi_groups_users`, `glpi_groups` 
-           WHERE `glpi_groups`.`entities_id` = '$entity' 
+   $sql = "SELECT `glpi_users`.`id` AS user_id, `glpi_users`.`name` as user_name
+           FROM `glpi_users`, `glpi_groups_users`, `glpi_groups`
+           WHERE `glpi_groups`.`entities_id` = '$entity'
                  AND `glpi_groups`.`id` = `glpi_groups_users`.`groups_id`
                  AND `glpi_groups_users`.`users_id` = `glpi_groups`.`id`
-                 AND `glpi_groups`.`id` = '$group_id' 
+                 AND `glpi_groups`.`id` = '$group_id'
            ORDER BY user_name";
    $result = $DB->query($sql);
 
@@ -172,10 +174,10 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
       $query = "SELECT `".$item->table."`.`id`, `name`, `groups_id`, `serial`, `otherserial`,
                        `immo_number`, `suppliers_id`, `buy_date`
                 FROM `".$item->table."`
-                LEFT JOIN `glpi_infocoms` 
+                LEFT JOIN `glpi_infocoms`
                      ON (`".$item->table."`.`id` = `glpi_infocoms`.`items_id`
                          AND `itemtype` = '$type')
-                WHERE `groups_id` = '$group_id' 
+                WHERE `groups_id` = '$group_id'
                       AND `entities_id` = '$entity'
                       AND `is_template` = '0'
                       AND `is_deleted` = '0'";
@@ -213,8 +215,8 @@ function displayUserDevices($type, $result) {
    while ($data = $DB->fetch_array($result)) {
       $link = $data["name"];
       $url = getItemTypeFormURL("$type");
-      $link = "<a href='" . $url . "?id=" . $data["id"] . "'>" . $link . 
-               (($CFG_GLPI["is_ids_visible"] || empty ($link)) ? " (" . $data["id"] . ")" : "") . 
+      $link = "<a href='" . $url . "?id=" . $data["id"] . "'>" . $link .
+               (($CFG_GLPI["is_ids_visible"] || empty ($link)) ? " (" . $data["id"] . ")" : "") .
                "</a>";
       $linktype = "";
       if (isset ($groups[$data["groups_id"]])) {
