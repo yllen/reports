@@ -35,7 +35,7 @@ define('GLPI_ROOT', '../../../..');
 
 include (GLPI_ROOT . "/inc/includes.php");
 
-usePlugin('reports');
+Plugin::load('reports');
 
 includeLocales("doublons");
 

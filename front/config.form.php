@@ -33,11 +33,11 @@
 // ----------------------------------------------------------------------
 
 if (!defined('GLPI_ROOT')) {
-   define('GLPI_ROOT', '../../..'); 
+   define('GLPI_ROOT', '../../..');
 }
 
 include_once (GLPI_ROOT . "/inc/includes.php");
-usePlugin('reports');
+Plugin::load('reports');
 
 checkSeveralRightsOr(array("config" => "w", "profile" => "w"));
 commonHeader($LANG['common'][12],$_SERVER['PHP_SELF'],"config","plugins");

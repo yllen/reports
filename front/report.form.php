@@ -32,12 +32,12 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-define('GLPI_ROOT', '../../..'); 
+define('GLPI_ROOT', '../../..');
 include_once (GLPI_ROOT . "/inc/includes.php");
 
 checkRight("profile","r");
 
-usePlugin('reports',true);
+Plugin::load('reports',true);
 
 commonHeader($LANG['plugin_reports']['config'][1], $_SERVER["PHP_SELF"],"config","plugins");
 
@@ -52,8 +52,8 @@ if (isset($_POST["report"])) {
 if (isset($_POST["delete"])) {
    checkRight("profile","w");
 
-   $DB->query("UPDATE 
-              `glpi_plugin_reports_profiles` 
+   $DB->query("UPDATE
+              `glpi_plugin_reports_profiles`
               SET `$report` = NULL");
 
 } else  if (isset($_POST["update"])) {
@@ -61,7 +61,7 @@ if (isset($_POST["delete"])) {
 
    foreach ($_POST as $key => $value) {
       if (is_numeric($key)) {
-         $prof->update(array("id"=>$key, 
+         $prof->update(array("id"=>$key,
                              $report=>$value));
       }
    }
@@ -90,7 +90,7 @@ echo "</table></form></div>";
 if ($report) {
    echo "<div class='center'>";
    echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>\n";
-   echo "<table class='tab_cadre'>\n"; 
+   echo "<table class='tab_cadre'>\n";
    echo "<tr><th colspan='2'>".$LANG['plugin_reports']['config'][9].": </th></tr>\n";
 
    $query = "SELECT `id`, `profile`, `$report`
@@ -111,7 +111,7 @@ if ($report) {
       echo "</td></tr>\n";
    }
 
-   echo "</table></form></div>\n";	
+   echo "</table></form></div>\n";
 
 }
 
