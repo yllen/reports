@@ -35,8 +35,8 @@
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=1; // Really a big SQL request
 
-define('GLPI_ROOT', '../../../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
+define('GLPI_ROOT', '../../../..');
+include (GLPI_ROOT . "/inc/includes.php");
 
 includeLocales("histohard");
 
@@ -47,7 +47,7 @@ commonHeader($LANG['plugin_reports']['histohard'][1],$_SERVER['PHP_SELF'],"utils
 
 echo "<div class='center'>";
 echo "<table class='tab_cadrehov'>\n";
-echo "<tr class='tab_bg_1 center'><th colspan='5'>" . $LANG['plugin_reports']['histohard'][1] . 
+echo "<tr class='tab_bg_1 center'><th colspan='5'>" . $LANG['plugin_reports']['histohard'][1] .
       "</th></tr>\n";
 
 echo "<tr><th>". $LANG['plugin_reports']['histohard'][2] . "</th>" .
@@ -56,17 +56,17 @@ echo "<tr><th>". $LANG['plugin_reports']['histohard'][2] . "</th>" .
       "<th>". $LANG["event"][18] . "</th>".
       "<th>". $LANG['plugin_reports']['histohard'][3] . "</th></tr>\n";
 
-$sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `itemtype_link`, `old_value`, 
+$sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `itemtype_link`, `old_value`,
                `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`
         FROM `glpi_logs`
         LEFT JOIN `glpi_computers` ON (`glpi_logs`.`items_id` = `glpi_computers`.`id`)
         WHERE `glpi_logs`.`date_mod` > DATE_SUB(Now(), INTERVAL 21 DAY)
               AND `itemtype` = 'Computer'
-              AND `linked_action` IN (".HISTORY_CONNECT_DEVICE.", ".HISTORY_DISCONNECT_DEVICE.", " 
-                                       .HISTORY_DELETE_DEVICE.", " .HISTORY_UPDATE_DEVICE.", " 
+              AND `linked_action` IN (".HISTORY_CONNECT_DEVICE.", ".HISTORY_DISCONNECT_DEVICE.", "
+                                       .HISTORY_DELETE_DEVICE.", " .HISTORY_UPDATE_DEVICE.", "
                                        .HISTORY_ADD_DEVICE.")
               AND `glpi_computers`.`entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
-        ORDER BY `glpi_logs`.`id` DESC 
+        ORDER BY `glpi_logs`.`id` DESC
         LIMIT 0,100";
 $result = $DB->query($sql);
 
@@ -82,7 +82,7 @@ while ($data = $DB->fetch_array($result)) {
       $prev = $data["dat"].$data["name"];
       echo "<tr class='" . $class . " top'><td>". convDateTime($data["dat"]) . "</td>" .
             "<td>". $data["user_name"] . "&nbsp;</td>".
-            "<td><a href='". getItemTypeFormURL('Computer')."?id=" . $data["cid"] . "'>" . 
+            "<td><a href='". getItemTypeFormURL('Computer')."?id=" . $data["cid"] . "'>" .
             $data["name"] . "</a></td><td>";
       $prevclass = $class;
       $class = ($class=="tab_bg_2" ? "tab_bg_1" : "tab_bg_2");
@@ -92,18 +92,31 @@ while ($data = $DB->fetch_array($result)) {
    // Yes it is an internal device
       switch ($data["linked_action"]) {
          case HISTORY_ADD_DEVICE :
-            $field = getDictDeviceLabel($data["itemtype_link"]);
+            $field=NOT_AVAILABLE;
+            if (class_exists($data["itemtype_link"])) {
+               $item = new $data["itemtype_link"]();
+               $field = $item->getTypeName();
+            }
             $change = $LANG["devices"][25]."&nbsp;<strong>:</strong>&nbsp;'".$data[ "new_value"]."'";
             break;
 
          case HISTORY_UPDATE_DEVICE :
-            $field = getDictDeviceLabel($data["itemtype_link"]);
-            $change = getDeviceSpecifityLabel($data["itemtype_link"])."&nbsp;:&nbsp;'".
-                      $data[ "old_value"]."'&nbsp;<strong>--></strong>&nbsp;'".$data[ "new_value"]."'";
+               $field = NOT_AVAILABLE;
+               $change = '';
+               if (class_exists($data["itemtype_link"])) {
+                  $item = new $data["itemtype_link"]();
+                  $field = $item->getTypeName();
+                  $change = $item->getSpecifityLabel()."&nbsp;<strong>:</strong>&nbsp;''";
+               }
+            $change .= $data[ "old_value"]."'&nbsp;<strong>--></strong>&nbsp;'".$data[ "new_value"]."'";
             break;
 
          case HISTORY_DELETE_DEVICE :
-            $field = getDictDeviceLabel($data["itemtype_link"]);
+            $field=NOT_AVAILABLE;
+            if (class_exists($data["itemtype_link"])) {
+               $item = new $data["itemtype_link"]();
+               $field = $item->getTypeName();
+            }
             $change = $LANG["devices"][26]."&nbsp;<strong>:</strong>&nbsp;'".$data["old_value"]."'";
             break;
 
@@ -134,6 +147,6 @@ if (!empty($prev)) {
 }
 echo "</table><p>".$LANG['plugin_reports']['histohard'][4]."</p></div>\n";
 
-commonFooter(); 
+commonFooter();
 
 ?>
