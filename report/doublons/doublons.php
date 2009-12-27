@@ -35,8 +35,8 @@
 $USEDBREPLICATE = 1;
 $DBCONNECTION_REQUIRED = 0;
 
-define('GLPI_ROOT', '../../../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
+define('GLPI_ROOT', '../../../..');
+include (GLPI_ROOT . "/inc/includes.php");
 
 includeLocales("doublons");
 
@@ -45,7 +45,7 @@ checkSeveralRightsAnd(array('computer' => "r"));
 
 commonHeader($LANG['plugin_reports']['doublons'][1],$_SERVER['PHP_SELF'],"utils","report");
 
-$crits = array(0 => "-----", 
+$crits = array(0 => "-----",
                1 => $LANG["common"][16],        // Name
                2 => $LANG["common"][22]." + ".$LANG["common"][19],   // Model + Serial
                3 => $LANG["common"][16]." + ".$LANG["common"][22]." + ".$LANG["common"][19], // Name + Model + Serial
@@ -56,13 +56,13 @@ $crits = array(0 => "-----",
 if (isset($_GET["crit"])) {
    $_POST = $_GET["crit"];
 }
-$crit = (isset($_POST["crit"]) ? $_POST["crit"] : 0); 
+$crit = (isset($_POST["crit"]) ? $_POST["crit"] : 0);
 
 // ---------- Form ------------
 echo "<div class='center'>";
 echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'>";
 echo "<table class='tab_cadre' cellpadding='5'>\n";
-echo "<tr class='tab_bg_1 center'><th colspan='3'>" . $LANG['plugin_reports']['doublons'][1] . 
+echo "<tr class='tab_bg_1 center'><th colspan='3'>" . $LANG['plugin_reports']['doublons'][1] .
       "</th></tr>\n";
 
 if (haveRight("config","r")) { // Check only read as we probably use the replicate (no 'w' in this case)
@@ -72,7 +72,7 @@ if (haveRight("config","r")) { // Check only read as we probably use the replica
 echo "<tr class='tab_bg_1'><td class='right'>" . $LANG["rulesengine"][6] . "&nbsp;:&nbsp;</td><td>";
 echo "<select name='crit'>";
 foreach ($crits as $key => $val) {
-   echo "<option value='$key'" . ($crit==$key ? "selected" : "") . ">$val</option>";	
+   echo "<option value='$key'" . ($crit==$key ? "selected" : "") . ">$val</option>";
 }
 echo "</select></td>";
 
@@ -91,11 +91,11 @@ echo "</td></tr>\n";
 echo "</table>\n</form></div>\n";
 
 if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
-   $IPBlacklist = "AA.`ip` != '' 
+   $IPBlacklist = "AA.`ip` != ''
                    AND AA.`ip` != '0.0.0.0'";
    if (TableExists("glpi_plugin_reports_doublons_backlists")) {
       $res  =$DB->query("SELECT `addr`
-                         FROM `glpi_plugin_reports_doublons_backlists` 
+                         FROM `glpi_plugin_reports_doublons_backlists`
                          WHERE `type` = '2'");
 
       while ($data = $DB->fetch_array($res)) {
@@ -107,30 +107,30 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
       }
    }
 
-   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial, 
-                  A.`computermodels_id` AS Amodel, 
-                  A.`manufacturers_id` AS Amanu, AA.`ip` AS Aaddr, A.`entities_id` AS entity, 
+   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial,
+                  A.`computermodels_id` AS Amodel,
+                  A.`manufacturers_id` AS Amanu, AA.`ip` AS Aaddr, A.`entities_id` AS entity,
                   A.`otherserial` AS Aotherserial,
-                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial, 
-                  B.`computermodels_id` AS Bmodel, 
+                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
+                  B.`computermodels_id` AS Bmodel,
                   B.`manufacturers_id` AS Bmanu, BB.`ip` AS Baddr, B.`otherserial` AS Botherserial
-           FROM `glpi_computers` A, 
-                `glpi_computers` B, 
-                `glpi_networkports` AA, 
-                `glpi_networkports` BB " . 
+           FROM `glpi_computers` A,
+                `glpi_computers` B,
+                `glpi_networkports` AA,
+                `glpi_networkports` BB " .
            getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
-                 AND AA.`itemtype` = 'Computer' 
+                 AND AA.`itemtype` = 'Computer'
                  AND AA.`items_id` = A.`id`
                  AND BB.`itemtype` = 'Computer'
                  AND BB.`items_id` = B.`id`
-                 AND AA.`ip` = BB.`ip` 
+                 AND AA.`ip` = BB.`ip`
                  AND ($IPBlacklist)
                  AND B.`id` > A.`id`
                  AND A.`entities_id` = B.`entities_id`
-                 AND A.`is_template` = '0' 
-                 AND B.`is_template` = '0' 
-                 AND A.`is_deleted` = '0' 
-                 AND B.`is_deleted` = '0'"; 
+                 AND A.`is_template` = '0'
+                 AND B.`is_template` = '0'
+                 AND A.`is_deleted` = '0'
+                 AND B.`is_deleted` = '0'";
 
    $col=$LANG["networking"][14];
 
@@ -146,30 +146,30 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
    } else {
       $MacBlacklist .= ",'44:45:53:54:42:00','BA:D0:BE:EF:FA:CE', '00:53:45:00:00:00', '80:00:60:0F:E8:00'";
    }
-   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial, 
-                  A.`computermodels_id` AS Amodel, 
-                  A.`manufacturers_id` AS Amanu, AA.`specificity` AS Aaddr, A.`entities_id` AS entity, 
+   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial,
+                  A.`computermodels_id` AS Amodel,
+                  A.`manufacturers_id` AS Amanu, AA.`specificity` AS Aaddr, A.`entities_id` AS entity,
                   A.`otherserial` AS Aotherserial,
-                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial, 
-                  B.`computermodels_id` AS Bmodel, 
+                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
+                  B.`computermodels_id` AS Bmodel,
                   B.`manufacturers_id` AS Bmanu, BB.`specificity` AS Baddr, B.`otherserial` as Botherserial
-           FROM `glpi_computers` A, 
-                `glpi_computers` B, 
-                `glpi_computers_devices` AA, 
-                `glpi_computers_devices` BB" . 
+           FROM `glpi_computers` A,
+                `glpi_computers` B,
+                `glpi_computers_devices` AA,
+                `glpi_computers_devices` BB" .
            getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
-                 AND AA.`devicetype` = '".NETWORK_DEVICE."' 
-                 AND AA.`computers_id` = AID
-                 AND BB.`devicetype` = '".NETWORK_DEVICE."'
-                 AND BB.`computers_id` = BID 
-                 AND AA.`specificity` = BB.`specificity` 
+                 AND AA.`itemtype` = 'DeviceNetworkCard'
+                 AND AA.`computers_id` = A.`id`
+                 AND BB.`itemtype` = 'DeviceNetworkCard'
+                 AND BB.`computers_id` = B.`id`
+                 AND AA.`specificity` = BB.`specificity`
                  AND AA.`specificity` NOT IN ($MacBlacklist)
-                 AND B.`id` > A.`id` 
+                 AND B.`id` > A.`id`
                  AND A.`entities_id` = B.`entities_id`
                  AND A.`is_template` = '0'
-                 AND B.`is_template` = '0' 
-                 AND A.`is_deleted` = '0' 
-                 AND B.`is_deleted` = '0'"; 
+                 AND B.`is_template` = '0'
+                 AND A.`is_deleted` = '0'
+                 AND B.`is_deleted` = '0'";
 
    $col = $LANG["networking"][15];
 
@@ -183,33 +183,33 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
          $SerialBlacklist .= ",'".addslashes($data["addr"])."'";
       }
    }
-   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial, 
-                  A.`computermodels_id` AS Amodel, 
+   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial,
+                  A.`computermodels_id` AS Amodel,
                   A.`manufacturers_id` AS Amanu, A.`entities_id` AS entity, A.`otherserial` AS Aotherserial,
-                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial, 
-                  B.`computermodels_id` AS Bmodel, 
-                  B.`manufacturers_id` AS Bmanu, B.`otherserial` AS Botherserial 
-           FROM `glpi_computers` A, 
-                `glpi_computers` B " . 
+                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
+                  B.`computermodels_id` AS Bmodel,
+                  B.`manufacturers_id` AS Bmanu, B.`otherserial` AS Botherserial
+           FROM `glpi_computers` A,
+                `glpi_computers` B " .
            getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
-                 AND B.`id` > A.`id` 
+                 AND B.`id` > A.`id`
                  AND A.`entities_id` = B.`entities_id`
                  AND A.`is_template` = '0'
-                 AND B.`is_template` = '0' 
-                 AND A.`is_deleted` = '0' 
-                 AND B.`is_deleted` = '0'"; 
+                 AND B.`is_template` = '0'
+                 AND A.`is_deleted` = '0'
+                 AND B.`is_deleted` = '0'";
 
    if ($crit == 6) {
-      $Sql .= " AND A.`otherserial` != '' 
+      $Sql .= " AND A.`otherserial` != ''
                 AND A.`otherserial` = B.`otherserial`";
    } else {
       if ($crit & 1) {
-         $Sql .= " AND A.`name` != '' 
+         $Sql .= " AND A.`name` != ''
                    AND A.`name` = B.`name`";
       }
       if ($crit & 2) {
-         $Sql .= " AND A.`serial` NOT IN ($SerialBlacklist) 
-                   AND A.`serial` = B.`serial` 
+         $Sql .= " AND A.`serial` NOT IN ($SerialBlacklist)
+                   AND A.`serial` = B.`serial`
                    AND A.`computermodels_id` = B.`computermodels_id`";
       }
    }
@@ -245,7 +245,7 @@ if ($crit>0) { // Display result
       if ($prev != $data["entity"]) {
          $prev = $data["entity"];
          echo "<tr class='tab_bg_4'><td class='center' colspan='". ($col ? 14 : 12) ."'>".
-            Dropdown::getDropdownName("glpi_entities", $prev) . "</td></tr>\n"; 
+            Dropdown::getDropdownName("glpi_entities", $prev) . "</td></tr>\n";
       }
       echo "<tr class='tab_bg_2'>" .
          "<td><a href='".getItemTypeFormURL('Computer')."?id=".$data["AID"]."'>".$data["AID"]."</a>".
@@ -273,16 +273,16 @@ if ($crit>0) { // Display result
    echo "</tr>\n";
    }
    if ($i) {
-      echo "<tr class='tab_bg_4'><td class='center' colspan='". ($col ? 14 : 12) ."'>" . 
+      echo "<tr class='tab_bg_4'><td class='center' colspan='". ($col ? 14 : 12) ."'>" .
       $LANG['plugin_reports']['doublons'][1] . " : $i</td></tr>\n";
    }
    echo "</table></div>";
 }
-commonFooter(); 
- 
- 
+commonFooter();
+
+
 function buildBookmarkUrl($url,$crit) {
    return $url."?crit=".$crit;
 }
- 
+
 ?>
