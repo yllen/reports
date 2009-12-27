@@ -35,7 +35,7 @@
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=1; // Really a big SQL request
 
-define('GLPI_ROOT', '../../../..');
+define ('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
 includeLocales("histohard");
@@ -56,8 +56,8 @@ echo "<tr><th>". $LANG['plugin_reports']['histohard'][2] . "</th>" .
       "<th>". $LANG["event"][18] . "</th>".
       "<th>". $LANG['plugin_reports']['histohard'][3] . "</th></tr>\n";
 
-$sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `itemtype_link`, `old_value`,
-               `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`
+$sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `itemtype_link`,
+               `old_value`, `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`
         FROM `glpi_logs`
         LEFT JOIN `glpi_computers` ON (`glpi_logs`.`items_id` = `glpi_computers`.`id`)
         WHERE `glpi_logs`.`date_mod` > DATE_SUB(Now(), INTERVAL 21 DAY)
@@ -92,7 +92,7 @@ while ($data = $DB->fetch_array($result)) {
    // Yes it is an internal device
       switch ($data["linked_action"]) {
          case HISTORY_ADD_DEVICE :
-            $field=NOT_AVAILABLE;
+            $field = NOT_AVAILABLE;
             if (class_exists($data["itemtype_link"])) {
                $item = new $data["itemtype_link"]();
                $field = $item->getTypeName();
@@ -112,7 +112,7 @@ while ($data = $DB->fetch_array($result)) {
             break;
 
          case HISTORY_DELETE_DEVICE :
-            $field=NOT_AVAILABLE;
+            $field = NOT_AVAILABLE;
             if (class_exists($data["itemtype_link"])) {
                $item = new $data["itemtype_link"]();
                $field = $item->getTypeName();
