@@ -47,7 +47,9 @@ function plugin_headings_actions_reports($item) {
 
    switch (get_class($item)) {
       case 'Profile' :
-         return array(1 => "plugin_headings_reports");
+         if ($item->getField('interface')=='central') {
+            return array(1 => "plugin_headings_reports");
+         }
          break;
    }
    return false;
