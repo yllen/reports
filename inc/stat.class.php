@@ -35,8 +35,6 @@
 
 class PluginReportsStat extends CommonGLPI {
 
-   public $type  = 'PluginReportsStat';
-
 
    /**
     * Return the localized name of the current Type

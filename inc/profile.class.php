@@ -35,16 +35,13 @@
 
 class PluginReportsProfile extends CommonDBTM {
 
-   public $table = "glpi_plugin_reports_profiles";
-   public $type  = 'PluginReportsProfile';
-
 
    //if profile deleted
    function cleanProfiles($id) {
       global $DB;
 
       $query = "DELETE
-                FROM `glpi_plugin_reports_profiles`
+                FROM `".$this->getTable()."`
                 WHERE `id` = '$id' ";
       $DB->query($query);
    }
@@ -105,11 +102,11 @@ class PluginReportsProfile extends CommonDBTM {
 
       // Add missing profiles
       $DB->query("INSERT INTO
-                  `glpi_plugin_reports_profiles` (`id`, `profile`)
+                  `".$this-getTable()."` (`id`, `profile`)
                   (SELECT `id`, `name`
                    FROM `glpi_profiles`
                    WHERE `id` NOT IN (SELECT `id`
-                                      FROM `glpi_plugin_reports_profiles`))");
+                                      FROM `".$this-getTable()."`))");
 
       $current_rights = $this->fields;
       unset($current_rights["id"]);
@@ -118,7 +115,7 @@ class PluginReportsProfile extends CommonDBTM {
          if (!isset($rights[$right])) {
             // Delete the columns for old reports
             $DB->query("ALTER TABLE
-                        `".$this->table."`
+                        `".$this->getTable()."`
                         DROP COLUMN `".$right."`");
          } else {
             unset($rights[$right]);
@@ -128,18 +125,18 @@ class PluginReportsProfile extends CommonDBTM {
       foreach ($rights as $key=>$right) {
          // Add the column for new report
          $DB->query("ALTER TABLE
-                     `".$this->table."`
+                     `".$this->getTable()."`
                      ADD COLUMN `".$key."` char(1) DEFAULT NULL");
          // Add "read" write to Super-admin
          $DB->query("UPDATE
-                     `".$this->table."`
+                     `".$this->getTable()."`
                      SET `".$key."`='r'
                      WHERE `id` = '4'");
       }
 
       // Delete unused profiles
       $DB->query("DELETE
-                  FROM `glpi_plugin_reports_profiles`
+                  FROM `".$this-getTable()."`
                   WHERE `id` NOT IN (SELECT `id`
                                      FROM `glpi_profiles`)");
    }
@@ -168,7 +165,7 @@ class PluginReportsProfile extends CommonDBTM {
       $name = $Profile->fields["profil"];
 
       $query = "INSERT INTO
-                `glpi_plugin_reports_profiles` (`id`, `profile`)
+                `".$this-getTable()."` (`id`, `profile`)
                 VALUES ('$id', '$name');";
       $DB->query($query);
    }

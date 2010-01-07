@@ -171,11 +171,11 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
    foreach ($types as $type) {
       $item = new $type;
 
-      $query = "SELECT `".$item->table."`.`id`, `name`, `groups_id`, `serial`, `otherserial`,
+      $query = "SELECT `".$item->getTable()."`.`id`, `name`, `groups_id`, `serial`, `otherserial`,
                        `immo_number`, `suppliers_id`, `buy_date`
-                FROM `".$item->table."`
+                FROM `".$item->getTable()."`
                 LEFT JOIN `glpi_infocoms`
-                     ON (`".$item->table."`.`id` = `glpi_infocoms`.`items_id`
+                     ON (`".$item->getTable()."`.`id` = `glpi_infocoms`.`items_id`
                          AND `itemtype` = '$type')
                 WHERE `groups_id` = '$group_id'
                       AND `entities_id` = '$entity'

@@ -255,7 +255,7 @@ $sql = "(SELECT '" . $LANG["software"][11] . "' AS nature,
                AND `glpi_infocoms`.`itemtype` = 'NetworkEquipment'
                AND (`glpi_networkequipments`.`otherserial` != '' 
                     OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "`glpi_networkequipments`") .") 
+               getEntitiesRestrictRequest(" AND ", "glpi_networkequipments") .") 
 
          UNION (
          SELECT '" . $LANG["help"][29] . "' AS nature, 
@@ -320,7 +320,7 @@ $sql = "(SELECT '" . $LANG["software"][11] . "' AS nature,
                AND `glpi_infocoms`.`itemtype` = 'Phone'
                AND (`glpi_phones`.`otherserial` != '' 
                     OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "`glpi_phones`") .")");
+               getEntitiesRestrictRequest(" AND ", "glpi_phones") .")");
 
 $report->setGroupBy('entity');
 $report->setSqlRequest($sql);
