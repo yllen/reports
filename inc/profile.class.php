@@ -102,11 +102,11 @@ class PluginReportsProfile extends CommonDBTM {
 
       // Add missing profiles
       $DB->query("INSERT INTO
-                  `".$this-getTable()."` (`id`, `profile`)
+                  `".$this->getTable()."` (`id`, `profile`)
                   (SELECT `id`, `name`
                    FROM `glpi_profiles`
                    WHERE `id` NOT IN (SELECT `id`
-                                      FROM `".$this-getTable()."`))");
+                                      FROM `".$this->getTable()."`))");
 
       $current_rights = $this->fields;
       unset($current_rights["id"]);
@@ -136,7 +136,7 @@ class PluginReportsProfile extends CommonDBTM {
 
       // Delete unused profiles
       $DB->query("DELETE
-                  FROM `".$this-getTable()."`
+                  FROM `".$this->getTable()."`
                   WHERE `id` NOT IN (SELECT `id`
                                      FROM `glpi_profiles`)");
    }
