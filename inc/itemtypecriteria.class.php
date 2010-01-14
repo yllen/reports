@@ -36,60 +36,40 @@
 /**
  * Ticket status selection criteria
  */
-class PluginReportsTicketStatusCriteria extends PluginReportsDropdownCriteria {
-   private $option = 1;
+class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
+   private $types = array();
 
-   function __construct($report, $name='status', $label='', $option=1) {
+   function __construct($report, $name='itemtype',$label='',$types=array()) {
       global $LANG;
 
-      parent::__construct($report, $name, "no_table", ($label ? $label : $LANG['joblist'][0]));
-      $this->option = $option;
+      parent::__construct($report, $name, "no_table", ($label ? $label : $LANG['state'][6]));
+      if (count($types)) {
+         $this->types = $types;
+      } else {
+         $this->types = getAllTypesForHelpdesk();
+         $this->types[''] = $LANG['common'][66];
+      }
    }
 
 
    function getSubName() {
-      return " " . $this->getCriteriaLabel() . " : " . Ticket::getStatus($this->getParameterValue());
+      global $LANG;
+
+      $itemtype = $this->getParameterValue();
+      if ($itemtype && get_class($itemtype)) {
+         $item = new $itemtype();
+         $name = $item->getTypeName();
+      } else {
+         $name = $LANG['common'][66];
+      }
+      return " " . $this->getCriteriaLabel() . " : " . $name;
    }
 
 
    public function displayDropdownCriteria() {
-      Ticket::dropdownStatus($this->getName(), $this->getParameterValue(),$this->option);
+      Dropdown::showFromArray($this->getName(), $this->types, array('value'=>$this->getParameterValue()));
    }
 
-   /**
-    * Get SQL code associated with the criteria
-    */
-   public function getSqlCriteriasRestriction($link = 'AND') {
-
-      $status = $this->getParameterValue();
-      switch ($status) {
-         case "notold" :
-            $list = "'new','plan','assign','waiting'";
-            break;
-
-         case "old" :
-            $list = "'solved','closed'";
-            break;
-
-         case "process" :
-            $list = "'plan','assign'";
-            break;
-
-         case "new" :
-         case "assign" :
-         case "plan" :
-         case "waiting" :
-         case "solved" :
-         case "closed" :
-            $list = "'$status'";
-            break;
-
-         case "all" :
-         default :
-            return '';
-      }
-      return $link . " " . $this->getSqlField() . " IN ($list) ";
-   }
 }
 
 ?>

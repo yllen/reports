@@ -34,14 +34,49 @@
 // ----------------------------------------------------------------------
 
 /**
- * Ticket category selection criteria
+ * User titles selection criteria
  */
-class PluginReportsTicketCategoryCriteria extends PluginReportsDropdownCriteria {
+class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report, $name='ticketcategories_id', $label='') {
+   private $signe = '=';
+   private $min   = 0;
+   private $max   = 100;
+   private $coef  = 1;
+
+   function __construct($report, $name='value', $label='', $signe='=', $min=0, $max=100, $coef=1) {
       global $LANG;
-      parent :: __construct($report, $name, "glpi_ticketcategories", ($label ? $label : $LANG['common'][36]));
+
+      parent :: __construct($report,$name,'no_table');
+      $this->setOptions($signe,$min,$max,$coef);
+      $this->addCriteriaLabel($name, ($label ? $label :$LANG['financial'][21]));
+   }
+
+   function setDefaultValues() {
+      $this->addParameter($this->getName(),0);
+   }
+
+   function setOptions($signe='=', $min=0, $max=100, $coef=1) {
+      $this->signe = $signe;
+      $this->min   = $min;
+      $this->max   = $max;
+      $this->coef  = $coef;
+   }
+
+   function displayCriteria() {
+      global $LANG;
+      $this->getReport()->startColumn();
+      echo $this->getCriteriaLabel();
+      $this->getReport()->endColumn();
+
+      $this->getReport()->startColumn();
+      Dropdown::showInteger($this->getName(),$this->getParameterValue(),
+                            $this->min, $this->max, 1);
+      $this->getReport()->endColumn();
+   }
+
+   function getSqlCriteriasRestriction($link = 'AND') {
+      $param = $this->getParameterValue();
+      return $link." ".$this->getSqlField().$this->signe."'".($param*$this->coef)."' ";
    }
 }
-
 ?>

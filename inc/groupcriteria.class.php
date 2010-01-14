@@ -38,9 +38,9 @@
  */
 class PluginReportsGroupCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report) {
+   function __construct($report, $name='group', $label='') {
       global $LANG;
-      parent :: __construct($report, "group", "glpi_groups", $LANG['common'][35]);
+      parent :: __construct($report, $name, "glpi_groups", ($label ? $label : $LANG['common'][35]));
    }
 }
 

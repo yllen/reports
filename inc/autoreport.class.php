@@ -437,6 +437,16 @@ class PluginReportsAutoReport {
       $this->criterias[] = $criteria;
    }
 
+   /**
+    * Delete a criteria
+    */
+   function delCriteria($name) {
+      foreach ($this->criterias as $key => $crit) {
+         if ($crit->getName() == $name) {
+            unset($this->criterias[$key]);
+         }
+      }
+   }
 
    /**
    * Add a new column in the criterias selection form

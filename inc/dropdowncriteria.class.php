@@ -230,14 +230,15 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
       if ($this->getParameterValue() || $this->searchzero) {
          if (!$this->childrens) {
-            return $link . " " . $this->getSqlField() . "=" . $this->getParameterValue() . " ";
-         } else {
+            return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
+         } else  if ($this->getParameterValue()) {
             return $link . " " . $this->getSqlField() .
-                   " IN (" . implode(',', getSonsOfTreeItem($this->getTable(),
-                                                            $this->getParameterValue())) . ") ";
+                   " IN (" . implode(',', getSonsOf($this->getTable(),
+                                                    $this->getParameterValue())) . ") ";
          }
+         // 0 + its child means ALL
       }
-      // Zero => means all => no criteria
+      // Zero => means ALL => no criteria
       return '';
    }
 }
