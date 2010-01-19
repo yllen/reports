@@ -51,8 +51,9 @@ class PluginReportsAutoReport {
    private $name = "";
    private $subname = "";
    private $cpt = 0;
+   private $title = '';
 
-   function __construct($name='') {
+   function __construct($name='', $title='') {
 
       if (empty($name)) {
          $this->name = basename($_SERVER['SCRIPT_NAME'],'.php');
@@ -60,6 +61,7 @@ class PluginReportsAutoReport {
          $this->name = $name;
       }
       includeLocales($this->name);
+      $this->setTitle($title);
    }
 
 
@@ -126,6 +128,23 @@ class PluginReportsAutoReport {
       $this->name = $name;
    }
 
+   /**
+   * Set report's Title
+   * @param $title the title of the report
+   **/
+   function setTitle($title) {
+      global $LANG;
+
+      if ($title) {
+         $this->title = $title;
+
+      } else {
+         $this->title = (isset ($LANG['plugin_reports'][$this->name][1])
+                           ? $LANG['plugin_reports'][$this->name][1]
+                           : $LANG['plugin_reports']['config'][10]);
+      }
+   }
+
 
    /**
    * Set the report's subname
@@ -188,9 +207,7 @@ class PluginReportsAutoReport {
          $output_type = HTML_OUTPUT;
       }
 
-      $title = (isset ($LANG['plugin_reports'][$this->name][1])
-                ? $LANG['plugin_reports'][$this->name][1] : $LANG['plugin_reports']['config'][10]);
-
+      $title = $this->title;
       if ($this->subname) {
          $title .= " - $this->subname";
       }

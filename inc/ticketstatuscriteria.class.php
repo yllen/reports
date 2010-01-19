@@ -37,13 +37,21 @@
  * Ticket status selection criteria
  */
 class PluginReportsTicketStatusCriteria extends PluginReportsDropdownCriteria {
-   private $option = 1;
+   private $choice = array();
 
    function __construct($report, $name='status', $label='', $option=1) {
       global $LANG;
 
       parent::__construct($report, $name, "no_table", ($label ? $label : $LANG['joblist'][0]));
-      $this->option = $option;
+      if (is_array($option)) {
+         foreach ($option as $opt) {
+            $this->choice[$opt] = Ticket::getStatus($opt);
+         }
+      } else if ($option == 1) {
+         $this->choice = Ticket::getAllStatusArray(true);
+      } else {
+         $this->choice = Ticket::getAllStatusArray(false);
+      }
    }
 
 
@@ -56,7 +64,8 @@ class PluginReportsTicketStatusCriteria extends PluginReportsDropdownCriteria {
 
 
    public function displayDropdownCriteria() {
-      Ticket::dropdownStatus($this->getName(), $this->getParameterValue(),$this->option);
+      //Ticket::dropdownStatus($this->getName(), $this->getParameterValue(), $this->option);
+      Dropdown::showFromArray($this->getName(), $this->choice, array('value'=>$this->getParameterValue()));
    }
 
    /**
