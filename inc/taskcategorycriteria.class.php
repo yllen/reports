@@ -34,40 +34,13 @@
 // ----------------------------------------------------------------------
 
 /**
- * Ticket status selection criteria
+ * Ticket category selection criteria
  */
-class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
-   private $types = array();
+class PluginReportsTaskCategoryCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report, $name='itemtype',$label='',$types=array()) {
+   function __construct($report, $name='taskcategories_id', $label='') {
       global $LANG;
-
-      parent::__construct($report, $name, "no_table", ($label ? $label : $LANG['state'][6]));
-      if (count($types)) {
-         $this->types = $types;
-      } else {
-         $this->types = getAllTypesForHelpdesk();
-         $this->types[''] = $LANG['common'][66];
-      }
-   }
-
-
-   function getSubName() {
-      global $LANG;
-
-      $itemtype = $this->getParameterValue();
-      if ($itemtype && get_class($itemtype)) {
-         $item = new $itemtype();
-         $name = $item->getTypeName();
-      } else {
-         $name = $LANG['common'][66];
-      }
-      return " " . $this->getCriteriaLabel() . " : " . $name;
-   }
-
-
-   public function displayDropdownCriteria() {
-      Dropdown::showFromArray($this->getName(), $this->types, array('value'=>$this->getParameterValue()));
+      parent :: __construct($report, $name, "taskcategories", ($label ? $label : $LANG['setup'][98]));
    }
 }
 

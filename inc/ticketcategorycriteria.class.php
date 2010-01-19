@@ -40,7 +40,7 @@ class PluginReportsTicketCategoryCriteria extends PluginReportsDropdownCriteria 
 
    function __construct($report, $name='ticketcategories_id', $label='') {
       global $LANG;
-      parent :: __construct($report, $name, "glpi_ticketcategories", ($label ? $label : $LANG['common'][36]));
+      parent :: __construct($report, $name, "glpi_ticketcategories", ($label ? $label : $LANG['setup'][79]));
    }
 }
 
