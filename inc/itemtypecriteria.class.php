@@ -56,11 +56,13 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       global $LANG;
 
       $itemtype = $this->getParameterValue();
-      if ($itemtype && get_class($itemtype)) {
+      if ($itemtype && class_exists($itemtype)) {
          $item = new $itemtype();
          $name = $item->getTypeName();
       } else {
-         $name = $LANG['common'][66];
+         //$name = $LANG['common'][66];
+         // All
+         return '';
       }
       return " " . $this->getCriteriaLabel() . " : " . $name;
    }

@@ -48,6 +48,9 @@ class PluginReportsTicketStatusCriteria extends PluginReportsDropdownCriteria {
 
 
    function getSubName() {
+      if ($this->getParameterValue()=='all') {
+         return '';
+      }
       return " " . $this->getCriteriaLabel() . " : " . Ticket::getStatus($this->getParameterValue());
    }
 

@@ -188,9 +188,18 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
     * Get criteria's subtitle
     */
    public function getSubName() {
+      global $LANG;
 
-      return " " . $this->getCriteriaLabel() . " : " .
-              Dropdown::getDropdownName($this->getTable(), $this->getParameterValue());
+      $value = $this->getParameterValue();
+      if ($value) {
+         return $this->getCriteriaLabel()." : ".Dropdown::getDropdownName($this->getTable(), $value);
+      }
+      if ($this->searchzero) {
+         // zero
+         return $this->getCriteriaLabel() . " : " . $LANG['common'][49];
+      }
+      // All
+      return '';
    }
 
 

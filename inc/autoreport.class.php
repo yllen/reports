@@ -145,8 +145,10 @@ class PluginReportsAutoReport {
       $prefix = "";
       //Get all criteria's subnames and add it to the report's subname
       foreach ($this->criterias as $criteria) {
-         $subname .= $prefix.$criteria->getSubName();
-         $prefix = " - ";
+         if ($name = $criteria->getSubName()) {
+            $subname .= $prefix.$name;
+            $prefix = " - ";
+         }
       }
 
       $this->subname = $subname;
