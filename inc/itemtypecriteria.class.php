@@ -46,7 +46,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       if (count($types)) {
          $this->types = $types;
       } else {
-         $this->types = getAllTypesForHelpdesk();
+         $this->types = Ticket::getAllTypesForHelpdesk();
          $this->types[''] = $LANG['common'][66];
       }
    }
