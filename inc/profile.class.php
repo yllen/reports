@@ -55,8 +55,13 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
-   function showForm($target,$id){
+   function showForm($id, $options=array()){
       global $LANG,$DB;
+
+      $target = $this->getFormURL();
+      if (isset($options['target'])) {
+        $target = $options['target'];
+      }
 
       if ($id > 0){
          $this->check($id,'r');
@@ -66,7 +71,7 @@ class PluginReportsProfile extends CommonDBTM {
 
       $canedit=$this->can($id,'w');
 
-      echo "<form action='$target' method='post'>";
+      echo "<form action='".$target."' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='3' class='center b'>".
              $LANG['plugin_reports']['config'][4]." ".$this->fields["profile"]."</th></tr>";

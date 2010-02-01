@@ -69,7 +69,8 @@ function plugin_headings_reports($item, $withtemplate=0) {
          if (!$prof->getFromDB($id)) {
             $prof->createaccess($id);
          }
-         $prof->showForm($CFG_GLPI["root_doc"]."/plugins/reports/front/profile.form.php",$id);
+         $prof->showForm($id,
+                         array('target' => $CFG_GLPI["root_doc"]."/plugins/reports/front/profile.form.php"));
          break;
    }
 }
