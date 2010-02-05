@@ -47,16 +47,11 @@ function plugin_init_reports() {
    $plugin = new plugin;
 
    //Define only for bookmarks
-   Plugin::registerClass('PluginReportsReport',
-                         array('classname'  => 'PluginReportsReport',
-                               'typename'   => $LANG['plugin_reports']['title'][1]));
+   Plugin::registerClass('PluginReportsReport');
 
-   Plugin::registerClass('PluginReportsStat',
-                         array('classname'  => 'PluginReportsStat',
-                               'typename'   => $LANG['Menu'][13]));
+   Plugin::registerClass('PluginReportsStat');
 
-   Plugin::registerClass('PluginReportsProfile',
-                         array ('classname' => 'PluginReportsProfile'));
+   Plugin::registerClass('PluginReportsProfile');
 
 
    $PLUGIN_HOOKS['change_profile']['reports'] = array('PluginReportsProfile','changeprofile');
