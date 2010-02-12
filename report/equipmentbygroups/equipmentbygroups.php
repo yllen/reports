@@ -211,7 +211,6 @@ function displayUserDevices($type, $result) {
    global $DB, $CFG_GLPI, $LANG;
 
    $item = new $type();
-   $cansee = haveTypeRight($type, "r");
    while ($data = $DB->fetch_array($result)) {
       $link = $data["name"];
       $url = getItemTypeFormURL("$type");

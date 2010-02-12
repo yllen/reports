@@ -227,7 +227,8 @@ $choix = array('Computer'         => $LANG["Menu"][0],
                'Phone'            => $LANG["help"][35]);
 
 foreach ($choix as $id => $name) {
-   if (haveTypeRight($id, "r")) {
+   $item = new $id();
+   if ($item->canView()) {
       echo "<option value='" . $id;
       if (isset($_POST["type"]) && $_POST["type"]==$id) {
          echo "' selected='selected'>";
