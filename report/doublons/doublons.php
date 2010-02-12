@@ -41,7 +41,8 @@ include (GLPI_ROOT . "/inc/includes.php");
 includeLocales("doublons");
 
 plugin_reports_checkRight("doublons","r");
-checkSeveralRightsAnd(array('computer' => "r"));
+$computer = new Computer();
+$computer->checkGlobal('r');
 
 commonHeader($LANG['plugin_reports']['doublons'][1],$_SERVER['PHP_SELF'],"utils","report");
 

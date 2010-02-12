@@ -41,8 +41,10 @@ include (GLPI_ROOT . "/inc/includes.php");
 includeLocales("histoinst");
 
 plugin_reports_checkRight("histoinst","r");
-checkSeveralRightsAnd(array('computer' => 'r', 
-                            'software' => 'r'));
+$computer = new Computer();
+$computer->checkGlobal('r');
+$software = new Software();
+$software->checkGlobal('r');
 
 commonHeader($LANG['plugin_reports']['histoinst'][1],$_SERVER['PHP_SELF'],"utils","report");
 

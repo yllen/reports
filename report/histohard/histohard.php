@@ -41,7 +41,8 @@ include (GLPI_ROOT . "/inc/includes.php");
 includeLocales("histohard");
 
 plugin_reports_checkRight("histohard","r");
-checkSeveralRightsAnd(array('computer' => 'r'));
+$computer = new Computer();
+$computer->checkGlobal('r');
 
 commonHeader($LANG['plugin_reports']['histohard'][1],$_SERVER['PHP_SELF'],"utils","report");
 
