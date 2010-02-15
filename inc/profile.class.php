@@ -37,13 +37,9 @@ class PluginReportsProfile extends CommonDBTM {
 
 
    //if profile deleted
-   function cleanProfiles($id) {
-      global $DB;
-
-      $query = "DELETE
-                FROM `".$this->getTable()."`
-                WHERE `id` = '$id' ";
-      $DB->query($query);
+   static function cleanProfiles(Profile $prof) {
+      $plugprof = new self();
+      $plugprof->delete(array('id'=>$prof->getField("id")));
    }
 
    function canCreate() {

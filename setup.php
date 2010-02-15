@@ -61,8 +61,8 @@ function plugin_init_reports() {
       $PLUGIN_HOOKS['headings_action']['reports'] = 'plugin_headings_actions_reports';
       $PLUGIN_HOOKS['config_page']['reports']     = 'front/config.form.php';
    }
-   $PLUGIN_HOOKS['menu_entry']['reports']      = false;
-   $PLUGIN_HOOKS['pre_item_purge']['reports'] = 'plugin_pre_item_purge_reports';
+   $PLUGIN_HOOKS['menu_entry']['reports']     = false;
+   $PLUGIN_HOOKS['pre_item_purge']['reports'] = array('Profile' => array('PluginReportsProfile','cleanProfiles'));
 
    $rightreport = array ();
    $rightstats = array ();

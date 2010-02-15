@@ -76,20 +76,6 @@ function plugin_headings_reports($item, $withtemplate=0) {
 }
 
 
-// Hook done on delete item case
-function plugin_pre_item_purge_reports($item) {
-
-   switch (get_class($item)) {
-      case 'Profile' :
-         // Manipulate data if needed
-         $ReportProfile = new PluginReportsProfile;
-         $ReportProfile->cleanProfiles($item-getField('id'));
-         break;
-   }
-   return $item;
-}
-
-
 function plugin_reports_install() {
    global $DB;
 
