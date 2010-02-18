@@ -271,9 +271,9 @@ class PluginReportsAutoReport {
          $nbcols = $DB->num_fields($res);
          $nbrows = $DB->numrows($res);
 
-         echo displaySearchHeader($output_type, $nbrows, $nbcols, true);
+         echo Search::showHeader($output_type, $nbrows, $nbcols, true);
 
-         echo displaySearchNewLine($output_type);
+         echo Search::showNewLine($output_type);
          $num = 1;
 
          // fill $sqlcols with default sql query fields so we can validate $columns
@@ -287,19 +287,19 @@ class PluginReportsAutoReport {
             foreach ($this->columns as $colname => $coltitle) {
                // display only $columns that are valid
                if (in_array($colname, $sqlcols)) {
-                  echo displaySearchHeaderItem($output_type, $coltitle, $num);
+                  echo Search::showHeaderItem($output_type, $coltitle, $num);
                   $colsname[] = $colname;
                }
             }
          } else { // else display default columns from SQL query
             foreach ($sqlcols as $colname => $coltitle) {
-               echo displaySearchHeaderItem($output_type, $coltitle, $num);
+               echo Search::showHeaderItem($output_type, $coltitle, $num);
             }
             $colsname = $sqlcols;
             unset($sqlcols);
          }
 
-         echo displaySearchEndLine($output_type);
+         echo Search::showEndLine($output_type);
 
          $prev = "";
          for ($row_num = 2 ; $row = $DB->fetch_assoc($res) ; $row_num++) {
@@ -310,7 +310,7 @@ class PluginReportsAutoReport {
                }
             }
 
-            echo displaySearchNewLine($output_type);
+            echo Search::showNewLine($output_type);
             $num = 1;
 
             foreach ($colsname as $colname) {
@@ -324,23 +324,23 @@ class PluginReportsAutoReport {
                }
 
                if (!in_array($colname, $this->group_by)) {
-                  echo displaySearchItem($output_type, $row[$colname], $num, $row_num);
+                  echo Search::showItem($output_type, $row[$colname], $num, $row_num);
                } else if ($crt == $prev) {
-                  echo displaySearchItem($output_type,
+                  echo Search::showItem($output_type,
                                          ($output_type == CSV_OUTPUT ? $row[$colname] : ""),
                                          $num, $row_num);
                } else if ($output_type == HTML_OUTPUT) {
-                  echo displaySearchItem($output_type, "<strong>" . $row[$colname] . "</strong>",
+                  echo Search::showItem($output_type, "<strong>" . $row[$colname] . "</strong>",
                                          $num, $row_num);
                } else {
-                  echo displaySearchItem($output_type, $row[$colname], $num, $row_num);
+                  echo Search::showItem($output_type, $row[$colname], $num, $row_num);
                }
             } // Each column
-            echo displaySearchEndLine($output_type);
+            echo Search::showEndLine($output_type);
             $prev = $crt;
          } // Each row
       }
-      echo displaySearchFooter($output_type, $title);
+      echo Search::showFooter($output_type, $title);
 
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
          commonFooter();
