@@ -113,7 +113,7 @@ function plugin_version_reports() {
                 'version'  => '1.4.0',
                 'author'   => 'Nelly LASSON',
                 'homepage' => 'https://forge.indepnet.net/projects/show/reports',
-                'minGlpiVersion' => '0.80');
+                'minGlpiVersion' => '0.78');
 }
 
 
@@ -157,8 +157,8 @@ function plugin_reports_checkRight($module, $right) {
 function plugin_reports_check_prerequisites() {
    global $LANG;
 
-   if (GLPI_VERSION < 0.80) {
-      echo "GLPI version not compatible need 0.80";
+   if (GLPI_VERSION < 0.78) {
+      echo "GLPI version not compatible need 0.78";
    } else {
       return true;
    }
