@@ -52,6 +52,20 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->addParameter("enddate", $enddate);
    }
 
+   public function getStartDate() {
+      $start = $this->getParameter("startdate");
+      $end   = $this->getParameter("enddate");
+
+      return ($start < $end ? $start : $end);
+   }
+
+   public function getEndDate() {
+      $start = $this->getParameter("startdate");
+      $end   = $this->getParameter("enddate");
+
+      return ($start < $end ? $end : $start);
+   }
+
 
    public function setDefaultValues() {
       $this->setStartDate(date("Y-m-d"));
@@ -67,7 +81,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      showDateFormItem("startdate", $this->getParameter("startdate"), false);
+      showDateFormItem("startdate", $this->getStartDate(), false);
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -75,7 +89,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      showDateFormItem("enddate", $this->getParameter("enddate"), false);
+      showDateFormItem("enddate", $this->getEndDate(), false);
       $this->getReport()->endColumn();
    }
 
@@ -83,8 +97,8 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
    public function getSqlCriteriasRestriction($link = 'AND') {
 
       return $link . " " .
-             $this->getSqlField() . " >= '" . $this->getParameter("startdate") . " 00:00:00' AND " .
-             $this->getSqlField() . "<='" . $this->getParameter("enddate") . " 23:59:59' ";
+             $this->getSqlField() . " >= '" . $this->getStartDate() . " 00:00:00' AND " .
+             $this->getSqlField() . "<='" . $this->getEndDate() . " 23:59:59' ";
    }
 
 
@@ -93,8 +107,8 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
       return (isset($LANG['plugin_reports']['subname'][$this->getName()])
               ? $LANG['plugin_reports']['subname'][$this->getName()] : '') .
-             " (" . convDate($this->getParameter("startdate")) . "," .
-                convDate($this->getParameter("enddate")) . ")";
+             " (" . convDate($this->getStartDate()) . "," .
+                convDate($this->getEndDate()) . ")";
    }
 
 }

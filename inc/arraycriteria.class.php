@@ -36,23 +36,30 @@
 /**
  * Ticket status selection criteria
  */
-class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
+class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
    private $choice = array();
 
-   function __construct($report, $name='status', $label='', $option=1) {
+   function __construct($report, $name, $label='', $options=array()) {
       global $LANG;
 
-      if (is_array($option)) {
-         foreach ($option as $opt) {
-            $tab[$opt] = Ticket::getStatus($opt);
-         }
-      } else if ($option == 1) {
-         $tab = Ticket::getAllStatusArray(true);
-      } else {
-         $tab = Ticket::getAllStatusArray(false);
+      parent::__construct($report, $name, "no_table", ($label ? $label : $LANG['rulesengine'][16]));
+      $this->choice = $options;
+   }
+
+
+   function getSubName() {
+
+      $val = $this->getParameterValue();
+      if (empty($val) || $val=='all') {
+         return '';
       }
-      // Parent is PluginReportsArrayCriteria
-      parent::__construct($report, $name, ($label ? $label : $LANG['joblist'][0]), $tab);
+      return " " . $this->getCriteriaLabel() . " : " . $this->choice[$val];
+   }
+
+
+   public function displayDropdownCriteria() {
+
+      Dropdown::showFromArray($this->getName(), $this->choice, array('value'=>$this->getParameterValue()));
    }
 
    /**
@@ -60,34 +67,8 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
     */
    public function getSqlCriteriasRestriction($link = 'AND') {
 
-      $status = $this->getParameterValue();
-      switch ($status) {
-         case "notold" :
-            $list = "'new','plan','assign','waiting'";
-            break;
-
-         case "old" :
-            $list = "'solved','closed'";
-            break;
-
-         case "process" :
-            $list = "'plan','assign'";
-            break;
-
-         case "new" :
-         case "assign" :
-         case "plan" :
-         case "waiting" :
-         case "solved" :
-         case "closed" :
-            $list = "'$status'";
-            break;
-
-         case "all" :
-         default :
-            return '';
-      }
-      return $link . " " . $this->getSqlField() . " IN ($list) ";
+      return $link . " " . $this->getSqlField() . " = '".$this->getParameterValue()."' ";
    }
 }
+
 ?>
