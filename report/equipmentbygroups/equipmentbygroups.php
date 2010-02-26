@@ -178,7 +178,7 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
                      ON (`".$item->getTable()."`.`id` = `glpi_infocoms`.`items_id`
                          AND `itemtype` = '$type')
                 WHERE `groups_id` = '$group_id'
-                      AND `entities_id` = '$entity'
+                      AND `".$item->getTable()."`.`entities_id` = '$entity'
                       AND `is_template` = '0'
                       AND `is_deleted` = '0'";
 

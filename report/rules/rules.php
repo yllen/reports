@@ -64,7 +64,7 @@ function plugin_reports_rulelist ($rulecollection, $title) {
       echo "<td>" . $rule->fields["name"] . "</td>";
       echo "<td>" . $rule->fields["description"] . "</td>";
 
-      if ($rule->fields["match"] == AND_MATCHING) {
+      if ($rule->fields["match"] == Rule::AND_MATCHING) {
          echo "<td>".$LANG["rulesengine"][42]."</td>";
       } else {
          echo "<td>".$LANG["rulesengine"][43]."</td>";
@@ -73,7 +73,7 @@ function plugin_reports_rulelist ($rulecollection, $title) {
       echo "<td>";
       foreach ($rule->criterias as $criteria) {
          echo $rule->getCriteriaName($criteria->fields["criteria"]) . " " .
-               getConditionByID($criteria->fields["condition"]) . " " .
+               RuleCriteria::getConditionByID($criteria->fields["condition"]) . " " .
                $rule->getCriteriaDisplayPattern($criteria->fields["criteria"],
                                                 $criteria->fields["condition"],
                                                 $criteria->fields["pattern"]) . "<br>";
@@ -82,7 +82,7 @@ function plugin_reports_rulelist ($rulecollection, $title) {
       echo "<td>";
       foreach ($rule->actions as $action) {
          echo $rule->getActionName($action->fields["field"]) . " " .
-               getActionByID($action->fields["action_type"]) . " " .
+               RuleAction::getActionByID($action->fields["action_type"]) . " " .
                stripslashes($rule->getActionValue($action->fields["field"],
                             $action->fields["value"])) . "<br>";
       }
