@@ -41,11 +41,11 @@ function doStatBis ($table, $entities, $header) {
    $counts = array();
    foreach ($entities as $entity) {
       // Count for this entity
-      $sql = "SELECT `states_id`, count(*) AS cpt 
+      $sql = "SELECT `states_id`, count(*) AS cpt
               FROM `$table`
               WHERE `is_deleted` = '0'
                     AND `is_template` = '0'
-                    AND `entities_id` = '$entity' 
+                    AND `entities_id` = '$entity'
               GROUP BY `states_id`";
 
       $result = $DB->query($sql);
@@ -87,7 +87,7 @@ function doStatBis ($table, $entities, $header) {
          $total["tot"] += $count["tot"];
          foreach ($header as $id => $name) {
             echo "<td class='right'>" . $count[$id] . "</td>";
-            $total[$id] += $count[$id];		
+            $total[$id] += $count[$id];
          }
       }
       echo "</tr>\n";
@@ -112,7 +112,7 @@ function doStat ($table, $entity, $header, $level=0) {
    $Ent->getFromDB($entity);
 
    // Count for this entity
-   $sql = "SELECT `states_id`, count(*) AS cpt 
+   $sql = "SELECT `states_id`, count(*) AS cpt
            FROM `$table`
            WHERE `is_deleted` = '0'
                  AND `is_template` = '0'
@@ -192,9 +192,9 @@ function doStatChilds($table, $entity, $header, &$total, $level) {
    while ($data = $DB->fetch_array($result)) {
       $fille = doStat($table, $data["id"], $header, $level);
       foreach ($header as $id => $name) {
-         $total[$id] += $fille[$id];	
-      } 
-      $total["tot"] += $fille["tot"];	
+         $total[$id] += $fille[$id];
+      }
+      $total["tot"] += $fille["tot"];
    }
 }
 
@@ -202,11 +202,11 @@ function doStatChilds($table, $entity, $header, &$total, $level) {
 $USEDBREPLICATE = 1;
 $DBCONNECTION_REQUIRED = 0;
 
-define('GLPI_ROOT', '../../../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
+define('GLPI_ROOT', '../../../..');
+include (GLPI_ROOT . "/inc/includes.php");
 
 includeLocales("pcsbyentity");
-plugin_reports_checkRight("pcsbyentity","r");
+plugin_reports_checkRight('reports', "pcsbyentity","r");
 commonHeader($LANG['plugin_reports']['pcsbyentity'][1],$_SERVER['PHP_SELF'],"utils","report");
 
 echo "<div class='center'>";
@@ -214,15 +214,15 @@ echo "<div class='center'>";
 // ---------- Form ------------
 echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'>";
 echo "<table class='tab_cadre' cellpadding='5'>\n";
-echo "<tr class='tab_bg_1 center'><th colspan='2'>" . $LANG['plugin_reports']['pcsbyentity'][1] . 
+echo "<tr class='tab_bg_1 center'><th colspan='2'>" . $LANG['plugin_reports']['pcsbyentity'][1] .
       "</th></tr>\n";
-echo "<tr class='tab_bg_1'><td class='right'>" . $LANG['plugin_reports']['pcsbyentity'][2] . 
+echo "<tr class='tab_bg_1'><td class='right'>" . $LANG['plugin_reports']['pcsbyentity'][2] .
       "&nbsp;:&nbsp;</td>";
 echo "<td><select name='type'><option value=''>-----</option>";
 
-$choix = array('Computer'         => $LANG["Menu"][0], 
+$choix = array('Computer'         => $LANG["Menu"][0],
                'Monitor'          => $LANG["Menu"][3],
-               'Printer'          => $LANG["Menu"][2], 
+               'Printer'          => $LANG["Menu"][2],
                'NetworkEquipment' => $LANG["title"][6],
                'Phone'            => $LANG["help"][35]);
 
@@ -241,11 +241,11 @@ foreach ($choix as $id => $name) {
 echo "</select></td></tr>\n";
 
 if (count($_SESSION["glpiactiveentities"]) > 1) {
-   echo "<tr class='tab_bg_1'><td class='right'>" . $LANG['plugin_reports']['pcsbyentity'][5] . 
+   echo "<tr class='tab_bg_1'><td class='right'>" . $LANG['plugin_reports']['pcsbyentity'][5] .
          "&nbsp;:&nbsp;</td>";
    echo "<td><select name='sort'><option value='0'>".$LANG['plugin_reports']['pcsbyentity'][6].
          "</option>";
-   echo "<option value='1'>".$LANG['plugin_reports']['pcsbyentity'][7]."</option></select></td></tr>\n";	
+   echo "<option value='1'>".$LANG['plugin_reports']['pcsbyentity'][7]."</option></select></td></tr>\n";
 }
 
 echo "<tr class='tab_bg_1 center'><td colspan='2'><input type='submit' value='valider' class='submit'/>";
@@ -276,7 +276,7 @@ if (isset($_POST["type"]) && $_POST["type"] != '') {
       doStatBis(getTableForItemType($_POST["type"]), $_SESSION["glpiactiveentities"], $header);
    } else {
       doStat(getTableForItemType($_POST["type"]), $_SESSION["glpiactive_entity"], $header);
-   }	
+   }
    echo "</table></div>";
 }
 

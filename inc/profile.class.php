@@ -69,26 +69,26 @@ class PluginReportsProfile extends CommonDBTM {
 
       echo "<form action='".$target."' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='3' class='center b'>".
+      echo "<tr><th colspan='4' class='center b'>".
              $LANG['plugin_reports']['config'][4]." ".$this->fields["profile"]."</th></tr>";
 
-      $tab = searchReport(GLPI_ROOT."/plugins/reports/report");
-
-      foreach($tab as $key => $value) {
+      foreach(searchReport() as $key => $plug) {
+         $mod = ($plug=='reports' ? $key : "${plug}_${key}");
          echo "<tr class='tab_bg_1'>";
+         echo "<td>$plug</td>";
          if (strpos($key,'stat') === false) {
             echo "<td>".$LANG['Menu'][6]."</td>";
          } else {
             echo "<td>".$LANG['Menu'][13]."</td>";
          }
-         echo "<td>".$LANG['plugin_reports'][$key][1]." :</td><td>";
-         Profile::dropdownNoneReadWrite($key,(isset($this->fields[$key])?$this->fields[$key]:''),1,1,0);
+         echo "<td>".$LANG["plugin_$plug"][$key][1]." :</td><td>";
+         Profile::dropdownNoneReadWrite($mod,(isset($this->fields[$mod])?$this->fields[$mod]:''),1,1,0);
          echo "</td></tr>";
       }
 
       if ($canedit) {
          echo "<tr class='tab_bg_1'>";
-         echo "<td class='center' colspan='3'>";
+         echo "<td class='center' colspan='4'>";
          echo "<input type='hidden' name='id' value=$id>";
          echo "<input type='submit' name='update_user_profile' value='".
                 $LANG['buttons'][7]."' class='submit'>";
@@ -98,9 +98,17 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
-   function updateRights($id,$rights) {
+   function updateRights($reports) {
       global $DB;
 
+      $rights = array();
+      foreach($reports as $report => $plug) {
+         if ($plug =='reports') {
+            $rights[$report]=1;
+         } else {
+            $rights["${plug}_${report}"]=1;
+         }
+      }
       // Add missing profiles
       $DB->query("INSERT INTO
                   `".$this->getTable()."` (`id`, `profile`)
@@ -175,11 +183,11 @@ class PluginReportsProfile extends CommonDBTM {
    /**
     * Look for all the plugins, and update rights if necessary
     */
-   function updatePluginRights($path) {
+   function updatePluginRights() {
 
       $this->getEmpty();
-      $tab = searchReport($path, 1);
-      $this->updateRights(-1, $tab);
+      $tab = searchReport();
+      $this->updateRights($tab);
 
       return $tab;
    }

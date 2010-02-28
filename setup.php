@@ -67,30 +67,25 @@ function plugin_init_reports() {
    $rightreport = array ();
    $rightstats = array ();
 
-   foreach (searchReport("../plugins/reports/report") as $report => $val) {
-      if (plugin_reports_haveRight($report, "r")) {
-         if (isset ($LANG['plugin_reports'][$report][1])) {
-            $tmp = $LANG['plugin_reports'][$report][1];
-         } else {
-            $tmp = $report;
-         }
+   foreach (searchReport() as $report => $plug) {
+      if (plugin_reports_haveRight($plug, $report, "r")) {
+         $tmp = $LANG["plugin_$plug"][$report][1];
          //If the report's name contains 'stat' then display it in the statistics page
          //(instead of Report page)
          if (isStat($report)) {
-            $rightstats["report/$report/" . $report . ".php"] = $tmp;
+            if (!isset($PLUGIN_HOOKS['stats'][$plug])) {
+               $PLUGIN_HOOKS['stats'][$plug]=array();
+            }
+            $PLUGIN_HOOKS['stats'][$plug]["report/$report/$report.php"] = $tmp;
          } else {
-            $rightreport["report/$report/" . $report . ".php"] = $tmp;
+            if (!isset($PLUGIN_HOOKS['reports'][$plug])) {
+               $PLUGIN_HOOKS['reports'][$plug]=array();
+            }
+            $PLUGIN_HOOKS['reports'][$plug]["report/$report/$report.php"] = $tmp;
          }
       }
    }
-   if (count($rightreport) > 0) {
-      $PLUGIN_HOOKS['reports']['reports'] = $rightreport;
-   }
-   if (count($rightstats) > 0) {
-      $PLUGIN_HOOKS['stats']['reports'] = $rightstats;
-   }
 }
-
 
 /**
  * Indicate if the report must be displayed in reports or statistics menu
@@ -122,8 +117,9 @@ function plugin_reports_check_config() {
 }
 
 
-function plugin_reports_haveRight($module,$right) {
+function plugin_reports_haveRight($plug, $report, $right) {
 
+   $module = ($plug=='reports' ? $report : $plug.'_'.$report);
    $matches = array(""  => array("","r","w"), // ne doit pas arriver normalement
                     "r" => array("r","w"),
                     "w" => array("w"),
@@ -138,10 +134,10 @@ function plugin_reports_haveRight($module,$right) {
 }
 
 
-function plugin_reports_checkRight($module, $right) {
+function plugin_reports_checkRight($plug, $module, $right) {
    global $CFG_GLPI;
 
-   if (!plugin_reports_haveRight($module, $right)) {
+   if (!plugin_reports_haveRight($plug, $module, $right)) {
       // Gestion timeout session
       if (!isset ($_SESSION["glpiID"])) {
          glpi_header($CFG_GLPI["root_doc"] . "/index.php");

@@ -42,7 +42,7 @@ Plugin::load('reports',true);
 commonHeader($LANG['plugin_reports']['config'][1], $_SERVER["PHP_SELF"],"config","plugins");
 
 $prof = new PluginReportsProfile();
-$tab = $prof->updatePluginRights("../report");
+$tab = $prof->updatePluginRights();
 
 $report='';
 if (isset($_POST["report"])) {
@@ -79,9 +79,10 @@ $query = "SELECT `id`, `name`
 $result=$DB->query($query);
 
 echo "<select name='report'>";
-foreach($tab as $key => $value) {
-   echo "<option value='".$key."' ".($report==$key?"selected":"").">".
-          $LANG['plugin_reports'][$key][1]."</option>";
+foreach($tab as $key => $plug) {
+   $mod = ($plug=='reports' ? $key : $plug.'_'.$key);
+   echo "<option value='$mod' ".($report=="$mod"?"selected":"").">".
+          $LANG["plugin_$plug"][$key][1]."</option>";
 }
 echo "</select>";
 echo "<td><input type='submit' value='".$LANG['buttons'][2]."' class='submit' ></td></tr>";
@@ -105,7 +106,7 @@ if ($report) {
 
    if (haveRight("profile","w")) {
       echo "<tr class='tab_bg_1'><td colspan='2' class='center'>";
-      echo "<input type='hidden' name='report' value=$report>";
+      echo "<input type='hidden' name='report' value='$report'>";
       echo "<input type='submit' name='update' value='".$LANG['buttons'][7]."' class='submit'>&nbsp;";
       echo "<input type='submit' name='delete' value='".$LANG['buttons'][6]."' class='submit'>";
       echo "</td></tr>\n";

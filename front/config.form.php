@@ -52,12 +52,10 @@ if (haveRight("profile","w")) {
    echo "</td/></tr>\n";
 }
 if (haveRight("config","w")) {
-   $raps = searchReport("../report");
-   foreach ($raps as $key => $val) {
-      if (is_file(getReportConfigPage('..',$key))) {
+   foreach (searchReport() as $report => $plug) {
+      if (is_file($url=getReportConfigPage($plug,$report))) {
          echo "<tr class='tab_bg_1 center'><td>";
-         echo "<a href='../report/$key/".$val.".config".".php'>".
-                $LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports'][$key][1];
+         echo "<a href='$url'>".$LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports'][$report][1];
          echo "</a></td/></tr>";
       }
    }

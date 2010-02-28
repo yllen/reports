@@ -33,26 +33,18 @@
 // ----------------------------------------------------------------------
 
 /**
- * Search for reports in a directory
- * @param rep : the directory to check for new reports
- * @param substr
- * @return tab : an array which contains all the reports found in the directory
+ * Search for reports in all activated plugins
+ *
+ * @return tab : an array which contains all the reports found (name => plugin)
  */
-function searchReport($rep, $substr = 0) {
-   global $CFG_GLPI;
+function searchReport() {
+   global $DB;
 
    $tab = array ();
-
-   if (file_exists($rep)) {
-      if (is_dir($rep)) {
-         $id_dossier = opendir($rep);
-         while ($element = readdir($id_dossier)) {
-            if (substr($element, 0, 1) != ".") {
-               includeLocales($element);
-               $tab[$element] = $element;
-            }
-         }
-         closedir($id_dossier);
+   foreach ($DB->request('glpi_plugins', array('state'=>Plugin::ACTIVATED)) as $plug) {
+      foreach (glob(GLPI_ROOT.'/plugins/'.$plug['directory'].'/report/*', GLOB_ONLYDIR) as $path) {
+         $tab[basename($path)] = $plug['directory'];
+         includeLocales(basename($path), $plug['directory']);
       }
    }
 
@@ -62,12 +54,16 @@ function searchReport($rep, $substr = 0) {
 
 /**
  * Include locales for a specific report
- * @param report_name the name of the report to use
+ *
+ * @param $report_name the name of the report to use
+ * @param $plug directory of plugin
+ *
+ * @return boolean, true if locale found
  */
-function includeLocales($report_name) {
+function includeLocales($report_name, $plugin='reports') {
    global $CFG_GLPI, $LANG;
 
-   $prefix = GLPI_ROOT . "/plugins/reports/report/". $report_name ."/" . $report_name;
+   $prefix = GLPI_ROOT . "/plugins/$plugin/report/". $report_name ."/" . $report_name;
 
    if (isset ($_SESSION["glpilanguage"])
        && file_exists($prefix . "." . $CFG_GLPI["languages"][$_SESSION["glpilanguage"]][1])) {
@@ -78,8 +74,15 @@ function includeLocales($report_name) {
    } else if (file_exists($prefix . ".fr_FR.php")) {
       include_once  ($prefix . ".fr_FR.php");
    } else {
-      logInFile('php-errors', "includeLocales($report_name) => not found\n");
+      // At least defined report name
+      if (!isset($LANG["plugin_$plugin"][$report_name][1])) {
+         $LANG["plugin_$plugin"][$report_name][1] = $report_name;
+      }
+      logInFile('php-errors', "includeLocales($report_name,$plugin) => not found\n");
+      return false;
    }
+
+   return true;
 }
 
 
@@ -146,8 +149,8 @@ function displayOutputFormat() {
 }
 
 
-function getReportConfigPage($path,$report_name) {
-   return $path."/report/$report_name/".$report_name.".config".".php";
+function getReportConfigPage($plugin,$report_name) {
+   return GLPI_ROOT."/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
 }
 
 ?>

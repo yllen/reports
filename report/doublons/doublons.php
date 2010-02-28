@@ -40,7 +40,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 includeLocales("doublons");
 
-plugin_reports_checkRight("doublons","r");
+plugin_reports_checkRight('reports', "doublons","r");
 $computer = new Computer();
 $computer->checkGlobal('r');
 

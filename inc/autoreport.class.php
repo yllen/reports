@@ -56,11 +56,13 @@ class PluginReportsAutoReport {
    function __construct($name='', $title='') {
 
       if (empty($name)) {
-         $this->name = basename($_SERVER['SCRIPT_NAME'],'.php');
+         preg_match('@/plugins/(.*)/report/(.*)/@', $_SERVER['SCRIPT_NAME'], $regs);
+         $this->plug = $regs[1];
+         $this->name = $regs[2];
       } else {
-         $this->name = $name;
+         $this->setName($name);
       }
-      includeLocales($this->name);
+      includeLocales($this->name, $this->plug);
       $this->setTitle($title);
    }
 
@@ -125,7 +127,7 @@ class PluginReportsAutoReport {
    * @param name the name of the report
 	**/
    function setName($name) {
-      $this->name = $name;
+      list($this->plug,$this->name) = explode('.',$name,2);
    }
 
    /**
@@ -139,9 +141,9 @@ class PluginReportsAutoReport {
          $this->title = $title;
 
       } else {
-         $this->title = (isset ($LANG['plugin_reports'][$this->name][1])
-                           ? $LANG['plugin_reports'][$this->name][1]
-                           : $LANG['plugin_reports']['config'][10]);
+         $this->title = (isset($LANG['plugin_'.$this->plug][$this->name][1])
+                             ? $LANG['plugin_'.$this->plug][$this->name][1]
+                             : $LANG['plugin_reports']['config'][10]);
       }
    }
 
@@ -265,7 +267,7 @@ class PluginReportsAutoReport {
          printPager($start, $nbtot, $_SERVER['PHP_SELF'], $param);
       }
 
-      plugin_reports_checkRight($this->name, "r");
+      plugin_reports_checkRight($this->plug, $this->name, "r");
 
       if ($res && $nbtot >0) {
          $nbcols = $DB->num_fields($res);
@@ -361,17 +363,17 @@ class PluginReportsAutoReport {
       //Display commonHeader is output is HTML
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
          if (isStat($this->name)) {
-            commonHeader($LANG['plugin_reports'][$this->name][1], $_SERVER['PHP_SELF'],
+            commonHeader($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
                          "maintain", "stat");
          } else {
-            commonHeader($LANG['plugin_reports'][$this->name][1], $_SERVER['PHP_SELF'],
+            commonHeader($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
                          "utils", "report");
          }
       } else {
          return;
       }
 
-      plugin_reports_checkRight($this->name, "r");
+      plugin_reports_checkRight($this->plug, $this->name, "r");
 
       //Display form only if there're criterias
       if (!empty ($this->criterias)) {

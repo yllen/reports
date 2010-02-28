@@ -63,7 +63,7 @@ function plugin_headings_reports($item, $withtemplate=0) {
    switch (get_class($item)) {
       case 'Profile' :
          //Check if new reports added
-         $prof->updatePluginRights(GLPI_ROOT."/plugins/reports/report");
+         $prof->updatePluginRights();
 
          $id = $item->getField('id');
          if (!$prof->getFromDB($id)) {

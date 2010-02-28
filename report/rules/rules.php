@@ -40,7 +40,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 includeLocales("rules");
 
-plugin_reports_checkRight("rules","r");
+plugin_reports_checkRight('reports', "rules","r");
 
 function plugin_reports_rulelist ($rulecollection, $title) {
    global $LANG;

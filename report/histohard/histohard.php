@@ -40,7 +40,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 includeLocales("histohard");
 
-plugin_reports_checkRight("histohard","r");
+plugin_reports_checkRight('reports', "histohard","r");
 $computer = new Computer();
 $computer->checkGlobal('r');
 
