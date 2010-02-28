@@ -79,10 +79,18 @@ $query = "SELECT `id`, `name`
 $result=$DB->query($query);
 
 echo "<select name='report'>";
+$plugname = array();
 foreach($tab as $key => $plug) {
    $mod = ($plug=='reports' ? $key : $plug.'_'.$key);
+   if (!isset($plugname[$plug])) {
+      // Retrieve the plugin name
+      $function = "plugin_version_$plug";
+      $tmp = $function();
+      $plugname[$plug] = $tmp['name'];
+   }
+
    echo "<option value='$mod' ".($report=="$mod"?"selected":"").">".
-          $LANG["plugin_$plug"][$key][1]."</option>";
+          $plugname[$plug] . " - " . $LANG["plugin_$plug"][$key][1]."</option>";
 }
 echo "</select>";
 echo "<td><input type='submit' value='".$LANG['buttons'][2]."' class='submit' ></td></tr>";

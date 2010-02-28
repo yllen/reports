@@ -72,10 +72,17 @@ class PluginReportsProfile extends CommonDBTM {
       echo "<tr><th colspan='4' class='center b'>".
              $LANG['plugin_reports']['config'][4]." ".$this->fields["profile"]."</th></tr>";
 
+      $plugname = array();
       foreach(searchReport() as $key => $plug) {
          $mod = ($plug=='reports' ? $key : "${plug}_${key}");
          echo "<tr class='tab_bg_1'>";
-         echo "<td>$plug</td>";
+         if (!isset($plugname[$plug])) {
+            // Retrieve the plugin name
+            $function = "plugin_version_$plug";
+            $tmp = $function();
+            $plugname[$plug] = $tmp['name'];
+         }
+         echo "<td>".$plugname[$plug]."</td>";
          if (strpos($key,'stat') === false) {
             echo "<td>".$LANG['Menu'][6]."</td>";
          } else {
