@@ -55,7 +55,7 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
       global $LANG;
 
       $this->getReport()->startColumn();
-      echo $this->getCriteriaLabel();
+      echo $this->getCriteriaLabel().'&nbsp;:';
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();

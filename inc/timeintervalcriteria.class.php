@@ -63,7 +63,7 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
       global $LANG;
 
       $this->getReport()->startColumn();
-      echo $LANG['job'][21] . " " . $LANG['buttons'][33];
+      echo $LANG['job'][21] . " " . $LANG['buttons'][33].'&nbsp;:';
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -71,7 +71,7 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      echo $LANG['job'][21] . " " . $LANG['buttons'][32];
+      echo $LANG['job'][21] . " " . $LANG['buttons'][32].'&nbsp;:';
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();

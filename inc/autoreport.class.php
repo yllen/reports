@@ -149,6 +149,18 @@ class PluginReportsAutoReport {
 
 
    /**
+    * Get the report's title (main title + sub title from criteria)
+    */
+   function getFullTitle($title) {
+
+      if ($this->subname) {
+         return $this->title ." - " . $this->subname;
+      }
+      return $this->title;
+   }
+
+
+   /**
    * Set the report's subname
    * @param subname the report's subname to display
 	**/

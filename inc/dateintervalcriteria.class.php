@@ -77,7 +77,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       global $LANG;
 
       $this->getReport()->startColumn();
-      echo $LANG['search'][8];
+      echo $LANG['search'][8].'&nbsp;:';
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -85,7 +85,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      echo $LANG['search'][9] . "</td>";
+      echo $LANG['search'][9].'&nbsp;:';
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
