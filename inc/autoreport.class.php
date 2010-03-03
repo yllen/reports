@@ -151,7 +151,7 @@ class PluginReportsAutoReport {
    /**
     * Get the report's title (main title + sub title from criteria)
     */
-   function getFullTitle($title) {
+   function getFullTitle() {
 
       if ($this->subname) {
          return $this->title ." - " . $this->subname;
@@ -250,7 +250,7 @@ class PluginReportsAutoReport {
          commonHeader($title, $_SERVER['PHP_SELF'], "utils", "report");
 
          echo "<div class='center'><table class='tab_cadre_fixe'>";
-         echo "<tr><th>$title</th></th></tr>\n";
+         echo "<tr><th>$title</th></tr>\n";
          echo "<tr class='tab_bg_2 center'><td class='center'>";
          echo "<form method='POST' action='" .$_SERVER["PHP_SELF"] . "?start=$start'>\n";
 

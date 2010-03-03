@@ -84,14 +84,26 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
       $this->getReport()->endColumn();
    }
 
+   /**
+    * Get criteria's subtitle
+    */
+   public function getSubName() {
+      global $LANG;
+
+      $value = $this->getParameterValue();
+      return $this->getCriteriaLabel().' '.$this->getSign()." $value ".$this->unit;
+   }
+
+   function getSign() {
+      if (empty($this->signe)) {
+         return unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"));
+      }
+      return $this->signe;
+   }
+
    function getSqlCriteriasRestriction($link = 'AND') {
       $param = $this->getParameterValue();
-      if (empty($this->signe)) {
-         $sign = unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"));
-      } else {
-         $sign = $this->signe;
-      }
-      return $link." ".$this->getSqlField().$sign."'".($param*$this->coef)."' ";
+      return $link." ".$this->getSqlField().$this->getSign()."'".($param*$this->coef)."' ";
    }
 }
 ?>
