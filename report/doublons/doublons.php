@@ -55,12 +55,16 @@ $crits = array(0 => "-----",
                6 => $LANG['common'][20]);       // Otherserial
 
 if (isset($_GET["crit"])) {
-   $_POST = $_GET["crit"];
+   $crit = $_GET["crit"];
+} else if (isset($_POST["crit"])) {
+   $crit = $_POST["crit"];
+} else if (isset($_SESSION['plugin_reports_doublons_crit'])) {
+   $crit = $_SESSION['plugin_reports_doublons_crit'];
+} else {
+   $crit = 0;
 }
-$crit = (isset($_POST["crit"]) ? $_POST["crit"] : 0);
 
 // ---------- Form ------------
-echo "<div class='center'>";
 echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'>";
 echo "<table class='tab_cadre' cellpadding='5'>\n";
 echo "<tr class='tab_bg_1 center'><th colspan='3'>" . $LANG['plugin_reports']['doublons'][1] .
@@ -89,7 +93,7 @@ echo"</tr>\n";
 echo "<tr class='tab_bg_1 center'><td colspan='".($crit>0?'3':'2')."'>";
 echo "<input type='submit' value='valider' class='submit'/>";
 echo "</td></tr>\n";
-echo "</table>\n</form></div>\n";
+echo "</table>\n</form>\n";
 
 if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
    $IPBlacklist = "AA.`ip` != ''
@@ -156,12 +160,10 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
                   B.`manufacturers_id` AS Bmanu, BB.`specificity` AS Baddr, B.`otherserial` as Botherserial
            FROM `glpi_computers` A,
                 `glpi_computers` B,
-                `glpi_computers_devices` AA,
-                `glpi_computers_devices` BB" .
+                `glpi_computers_devicenetworkcards` AA,
+                `glpi_computers_devicenetworkcards` BB" .
            getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
-                 AND AA.`itemtype` = 'DeviceNetworkCard'
                  AND AA.`computers_id` = A.`id`
-                 AND BB.`itemtype` = 'DeviceNetworkCard'
                  AND BB.`computers_id` = B.`id`
                  AND AA.`specificity` = BB.`specificity`
                  AND AA.`specificity` NOT IN ($MacBlacklist)
@@ -218,10 +220,23 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
 }
 
 if ($crit>0) { // Display result
-   echo "<div class='center'><table class='tab_cadrehov' cellpadding='5'>" .
-      "<tr><th colspan='". ($col ? 7 : 6) ."'>" . $LANG['plugin_reports']['doublons'][2] . "</th>" .
+   $canedit = $computer->canUpdate();
+
+   // save crit for massive action
+   $_SESSION['plugin_reports_doublons_crit'] = $crit;
+
+   if ($canedit) {
+      echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"".
+            $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
+   }
+   echo "<table class='tab_cadrehov' cellpadding='5'>" .
+      "<tr><th colspan='". (($col ? 7 : 6)+($canedit ? 1 : 0)) ."'>" . $LANG['plugin_reports']['doublons'][2] . "</th>" .
       "<th class='blue' colspan='". ($col ? 7 : 6) ."'>" . $LANG['plugin_reports']['doublons'][3] . "</th></tr>\n" .
-      "<tr><th>" . $LANG["common"][2] . "</th>" .
+      "<tr>";
+   if ($canedit) {
+      echo "<th>&nbsp;</th>";
+   }
+   echo "<th>" . $LANG["common"][2] . "</th>" .
       "<th>" . $LANG["common"][16] . "</th>" .
       "<th>" . $LANG["common"][5] . "</th>" .
       "<th>" . $LANG["common"][22] . "</th>" .
@@ -229,6 +244,9 @@ if ($crit>0) { // Display result
       "<th>".$LANG['common'][20]."</th>";
    if ($col) {
       echo "<th>$col</th>";
+   }
+   if ($canedit) {
+      echo "<th>&nbsp;</th>";
    }
    echo "<th class='blue'>" . $LANG["common"][2] . "</th>" .
       "<th class='blue'>" . $LANG["common"][16] . "</th>" .
@@ -245,11 +263,14 @@ if ($crit>0) { // Display result
    for ($prev=-1, $i=0 ; $data = $DB->fetch_array($result) ; $i++) {
       if ($prev != $data["entity"]) {
          $prev = $data["entity"];
-         echo "<tr class='tab_bg_4'><td class='center' colspan='". ($col ? 14 : 12) ."'>".
+         echo "<tr class='tab_bg_4'><td class='center' colspan='". (($col ? 14 : 12)+($canedit ? 2 : 0)) ."'>".
             Dropdown::getDropdownName("glpi_entities", $prev) . "</td></tr>\n";
       }
-      echo "<tr class='tab_bg_2'>" .
-         "<td><a href='".getItemTypeFormURL('Computer')."?id=".$data["AID"]."'>".$data["AID"]."</a>".
+      echo "<tr class='tab_bg_2'>";
+      if ($canedit) {
+         echo "<td><input type='checkbox' name='item[".$data["AID"]."]' value='1'></td>";
+      }
+      echo "<td><a href='".getItemTypeFormURL('Computer')."?id=".$data["AID"]."'>".$data["AID"]."</a>".
          "</td>" .
          "<td>".$data["Aname"]."</td><td>".Dropdown::getDropdownName("glpi_manufacturers",$data["Amanu"]).
          "</td>".
@@ -260,6 +281,9 @@ if ($crit>0) { // Display result
          echo "<td>" .$data["Aaddr"]. "</td>";
       }
 
+      if ($canedit) {
+         echo "<td><input type='checkbox' name='item[".$data["BID"]."]' value='1'></td>";
+      }
       echo "<td><a href='".getItemTypeFormURL('Computer')."?id=".$data["BID"]."'>".
          $data["BID"]."</a></td>" .
          "<td class='blue'>".$data["Bname"]."</td><".
@@ -273,11 +297,22 @@ if ($crit>0) { // Display result
       }
    echo "</tr>\n";
    }
+   echo "<tr class='tab_bg_4'><td class='center' colspan='". (($col ? 14 : 12)+($canedit ? 2 : 0)) ."'>";
    if ($i) {
-      echo "<tr class='tab_bg_4'><td class='center' colspan='". ($col ? 14 : 12) ."'>" .
-      $LANG['plugin_reports']['doublons'][1] . " : $i</td></tr>\n";
+      echo $LANG['plugin_reports']['doublons'][1] . " : $i";
+   } else {
+      echo $LANG['search'][15];
    }
-   echo "</table></div>";
+   echo "</td></tr>\n";
+   echo "</table>";
+   if ($canedit) {
+      if ($i) {
+         openArrowMassive("massiveaction_form");
+         Dropdown::showForMassiveAction('Computer');
+         closeArrowMassive();
+      }
+      echo "</form>";
+   }
 }
 commonFooter();
 
