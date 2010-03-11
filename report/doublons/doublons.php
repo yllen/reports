@@ -219,8 +219,10 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
    $col = "";
 }
 
+
 if ($crit>0) { // Display result
    $canedit = $computer->canUpdate();
+   $colspan = ($col ? 7 : 6) + ($canedit ? 1 : 0);
 
    // save crit for massive action
    $_SESSION['plugin_reports_doublons_crit'] = $crit;
@@ -230,9 +232,11 @@ if ($crit>0) { // Display result
             $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
    }
    echo "<table class='tab_cadrehov' cellpadding='5'>" .
-      "<tr><th colspan='". (($col ? 7 : 6)+($canedit ? 1 : 0)) ."'>" . $LANG['plugin_reports']['doublons'][2] . "</th>" .
-      "<th class='blue' colspan='". ($col ? 7 : 6) ."'>" . $LANG['plugin_reports']['doublons'][3] . "</th></tr>\n" .
+      "<tr><th colspan='$colspan'>" . $LANG['plugin_reports']['doublons'][2] . "</th>" .
+      "<th class='blue' colspan='$colspan'>" . $LANG['plugin_reports']['doublons'][3] . "</th></tr>\n" .
       "<tr>";
+   $colspan *= 2;
+
    if ($canedit) {
       echo "<th>&nbsp;</th>";
    }
@@ -263,7 +267,7 @@ if ($crit>0) { // Display result
    for ($prev=-1, $i=0 ; $data = $DB->fetch_array($result) ; $i++) {
       if ($prev != $data["entity"]) {
          $prev = $data["entity"];
-         echo "<tr class='tab_bg_4'><td class='center' colspan='". (($col ? 14 : 12)+($canedit ? 2 : 0)) ."'>".
+         echo "<tr class='tab_bg_4'><td class='center' colspan='$colspan'>".
             Dropdown::getDropdownName("glpi_entities", $prev) . "</td></tr>\n";
       }
       echo "<tr class='tab_bg_2'>";
@@ -297,7 +301,7 @@ if ($crit>0) { // Display result
       }
    echo "</tr>\n";
    }
-   echo "<tr class='tab_bg_4'><td class='center' colspan='". (($col ? 14 : 12)+($canedit ? 2 : 0)) ."'>";
+   echo "<tr class='tab_bg_4'><td class='center' colspan='$colspan'>";
    if ($i) {
       echo $LANG['plugin_reports']['doublons'][1] . " : $i";
    } else {
