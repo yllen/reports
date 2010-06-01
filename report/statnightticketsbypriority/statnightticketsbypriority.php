@@ -44,7 +44,7 @@ define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 //include (GLPI_ROOT . "/plugins/reports/inc/function.php");
 
-$report = new PluginReportsAutoReport("statnightticketsbypriority");
+$report = new PluginReportsAutoReport();
 
 //Report's search criterias
 new PluginReportsDateIntervalCriteria($report,"`glpi_tickets`.`date`");

@@ -53,15 +53,11 @@ class PluginReportsAutoReport {
    private $cpt = 0;
    private $title = '';
 
-   function __construct($name='', $title='') {
+   function __construct($title='') {
 
-      if (empty($name)) {
-         preg_match('@/plugins/(.*)/report/(.*)/@', $_SERVER['SCRIPT_NAME'], $regs);
-         $this->plug = $regs[1];
-         $this->name = $regs[2];
-      } else {
-         $this->setName($name);
-      }
+      preg_match('@/plugins/(.*)/report/(.*)/@', $_SERVER['SCRIPT_NAME'], $regs);
+      $this->plug = $regs[1];
+      $this->name = $regs[2];
       includeLocales($this->name, $this->plug);
       $this->setTitle($title);
    }
@@ -78,7 +74,7 @@ class PluginReportsAutoReport {
    * Set column mappings : when a column's value cannot be
    * displays as it is, but needs to be replaced by another one
    * @param columns_mappings the columns new values
-	**/
+   **/
    function setColumnsMappings($columns_mappings) {
       $this->columns_mapping = $columns_mappings;
    }
@@ -92,7 +88,7 @@ class PluginReportsAutoReport {
    *
    * $colmuns : column name or array of column names
    *
-	 */
+    */
    function setGroupBy($columns) {
 
       if (is_array($columns)) {
@@ -107,7 +103,7 @@ class PluginReportsAutoReport {
    * Set columns names (label to be displayed)
    * @param columns an array which contains
    * sql column name => GLPI's locale
-	**/
+   **/
    function setColumnsNames($columns) {
       $this->columns = $columns;
    }
@@ -116,7 +112,7 @@ class PluginReportsAutoReport {
    /**
    * Set sql request to be executed
    * @param sql the sql request as a string
-	**/
+   **/
    function setSqlRequest($sql) {
       $this->sql = $sql;
    }
@@ -125,7 +121,7 @@ class PluginReportsAutoReport {
    /**
    * Set report's name
    * @param name the name of the report
-	**/
+   **/
    function setName($name) {
       list($this->plug,$this->name) = explode('.',$name,2);
    }

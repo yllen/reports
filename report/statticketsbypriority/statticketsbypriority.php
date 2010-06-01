@@ -43,7 +43,7 @@ $DBCONNECTION_REQUIRED=0; // Really a big SQL request
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-$report = new PluginReportsAutoReport("statticketsbypriority");
+$report = new PluginReportsAutoReport();
 
 //Report's search criterias
 new PluginReportsDateIntervalCriteria($report,"date");
