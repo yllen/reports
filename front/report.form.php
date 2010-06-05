@@ -41,6 +41,7 @@ Plugin::load('reports',true);
 
 commonHeader($LANG['plugin_reports']['config'][1], $_SERVER["PHP_SELF"],"config","plugins");
 
+require_once "../inc/profile.class.php";
 $prof = new PluginReportsProfile();
 $tab = $prof->updatePluginRights();
 
