@@ -46,7 +46,7 @@ $computer->checkGlobal('r');
 
 commonHeader($LANG['plugin_reports']['doublons'][1],$_SERVER['PHP_SELF'],"utils","report");
 
-$crits = array(0 => "-----",
+$crits = array(0 => DROPDOWN_EMPTY_VALUE,
                1 => $LANG["common"][16],        // Name
                2 => $LANG["common"][22]." + ".$LANG["common"][19],   // Model + Serial
                3 => $LANG["common"][16]." + ".$LANG["common"][22]." + ".$LANG["common"][19], // Name + Model + Serial
