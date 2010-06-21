@@ -50,13 +50,15 @@ $report->setColumns(array('completename' => new PluginReportsColumn($LANG["entit
                           'groupid'      => new PluginReportsColumnLink($LANG["common"][35], 'Group'),
                           'userid'       => new PluginReportsColumnLink($LANG["setup"][18], 'User'),
                           'firstname'    => new PluginReportsColumn($LANG["common"][43]),
-                          'realname'     => new PluginReportsColumn($LANG["common"][48])));
+                          'realname'     => new PluginReportsColumn($LANG["common"][48]),
+                          'last_login'   => new PluginReportsColumnDateTime($LANG['login'][0])));
 
 $query = "SELECT `glpi_entities`.`completename`,
                  `glpi_groups`.`id` AS groupid,
                  `glpi_users`.`id` AS userid,
                  `glpi_users`.`firstname`,
-                 `glpi_users`.`realname`
+                 `glpi_users`.`realname`,
+                 `glpi_users`.`last_login`
           FROM `glpi_groups`
           LEFT JOIN `glpi_groups_users` ON (`glpi_groups_users`.`groups_id` = `glpi_groups`.`id`)
           LEFT JOIN `glpi_users` ON (`glpi_groups_users`.`users_id` = `glpi_users`.`id`
