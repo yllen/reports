@@ -1,5 +1,4 @@
 <?php
-
 /*
   ----------------------------------------------------------------------
   GLPI - Gestionnaire Libre de Parc Informatique
@@ -100,12 +99,32 @@ class PluginReportsAutoReport {
 
 
    /**
-   * Set columns names (label to be displayed)
+   * Set columns names (label to be displayed) - DEPRECATED use setColumns instead
    * @param columns an array which contains
    * sql column name => GLPI's locale
    **/
    function setColumnsNames($columns) {
-      $this->columns = $columns;
+
+      $this->setColumns($columns);
+   }
+
+
+   /**
+   * Set columns names (label to be displayed)
+   * @param columns an array which contains
+   * sql column name => PluginReportsColumn object
+   **/
+   function setColumns($columns) {
+
+      $this->columns = array();
+      foreach ($columns as $name => $column) {
+         if ($column instanceof PluginReportsColumn) {
+            $this->columns[$name] = $column;
+         } else {
+            // For compat with setColumnsNames - default text mode
+            $this->columns[$name] = new PluginReportsColumn($column);
+         }
+      }
    }
 
 
@@ -292,21 +311,22 @@ class PluginReportsAutoReport {
             $colname = $DB->field_name($res, $i);
             $sqlcols[] = $colname;
          }
+         $colsname = array();
          // if $columns is not empty, display $columns
-         if (!empty($this->columns)) {
-            foreach ($this->columns as $colname => $coltitle) {
+         if (count($this->columns)>0) {
+            foreach ($this->columns as $colname => $column) {
                // display only $columns that are valid
                if (in_array($colname, $sqlcols)) {
-                  echo Search::showHeaderItem($output_type, $coltitle, $num);
-                  $colsname[] = $colname;
+                  $column->showTitle($output_type, $num);
+                  $colsname[$colname] = $column;
                }
             }
          } else { // else display default columns from SQL query
-            foreach ($sqlcols as $colname => $coltitle) {
-               echo Search::showHeaderItem($output_type, $coltitle, $num);
+            foreach ($sqlcols as $colname) {
+               $column = new PluginReportsColumn($colname);
+               $column->showTitle($output_type, $num);
+               $colsname[$colname] = $column;
             }
-            $colsname = $sqlcols;
-            unset($sqlcols);
          }
 
          echo Search::showEndLine($output_type);
@@ -323,7 +343,7 @@ class PluginReportsAutoReport {
             echo Search::showNewLine($output_type);
             $num = 1;
 
-            foreach ($colsname as $colname) {
+            foreach ($colsname as $colname => $column) {
 
                //If value needs to be modified on the fly
                if (isset ($this->columns_mapping[$colname])
@@ -334,16 +354,13 @@ class PluginReportsAutoReport {
                }
 
                if (!in_array($colname, $this->group_by)) {
-                  echo Search::showItem($output_type, $row[$colname], $num, $row_num);
+                  $column->showValue($output_type, $row[$colname], $num, $row_num);
                } else if ($crt == $prev) {
-                  echo Search::showItem($output_type,
+                  $column->showValue($output_type,
                                          ($output_type == CSV_OUTPUT ? $row[$colname] : ""),
                                          $num, $row_num);
-               } else if ($output_type == HTML_OUTPUT) {
-                  echo Search::showItem($output_type, "<strong>" . $row[$colname] . "</strong>",
-                                         $num, $row_num);
                } else {
-                  echo Search::showItem($output_type, $row[$colname], $num, $row_num);
+                  $column->showValue($output_type, $row[$colname], $num, $row_num, "class='b'");
                }
             } // Each column
             echo Search::showEndLine($output_type);

@@ -30,30 +30,30 @@
 /*
  * ----------------------------------------------------------------------
  * Original Author of file: Nelly Lasson
- * 
- * Purpose of file: 
+ *
+ * Purpose of file:
  *       Generate location report
  *       Illustrate use of simpleReport
  * ----------------------------------------------------------------------
- */ 
+ */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=0; // Really a big SQL request
 
-define('GLPI_ROOT', '../../../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
+define('GLPI_ROOT', '../../../..');
+include (GLPI_ROOT . "/inc/includes.php");
 
 $report = new PluginReportsAutoReport();
 
-$report->setColumnsNames(array('entity'            => $LANG['entity'][0],
-                               'location'          => $LANG['common'][15],
-                               'computernumber'    => $LANG['Menu'][0],
-                               'networknumber'  => $LANG['Menu'][1],
-                               'monitornumber'     => $LANG['Menu'][3],
-                               'printernumber'     => $LANG['Menu'][2],
-                               'peripheralnumber' => $LANG['Menu'][16],
-                               'phonenumber'      => $LANG['Menu'][34]));
+$report->setColumns(array('entity'           => new PluginReportsColumn($LANG['entity'][0]),
+                          'location'         => new PluginReportsColumn($LANG['common'][15]),
+                          'computernumber'   => new PluginReportsColumnInteger($LANG['Menu'][0]),
+                          'networknumber'    => new PluginReportsColumnInteger($LANG['Menu'][1]),
+                          'monitornumber'    => new PluginReportsColumnInteger($LANG['Menu'][3]),
+                          'printernumber'    => new PluginReportsColumnInteger($LANG['Menu'][2]),
+                          'peripheralnumber' => new PluginReportsColumnInteger($LANG['Menu'][16]),
+                          'phonenumber'      => new PluginReportsColumnInteger($LANG['Menu'][34])));
 
 $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`,
                  i.`monitornumber`, i.`printernumber`, j.`peripheralnumber`, l.`phonenumber`
@@ -64,46 +64,46 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
                       FROM (SELECT c.`entity`, c.`location`, c.`computernumber`, d.`networknumber`,
                                    c.`id`
                             FROM (SELECT a.`entity`, a.`location`, b.`computernumber`, a.`id`
-                                  FROM (SELECT `glpi_entities`.`completename` AS entity, 
+                                  FROM (SELECT `glpi_entities`.`completename` AS entity,
                                                `glpi_locations`.`completename` AS location,
                                                `glpi_locations`.`id` AS id
                                         FROM `glpi_locations`
-                                        LEFT JOIN `glpi_entities` 
+                                        LEFT JOIN `glpi_entities`
                                           ON (`glpi_locations`.`entities_id`=`glpi_entities`.`id`) ".
                                         getEntitiesRestrictRequest(" WHERE ", "glpi_locations").") a
-                                  LEFT OUTER JOIN (SELECT count(*) AS computernumber, 
-                                                          `glpi_computers`.`locations_id` AS id 
+                                  LEFT OUTER JOIN (SELECT count(*) AS computernumber,
+                                                          `glpi_computers`.`locations_id` AS id
                                                    FROM `glpi_computers`
-                                                   GROUP BY `glpi_computers`.`locations_id`) b 
+                                                   GROUP BY `glpi_computers`.`locations_id`) b
                                        ON (a.id = b.id)
                                  ) c
-                            LEFT OUTER JOIN (SELECT count(*) AS networknumber, 
-                                                    `glpi_networkequipments`.`locations_id` AS id 
+                            LEFT OUTER JOIN (SELECT count(*) AS networknumber,
+                                                    `glpi_networkequipments`.`locations_id` AS id
                                              FROM `glpi_networkequipments`
-                                             GROUP BY `glpi_networkequipments`.`locations_id`) d 
+                                             GROUP BY `glpi_networkequipments`.`locations_id`) d
                                  ON (c.id = d.id)
                            ) e
-                      LEFT OUTER JOIN (SELECT count(*) AS monitornumber, 
-                                              `glpi_monitors`.`locations_id` AS id 
-                                       FROM `glpi_monitors` 
-                                       GROUP BY `glpi_monitors`.`locations_id`) f 
+                      LEFT OUTER JOIN (SELECT count(*) AS monitornumber,
+                                              `glpi_monitors`.`locations_id` AS id
+                                       FROM `glpi_monitors`
+                                       GROUP BY `glpi_monitors`.`locations_id`) f
                            ON (e.id = f.id)
                      ) g
-                LEFT OUTER JOIN (SELECT count(*) AS printernumber, 
+                LEFT OUTER JOIN (SELECT count(*) AS printernumber,
                                         `glpi_printers`.`locations_id` AS id
-                                 FROM `glpi_printers` 
-                                 GROUP BY `glpi_printers`.`locations_id`) h 
+                                 FROM `glpi_printers`
+                                 GROUP BY `glpi_printers`.`locations_id`) h
                      ON (g.id = h.id)
                ) i
-          LEFT OUTER JOIN (SELECT count(*) AS peripheralnumber, 
-                                  `glpi_peripherals`.`locations_id` AS id 
-                              FROM `glpi_peripherals` 
-                              GROUP BY `glpi_peripherals`.`locations_id`) j 
+          LEFT OUTER JOIN (SELECT count(*) AS peripheralnumber,
+                                  `glpi_peripherals`.`locations_id` AS id
+                              FROM `glpi_peripherals`
+                              GROUP BY `glpi_peripherals`.`locations_id`) j
                ON (i.id = j.id)
-          LEFT OUTER JOIN (SELECT count(*) AS phonenumber, 
-                                  `glpi_phones`.`locations_id` AS id 
-                           FROM `glpi_phones` 
-                           GROUP BY `glpi_phones`.`locations_id`) l 
+          LEFT OUTER JOIN (SELECT count(*) AS phonenumber,
+                                  `glpi_phones`.`locations_id` AS id
+                           FROM `glpi_phones`
+                           GROUP BY `glpi_phones`.`locations_id`) l
                ON (i.id = l.id)
           ORDER BY i.entity, i.location";
 

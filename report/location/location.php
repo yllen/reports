@@ -30,30 +30,32 @@
 /*
  * ----------------------------------------------------------------------
  * Original Author of file: Remi Collet
- * 
- * Purpose of file: 
+ *
+ * Purpose of file:
  * 		Generate location report
  * 		Illustrate use of simpleReport
  * ----------------------------------------------------------------------
- */ 
+ */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=0; // Really a big SQL request
 
-define('GLPI_ROOT', '../../../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
+define('GLPI_ROOT', '../../../..');
+include (GLPI_ROOT . "/inc/includes.php");
 
 // Instantiate Report with Name
 $report = new PluginReportsAutoReport();
 
 // Columns title (optional), from $LANG
-$report->setColumnsNames(array('entity'   => $LANG["entity"][0],
-                               'location' => $LANG["common"][15]));
+$report->setColumns(array('entity'   => new PluginReportsColumn($LANG["entity"][0]),
+                          'location' => new PluginReportsColumn($LANG["common"][15]),
+                          'link'     => new PluginReportsColumnLink($LANG['title'][34],'Location')));
 
 // SQL statement
-$query = "SELECT `glpi_entities`.`completename` AS entity, 
-                 `glpi_locations`.`completename` AS location
+$query = "SELECT `glpi_entities`.`completename` AS entity,
+                 `glpi_locations`.`completename` AS location,
+                 `glpi_locations`.`id` AS link
           FROM `glpi_locations`
           LEFT JOIN `glpi_entities` ON (`glpi_locations`.`entities_id` = `glpi_entities`.`id`)" .
           getEntitiesRestrictRequest(" WHERE ", "glpi_locations") ."
