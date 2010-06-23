@@ -32,9 +32,11 @@
  */
 class PluginReportsColumnDateTime extends PluginReportsColumn {
 
-   function __construct($name, $title) {
+   function __construct($name, $title, $options=array()) {
 
-      parent::__construct($name, $title, "class='center'");
+      $options['extras'] =  "class='center'";
+
+      parent::__construct($name, $title, $options);
    }
 
    function displayValue($output_type, $row) {

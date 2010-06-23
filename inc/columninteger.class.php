@@ -32,9 +32,28 @@
  */
 class PluginReportsColumnInteger extends PluginReportsColumn {
 
-   function __construct($name, $title) {
+   private $total;
 
-      parent::__construct($name, $title, "class='right'");
+   function __construct($name, $title, $options=array()) {
+
+      $options['extras'] = "class='right'";
+      $options['totextras'] = "class='b right'";
+
+      parent::__construct($name, $title, $options);
+
+      $this->total = 0;
+   }
+
+   function displayValue($output_type, $row) {
+      if (isset($row[$this->name])) {
+         $this->total += intval($row[$this->name]);
+         return $row[$this->name];
+      }
+      return '';
+   }
+
+   function displayTotal($output_type) {
+      return $this->total;
    }
 }
 ?>

@@ -216,7 +216,7 @@ class PluginReportsAutoReport {
    /**
    * Execute the report
 	**/
-   function execute() {
+   function execute($options=array()) {
       global $DB, $LANG, $CFG_GLPI;
 
       if (isset ($_POST['list_limit'])) {
@@ -366,6 +366,16 @@ class PluginReportsAutoReport {
             echo Search::showEndLine($output_type);
             $prev = $crt;
          } // Each row
+      }
+      if (isset($options['withtotal']) && $options['withtotal']) {
+            echo Search::showNewLine($output_type);
+            $num = 1;
+
+            foreach ($colsname as $colname => $column) {
+               $column->showTotal($output_type, $num, $row_num);
+            }
+
+            echo Search::showEndLine($output_type);
       }
       echo Search::showFooter($output_type, $title);
 

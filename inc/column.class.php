@@ -32,15 +32,24 @@
  */
 class PluginReportsColumn {
 
-   public  $name;
-   private $title;
-   private $extras;
+   public    $name;
+   private   $title;
+   private   $extras;
+   protected $withtotal;
 
-   function __construct($name, $title, $extras='') {
+   function __construct($name, $title, $options=array()) {
 
-      $this->name   = $name;
-      $this->title  = $title;
-      $this->extras = $extras;
+      $this->name      = $name;
+      $this->title     = $title;
+
+      // Extras class for each cell
+      $this->extras    = (isset($options['extras']) ? $options['extras'] : '');
+
+      // Extras class for each total cell
+      $this->totextras = (isset($options['totextras']) ? $options['totextras'] : '');
+
+      // Enable total for this column (if handle bu subtype)
+      $this->withtotal = (isset($options['withtotal']) ? $options['withtotal'] : false);
    }
 
    function showTitle($output_type, &$num) {
@@ -52,10 +61,20 @@ class PluginReportsColumn {
                             ($extras ? $extras : $this->extras));
    }
 
+   function showTotal($output_type, &$num, $row_num) {
+      echo Search::showItem($output_type,
+                            ($this->withtotal ? $this->displayTotal($output_type) : ''),
+                            $num, $row_num, $this->totextras);
+   }
+
    function displayValue($output_type, $row) {
       if (isset($row[$this->name])) {
          return $row[$this->name];
       }
+      return '';
+   }
+
+   function displayTotal($output_type) {
       return '';
    }
 }

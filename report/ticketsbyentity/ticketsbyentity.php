@@ -45,8 +45,8 @@ if ($report->criteriasValidated()) {
 
    //Names of the columns to be displayed
    $colnumsnames = array (new PluginReportsColumn('name', $LANG['entity'][0]),
-                          new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['ticketsbyentity'][5]),
-                          new PluginReportsColumnInteger('number', $LANG['plugin_reports']['ticketsbyentity'][2]),
+                          new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['ticketsbyentity'][5], array('withtotal'=>true)),
+                          new PluginReportsColumnInteger('number', $LANG['plugin_reports']['ticketsbyentity'][2], array('withtotal'=>true)),
                           new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['ticketsbyentity'][3]),
                           new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['ticketsbyentity'][4]));
    $report->setColumnsNames($colnumsnames);
@@ -68,7 +68,7 @@ if ($report->criteriasValidated()) {
              ORDER BY `glpi_entities`.`completename`";
 
    $report->setSqlRequest($query);
-   $report->execute();
+   $report->execute(array('withtotal'=>true));
 
 } else {
    commonFooter();

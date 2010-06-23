@@ -34,9 +34,9 @@ class PluginReportsColumnLink extends PluginReportsColumn {
 
    private $obj = NULL;
 
-   function __construct($name, $title, $itemtype) {
+   function __construct($name, $title, $itemtype, $options=array()) {
 
-      parent::__construct($name, $title);
+      parent::__construct($name, $title, $options);
 
       if (class_exists($itemtype)) {
          $this->obj = new $itemtype();
