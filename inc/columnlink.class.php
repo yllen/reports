@@ -34,12 +34,18 @@ class PluginReportsColumnLink extends PluginReportsColumn {
 
    private $obj = NULL;
 
+   private $with_comment = 0;
+
    function __construct($name, $title, $itemtype, $options=array()) {
 
       parent::__construct($name, $title, $options);
 
       if (class_exists($itemtype)) {
          $this->obj = new $itemtype();
+      }
+
+      if( isset($options['with_comment'])) {
+         $this->with_comment = $options['with_comment'];
       }
    }
 
@@ -52,7 +58,7 @@ class PluginReportsColumnLink extends PluginReportsColumn {
          return $row[$this->name];
       }
       if ($output_type==HTML_OUTPUT) {
-         return $this->obj->getLink();
+         return $this->obj->getLink($this->with_comment);
       }
       return $this->obj->getNameID();
    }

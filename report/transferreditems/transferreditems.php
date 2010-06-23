@@ -58,7 +58,8 @@ if($report->criteriasValidated()) {
    $itemtype = $_POST['itemtype'];
    $table = getTableForItemType($itemtype);
 
-   $columns = array(new PluginReportsColumnLink('items_id',$LANG['common'][16],$itemtype),
+   $columns = array(new PluginReportsColumnLink('items_id',$LANG['common'][16],
+                                                $itemtype, array('with_comment'=>1)),
                     new PluginReportsColumn('otherserial',$LANG['common'][20]),
                     new PluginReportsColumnDateTime('datemod',$LANG['plugin_reports']['transferreditems'][2]),
                     new PluginReportsColumn('old_value',$LANG['plugin_reports']['transferreditems'][3]),
