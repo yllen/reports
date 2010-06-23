@@ -43,11 +43,11 @@ class PluginReportsColumn {
       $this->extras = $extras;
    }
 
-   function showTitle($output_type, $num) {
+   function showTitle($output_type, &$num) {
        echo Search::showHeaderItem($output_type, $this->title, $num);
    }
 
-   function showValue($output_type, $row, $num, $row_num, $extras=false) {
+   function showValue($output_type, $row, &$num, $row_num, $extras=false) {
       echo Search::showItem($output_type, $this->displayValue($output_type, $row), $num, $row_num,
                             ($extras ? $extras : $this->extras));
    }
