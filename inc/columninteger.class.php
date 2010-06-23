@@ -32,9 +32,9 @@
  */
 class PluginReportsColumnInteger extends PluginReportsColumn {
 
-   function __construct($title) {
+   function __construct($name, $title) {
 
-      parent::__construct($title, "class='right'");
+      parent::__construct($name, $title, "class='right'");
    }
 }
 ?>

@@ -119,10 +119,10 @@ class PluginReportsAutoReport {
       $this->columns = array();
       foreach ($columns as $name => $column) {
          if ($column instanceof PluginReportsColumn) {
-            $this->columns[$name] = $column;
+            $this->columns[$column->name] = $column;
          } else {
             // For compat with setColumnsNames - default text mode
-            $this->columns[$name] = new PluginReportsColumn($column);
+            $this->columns[$name] = new PluginReportsColumn($name, $column);
          }
       }
    }
@@ -323,7 +323,7 @@ class PluginReportsAutoReport {
             }
          } else { // else display default columns from SQL query
             foreach ($sqlcols as $colname) {
-               $column = new PluginReportsColumn($colname);
+               $column = new PluginReportsColumn($colname, $colname);
                $column->showTitle($output_type, $num);
                $colsname[$colname] = $column;
             }
@@ -354,13 +354,13 @@ class PluginReportsAutoReport {
                }
 
                if (!in_array($colname, $this->group_by)) {
-                  $column->showValue($output_type, $row[$colname], $num, $row_num);
+                  $column->showValue($output_type, $row, $num, $row_num);
                } else if ($crt == $prev) {
                   $column->showValue($output_type,
-                                         ($output_type == CSV_OUTPUT ? $row[$colname] : ""),
+                                         ($output_type == CSV_OUTPUT ? $row : array()),
                                          $num, $row_num);
                } else {
-                  $column->showValue($output_type, $row[$colname], $num, $row_num, "class='b'");
+                  $column->showValue($output_type, $row, $num, $row_num, "class='b'");
                }
             } // Each column
             echo Search::showEndLine($output_type);

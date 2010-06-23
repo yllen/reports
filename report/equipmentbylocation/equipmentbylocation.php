@@ -46,14 +46,14 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 $report = new PluginReportsAutoReport();
 
-$report->setColumns(array('entity'           => new PluginReportsColumn($LANG['entity'][0]),
-                          'location'         => new PluginReportsColumn($LANG['common'][15]),
-                          'computernumber'   => new PluginReportsColumnInteger($LANG['Menu'][0]),
-                          'networknumber'    => new PluginReportsColumnInteger($LANG['Menu'][1]),
-                          'monitornumber'    => new PluginReportsColumnInteger($LANG['Menu'][3]),
-                          'printernumber'    => new PluginReportsColumnInteger($LANG['Menu'][2]),
-                          'peripheralnumber' => new PluginReportsColumnInteger($LANG['Menu'][16]),
-                          'phonenumber'      => new PluginReportsColumnInteger($LANG['Menu'][34])));
+$report->setColumns(array(new PluginReportsColumn('entity', $LANG['entity'][0]),
+                          new PluginReportsColumn('location', $LANG['common'][15]),
+                          new PluginReportsColumnInteger('computernumber',$LANG['Menu'][0]),
+                          new PluginReportsColumnInteger('networknumber', $LANG['Menu'][1]),
+                          new PluginReportsColumnInteger('monitornumber', $LANG['Menu'][3]),
+                          new PluginReportsColumnInteger('printernumber', $LANG['Menu'][2]),
+                          new PluginReportsColumnInteger('peripheralnumber', $LANG['Menu'][16]),
+                          new PluginReportsColumnInteger('phonenumber', $LANG['Menu'][34])));
 
 $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`,
                  i.`monitornumber`, i.`printernumber`, j.`peripheralnumber`, l.`phonenumber`

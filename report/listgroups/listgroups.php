@@ -46,12 +46,12 @@ include (GLPI_ROOT . "/inc/includes.php");
 $report = new PluginReportsAutoReport();
 //$group = new GroupCriteria($report);
 
-$report->setColumns(array('completename' => new PluginReportsColumn($LANG["entity"][0]),
-                          'groupid'      => new PluginReportsColumnLink($LANG["common"][35], 'Group'),
-                          'userid'       => new PluginReportsColumnLink($LANG["setup"][18], 'User'),
-                          'firstname'    => new PluginReportsColumn($LANG["common"][43]),
-                          'realname'     => new PluginReportsColumn($LANG["common"][48]),
-                          'last_login'   => new PluginReportsColumnDateTime($LANG['login'][0])));
+$report->setColumns(array(new PluginReportsColumn('completename', $LANG["entity"][0]),
+                          new PluginReportsColumnLink('groupid', $LANG["common"][35], 'Group'),
+                          new PluginReportsColumnLink('userid', $LANG["setup"][18], 'User'),
+                          new PluginReportsColumn('firstname', $LANG["common"][43]),
+                          new PluginReportsColumn('realname', $LANG["common"][48]),
+                          new PluginReportsColumnDateTime('last_login', $LANG['login'][0])));
 
 $query = "SELECT `glpi_entities`.`completename`,
                  `glpi_groups`.`id` AS groupid,

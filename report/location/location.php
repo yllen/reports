@@ -48,9 +48,9 @@ include (GLPI_ROOT . "/inc/includes.php");
 $report = new PluginReportsAutoReport();
 
 // Columns title (optional), from $LANG
-$report->setColumns(array('entity'   => new PluginReportsColumn($LANG["entity"][0]),
-                          'location' => new PluginReportsColumn($LANG["common"][15]),
-                          'link'     => new PluginReportsColumnLink($LANG['title'][34],'Location')));
+$report->setColumns(array(new PluginReportsColumn('entity', $LANG["entity"][0]),
+                          new PluginReportsColumn('location', $LANG["common"][15]),
+                          new PluginReportsColumnLink('link', $LANG['title'][34],'Location')));
 
 // SQL statement
 $query = "SELECT `glpi_entities`.`completename` AS entity,

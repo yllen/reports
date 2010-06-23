@@ -34,21 +34,27 @@ class PluginReportsColumnLink extends PluginReportsColumn {
 
    private $obj = NULL;
 
-   function __construct($title, $itemtype) {
+   function __construct($name, $title, $itemtype) {
 
-      parent::__construct($title);
+      parent::__construct($name, $title);
 
       if (class_exists($itemtype)) {
          $this->obj = new $itemtype();
       }
    }
 
-   function displayValue($output_type, $value) {
+   function displayValue($output_type, $row) {
 
-      if ($output_type==HTML_OUTPUT && $value && $this->obj && $this->obj->getFromDB($value)) {
+      if (!isset($row[$this->name]) || !$row[$this->name]) {
+         return '';
+      }
+      if (!$this->obj || !$this->obj->getFromDB($row[$this->name])) {
+         return $row[$this->name];
+      }
+      if ($output_type==HTML_OUTPUT) {
          return $this->obj->getLink();
       }
-      return $value;
+      return $this->obj->getNameID();
    }
 }
 ?>

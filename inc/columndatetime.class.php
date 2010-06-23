@@ -32,17 +32,17 @@
  */
 class PluginReportsColumnDateTime extends PluginReportsColumn {
 
-   function __construct($title) {
+   function __construct($name, $title) {
 
-      parent::__construct($title, "class='center'");
+      parent::__construct($name, $title, "class='center'");
    }
 
-   function displayValue($output_type, $value) {
+   function displayValue($output_type, $row) {
 
-      if ($output_type==HTML_OUTPUT && $value) {
-         return convDateTime($value);
+      if (isset($row[$this->name]) && $row[$this->name]) {
+         return convDateTime($row[$this->name]);
       }
-      return $value;
+      return '';
    }
 }
 ?>

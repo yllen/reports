@@ -32,12 +32,14 @@
  */
 class PluginReportsColumn {
 
+   public  $name;
    private $title;
    private $extras;
 
-   function __construct($title, $extras='') {
+   function __construct($name, $title, $extras='') {
 
-      $this->title = $title;
+      $this->name   = $name;
+      $this->title  = $title;
       $this->extras = $extras;
    }
 
@@ -45,13 +47,16 @@ class PluginReportsColumn {
        echo Search::showHeaderItem($output_type, $this->title, $num);
    }
 
-   function showValue($output_type, $value, $num, $row_num, $extras=false) {
-      echo Search::showItem($output_type, $this->displayValue($output_type, $value), $num, $row_num,
+   function showValue($output_type, $row, $num, $row_num, $extras=false) {
+      echo Search::showItem($output_type, $this->displayValue($output_type, $row), $num, $row_num,
                             ($extras ? $extras : $this->extras));
    }
 
-   function displayValue($output_type, $value) {
-       return $value;
+   function displayValue($output_type, $row) {
+      if (isset($row[$this->name])) {
+         return $row[$this->name];
+      }
+      return '';
    }
 }
 ?>
