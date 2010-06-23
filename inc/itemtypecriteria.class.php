@@ -51,6 +51,10 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       }
    }
 
+   function setAllItemsCriteria() {
+      global $LANG;
+      $this->types[''] = $LANG['common'][66];
+   }
 
    function getSubName() {
       global $LANG;

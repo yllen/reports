@@ -36,7 +36,7 @@
 /**
  * User titles selection criteria
  */
-class PluginReportsEnterpriseCriteria extends PluginReportsDropdownCriteria {
+class PluginReportsSupplierCriteria extends PluginReportsDropdownCriteria {
 
    function __construct($report) {
       global $LANG;
