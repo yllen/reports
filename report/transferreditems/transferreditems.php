@@ -44,9 +44,7 @@ new PluginReportsDateIntervalCriteria($report, "`glpi_logs`.`date_mod`");
 
 $types = array();
 foreach (array('Computer', 'NetworkEquipment', 'Printer', 'Monitor','Peripheral',
-               'Software', 'Contact', 'Supplier', 'Contract', 'CartridgeItem',
-               'Document', 'ConsumableItem', 'Phone','Budget','Ticket',
-               'Link','Group','Software','SoftwareLicense') as $type) {
+               'Software', 'Phone','Software','SoftwareLicense') as $type) {
    $label = call_user_func(array($type,'getTypeName'));
    $types[$type] = $label;
 }
