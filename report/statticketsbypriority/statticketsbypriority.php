@@ -49,7 +49,7 @@ $report = new PluginReportsAutoReport();
 new PluginReportsDateIntervalCriteria($report,"date");
 
 //Display criterias form is needed
-$report->displayCriteriasForm($_SERVER['PHP_SELF']);
+$report->displayCriteriasForm();
 
 //If criterias have been validated
 if ($report->criteriasValidated()) {

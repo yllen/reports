@@ -56,7 +56,7 @@ $timeInterval->setStartTime("19:00");
 $timeInterval->setEndtime("07:00");
 
 //Display criterias form is needed
-$report->displayCriteriasForm($_SERVER['PHP_SELF']);
+$report->displayCriteriasForm();
 
 //If criterias have been validated
 if ($report->criteriasValidated()) {

@@ -51,7 +51,7 @@ foreach (array('Computer', 'NetworkEquipment', 'Printer', 'Monitor','Peripheral'
 ksort($types);
 $typecritera = new PluginReportsItemTypeCriteria($report,"itemtype",$LANG['common'][17], $types);
 
-$report->displayCriteriasForm($_SERVER['PHP_SELF']);
+$report->displayCriteriasForm();
 
 // Declare columns
 if($report->criteriasValidated()) {

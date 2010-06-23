@@ -37,7 +37,7 @@ $report = new PluginReportsAutoReport($LANG['plugin_reports']['ticketsbyentity']
 $prof = new PluginReportsDropdownCriteria($report,'profiles_id','glpi_profiles',$LANG['profiles'][22]);
 
 //Display criterias form is needed
-$report->displayCriteriasForm($_SERVER['PHP_SELF']);
+$report->displayCriteriasForm();
 
 //If criterias have been validated
 if ($report->criteriasValidated()) {

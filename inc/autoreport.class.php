@@ -390,7 +390,7 @@ class PluginReportsAutoReport {
     * @param target the form's target
     * @param params the search criterias
     */
-   function displayCriteriasForm($target) {
+   function displayCriteriasForm() {
       global $LANG;
 
       //Get criteria's values
@@ -413,7 +413,7 @@ class PluginReportsAutoReport {
       //Display form only if there're criterias
       if (!empty ($this->criterias)) {
          echo "<div class='center'>";
-         echo "<form method='post' name='form' action='$target'>";
+         echo "<form method='post' name='form' action='".$_SERVER['PHP_SELF']."'>";
          echo "<table class='tab_cadre_fixe'>";
          echo "<tr><th colspan='6'>" . $LANG['plugin_reports']['reports'][1];
 

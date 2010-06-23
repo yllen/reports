@@ -49,7 +49,7 @@ $license = new PluginReportsSoftwareWithLicenseCriteria($report);
 
 $license->setSqlField("`glpi_softwarelicenses`.`softwares_id`");
 
-$report->displayCriteriasForm($_SERVER['PHP_SELF']);
+$report->displayCriteriasForm();
 
 // Form validate and only one software with license
 if ($report->criteriasValidated()
