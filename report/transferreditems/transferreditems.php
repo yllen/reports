@@ -61,14 +61,14 @@ if($report->criteriasValidated()) {
    $columns = array(new PluginReportsColumnLink('items_id',$LANG['common'][16],
                                                 $itemtype, array('with_comment'=>1)),
                     new PluginReportsColumn('otherserial',$LANG['common'][20]),
-                    new PluginReportsColumnDateTime('datemod',$LANG['plugin_reports']['transferreditems'][2]),
                     new PluginReportsColumn('old_value',$LANG['plugin_reports']['transferreditems'][3]),
-                    new PluginReportsColumn('new_value',$LANG['plugin_reports']['transferreditems'][4]));
+                    new PluginReportsColumn('new_value',$LANG['plugin_reports']['transferreditems'][4]),
+                    new PluginReportsColumnDateTime('date_mod',$LANG['plugin_reports']['transferreditems'][2]));
    $report->setColumnsNames($columns);
    $query= "SELECT `$table`.`id` as `items_id`,
                    `$table`.`name`,
                    `$table`.`otherserial`,
-                   `$table`.`date_mod` as `date_mod`,
+                   `glpi_logs`.`date_mod` as `date_mod`,
                    `glpi_logs`.`itemtype` as `itemtype`,
                    `glpi_logs`.`old_value`,
                    `glpi_logs`.`new_value`
