@@ -44,12 +44,12 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $colnumsnames = array (new PluginReportsColumn('name', $LANG['entity'][0]),
-                          new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['ticketsbyentity'][5], array('withtotal'=>true)),
-                          new PluginReportsColumnInteger('number', $LANG['plugin_reports']['ticketsbyentity'][2], array('withtotal'=>true)),
-                          new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['ticketsbyentity'][3]),
-                          new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['ticketsbyentity'][4]));
-   $report->setColumnsNames($colnumsnames);
+   $cols = array (new PluginReportsColumn('name', $LANG['entity'][0]),
+                  new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['ticketsbyentity'][5], array('withtotal'=>true)),
+                  new PluginReportsColumnInteger('number', $LANG['plugin_reports']['ticketsbyentity'][2], array('withtotal'=>true)),
+                  new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['ticketsbyentity'][3]),
+                  new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['ticketsbyentity'][4]));
+   $report->setColumns($cols);
 
    $subcpt = "SELECT COUNT(*)
               FROM `glpi_profiles_users`

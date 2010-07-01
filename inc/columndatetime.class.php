@@ -34,7 +34,12 @@ class PluginReportsColumnDateTime extends PluginReportsColumn {
 
    function __construct($name, $title, $options=array()) {
 
-      $options['extras'] =  "class='center'";
+      if (!isset($options['extrafine'])) {
+         $options['extrafine'] =  "class='center'";
+      }
+      if (!isset($options['extrabold'])) {
+         $options['extrabold'] =  "class='b center'";
+      }
 
       parent::__construct($name, $title, $options);
    }

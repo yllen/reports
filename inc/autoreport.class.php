@@ -360,7 +360,7 @@ class PluginReportsAutoReport {
                                          ($output_type == CSV_OUTPUT ? $row : array()),
                                          $num, $row_num);
                } else {
-                  $column->showValue($output_type, $row, $num, $row_num, "class='b'");
+                  $column->showValue($output_type, $row, $num, $row_num, true);
                }
             } // Each column
             echo Search::showEndLine($output_type);

@@ -36,8 +36,12 @@ class PluginReportsColumnInteger extends PluginReportsColumn {
 
    function __construct($name, $title, $options=array()) {
 
-      $options['extras'] = "class='right'";
-      $options['totextras'] = "class='b right'";
+      if (!isset($options['extrafine'])) {
+         $options['extrafine'] =  "class='right'";
+      }
+      if (!isset($options['extrabold'])) {
+         $options['extrabold'] =  "class='b right'";
+      }
 
       parent::__construct($name, $title, $options);
 

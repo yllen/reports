@@ -32,9 +32,15 @@
  */
 class PluginReportsColumn {
 
+   // name of the column in the SQL result set
    public    $name;
+   // Label of the column in the report
    private   $title;
-   private   $extras;
+   // Extras class for rendering in HTML
+   private   $extrafine;
+   // Extras class for rendering in HTML in Bold
+   private   $extrabold;
+   // Manage total for this colum (if handled by sub-type)
    protected $withtotal;
 
    function __construct($name, $title, $options=array()) {
@@ -43,10 +49,10 @@ class PluginReportsColumn {
       $this->title     = $title;
 
       // Extras class for each cell
-      $this->extras    = (isset($options['extras']) ? $options['extras'] : '');
+      $this->extrafine = (isset($options['extrafine']) ? $options['extrafine'] : '');
 
       // Extras class for each total cell
-      $this->totextras = (isset($options['totextras']) ? $options['totextras'] : '');
+      $this->extrabold = (isset($options['extrabold']) ? $options['extrabold'] : "class='b'");
 
       // Enable total for this column (if handle bu subtype)
       $this->withtotal = (isset($options['withtotal']) ? $options['withtotal'] : false);
@@ -56,15 +62,15 @@ class PluginReportsColumn {
        echo Search::showHeaderItem($output_type, $this->title, $num);
    }
 
-   function showValue($output_type, $row, &$num, $row_num, $extras=false) {
+   function showValue($output_type, $row, &$num, $row_num, $bold=false) {
       echo Search::showItem($output_type, $this->displayValue($output_type, $row), $num, $row_num,
-                            ($extras ? $extras : $this->extras));
+                            ($bold ? $this->extrabold : $this->extrafine));
    }
 
    function showTotal($output_type, &$num, $row_num) {
       echo Search::showItem($output_type,
                             ($this->withtotal ? $this->displayTotal($output_type) : ''),
-                            $num, $row_num, $this->totextras);
+                            $num, $row_num, $this->extrabold);
    }
 
    function displayValue($output_type, $row) {
