@@ -44,7 +44,7 @@ class PluginReportsColumnLink extends PluginReportsColumn {
          $this->obj = new $itemtype();
       }
 
-      if( isset($options['with_comment'])) {
+      if (isset($options['with_comment'])) {
          $this->with_comment = $options['with_comment'];
       }
    }
