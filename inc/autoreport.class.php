@@ -465,8 +465,11 @@ class PluginReportsAutoReport {
       $sql = "";
       //Get all criterias sql restriction criterias
       foreach ($this->criterias as $criteria) {
-         $sql .= $criteria->getSqlCriteriasRestriction($link);
-         $link = 'AND';
+         $add = $criteria->getSqlCriteriasRestriction($link);
+         if ($add) {
+            $sql .= $add;
+            $link = 'AND';
+         }
       }
       return $sql;
    }
