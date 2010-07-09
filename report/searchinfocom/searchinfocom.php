@@ -54,7 +54,7 @@ if ($report->criteriasValidated()) {
 
    // Report Columns
    $cols = array (new PluginReportsColumnType('itemtype', $LANG['common'][17]),
-                  new PluginReportsColumnTypeLink('items_id', $LANG['common'][1], 'itemtype'),
+                  new PluginReportsColumnTypeLink('items_id', $LANG['common'][1], 'itemtype', array('with_comment'=>1)),
                   new PluginReportsColumnDate('buy_date', $LANG['financial'][14]),
                   new PluginReportsColumnDate('use_date', $LANG['financial'][76]),
                   new PluginReportsColumn('immo_number', $LANG['financial'][20]),
