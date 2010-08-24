@@ -36,13 +36,12 @@
 /**
  * Devices status selection criteria
  */
-class PluginReportsStatusCriteria extends pluginReportsDropdownCriteria {
+class PluginReportsStatusCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report) {
+   function __construct($report, $field='state', $label='') {
       global $LANG;
-      parent :: __construct($report, "state", "glpi_states", $LANG['joblist'][0]);
+      parent :: __construct($report, $field, 'glpi_states', ($label ? $label : $LANG['joblist'][0]));
    }
-
 }
 
 ?>
