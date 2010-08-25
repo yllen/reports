@@ -44,11 +44,18 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $cols = array (new PluginReportsColumn('name', $LANG['entity'][0]),
-                  new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['ticketsbyentity'][5], array('withtotal'=>true)),
-                  new PluginReportsColumnInteger('number', $LANG['plugin_reports']['ticketsbyentity'][2], array('withtotal'=>true)),
-                  new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['ticketsbyentity'][3]),
-                  new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['ticketsbyentity'][4]));
+   $cols = array (new PluginReportsColumn('name', $LANG['entity'][0],
+                                           array('sorton' => '`glpi_entities`.`completename`')),
+                  new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['ticketsbyentity'][5],
+                                                 array('withtotal' => true,
+                                                       'sorton'    => 'nbusers')),
+                  new PluginReportsColumnInteger('number', $LANG['plugin_reports']['ticketsbyentity'][2],
+                                                 array('withtotal' => true,
+                                                       'sorton'    => 'number')),
+                  new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['ticketsbyentity'][3],
+                                                  array('sorton' => 'mindate')),
+                  new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['ticketsbyentity'][4],
+                                                  array('sorton' => 'maxdate')));
    $report->setColumns($cols);
 
    $subcpt = "SELECT COUNT(*)
@@ -64,8 +71,8 @@ if ($report->criteriasValidated()) {
              FROM `glpi_entities`
              INNER JOIN `glpi_tickets` ON (`glpi_tickets`.`entities_id`=`glpi_entities`.`id`)".
              getEntitiesRestrictRequest(" WHERE ", "glpi_entities") .
-            "GROUP BY `glpi_entities`.`id`
-             ORDER BY `glpi_entities`.`completename`";
+            "GROUP BY `glpi_entities`.`id`".
+            $report->getOrderBy('name');
 
    $report->setSqlRequest($query);
    $report->execute(array('withtotal'=>true));

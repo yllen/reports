@@ -219,6 +219,9 @@ class PluginReportsAutoReport {
    function execute($options=array()) {
       global $DB, $LANG, $CFG_GLPI;
 
+      // Require (for pager) when not called by displayCriteriasForm
+      $this->manageCriteriasValues();
+
       if (isset ($_POST['list_limit'])) {
          $_SESSION['glpilist_limit'] = $_POST['list_limit'];
          unset ($_POST['list_limit']);
@@ -395,6 +398,7 @@ class PluginReportsAutoReport {
 
       //Get criteria's values
       $this->manageCriteriasValues();
+
       //Display commonHeader is output is HTML
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
          if (isStat($this->name)) {
@@ -448,8 +452,15 @@ class PluginReportsAutoReport {
       }
 
       //If selectio form is validated, then stores it
-      if (isset ($_GET['find']) || isset ($_POST['find'])) {
+      if (isset($_GET['find']) || isset($_POST['find'])) {
          $_POST['find'] = true;
+      }
+      // Order by
+      if (isset($_GET['sort'])) {
+         $_POST['sort'] = $_GET['sort'];
+      }
+      if (isset($_GET['order'])) {
+         $_POST['order'] = $_GET['order'];
       }
    }
 
@@ -548,6 +559,30 @@ class PluginReportsAutoReport {
       }
    }
 
+   /**
+    * Build the ORDER BY clause
+    *
+    * @param $default string, name of the column used by default
+    */
+   function getOrderBy($default) {
+
+      if (!isset($_REQUEST['sort'])) {
+         $_REQUEST['sort'] = $default;
+      }
+      if (!isset($_REQUEST['order']) || $_REQUEST['order']!='DESC') {
+         $_REQUEST['order'] = 'ASC';
+      }
+      $colsort = $_REQUEST['sort'];
+      $order   = $_REQUEST['order'];
+
+      foreach ($this->columns as $colname => $column) {
+         if ($colname==$colsort) {
+            $tab = explode(',',$column->sorton);
+            return " ORDER BY ".implode(" $order, ", $tab)." $order";
+         }
+      }
+      return '';
+   }
 }
 
 ?>

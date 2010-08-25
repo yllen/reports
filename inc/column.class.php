@@ -34,6 +34,8 @@ class PluginReportsColumn {
 
    // name of the column in the SQL result set
    public    $name;
+   // Fields for ORDER BY when this column is selected
+   public $sorton;
    // Label of the column in the report
    private   $title;
    // Extras class for rendering in HTML
@@ -56,10 +58,38 @@ class PluginReportsColumn {
 
       // Enable total for this column (if handle bu subtype)
       $this->withtotal = (isset($options['withtotal']) ? $options['withtotal'] : false);
+
+      // Enable sort for this column
+      $this->sorton = (isset($options['sorton']) ? $options['sorton'] : false);
    }
 
    function showTitle($output_type, &$num) {
-       echo Search::showHeaderItem($output_type, $this->title, $num);
+
+      if ($output_type != HTML_OUTPUT || !$this->sorton) {
+          echo Search::showHeaderItem($output_type, $this->title, $num);
+          return;
+      }
+      $order = 'ASC';
+      $issort = false;
+      if (isset($_REQUEST['sort']) && $_REQUEST['sort']==$this->name) {
+         $issort = true;
+         if (isset($_REQUEST['order']) && $_REQUEST['order']=='ASC') {
+            $order = 'DESC';
+         }
+      }
+      $link = $_SERVER['PHP_SELF'];
+      $first = true;
+      foreach ($_REQUEST as $name => $value) {
+         if (!in_array($name,array('sort','order','PHPSESSID'))) {
+            $link .= ($first ? '?' : '&amp;');
+            $link .= $name .'='.urlencode($value);
+            $first = false;
+         }
+      }
+      $link .= ($first ? '?' : '&amp;').'sort='.urlencode($this->name);
+      $link .= '&amp;order='.$order;
+      echo Search::showHeaderItem($output_type, $this->title, $num,
+                                  $link, $issort, ($order=='ASC'?'DESC':'ASC'));
    }
 
    function showValue($output_type, $row, &$num, $row_num, $bold=false) {

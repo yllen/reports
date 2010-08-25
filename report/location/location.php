@@ -48,9 +48,12 @@ include (GLPI_ROOT . "/inc/includes.php");
 $report = new PluginReportsAutoReport();
 
 // Columns title (optional), from $LANG
-$report->setColumns(array(new PluginReportsColumn('entity', $LANG["entity"][0]),
-                          new PluginReportsColumn('location', $LANG["common"][15]),
-                          new PluginReportsColumnLink('link', $LANG['title'][34],'Location')));
+$report->setColumns(array(new PluginReportsColumn('entity', $LANG["entity"][0],
+                                                  array('sorton' => 'entity,location')),
+                          new PluginReportsColumn('location', $LANG["common"][15],
+                                                  array('sorton' => 'location')),
+                          new PluginReportsColumnLink('link', $LANG['title'][34],'Location',
+                                                  array('sorton' => '`glpi_locations`.`name`'))));
 
 // SQL statement
 $query = "SELECT `glpi_entities`.`completename` AS entity,
@@ -58,8 +61,8 @@ $query = "SELECT `glpi_entities`.`completename` AS entity,
                  `glpi_locations`.`id` AS link
           FROM `glpi_locations`
           LEFT JOIN `glpi_entities` ON (`glpi_locations`.`entities_id` = `glpi_entities`.`id`)" .
-          getEntitiesRestrictRequest(" WHERE ", "glpi_locations") ."
-          ORDER BY entity, location";
+          getEntitiesRestrictRequest(" WHERE ", "glpi_locations") .
+          $report->getOrderBy('entity');
 
 $report->setGroupBy('entity');
 $report->setSqlRequest($query);
