@@ -560,28 +560,58 @@ class PluginReportsAutoReport {
    }
 
    /**
-    * Build the ORDER BY clause
+    * Get the fields used for order
     *
     * @param $default string, name of the column used by default
+    *
+    * @return array of column names
     */
-   function getOrderBy($default) {
+   function getOrderByFields($default) {
 
       if (!isset($_REQUEST['sort'])) {
          $_REQUEST['sort'] = $default;
       }
-      if (!isset($_REQUEST['order']) || $_REQUEST['order']!='DESC') {
-         $_REQUEST['order'] = 'ASC';
-      }
       $colsort = $_REQUEST['sort'];
-      $order   = $_REQUEST['order'];
 
       foreach ($this->columns as $colname => $column) {
          if ($colname==$colsort) {
-            $tab = explode(',',$column->sorton);
-            return " ORDER BY ".implode(" $order, ", $tab)." $order";
+            return explode(',',$column->sorton);
          }
       }
+      return array();
+   }
+
+   /**
+    * Build the ORDER BY clause
+    *
+    * @param $default string, name of the column used by default
+    * @apram $setgroupby if true, setGroupBy on same column
+    *
+    * @return string with SQL clause
+    */
+   function getOrderBy($default, $setgroupby=false) {
+
+      if (!isset($_REQUEST['order']) || $_REQUEST['order']!='DESC') {
+         $_REQUEST['order'] = 'ASC';
+      }
+      $order   = $_REQUEST['order'];
+
+      $tab = $this->getOrderByFields($default);
+      if (count($tab)>0) {
+         $this->setGroupBy($tab);
+         return " ORDER BY ".implode(" $order, ", $tab)." $order";
+      }
       return '';
+   }
+
+   /**
+    * Set the GroupBy columns using the Orderby Fields
+    * **** name of the columns must be the same than the fields ***
+    *
+    * @param $default string, name of the column used by default
+    */
+   function setGroupByAuto($default) {
+      $this->setGroupBy($this->getOrderByFields($default));
    }
 }
 
