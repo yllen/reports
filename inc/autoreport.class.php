@@ -598,7 +598,9 @@ class PluginReportsAutoReport {
 
       $tab = $this->getOrderByFields($default);
       if (count($tab)>0) {
-         $this->setGroupBy($tab);
+         if ($setgroupby) {
+            $this->setGroupBy($tab);
+         }
          return " ORDER BY ".implode(" $order, ", $tab)." $order";
       }
       return '';
