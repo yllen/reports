@@ -74,35 +74,47 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
                                   LEFT OUTER JOIN (SELECT count(*) AS computernumber,
                                                           `glpi_computers`.`locations_id` AS id
                                                    FROM `glpi_computers`
+                                                   WHERE is_deleted=0 AND is_template=0
+                                                   ".getEntitiesRestrictRequest(" AND ", "glpi_computers")."
                                                    GROUP BY `glpi_computers`.`locations_id`) b
                                        ON (a.id = b.id)
                                  ) c
                             LEFT OUTER JOIN (SELECT count(*) AS networknumber,
                                                     `glpi_networkequipments`.`locations_id` AS id
                                              FROM `glpi_networkequipments`
+                                             WHERE is_deleted=0 AND is_template=0
+                                             ".getEntitiesRestrictRequest(" AND ", "glpi_networkequipments")."
                                              GROUP BY `glpi_networkequipments`.`locations_id`) d
                                  ON (c.id = d.id)
                            ) e
                       LEFT OUTER JOIN (SELECT count(*) AS monitornumber,
                                               `glpi_monitors`.`locations_id` AS id
                                        FROM `glpi_monitors`
+                                       WHERE is_deleted=0 AND is_template=0
+                                       ".getEntitiesRestrictRequest(" AND ", "glpi_monitors")."
                                        GROUP BY `glpi_monitors`.`locations_id`) f
                            ON (e.id = f.id)
                      ) g
                 LEFT OUTER JOIN (SELECT count(*) AS printernumber,
                                         `glpi_printers`.`locations_id` AS id
                                  FROM `glpi_printers`
+                                 WHERE is_deleted=0 AND is_template=0
+                                 ".getEntitiesRestrictRequest(" AND ", "glpi_printers")."
                                  GROUP BY `glpi_printers`.`locations_id`) h
                      ON (g.id = h.id)
                ) i
           LEFT OUTER JOIN (SELECT count(*) AS peripheralnumber,
                                   `glpi_peripherals`.`locations_id` AS id
                               FROM `glpi_peripherals`
+                              WHERE is_deleted=0 AND is_template=0
+                              ".getEntitiesRestrictRequest(" AND ", "glpi_peripherals")."
                               GROUP BY `glpi_peripherals`.`locations_id`) j
                ON (i.id = j.id)
           LEFT OUTER JOIN (SELECT count(*) AS phonenumber,
                                   `glpi_phones`.`locations_id` AS id
                            FROM `glpi_phones`
+                           WHERE is_deleted=0 AND is_template=0
+                           ".getEntitiesRestrictRequest(" AND ", "glpi_phones")."
                            GROUP BY `glpi_phones`.`locations_id`) l
                ON (i.id = l.id)
           ORDER BY i.entity, i.location";
