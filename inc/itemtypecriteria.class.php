@@ -39,13 +39,32 @@
 class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
    private $types = array();
 
-   function __construct($report, $name='itemtype',$label='',$types=array()) {
+   function __construct($report, $name='', $label='', $types=array()) {
       global $LANG;
 
-      parent::__construct($report, $name, "no_table", ($label ? $label : $LANG['state'][6]));
-      if (count($types)) {
+      parent::__construct(
+         $report,
+         ($name ? $name : 'itemtype'),
+         'no_table',
+         ($label ? $label : $LANG['state'][6])
+      );
+
+      if (is_array($types) && count($types)) {
+         // $types is an hashtable of itemtype => display name
          $this->types = $types;
+
+      } else if (isset($CFG_GLPI[$types])) {
+         // $types is the name of an configured type hashtable (infocom_types, doc_types, ...)
+         foreach($CFG_GLPI[$types] as $itemtype) {
+            if (class_exists($itemtype)) {
+               $item = new $itemtype();
+               $this->types[$itemtype] = $item->getTypeName();
+            }
+         }
+         $this->types[''] = $LANG['common'][66];
+
       } else {
+         // No types, use helpdesk_types
          $this->types = Ticket::getAllTypesForHelpdesk();
          $this->types[''] = $LANG['common'][66];
       }
