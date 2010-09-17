@@ -36,14 +36,17 @@ $report = new PluginReportsAutoReport($LANG['plugin_reports']['statiteminstall']
 //Report's search criterias
 $date = new PluginReportsDateIntervalCriteria($report, 'buy_date');
 $type = new PluginReportsItemTypeCriteria($report, '', '', 'infocom_types');
+$budg = new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets', $LANG['financial'][87]);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
 
+$display_type = HTML_OUTPUT;
+
 //If criterias have been validated
 if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
-   echo "<div align='left'><pre>";
+   $title = $report->getFullTitle();
 
    $itemtype = $type->getParameterValue();
    if ($itemtype) {
@@ -53,17 +56,20 @@ if ($report->criteriasValidated()) {
       $sql = "SELECT DISTINCT `itemtype`
               FROM `glpi_infocoms` ".
               getEntitiesRestrictRequest('WHERE','glpi_infocoms').
-              $date->getSqlCriteriasRestriction('AND');
+              $date->getSqlCriteriasRestriction('AND').
+              $budg->getSqlCriteriasRestriction('AND');
       foreach ($DB->request($sql) as $data) {
          $types[] = $data['itemtype'];
       }
    }
 
+   $result = array();
    foreach ($types as $type) {
       $result[$type] = array();
       // Total of buy equipment
       $crit = "itemtype='$type'".
               getEntitiesRestrictRequest('AND','glpi_infocoms').
+              $budg->getSqlCriteriasRestriction('AND').
               $date->getSqlCriteriasRestriction('AND');
 
       $result[$type]['buy'] = countElementsInTable('glpi_infocoms', $crit);
@@ -84,44 +90,97 @@ if ($report->criteriasValidated()) {
       $result[$type]['12+'] = countElementsInTable('glpi_infocoms', $crit2);
    }
 
-echo "RESULT:";   print_r($result);
-   echo "</pre></div>";
-/*
-   //Names of the columns to be displayed
-   $cols = array (new PluginReportsColumn('name', $LANG['entity'][0],
-                                           array('sorton' => '`glpi_entities`.`completename`')),
-                  new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['ticketsbyentity'][5],
-                                                 array('withtotal' => true,
-                                                       'sorton'    => 'nbusers')),
-                  new PluginReportsColumnInteger('number', $LANG['plugin_reports']['ticketsbyentity'][2],
-                                                 array('withtotal' => true,
-                                                       'sorton'    => 'number')),
-                  new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['ticketsbyentity'][3],
-                                                  array('sorton' => 'mindate')),
-                  new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['ticketsbyentity'][4],
-                                                  array('sorton' => 'maxdate')));
-   $report->setColumns($cols);
+   if ($display_type == HTML_OUTPUT) {
+         echo "<div class='center'><table class='tab_cadre_fixe'>";
+         echo "<tr><th>$title</th></tr>\n";
+         echo "</table></div>\n";
+   }
+   $nbres = count($result);
+   if ($nbres > 0) {
+      if ($nbres>1) {
+         $nbrows = $nbres*2+2;
+         $result['total'] = array();
+         reset($result);
+         foreach (next($result) as $key => $val) {
+            $result['total'][$key] = 0;
+         }
+      } else {
+         $nbrows = 2;
+      }
+      $nbcols = 9;
+      echo Search::showHeader($display_type, $nbrows, $nbcols, true);
+      echo Search::showNewLine($display_type);
+      $numcol=1;
+      echo Search::showHeaderItem($display_type, $LANG['state'][6], $numcol); // itemtype
+      echo Search::showHeaderItem($display_type, $LANG['common'][33], $numcol); // total
+      echo Search::showHeaderItem($display_type, '0-1', $numcol);
+      echo Search::showHeaderItem($display_type, '2-3', $numcol);
+      echo Search::showHeaderItem($display_type, '4-5', $numcol);
+      echo Search::showHeaderItem($display_type, '6-7', $numcol);
+      echo Search::showHeaderItem($display_type, '8-9', $numcol);
+      echo Search::showHeaderItem($display_type, '10-11', $numcol);
+      echo Search::showHeaderItem($display_type, '12+', $numcol);
+      echo Search::showEndLine($display_type);
 
-   $subcpt = "SELECT COUNT(*)
-              FROM `glpi_profiles_users`
-              WHERE `glpi_profiles_users`.`entities_id`=`glpi_entities`.`id` ".
-              $prof->getSqlCriteriasRestriction();
+      $row_num = 1;
+      foreach ($result as $itemtype => $row) {
+         if ($itemtype == 'total') {
+            $name = $LANG['common'][33];
+         } else if (class_exists($itemtype)) {
+            $item = new $itemtype();
+            $name = $item->getTypeName();
+         } else {
+            continue;
+         }
 
-   $query = "SELECT `glpi_entities`.`completename` AS name,
-                    ($subcpt) as nbusers,
-                    COUNT(`glpi_tickets`.`id`) AS number,
-                    MIN(`glpi_tickets`.`date`) as mindate,
-                    MAX(`glpi_tickets`.`date`) as maxdate
-             FROM `glpi_entities`
-             INNER JOIN `glpi_tickets` ON (`glpi_tickets`.`entities_id`=`glpi_entities`.`id`)".
-             getEntitiesRestrictRequest(" WHERE ", "glpi_entities") .
-            "GROUP BY `glpi_entities`.`id`".
-            $report->getOrderBy('name');
+         $numcol=1;
+         echo Search::showNewLine($display_type);
+         echo Search::showItem($display_type, $name, $numcol, $row_num, "class='b'");
+         foreach ($row as $ref => $val) {
+            $val = $result[$itemtype][$ref];
+            echo Search::showItem($display_type, ($val ? $val : ''), $numcol, $row_num, "class='right'");
+            if ($itemtype!='total' && isset($result['total'])) {
+               $result['total'][$ref] += $val;
+            }
+         }
+         echo Search::showEndLine($display_type);
+         $row_num++;
 
-   $report->setSqlRequest($query);
-   $report->execute(array('withtotal'=>true));
-*/
+         $numcol=1;
+         echo Search::showNewLine($display_type);
+         echo Search::showItem($display_type, '', $numcol, $row_num);
+         foreach ($row as $ref => $val) {
+            $val = $result[$itemtype][$ref];
+            $buy = $result[$itemtype]['buy'];
+            if ($ref=='buy' || $buy==0 || $val==0) {
+               $tmp = '';
+            } else {
+               $tmp = round($val*100/$buy,0)."%";
+            }
+            echo Search::showItem($display_type, $tmp, $numcol, $row_num, "class='right'");
+         }
+         echo Search::showEndLine($display_type);
+         $row_num++;
+      }
+
+      if ($display_type == HTML_OUTPUT) {
+         reset($result);
+         $row = array_pop($result); // Last line : total or single type
+         unset($row['buy']);
+         Stat::showGraph(array($title => $row),array('type' => 'pie'));
+      }
+   } else {
+      $nbrows = 1; $nbcols = 1;
+      echo Search::showHeader($display_type, $nbrows, $nbcols, true);
+      echo Search::showNewLine($display_type);
+      $num=1;
+      echo Search::showHeaderItem($display_type, $LANG['search'][15], $num); // Nothing found
+      echo Search::showEndLine($display_type);
+   }
+   echo Search::showFooter($display_type, $title);
 }
-commonFooter();
+if ($display_type == HTML_OUTPUT) {
+   commonFooter();
+}
 
 ?>
