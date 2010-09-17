@@ -164,10 +164,9 @@ if ($report->criteriasValidated()) {
       }
 
       if ($display_type == HTML_OUTPUT) {
-         reset($result);
          $row = array_pop($result); // Last line : total or single type
          unset($row['buy']);
-         Stat::showGraph(array($title => $row),array('type' => 'pie'));
+         Stat::showGraph(array($title => $row), array('type' => 'pie'));
       }
    } else {
       $nbrows = 1; $nbcols = 1;
