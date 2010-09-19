@@ -41,12 +41,12 @@ class PluginReportsLocationCriteria extends PluginReportsDropdownCriteria {
 
    function __construct($report) {
       global $LANG;
-      parent :: __construct($report, "location", "glpi_locations", $LANG['common'][15]);
+      parent :: __construct($report, "locations_id", "glpi_locations", $LANG['common'][15]);
    }
 
 
    public function setDefaultLocation($location) {
-      $this->addParameter('location', $location);
+      $this->addParameter('locations_id', $location);
    }
 
 

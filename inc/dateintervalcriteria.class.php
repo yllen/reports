@@ -96,9 +96,9 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
    public function getSqlCriteriasRestriction($link = 'AND') {
 
-      return $link . " " .
-             $this->getSqlField() . " >= '" . $this->getStartDate() . " 00:00:00' AND " .
-             $this->getSqlField() . "<='" . $this->getEndDate() . " 23:59:59' ";
+      return $link . " `" .
+             $this->getSqlField() . "`>= '" . $this->getStartDate() . " 00:00:00' AND " .
+             $this->getSqlField() . "`<='" . $this->getEndDate() . " 23:59:59' ";
    }
 
 

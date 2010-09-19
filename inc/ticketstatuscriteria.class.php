@@ -87,7 +87,7 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
          default :
             return '';
       }
-      return $link . " " . $this->getSqlField() . " IN ($list) ";
+      return $link . " `" . $this->getSqlField() . "` IN ($list) ";
    }
 }
 ?>

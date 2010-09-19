@@ -239,7 +239,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
       if ($this->getParameterValue() || $this->searchzero) {
          if (!$this->childrens) {
-            return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
+            return $link . " `" . $this->getSqlField() . "`='" . $this->getParameterValue() . "' ";
          } else  if ($this->getParameterValue()) {
             return $link . " " . $this->getSqlField() .
                    " IN (" . implode(',', getSonsOf($this->getTable(),

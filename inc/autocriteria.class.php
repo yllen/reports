@@ -155,7 +155,7 @@ abstract class PluginReportsAutoCriteria {
     * @return a where sql request
     */
    public function getSqlCriteriasRestriction($link = 'AND') {
-      return $link . " " . $this->getSqlField() . "='" . $this->parameters[$this->getName()] . "' ";
+      return $link . " `" . $this->getSqlField() . "`='" . $this->parameters[$this->getName()] . "' ";
    }
 
 

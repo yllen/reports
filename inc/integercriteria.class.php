@@ -103,7 +103,7 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
 
    function getSqlCriteriasRestriction($link = 'AND') {
       $param = $this->getParameterValue();
-      return $link." ".$this->getSqlField().$this->getSign()."'".($param*$this->coef)."' ";
+      return $link." `".$this->getSqlField()."`".$this->getSign()."'".($param*$this->coef)."' ";
    }
 }
 ?>
