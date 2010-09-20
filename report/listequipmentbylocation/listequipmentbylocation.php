@@ -51,6 +51,8 @@ $report->setColumns(array(new PluginReportsColumnType('itemtype', $LANG['common'
                           new PluginReportsColumnTypeLink('items_id', $LANG['common'][1], 'itemtype', array('with_comment'=>1)),
                           new PluginReportsColumn('serial',$LANG['common'][19]),
                           new PluginReportsColumn('otherserial', $LANG['common'][20]),
+                          new PluginReportsColumnModelType('models_id',$LANG['common'][22],'itemtype',array('with_comment'=>1)),
+                          new PluginReportsColumnTypeType('types_id',$LANG['common'][17],'itemtype',array('with_comment'=>1)),
                           ));
 
 //Display criterias form is needed
@@ -60,11 +62,14 @@ $report->displayCriteriasForm();
 if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
-   $query= getSqlSubRequest("Computer",$loc);
-   foreach(array('Monitor','Printer','Peripheral','NetworkEquipment','Phone') as $itemtype) {
-      $query.= "UNION (".getSqlSubRequest($itemtype,$loc).")";
+   $query= getSqlSubRequest("Computer",$loc,new Computer());
+   foreach($CFG_GLPI["infocom_types"] as $itemtype) {
+      $obj = new $itemtype;
+      if ($obj->isField('locations_id')) {
+         $query.= "UNION (".getSqlSubRequest($itemtype,$loc,$obj).")";
+      }
    }
-   $report->setGroupBy("entity");
+   $report->setGroupBy("entity","itemtype");
    $report->setSqlRequest($query);
    $report->execute();
 }
@@ -72,18 +77,33 @@ else {
    commonFooter();
 }
 
-function getSqlSubRequest($itemtype,$loc) {
+function getSqlSubRequest($itemtype,$loc,$obj) {
    $query_where = "";
    $table = getTableForItemType($itemtype);
    $models_id = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Model'));
    $types_id = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Type'));
-   $query_where.="SELECT '$itemtype' as itemtype, `$table`.`id` as items_id, `$table`.`locations_id`,
-                           `$table`.`name` AS name,`$table`.`serial` AS serial,
-                            `$table`.`$models_id` AS models_id,
-                               `$table`.`$types_id` AS types_id,
-                              `$table`.`otherserial` AS otherserial
-                  FROM `$table`
-                  WHERE `is_deleted`='0' AND `is_template`='0' ";
+   $fields = array('name' => 'name','serial' => 'serial',
+                   'otherserial' => 'otherserial',
+                   $models_id => 'models_id', $types_id => 'types_id');
+   $query_where.="SELECT '$itemtype' as itemtype, `$table`.`id` as items_id, `$table`.`locations_id`,";
+   $first = true;
+   foreach ($fields as $field => $alias) {
+      if ($obj->isField($field)) {
+         $query_where.=(!$first?',':'')."`$table`.`$field` AS $alias ";
+         $first = false;
+      }
+      else {
+         $query_where.=(!$first?',':'')."'' AS $alias ";
+      }
+   }
+   $query_where.=" FROM `$table`";
+   $query_where.= "WHERE 1";
+   if ($obj->maybeTemplate()) {
+      $query_where .= " AND `is_template`='0'";
+   }
+   if ($obj->maybeDeleted()) {
+      $query_where .= " AND `is_deleted`='0'";
+   }
    $query_where.= $loc->getSqlCriteriasRestriction();
    return $query_where;
 }

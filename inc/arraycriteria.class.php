@@ -67,7 +67,7 @@ class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
     */
    public function getSqlCriteriasRestriction($link = 'AND') {
 
-      return $link . " `" . $this->getSqlField() . "`='".$this->getParameterValue()."' ";
+      return $link . " " . $this->getSqlField() . "='".$this->getParameterValue()."' ";
    }
 }
 

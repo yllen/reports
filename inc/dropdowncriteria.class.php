@@ -56,9 +56,12 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    private $searchzero = false;
 
 
-   function __construct($report, $name, $table, $label = '') {
+   function __construct($report, $name, $table='', $label = '') {
       parent :: __construct($report, $name);
 
+      if (empty($table)) {
+         $table = getTableNameForForeignKeyField($name);
+      }
       $this->table = $table;
       $this->addCriteriaLabel($name, $label);
    }
@@ -239,7 +242,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
       if ($this->getParameterValue() || $this->searchzero) {
          if (!$this->childrens) {
-            return $link . " `" . $this->getSqlField() . "`='" . $this->getParameterValue() . "' ";
+            return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
          } else  if ($this->getParameterValue()) {
             return $link . " " . $this->getSqlField() .
                    " IN (" . implode(',', getSonsOf($this->getTable(),

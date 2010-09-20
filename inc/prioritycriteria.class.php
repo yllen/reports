@@ -91,10 +91,10 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
       //If value < 0 : means "priority above the priority selected"
 
       if ($this->getParameterValue() > 0) {
-         return $link . " `" . $this->getSqlField() . "`= '" . $this->getParameterValue() . "'";
+         return $link . " " . $this->getSqlField() . "= '" . $this->getParameterValue() . "'";
       }
       if ($this->getParameterValue() < 0) {
-         return $link . " `" . $this->getSqlField() . "`>= '" . abs($this->getParameterValue()) ."'";
+         return $link . " " . $this->getSqlField() . ">= '" . abs($this->getParameterValue()) ."'";
       }
    }
 

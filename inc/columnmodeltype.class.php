@@ -1,5 +1,4 @@
 <?php
-
 /*
   ----------------------------------------------------------------------
   GLPI - Gestionnaire Libre de Parc Informatique
@@ -28,35 +27,14 @@
   ------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-
 /**
- * Location selection criteria
+ * class PluginReportsColumn to manage output
  */
-class PluginReportsLocationCriteria extends PluginReportsDropdownCriteria {
+class PluginReportsColumnModelType extends PluginReportsColumnDropdownLinkedType {
 
-   function __construct($report, $name = 'locations_id') {
-      global $LANG;
-      parent :: __construct($report, $name, 'glpi_locations', $LANG['common'][15]);
+   function __construct($nameid, $title, $nametype, $options=array()) {
+
+      parent::__construct($nameid, $title, $nametype, 'Model', $options);
    }
-
-
-   public function setDefaultLocation($location) {
-      $this->addParameter($this->name, $location);
-   }
-
-
-   /**
-    * Deprecated : replace by setWithChildrens
-    */
-   public function setLocationWithChildrens() {
-      $this->setWithChildrens();
-   }
-
 }
-
 ?>
