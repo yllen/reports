@@ -78,33 +78,41 @@ else {
 }
 
 function getSqlSubRequest($itemtype,$loc,$obj) {
-   $query_where = "";
-   $table = getTableForItemType($itemtype);
+
+   $table     = getTableForItemType($itemtype);
    $models_id = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Model'));
-   $types_id = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Type'));
-   $fields = array('name' => 'name','serial' => 'serial',
-                   'otherserial' => 'otherserial',
-                   $models_id => 'models_id', $types_id => 'types_id');
-   $query_where.="SELECT '$itemtype' as itemtype, `$table`.`id` as items_id, `$table`.`locations_id`,";
-   $first = true;
+   $types_id  = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Type'));
+   $fields    = array('name'        => 'name',
+                      'serial'      => 'serial',
+                      'otherserial' => 'otherserial',
+                      $models_id    => 'models_id',
+                      $types_id     => 'types_id');
+
+   $query_where = "SELECT '$itemtype' AS itemtype,
+                          `$table`.`id` AS items_id,
+                          `$table`.`locations_id`";
+
    foreach ($fields as $field => $alias) {
       if ($obj->isField($field)) {
-         $query_where.=(!$first?',':'')."`$table`.`$field` AS $alias ";
-         $first = false;
-      }
-      else {
-         $query_where.=(!$first?',':'')."'' AS $alias ";
+         $query_where .= ", `$table`.`$field` AS $alias";
+      } else {
+         $query_where .= ", '' AS $alias";
       }
    }
-   $query_where.=" FROM `$table`";
-   $query_where.= "WHERE 1";
+   $query_where .= " FROM `$table` ";
+   if ($obj->isEntityAssign()) {
+      $query_where .= getEntitiesRestrictRequest('WHERE', "$table");
+   } else {
+      $query_where .= 'WHERE 1';
+   }
    if ($obj->maybeTemplate()) {
       $query_where .= " AND `is_template`='0'";
    }
    if ($obj->maybeDeleted()) {
       $query_where .= " AND `is_deleted`='0'";
    }
-   $query_where.= $loc->getSqlCriteriasRestriction();
+   $query_where .= $loc->getSqlCriteriasRestriction();
+
    return $query_where;
 }
 ?>
