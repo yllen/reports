@@ -40,7 +40,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
    private $types = array();
 
    function __construct($report, $name='', $label='', $types=array()) {
-      global $LANG;
+      global $LANG, $CFG_GLPI;
 
       parent::__construct(
          $report,
