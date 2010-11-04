@@ -55,7 +55,7 @@ if ($report->criteriasValidated()) {
       $types = array();
       $sql = "SELECT DISTINCT `itemtype`
               FROM `glpi_infocoms` ".
-              getEntitiesRestrictRequest('WHERE','glpi_infocoms').
+              getEntitiesRestrictRequest('WHERE', 'glpi_infocoms').
               $date->getSqlCriteriasRestriction('AND').
               $budg->getSqlCriteriasRestriction('AND');
       foreach ($DB->request($sql) as $data) {
@@ -67,7 +67,7 @@ if ($report->criteriasValidated()) {
    foreach ($types as $type) {
       $result[$type] = array();
       // Total of buy equipment
-      $crit = "itemtype='$type'".
+      $crit = "itemtype='$type' ".
               getEntitiesRestrictRequest('AND','glpi_infocoms').
               $budg->getSqlCriteriasRestriction('AND').
               $date->getSqlCriteriasRestriction('AND');
