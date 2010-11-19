@@ -52,7 +52,7 @@ $crits = array(0 => DROPDOWN_EMPTY_VALUE,
                3 => $LANG["common"][16]." + ".$LANG["common"][22]." + ".$LANG["common"][19], // Name + Model + Serial
                4 => $LANG["device_iface"][2],   // Mac Address
                5 => $LANG["networking"][14],    // IP Address
-               6 => $LANG['common'][20]);       // Otherserial
+               6 => $LANG['common'][20]);
 
 if (isset($_GET["crit"])) {
    $crit = $_GET["crit"];
@@ -116,9 +116,11 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
                   A.`computermodels_id` AS Amodel,
                   A.`manufacturers_id` AS Amanu, AA.`ip` AS Aaddr, A.`entities_id` AS entity,
                   A.`otherserial` AS Aotherserial,
+                  A.`is_ocs_import` AS Aisocsimport,
                   B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
                   B.`computermodels_id` AS Bmodel,
-                  B.`manufacturers_id` AS Bmanu, BB.`ip` AS Baddr, B.`otherserial` AS Botherserial
+                  B.`manufacturers_id` AS Bmanu, BB.`ip` AS Baddr, B.`otherserial` AS Botherserial,
+                  B.`is_ocs_import` AS Bisocsimport
            FROM `glpi_computers` A,
                 `glpi_computers` B,
                 `glpi_networkports` AA,
@@ -155,13 +157,15 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
                   A.`computermodels_id` AS Amodel,
                   A.`manufacturers_id` AS Amanu, AA.`specificity` AS Aaddr, A.`entities_id` AS entity,
                   A.`otherserial` AS Aotherserial,
+                  A.`is_ocs_import` AS Aisocsimport,
                   B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
                   B.`computermodels_id` AS Bmodel,
-                  B.`manufacturers_id` AS Bmanu, BB.`specificity` AS Baddr, B.`otherserial` as Botherserial
+                  B.`manufacturers_id` AS Bmanu, BB.`specificity` AS Baddr, B.`otherserial` as Botherserial,
+                  B.`is_ocs_import` AS Bisocsimport
            FROM `glpi_computers` A,
                 `glpi_computers` B,
                 `glpi_computers_devicenetworkcards` AA,
-                `glpi_computers_devicenetworkcards` BB" .
+                `glpi_computers_devicenetworkcards` BB ".
            getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
                  AND AA.`computers_id` = A.`id`
                  AND BB.`computers_id` = B.`id`
@@ -189,9 +193,11 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
    $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial,
                   A.`computermodels_id` AS Amodel,
                   A.`manufacturers_id` AS Amanu, A.`entities_id` AS entity, A.`otherserial` AS Aotherserial,
+                  A.`is_ocs_import` AS Aisocsimport,
                   B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
                   B.`computermodels_id` AS Bmodel,
-                  B.`manufacturers_id` AS Bmanu, B.`otherserial` AS Botherserial
+                  B.`manufacturers_id` AS Bmanu, B.`otherserial` AS Botherserial,
+                  B.`is_ocs_import` AS Bisocsimport
            FROM `glpi_computers` A,
                 `glpi_computers` B " .
            getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
@@ -222,7 +228,7 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
 
 if ($crit>0) { // Display result
    $canedit = $computer->canUpdate();
-   $colspan = ($col ? 7 : 6) + ($canedit ? 1 : 0);
+   $colspan = ($col ? 9 : 8) + ($canedit ? 1 : 0);
 
    // save crit for massive action
    $_SESSION['plugin_reports_doublons_crit'] = $crit;
@@ -249,9 +255,13 @@ if ($crit>0) { // Display result
    if ($col) {
       echo "<th>$col</th>";
    }
+   echo "<th>".$LANG['ocsng'][7]."</th>";
+   echo "<th>".$LANG['ocsng'][14]."</th>";
+
    if ($canedit) {
       echo "<th>&nbsp;</th>";
    }
+
    echo "<th class='blue'>" . $LANG["common"][2] . "</th>" .
       "<th class='blue'>" . $LANG["common"][16] . "</th>" .
       "<th class='blue'>" . $LANG["common"][5] . "</th>" .
@@ -261,6 +271,9 @@ if ($crit>0) { // Display result
    if ($col) {
       echo "<th class='blue'>$col</th>";
    }
+   echo "<th class='blue'>".$LANG['ocsng'][7]."</th>";
+   echo "<th>".$LANG['ocsng'][14]."</th>";
+
    echo "</tr>\n";
 
    $result = $DB->query($Sql);
@@ -284,6 +297,8 @@ if ($crit>0) { // Display result
       if ($col) {
          echo "<td>" .$data["Aaddr"]. "</td>";
       }
+      echo "<td>" .Dropdown::getYesNo($data['Aisocsimport']). "</td>";
+      echo "<td>" .getLastOcsUpdate($data['AID']). "</td>";
 
       if ($canedit) {
          echo "<td><input type='checkbox' name='item[".$data["BID"]."]' value='1'></td>";
@@ -299,6 +314,9 @@ if ($crit>0) { // Display result
       if ($col) {
          echo "<td>" .$data["Aaddr"]. "</td>";
       }
+      echo "<td>" .Dropdown::getYesNo($data['Bisocsimport']). "</td>";
+      echo "<td>" .getLastOcsUpdate($data['BID']). "</td>";
+
    echo "</tr>\n";
    }
    echo "<tr class='tab_bg_4'><td class='center' colspan='$colspan'>";
@@ -323,6 +341,17 @@ commonFooter();
 
 function buildBookmarkUrl($url,$crit) {
    return $url."?crit=".$crit;
+}
+
+function getLastOcsUpdate($computers_id) {
+   global $DB;
+   $query = "SELECT `last_ocs_update` FROM `glpi_ocslinks` WHERE `computers_id`='$computers_id'";
+   $results = $DB->query($query);
+   if ($DB->numrows($results) > 0) {
+      return $DB->result($results,0,'last_ocs_update');
+   } else {
+      return '';
+   }
 }
 
 ?>
