@@ -53,7 +53,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
          // $types is an hashtable of itemtype => display name
          $this->types = $types;
 
-      } else if (isset($CFG_GLPI[$types])) {
+      } else if (is_string($types) && isset($CFG_GLPI[$types])) {
          // $types is the name of an configured type hashtable (infocom_types, doc_types, ...)
          foreach($CFG_GLPI[$types] as $itemtype) {
             if (class_exists($itemtype)) {
