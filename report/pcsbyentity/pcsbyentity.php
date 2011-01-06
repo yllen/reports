@@ -51,7 +51,7 @@ function doStatBis ($table, $entities, $header) {
       $result = $DB->query($sql);
       $counts[$entity] = array();
       while ($data = $DB->fetch_array($result)) {
-         $counts[$entity][$data["state"]] = $data["cpt"];
+         $counts[$entity][$data["states_id"]] = $data["cpt"];
       }
 
       $counts[$entity]["tot"] = 0;
@@ -245,7 +245,9 @@ if (count($_SESSION["glpiactiveentities"]) > 1) {
          "&nbsp;:&nbsp;</td>";
    echo "<td><select name='sort'><option value='0'>".$LANG['plugin_reports']['pcsbyentity'][6].
          "</option>";
-   echo "<option value='1'>".$LANG['plugin_reports']['pcsbyentity'][7]."</option></select></td></tr>\n";
+   $sel = (isset($_POST["sort"]) && $_POST["sort"] ? "selected='selected'" : "");
+
+   echo "<option value='1' $sel>".$LANG['plugin_reports']['pcsbyentity'][7]."</option></select></td></tr>\n";
 }
 
 echo "<tr class='tab_bg_1 center'><td colspan='2'><input type='submit' value='valider' class='submit'/>";
