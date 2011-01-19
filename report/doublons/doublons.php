@@ -31,10 +31,6 @@
 // Purpose of file: Handle configuration for "doublons" report
 // ----------------------------------------------------------------------
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE = 1;
-$DBCONNECTION_REQUIRED = 0;
-
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
@@ -276,8 +272,15 @@ if ($crit>0) { // Display result
 
    echo "</tr>\n";
 
-   $result = $DB->query($Sql);
-   for ($prev=-1, $i=0 ; $data = $DB->fetch_array($result) ; $i++) {
+
+   if (method_exists('DBConnection', 'getReadConnection')) { // In 0.80
+      $DBread = DBConnection::getReadConnection();
+   } else {
+      $DBread = $DB;
+   }
+
+   $result = $DBread->query($Sql);
+   for ($prev=-1, $i=0 ; $data = $DBread->fetch_array($result) ; $i++) {
       if ($prev != $data["entity"]) {
          $prev = $data["entity"];
          echo "<tr class='tab_bg_4'><td class='center' colspan='$colspan'>".
