@@ -31,7 +31,7 @@ $DBCONNECTION_REQUIRED=1;
 define('GLPI_ROOT',  '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-$report = new PluginReportsAutoReport($LANG['plugin_reports']['statiteminstall'][1]);
+$report = new PluginReportsAutoReport($LANG['plugin_reports']['iteminstall'][1]);
 
 //Report's search criterias
 $date = new PluginReportsDateIntervalCriteria($report, 'buy_date');

@@ -25,7 +25,7 @@
 
 global $LANG;
 
-$LANG['plugin_reports']['statiteminstall'][1]  = "Time before equipment start-up";
+$LANG['plugin_reports']['iteminstall'][1]  = "Délai de mise en service des équipements";
 
 
 ?>
