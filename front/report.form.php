@@ -81,6 +81,7 @@ $result=$DB->query($query);
 
 echo "<select name='report'>";
 $plugname = array();
+$rap = array();
 foreach($tab as $key => $plug) {
    $mod = ($plug=='reports' ? $key : $plug.'_'.$key);
    if (!isset($plugname[$plug])) {
@@ -89,9 +90,23 @@ foreach($tab as $key => $plug) {
       $tmp = $function();
       $plugname[$plug] = $tmp['name'];
    }
+   $section = (isStat($mod)
+                  ? $LANG['title'][24] . ' - ' . $LANG['Menu'][13]
+                  : $LANG['Menu'][18] . ' - ' . $LANG['Menu'][6]);
 
-   echo "<option value='$mod' ".($report=="$mod"?"selected":"").">".
-          $plugname[$plug] . " - " . $LANG["plugin_$plug"][$key][1]."</option>";
+   $rap[$plug][$section][$mod] = $LANG["plugin_$plug"][$key][1];
+}
+$tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+foreach ($rap as $plug => $tmp1) {
+   echo '<optgroup label="'.$LANG['common'][29].' - '.$plugname[$plug].'">';
+   foreach ($tmp1 as $section => $tmp2) {
+      echo '<optgroup label="'.$tab."&raquo;&nbsp;".$section.'">';
+      foreach ($tmp2 as $mod => $name) {
+         echo "<option value='$mod' ".($report=="$mod"?"selected":"").">${tab}${tab}$name</option>\n";
+      }
+      echo "</optgroup>\n";
+   }
+   echo "</optgroup>\n";
 }
 echo "</select>";
 echo "<td><input type='submit' value='".$LANG['buttons'][2]."' class='submit' ></td></tr>";
