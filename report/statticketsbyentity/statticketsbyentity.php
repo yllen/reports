@@ -31,7 +31,7 @@ $DBCONNECTION_REQUIRED=1;
 define('GLPI_ROOT',  '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-$report = new PluginReportsAutoReport($LANG['plugin_reports']['ticketsbyentity'][1]);
+$report = new PluginReportsAutoReport($LANG['plugin_reports']['statticketsbyentity'][1]);
 
 //Report's search criterias
 $prof = new PluginReportsDropdownCriteria($report,'profiles_id','glpi_profiles',$LANG['profiles'][22]);
@@ -46,15 +46,15 @@ if ($report->criteriasValidated()) {
    //Names of the columns to be displayed
    $cols = array (new PluginReportsColumn('name', $LANG['entity'][0],
                                            array('sorton' => '`glpi_entities`.`completename`')),
-                  new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['ticketsbyentity'][5],
+                  new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['statticketsbyentity'][5],
                                                  array('withtotal' => true,
                                                        'sorton'    => 'nbusers')),
-                  new PluginReportsColumnInteger('number', $LANG['plugin_reports']['ticketsbyentity'][2],
+                  new PluginReportsColumnInteger('number', $LANG['plugin_reports']['statticketsbyentity'][2],
                                                  array('withtotal' => true,
                                                        'sorton'    => 'number')),
-                  new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['ticketsbyentity'][3],
+                  new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['statticketsbyentity'][3],
                                                   array('sorton' => 'mindate')),
-                  new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['ticketsbyentity'][4],
+                  new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['statticketsbyentity'][4],
                                                   array('sorton' => 'maxdate')));
    $report->setColumns($cols);
 
