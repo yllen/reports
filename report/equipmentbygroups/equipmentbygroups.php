@@ -38,8 +38,8 @@
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE = 1;
-$DBCONNECTION_REQUIRED = 0; // Not really a big SQL request
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0; // Not really a big SQL request
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -57,8 +57,8 @@ displaySearchForm();
 
 $sql = "SELECT `id` AS group_id, `name` AS group_name
         FROM `glpi_groups`
-        WHERE `entities_id` = " . $_SESSION["glpiactive_entity"] . ($_GET["group"] ? "
-              AND `glpi_groups`.`id` = " . $_GET["group"] : "") . "
+        WHERE `entities_id` = ".$_SESSION["glpiactive_entity"].
+              ($_GET["group"] ? " AND `glpi_groups`.`id` = ".$_GET["group"] : "") . "
         ORDER BY `name`";
 $result = $DB->query($sql);
 
