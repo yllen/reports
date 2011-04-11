@@ -33,6 +33,7 @@
 class PluginReportsColumnInteger extends PluginReportsColumn {
 
    private $total;
+   private $with_zero = 1;
 
    function __construct($name, $title, $options=array()) {
 
@@ -41,6 +42,9 @@ class PluginReportsColumnInteger extends PluginReportsColumn {
       }
       if (!isset($options['extrabold'])) {
          $options['extrabold'] =  "class='b right'";
+      }
+      if (isset($options['with_zero'])) {
+         $this->with_zero = $options['with_zero'];
       }
 
       parent::__construct($name, $title, $options);
@@ -51,7 +55,10 @@ class PluginReportsColumnInteger extends PluginReportsColumn {
    function displayValue($output_type, $row) {
       if (isset($row[$this->name])) {
          $this->total += intval($row[$this->name]);
-         return $row[$this->name];
+
+         if ($row[$this->name] || $this->with_zero) {
+            return $row[$this->name];
+         }
       }
       return '';
    }
