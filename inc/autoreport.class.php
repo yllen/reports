@@ -297,6 +297,12 @@ class PluginReportsAutoReport {
          printPager($start, $nbtot, $_SERVER['PHP_SELF'], $param);
       }
 
+      if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
+         if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
+            echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"".
+                  $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
+         }
+      }
       plugin_reports_checkRight($this->plug, $this->name, "r");
 
       if ($res && $nbtot >0) {
@@ -383,6 +389,12 @@ class PluginReportsAutoReport {
       echo Search::showFooter($output_type, $title);
 
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
+         if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
+            openArrowMassive("massiveaction_form", true);
+            Dropdown::showForMassiveAction('User');
+            closeArrowMassive();
+            echo "</form>";
+         }
          commonFooter();
       }
    }
