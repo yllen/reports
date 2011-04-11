@@ -55,8 +55,6 @@ class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
           && $this->obj->can($row[$this->name], 'w')) {
          return "<input type='checkbox' name='item[".$row[$this->name]."]' value='1'>";
       }
-      logDebug("Object:", get_class($this->obj), "output", $output_type, "can",
-               ($this->obj->can($row[$this->name], 'w') ? "Oui" : "Non"));
       return '';
    }
 }
