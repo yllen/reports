@@ -31,6 +31,7 @@
 // Purpose of file: French locale for "rules" report
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['rules'][1]="Elenco Regole";
-
+$LANG['plugin_reports']['rules'][1] = "Elenco Regole";
+$LANG['plugin_reports']['rules'][2] = "AND";
+$LANG['plugin_reports']['rules'][3] = "OR";
 ?>

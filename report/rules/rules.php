@@ -32,8 +32,8 @@
 // ----------------------------------------------------------------------
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0;
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -65,16 +65,16 @@ function plugin_reports_rulelist ($rulecollection, $title) {
       echo "<td>" . $rule->fields["description"] . "</td>";
 
       if ($rule->fields["match"] == Rule::AND_MATCHING) {
-         echo "<td>".$LANG["rulesengine"][42]."</td>";
+         echo "<td>".$LANG['plugin_reports']['rules'][2]."</td>";
       } else {
-         echo "<td>".$LANG["rulesengine"][43]."</td>";
+         echo "<td>".$LANG['plugin_reports']['rules'][3]."</td>";
       }
 
       echo "<td>";
       foreach ($rule->criterias as $criteria) {
          echo $rule->getCriteriaName($criteria->fields["criteria"]) . " " .
-               RuleCriteria::getConditionByID($criteria->fields["condition"]) . " " .
-               $rule->getCriteriaDisplayPattern($criteria->fields["criteria"],
+              RuleCriteria::getConditionByID($criteria->fields["condition"], get_class($rule))." ".
+              $rule->getCriteriaDisplayPattern($criteria->fields["criteria"],
                                                 $criteria->fields["condition"],
                                                 $criteria->fields["pattern"]) . "<br>";
       }

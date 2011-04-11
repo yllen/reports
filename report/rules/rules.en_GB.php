@@ -31,6 +31,7 @@
 // Purpose of file: English locale for "rules" report
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['rules'][1]="Rule's catalog";
-
+$LANG['plugin_reports']['rules'][1] = "Rule's catalog";
+$LANG['plugin_reports']['rules'][2] = "AND";
+$LANG['plugin_reports']['rules'][3] = "OR";
 ?>

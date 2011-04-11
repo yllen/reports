@@ -31,6 +31,7 @@
 // Purpose of file: Dutch locale for "rules" report
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['rules'][1]="Regelcatalogus";
-
+$LANG['plugin_reports']['rules'][1] = "Regelcatalogus";
+$LANG['plugin_reports']['rules'][2] = "AND";
+$LANG['plugin_reports']['rules'][3] = "OR";
 ?>

@@ -105,10 +105,10 @@ function plugin_version_reports() {
    global $LANG;
 
    return array('name'     => $LANG['plugin_reports']['title'][1],
-                'version'  => '1.4.0',
+                'version'  => '1.5.0',
                 'author'   => 'Nelly LASSON',
                 'homepage' => 'https://forge.indepnet.net/projects/show/reports',
-                'minGlpiVersion' => '0.78');
+                'minGlpiVersion' => '0.80');
 }
 
 
@@ -153,8 +153,8 @@ function plugin_reports_checkRight($plug, $module, $right) {
 function plugin_reports_check_prerequisites() {
    global $LANG;
 
-   if (GLPI_VERSION < 0.78) {
-      echo "GLPI version not compatible need 0.78";
+   if (GLPI_VERSION < 0.80) {
+      echo "GLPI version not compatible need 0.80";
    } else {
       return true;
    }

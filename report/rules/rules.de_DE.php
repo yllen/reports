@@ -28,9 +28,10 @@
 */
 
 // Original Author of file: Souleye Ndiaye
-// Purpose of file: 
+// Purpose of file:
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['rules'][1]="Regelkatalog";
-
+$LANG['plugin_reports']['rules'][1] = "Regelkatalog";
+$LANG['plugin_reports']['rules'][2] = "UND";
+$LANG['plugin_reports']['rules'][3] = "ODER";
 ?>
