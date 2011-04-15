@@ -39,7 +39,7 @@ class PluginReportsProfile extends CommonDBTM {
    //if profile deleted
    static function cleanProfiles(Profile $prof) {
       $plugprof = new self();
-      $plugprof->delete(array('id'=>$prof->getField("id")));
+      $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
    }
 
    function canCreate() {
@@ -116,74 +116,48 @@ class PluginReportsProfile extends CommonDBTM {
             $rights["${plug}_${report}"]=1;
          }
       }
-      // Add missing profiles
-      $DB->query("INSERT INTO
-                  `".$this->getTable()."` (`id`, `profile`)
-                  (SELECT `id`, `name`
-                   FROM `glpi_profiles`
-                   WHERE `id` NOT IN (SELECT `id`
-                                      FROM `".$this->getTable()."`))");
 
-      $current_rights = $this->fields;
-      unset($current_rights["id"]);
-      unset($current_rights["profile"]);
+      $current_rights = array();
+      $query = "SELECT DISTINCT `report`
+                FROM `glpi_plugin_reports_profiles`";
+      foreach ($DB->request($query) as $data) {
+         $current_rights[$data['report']] = 1;
+      }
+
+      // Removed report
       foreach($current_rights as $right => $value) {
          if (!isset($rights[$right])) {
-            // Delete the columns for old reports
-            $DB->query("ALTER TABLE
-                        `".$this->getTable()."`
-                        DROP COLUMN `".$right."`");
+            // Delete the lines for old reports
+            $this->deleteByCriteria(array('report' => $right));
          } else {
             unset($rights[$right]);
          }
       }
 
-      foreach ($rights as $key=>$right) {
-         // Add the column for new report
-         $DB->query("ALTER TABLE
-                     `".$this->getTable()."`
-                     ADD COLUMN `".$key."` char(1) DEFAULT NULL");
-         // Add "read" write to Super-admin
-         $DB->query("UPDATE
-                     `".$this->getTable()."`
-                     SET `".$key."`='r'
-                     WHERE `id` = '4'");
-      }
+      // Added report
+      foreach ($rights as $right => $val) {
+         $DB->query("INSERT INTO
+                     `".$this->getTable()."` (`profiles_id`, `report`, `access`)
+                     VALUE (4, '$right', 'r')");
 
-      // Delete unused profiles
-      $DB->query("DELETE
-                  FROM `".$this->getTable()."`
-                  WHERE `id` NOT IN (SELECT `id`
-                                     FROM `glpi_profiles`)");
+         // For immediate availability
+         if ($_SESSION['glpiactiveprofile']['id']==4) {
+            $_SESSION['glpi_plugin_reports_profile'][$right] = 'r';
+         }
+      }
    }
 
 
    static function changeprofile() {
-
-      $prof = new self();
-      if ($prof->getFromDB($_SESSION['glpiactiveprofile']['id'])) {
-         $_SESSION["glpi_plugin_reports_profile"]=$prof->fields;
-      } else {
-         unset($_SESSION["glpi_plugin_reports_profile"]);
-      }
-   }
-
-
-   /**
-    * Create access rights for an user
-    * @param id the user id
-    */
-   function createaccess($id) {
       global $DB;
 
-      $Profile = new Profile();
-      $Profile->GetfromDB($id);
-      $name = $Profile->fields["profil"];
+      $_SESSION['glpi_plugin_reports_profile'] = array();
 
-      $query = "INSERT INTO
-                `".$this-getTable()."` (`id`, `profile`)
-                VALUES ('$id', '$name');";
-      $DB->query($query);
+      $crit = array('profiles_id' => $_SESSION['glpiactiveprofile']['id']);
+
+      foreach ($DB->request('glpi_plugin_reports_profiles', $crit) as $data) {
+         $_SESSION['glpi_plugin_reports_profile'][$data['report']] = $data['access'];
+      }
    }
 
 
@@ -192,14 +166,77 @@ class PluginReportsProfile extends CommonDBTM {
     */
    function updatePluginRights() {
 
-      $this->getEmpty();
       $tab = searchReport();
       $this->updateRights($tab);
 
       return $tab;
    }
 
+   static function install() {
+      global $DB;
 
+      $create = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_profiles` (
+                    `id` int(11) NOT NULL auto_increment,
+                    `profiles_id` int(11) NOT NULL DEFAULT '0',
+                    `report` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                    `access` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+                  PRIMARY KEY (`id`),
+                  KEY `report` (`report`),
+                  KEY `profiles_id` (`profiles_id`))
+                  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+
+      if (TableExists('glpi_plugin_reports_profiles')) { //1.1 ou 1.2
+
+         if (FieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
+            $query = "ALTER TABLE `glpi_plugin_reports_profiles`
+                      CHANGE `ID` `id` int(11) NOT NULL auto_increment";
+            $DB->query($query) or die("CHANGE ID: ".$DB->error());
+         }
+
+         if (!FieldExists('glpi_plugin_reports_profiles','profiles_id')) { // version < 1.5.0
+            $query = "RENAME TABLE `glpi_plugin_reports_profiles`
+                                TO `glpi_plugin_reports_oldprofiles`";
+            $DB->query($query) or die("SAVE TABLE profiles: ".$DB->error());
+            $DB->query($create) or die("CREATE TABLE profiles: ".$DB->error());
+
+            $fields = $DB->list_fields('glpi_plugin_reports_oldprofiles');
+            unset($fields['id']);
+            unset($fields['profile']);
+            foreach($fields as $field => $descr) {
+               $query = "INSERT INTO `glpi_plugin_reports_profiles`
+                                     (`profiles_id`, `report`, `access`)
+                                SELECT `id`, '$field', `$field`
+                                FROM `glpi_plugin_reports_oldprofiles`
+                                WHERE `$field` IS NOT NULL";
+               $DB->query($query) or die("LOAD TABLE profiles: ".$DB->error());
+            }
+
+            $query = "DROP TABLE `glpi_plugin_reports_oldprofiles`";
+            $DB->query($query) or die("DROP TABLE oldprofiles: ".$DB->error());
+         }
+      } else {
+         $DB->query($create) or die("CREATE TABLE profiles: ".$DB->error());
+      }
+
+      return true;
+   }
+
+
+   static function uninstall() {
+      global $DB;
+
+      $tables = array('glpi_plugin_reports_profiles',
+                      'glpi_plugin_reports_oldprofiles',
+                      'glpi_plugin_reports_doublons_backlist',
+                      'glpi_plugin_reports_doublons_backlists');
+
+      foreach ($tables as $table) {
+         $query = "DROP TABLE IF EXISTS `$table`";
+         $DB->query($query) or die($DB->error());
+      }
+
+      return true;
+   }
 }
 
 ?>

@@ -66,9 +66,6 @@ function plugin_headings_reports($item, $withtemplate=0) {
          $prof->updatePluginRights();
 
          $id = $item->getField('id');
-         if (!$prof->getFromDB($id)) {
-            $prof->createaccess($id);
-         }
          $prof->showForm($id,
                          array('target' => $CFG_GLPI["root_doc"]."/plugins/reports/front/profile.form.php"));
          break;
@@ -77,43 +74,21 @@ function plugin_headings_reports($item, $withtemplate=0) {
 
 
 function plugin_reports_install() {
-   global $DB;
 
-   $query = '';
-   if (TableExists('glpi_plugin_reports_profiles')) { //1.1 ou 1.2
-      if (FieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
-         $query = "ALTER TABLE `glpi_plugin_reports_profiles`
-                   CHANGE `ID` `id` int(11) NOT NULL auto_increment";
-      }
-   } else {
-      $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_profiles` (
-                  `id` int(11) NOT NULL auto_increment,
-                  `profile` varchar(255) NOT NULL,
-                PRIMARY KEY (`id`))
-                ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+   // No autoload when plugin is not activated
+   require 'inc/profile.class.php';
+
+   return PluginReportsProfile::install();
    }
-   if ($query) {
-      $DB->query($query) or die($DB->error());
-   }
-
-
-   return true;
-}
 
 
 function plugin_reports_uninstall() {
    global $DB;
 
-   $tables = array('glpi_plugin_reports_profiles',
-                   'glpi_plugin_reports_doublons_backlist',
-                   'glpi_plugin_reports_doublons_backlists');
+   // No autoload when plugin is not activated
+   require 'inc/profile.class.php';
 
-   foreach ($tables as $table) {
-      $query = "DROP TABLE IF EXISTS `$table`";
-      $DB->query($query) or die($DB->error());
-   }
-
-   return true;
+   return PluginReportsProfile::uninstall();
 }
 
 
