@@ -153,11 +153,11 @@ function plugin_reports_checkRight($plug, $module, $right) {
 function plugin_reports_check_prerequisites() {
    global $LANG;
 
-   if (GLPI_VERSION < 0.80) {
-      echo "GLPI version not compatible need 0.80";
-   } else {
+   if (version_compare(GLPI_VERSION, "0.80", ">=")) {
       return true;
    }
+   echo "GLPI version not compatible, need 0.80";
+   return false;
 }
 
 ?>
