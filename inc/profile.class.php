@@ -110,6 +110,54 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
+   static function showForReport($report) {
+      global $DB, $LANG;
+
+      if (empty($report) || !haveRight('profile', 'r')) {
+         return false;
+      }
+      $current = self::getAllRights(array('report' => $report), true);
+      $canedit = haveRight('profile', 'w');
+
+      if ($canedit) {
+         echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>\n";
+      }
+
+      echo "<table class='tab_cadre'>\n";
+      echo "<tr><th colspan='2'>".$LANG['plugin_reports']['config'][9].": </th></tr>\n";
+
+
+      $query = "SELECT `id`, `name`, `statistic`, `reports`
+                FROM `glpi_profiles`
+                ORDER BY `name`";
+
+      foreach ($DB->request($query) as $data) {
+         echo "<tr class='tab_bg_1'><td>" . $data['name'] . "&nbsp: </td><td>";
+         if ((isStat($report) && $data['statistic']==1)
+             || (!isStat($report) && $data['reports']=='r')) {
+            Profile::dropdownNoneReadWrite($data['id'], (isset($current[$data['id']])?'r':''), 1, 1, 0);
+         } else {
+            // Can't access because missing right from GLPI core
+            // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
+            echo "<input type='hidden' name='".$data['id']."' value='NULL'>".$LANG['profiles'][12];
+         }
+         echo "</td></tr>\n";
+      }
+
+      if ($canedit) {
+         echo "<tr class='tab_bg_1'><td colspan='2' class='center'>";
+         echo "<input type='hidden' name='report' value='$report'>";
+         echo "<input type='submit' name='update' value='".$LANG['buttons'][7]."' class='submit'>&nbsp;&nbsp;&nbsp;";
+         echo "<input type='submit' name='delete' value='".$LANG['buttons'][6]."' class='submit'>";
+         echo "</td></tr>\n";
+         echo "</table></form>\n";
+      } else {
+         echo "</table>\n";
+      }
+
+
+   }
+
    static function updateForProfile($input) {
       $prof = new self();
       $current = self::getAllRights(array('profiles_id' => $input['profiles_id']), true);
@@ -129,6 +177,32 @@ class PluginReportsProfile extends CommonDBTM {
          }
       }
       foreach ($current as $mod => $data) {
+         $prof->delete($data);
+      }
+   }
+
+
+   static function updateForReport($input) {
+
+      $prof    = new self();
+      $report  = $input['report'];
+      $current = self::getAllRights(array('report' => $report), true);
+
+      foreach($input as $key => $right) {
+         if (is_numeric($key) && $right=='r') {
+            if (isset($current[$key])) {
+               unset($current [$key]);
+            } else {
+               // Give right
+               $prof->add(array('profiles_id' => $key,
+                                'report'      => $report,
+                                'access'      => 'r'));
+            }
+         } else {
+            unset($input [$key]);
+         }
+      }
+      foreach ($current as $key => $data) {
          $prof->delete($data);
       }
    }
@@ -182,7 +256,11 @@ class PluginReportsProfile extends CommonDBTM {
       $tab = array();
 
       foreach ($DB->request('glpi_plugin_reports_profiles', $crit) as $data) {
-         $tab[$data['report']] = ($full ? $data : $data['access']);
+         if (isset($crit['report'])) {
+            $tab[$data['profiles_id']] = ($full ? $data : $data['access']);
+         } else {
+            $tab[$data['report']] = ($full ? $data : $data['access']);
+         }
       }
 
       return $tab;
