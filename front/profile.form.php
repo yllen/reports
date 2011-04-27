@@ -32,16 +32,14 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-define('GLPI_ROOT', '../../..'); 
+define('GLPI_ROOT', '../../..');
 include_once (GLPI_ROOT . "/inc/includes.php");
 
-checkRight("profile","w");
-
-$prof = new PluginReportsProfile();
+checkRight('profile', 'w');
 
 //Save profile
 if (isset ($_POST['update_user_profile'])) {
-   $prof->update($_POST);	
+   PluginReportsProfile::updateForProfile($_POST);
 }
 glpi_header($_SERVER['HTTP_REFERER']);
 

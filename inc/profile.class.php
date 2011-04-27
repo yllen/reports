@@ -51,26 +51,22 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
-   function showForm($id, $options=array()){
+   static function showForProfile(Profile $prof){
       global $LANG,$DB;
 
-      $target = $this->getFormURL();
-      if (isset($options['target'])) {
-        $target = $options['target'];
+      $target = getItemTypeFormURL(__CLASS__);
+
+      $profiles_id = $prof->getField('id');
+      $prof->check($profiles_id, 'r');
+      $canedit = $prof->can($profiles_id, 'w');
+
+      $rights = self::getAllRights(array('profiles_id' => $profiles_id));
+      if ($canedit) {
+         echo "<form action='".$target."' method='post'>";
       }
-
-      if ($id > 0){
-         $this->check($id,'r');
-      } else {
-         $this->check(-1,'w');
-      }
-
-      $canedit=$this->can($id,'w');
-
-      echo "<form action='".$target."' method='post'>";
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='4' class='center b'>".
-             $LANG['plugin_reports']['config'][4]." ".$this->fields["profile"]."</th></tr>";
+             $LANG['plugin_reports']['config'][4]." ".$prof->getField('profile')."</th></tr>";
 
       $plugname = array();
       foreach(searchReport() as $key => $plug) {
@@ -89,19 +85,52 @@ class PluginReportsProfile extends CommonDBTM {
             echo "<td>".$LANG['Menu'][13]."</td>";
          }
          echo "<td>".$LANG["plugin_$plug"][$key][1]." :</td><td>";
-         Profile::dropdownNoneReadWrite($mod,(isset($this->fields[$mod])?$this->fields[$mod]:''),1,1,0);
+         if ((isStat($key) && $prof->getField('statistic')==1)
+             || (!isStat($key) && $prof->getField('reports')=='r')) {
+            Profile::dropdownNoneReadWrite($mod,(isset($rights[$mod])?$rights[$mod]:''),1,1,0);
+         } else {
+            // Can't access because missing right from GLPI core
+            // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
+            echo "<input type='hidden' name='$mod' value='NULL'>".$LANG['profiles'][12];
+         }
          echo "</td></tr>";
       }
 
       if ($canedit) {
          echo "<tr class='tab_bg_1'>";
          echo "<td class='center' colspan='4'>";
-         echo "<input type='hidden' name='id' value=$id>";
+         echo "<input type='hidden' name='profiles_id' value=$profiles_id>";
          echo "<input type='submit' name='update_user_profile' value='".
                 $LANG['buttons'][7]."' class='submit'>";
          echo "</td></tr>\n";
+         echo "</table></form>";
+      } else {
+         echo "</table><";
       }
-      echo "</table></form>";
+   }
+
+
+   static function updateForProfile($input) {
+      $prof = new self();
+      $current = self::getAllRights(array('profiles_id' => $input['profiles_id']), true);
+
+      foreach(searchReport() as $key => $plug) {
+         $mod = ($plug=='reports' ? $key : "${plug}_${key}");
+
+         if ($input[$mod]=='r') {
+            if (isset($current[$mod])) {
+               unset($current[$mod]);
+            } else {
+               // Give right
+               $prof->add(array('profiles_id' => $input['profiles_id'],
+                                'report'      => $mod,
+                                'access'      => 'r'));
+            }
+         }
+      }
+      foreach ($current as $mod => $data) {
+         $prof->delete($data);
+      }
    }
 
 
@@ -147,17 +176,21 @@ class PluginReportsProfile extends CommonDBTM {
       }
    }
 
-
-   static function changeprofile() {
+   static function getAllRights($crit, $full=false) {
       global $DB;
 
-      $_SESSION['glpi_plugin_reports_profile'] = array();
-
-      $crit = array('profiles_id' => $_SESSION['glpiactiveprofile']['id']);
+      $tab = array();
 
       foreach ($DB->request('glpi_plugin_reports_profiles', $crit) as $data) {
-         $_SESSION['glpi_plugin_reports_profile'][$data['report']] = $data['access'];
+         $tab[$data['report']] = ($full ? $data : $data['access']);
       }
+
+      return $tab;
+   }
+   static function changeprofile() {
+
+      $crit = array('profiles_id' => $_SESSION['glpiactiveprofile']['id']);
+      $_SESSION['glpi_plugin_reports_profile'] = self::getAllRights($crit);
    }
 
 

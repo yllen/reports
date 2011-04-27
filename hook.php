@@ -60,14 +60,11 @@ function plugin_headings_reports($item, $withtemplate=0) {
    global $CFG_GLPI;
 
    $prof = new PluginReportsProfile();
-   switch (get_class($item)) {
+   switch ($item->getType()) {
       case 'Profile' :
          //Check if new reports added
          $prof->updatePluginRights();
-
-         $id = $item->getField('id');
-         $prof->showForm($id,
-                         array('target' => $CFG_GLPI["root_doc"]."/plugins/reports/front/profile.form.php"));
+         PluginReportsProfile::showForProfile($item);
          break;
    }
 }
