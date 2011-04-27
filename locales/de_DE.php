@@ -34,6 +34,8 @@
 $LANG['plugin_reports']['title'][1] =  "Reports";
 
 $LANG['plugin_reports']['config'][1]   = "Konfiguration des Plugins";
+$LANG['plugin_reports']['config'][2]   = "No right on Tools / Reports";
+$LANG['plugin_reports']['config'][3]   = "No Right on Assistance / Statistics";
 $LANG['plugin_reports']['config'][4]   = "Rechtevergabe";
 $LANG['plugin_reports']['config'][8]   = "Rechtevergabe nach Report";
 $LANG['plugin_reports']['config'][9]   = "profil Rechte";

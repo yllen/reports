@@ -92,10 +92,21 @@ class PluginReportsProfile extends CommonDBTM {
             // Can't access because missing right from GLPI core
             // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
             echo "<input type='hidden' name='$mod' value='NULL'>".$LANG['profiles'][12];
+            echo (isStat($key) ? " **" : " *");
          }
          echo "</td></tr>";
       }
 
+      if ($prof->getField('statistic')!=1 || $prof->getField('reports')!='r') {
+         echo "<tr class='b tab_bg_4'><td colspan='4'>";
+         if ($prof->getField('reports')!='r') {
+            echo '*  '.$LANG['plugin_reports']['config'][2].'.<br>';
+         }
+         if ($prof->getField('statistic')!=1) {
+            echo '** '.$LANG['plugin_reports']['config'][3].'.';
+         }
+         echo "</td></tr>\n";
+      }
       if ($canedit) {
          echo "<tr class='tab_bg_1'>";
          echo "<td class='center' colspan='4'>";
@@ -139,10 +150,13 @@ class PluginReportsProfile extends CommonDBTM {
          } else {
             // Can't access because missing right from GLPI core
             // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
-            echo "<input type='hidden' name='".$data['id']."' value='NULL'>".$LANG['profiles'][12];
+            echo "<input type='hidden' name='".$data['id']."' value='NULL'>".$LANG['profiles'][12]." *";
          }
          echo "</td></tr>\n";
       }
+      echo "<tr class='tab_bg_4'><td colspan='2'>* ";
+      echo $LANG['plugin_reports']['config'][isStat($report) ? 3 : 2];
+      echo "</tr>";
 
       if ($canedit) {
          echo "<tr class='tab_bg_1'><td colspan='2' class='center'>";
