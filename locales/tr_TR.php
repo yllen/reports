@@ -26,22 +26,21 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  ------------------------------------------------------------------------
 */
-// Spanish translation: Jorge López Díaz
-// ----------------------------------------------------------------------
-$LANG['plugin_reports']['title'][1] = "Informes";
 
-$LANG['plugin_reports']['config'][1]   = "Configuración del plugin Informes";
-$LANG['plugin_reports']['config'][2]   = "Sin derechos en Utilidades / Informes";
-$LANG['plugin_reports']['config'][3]   = "Sin derechos en Soporte / Estadísticas";
-$LANG['plugin_reports']['config'][4]   = "Derechos por perfil";
-$LANG['plugin_reports']['config'][8]   = "Derechos por informe";
-$LANG['plugin_reports']['config'][9]   = "Derechos de perfiles";
-$LANG['plugin_reports']['config'][10]  = "Informe";
-$LANG['plugin_reports']['config'][11]  = "Configuración del informe";
+$LANG['plugin_reports']['title'][1] = "Raporlar";
 
-$LANG['plugin_reports']['reports'][1]  = "Criterios de búsqueda";
+$LANG['plugin_reports']['config'][1]   = "Rapor eklentisi ayarları";
+$LANG['plugin_reports']['config'][2]   = "No right on Tools / Reports";
+$LANG['plugin_reports']['config'][3]   = "No Right on Assistance / Statistics";
+$LANG['plugin_reports']['config'][4]   = "Profile göre izinler";
+$LANG['plugin_reports']['config'][8]   = "Raporlara göre erişim izinleri";
+$LANG['plugin_reports']['config'][9]   = "Erişim İzinleri";
+$LANG['plugin_reports']['config'][10]  = "Rapor";
+$LANG['plugin_reports']['config'][11]  = "Rapor ayarları";
 
-$LANG['plugin_reports']['subname']['date-interval']   = "Intervalo fecha";
-$LANG['plugin_reports']['subname']['time-interval']   = "Intervalo hora";
+$LANG['plugin_reports']['reports'][1]  = "Arama Kriterleri";
+
+$LANG['plugin_reports']['subname']['date-interval']   = "Tarih aralığı";
+$LANG['plugin_reports']['subname']['time-interval']   = "Saat aralığı";
 
 ?>
