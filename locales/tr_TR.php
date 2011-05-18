@@ -30,8 +30,8 @@
 $LANG['plugin_reports']['title'][1] = "Raporlar";
 
 $LANG['plugin_reports']['config'][1]   = "Rapor eklentisi ayarları";
-$LANG['plugin_reports']['config'][2]   = "No right on Tools / Reports";
-$LANG['plugin_reports']['config'][3]   = "No Right on Assistance / Statistics";
+$LANG['plugin_reports']['config'][2]   = "Araçlar / Raporlar Bölümüne erişim izniniz yok";
+$LANG['plugin_reports']['config'][3]   = "Destek / İstatistikler Bölümüne erişim izniniz yok";
 $LANG['plugin_reports']['config'][4]   = "Profile göre izinler";
 $LANG['plugin_reports']['config'][8]   = "Raporlara göre erişim izinleri";
 $LANG['plugin_reports']['config'][9]   = "Erişim İzinleri";
