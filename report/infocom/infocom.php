@@ -59,6 +59,7 @@ $report = new PluginReportsAutoReport();
 
 $ignored = array('Software', 'CartridgeItem', 'ConsumableItem', 'Consumable', 'Cartridge');
 
+$date = new PluginReportsDateIntervalCriteria($report, '`glpi_infocoms`.`buy_date`', $LANG["financial"][14]);
 $type = new PluginReportsItemTypeCriteria($report, '', '', 'infocom_types', $ignored);
 $budg = new PluginReportsDropdownCriteria($report, '`glpi_infocoms`.`budgets_id`', 'glpi_budgets', $LANG['financial'][87]);
 
@@ -217,6 +218,7 @@ if ($report->criteriasValidated()) {
       }
 
       $where .= $budg->getSqlCriteriasRestriction();
+      $where .= $date->getSqlCriteriasRestriction();
 
       if ($sql) {
          $sql .= " UNION ";
