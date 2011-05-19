@@ -38,38 +38,46 @@
  */
 class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
-   function __construct($report,$sql_field='') {
-      parent :: __construct($report, "date-interval",$sql_field);
+   function __construct($report, $name='', $label='', $start='', $end='') {
+      global $LANG;
+
+      parent :: __construct($report, $name);
+
+      $this->addCriteriaLabel($this->getName(), $label);
+      $this->addCriteriaLabel($this->getName()."_1",
+         ($start ? $start : ($label ? $LANG['search'][24] :$LANG['search'][8])));
+      $this->addCriteriaLabel($this->getName()."_2",
+         ($end ? $end : ($label ? $LANG['search'][23] : $LANG['search'][9])));
    }
 
 
    public function setStartDate($startdate) {
-      $this->addParameter("startdate", $startdate);
+      $this->addParameter($this->getName()."_1", $startdate);
    }
 
 
    function setEndDate($enddate) {
-      $this->addParameter("enddate", $enddate);
+      $this->addParameter($this->getName()."_2", $enddate);
    }
 
    public function getStartDate() {
-      $start = $this->getParameter("startdate");
-      $end   = $this->getParameter("enddate");
+      $start = $this->getParameter($this->getName()."_1");
+      $end   = $this->getParameter($this->getName()."_2");
 
-      return ($start < $end ? $start : $end);
+      return ($start=='NULL' || $end=='NULL' || $start < $end ? $start : $end);
    }
 
    public function getEndDate() {
-      $start = $this->getParameter("startdate");
-      $end   = $this->getParameter("enddate");
+      $start = $this->getParameter($this->getName()."_1");
+      $end   = $this->getParameter($this->getName()."_2");
 
-      return ($start < $end ? $end : $start);
+      return ($start=='NULL' || $end=='NULL' || $start < $end ? $end : $start);
    }
 
 
    public function setDefaultValues() {
-      $this->setStartDate(date("Y-m-d"));
-      $this->setEndDate(date("Y-m-d"));
+      $this->setStartDate('NULL');
+      $this->setEndDate('NULL');
    }
 
 
@@ -77,38 +85,74 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       global $LANG;
 
       $this->getReport()->startColumn();
-      echo $LANG['search'][8].'&nbsp;:';
+      $name = $this->getCriteriaLabel($this->getName());
+      if ($name) {
+         echo "$name, ";
+      }
+      echo $this->getCriteriaLabel($this->getName()."_1").'&nbsp;:';
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      showDateFormItem("startdate", $this->getStartDate(), false);
+      showDateFormItem($this->getName()."_1", $this->getStartDate(), false);
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      echo $LANG['search'][9].'&nbsp;:';
+      if ($name) {
+         echo "$name, ";
+      }
+      echo $this->getCriteriaLabel($this->getName()."_2").'&nbsp;:';
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      showDateFormItem("enddate", $this->getEndDate(), false);
+      showDateFormItem($this->getName()."_2", $this->getEndDate(), false);
       $this->getReport()->endColumn();
    }
 
 
    public function getSqlCriteriasRestriction($link = 'AND') {
 
-      return $link . " " .
-             $this->getSqlField() . ">= '" . $this->getStartDate() . " 00:00:00' AND " .
-             $this->getSqlField() . "<='" . $this->getEndDate() . " 23:59:59' ";
+      $start = $this->getStartDate();
+      $end   = $this->getEndDate();
+
+      if ($start=='NULL' && $end=='NULL') {
+         return '';
+      }
+      $sql = '';
+      if ($start!='NULL') {
+         $sql .= $this->getSqlField() . ">= '" . $this->getStartDate() . " 00:00:00'";
+      }
+      if ($start!='NULL' && $end!='NULL') {
+         $sql .= ' AND ';
+      }
+      if ($end!='NULL') {
+         $sql .= $this->getSqlField() . "<='" . $this->getEndDate() . " 23:59:59' ";
+      }
+
+      return $link . " ($sql)";
    }
 
 
    function getSubName() {
       global $LANG;
 
-      return (isset($LANG['plugin_reports']['subname'][$this->getName()])
-              ? $LANG['plugin_reports']['subname'][$this->getName()] : '') .
-             " (" . convDate($this->getStartDate()) . "," .
-                convDate($this->getEndDate()) . ")";
+      $start = $this->getStartDate();
+      $end   = $this->getEndDate();
+      $title = $this->getCriteriaLabel($this->getName());
+
+      if ($start=='NULL' && $end=='NULL') {
+         return '';
+      }
+      if (empty($title) && isset($LANG['plugin_reports']['subname'][$this->getName()])) {
+         $title = $LANG['plugin_reports']['subname'][$this->getName()];
+      }
+      if ($start=='NULL') {
+         return $title . ', ' . $LANG['search'][23] . ' ' . convDate($end);
+      }
+      if ($end=='NULL') {
+         return $title . ', ' . $LANG['search'][24] . ' ' . convDate($start);
+      }
+
+      return $title . ' (' . convDate($start) . ',' .convDate($end) . ')';
    }
 
 }

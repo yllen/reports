@@ -116,10 +116,12 @@ abstract class PluginReportsAutoCriteria {
 
    /**
     * Get the label associated with the criteria
+    * @param parameter the parameter's name
     * @return label associated with the criteria
     */
-   function getCriteriaLabel() {
-      return $this->criterias_labels[$this->getName()];
+   function getCriteriaLabel($parameter='') {
+
+      return $this->criterias_labels[$parameter ? $parameter : $this->getName()];
    }
 
 
