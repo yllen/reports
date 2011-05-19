@@ -42,7 +42,7 @@ class PluginReportsTextCriteria extends PluginReportsDropdownCriteria {
       global $LANG;
 
       parent::__construct($report,$name,'no_table');
-      $this->addCriteriaLabel($name, ($label ? $label :$LANG['common'][16]));
+      $this->addCriteriaLabel($this->getName(), ($label ? $label :$LANG['common'][16]));
    }
 
    function setDefaultValues() {

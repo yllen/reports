@@ -63,7 +63,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
          $table = getTableNameForForeignKeyField($name);
       }
       $this->table = $table;
-      $this->addCriteriaLabel($name, $label);
+      $this->addCriteriaLabel($this->getName(), $label);
    }
 
 

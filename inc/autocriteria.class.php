@@ -218,7 +218,7 @@ abstract class PluginReportsAutoCriteria {
     * @param criteria's name
     */
    function setName($name) {
-      $this->name = $name;
+      $this->name = strtr($name, '`.', '__');
    }
 
 

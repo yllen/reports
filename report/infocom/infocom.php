@@ -54,12 +54,13 @@ include (GLPI_ROOT . "/inc/includes.php");
  *
  */
 
+//logDebug($_REQUEST);
 $report = new PluginReportsAutoReport();
 
 $ignored = array('Software', 'CartridgeItem', 'ConsumableItem', 'Consumable', 'Cartridge');
 
 $type = new PluginReportsItemTypeCriteria($report, '', '', 'infocom_types', $ignored);
-$budg = new PluginReportsDropdownCriteria($report, 'budgets_is', 'glpi_budgets', $LANG['financial'][87]);
+$budg = new PluginReportsDropdownCriteria($report, '`glpi_infocoms`.`budgets_id`', 'glpi_budgets', $LANG['financial'][87]);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -103,7 +104,6 @@ if ($report->criteriasValidated()) {
    );
 
    $report->setColumns($cols);
-   $bid = $budg->getParameterValue();
    $sel = $type->getParameterValue();
    if ($sel) {
       $types = array($sel);
@@ -215,9 +215,8 @@ if ($report->criteriasValidated()) {
       if ($item->isEntityAssign()) {
          $where .= getEntitiesRestrictRequest(" AND ", $table);
       }
-      if ($bid) {
-         $where .= " AND `glpi_infocoms`.`budgets_id`=$bid";
-      }
+
+      $where .= $budg->getSqlCriteriasRestriction();
 
       if ($sql) {
          $sql .= " UNION ";
