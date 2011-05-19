@@ -46,7 +46,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 
 /*
- * TODO : add a form to choose selection criteria
+ * TODO : add more criteria
  *
  * - num_immo not empry
  * - otherserial not empty
@@ -56,278 +56,179 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 $report = new PluginReportsAutoReport();
 
-$cols = array(
-   new PluginReportsColumnType('itemtype', $LANG["state"][6]),
-   new PluginReportsColumn('manufacturer', $LANG["common"][5]),
-   new PluginReportsColumn('type', $LANG["common"][17]),
-   new PluginReportsColumn('model', $LANG["common"][22]),
-   new PluginReportsColumnTypeLink('id', $LANG["common"][16], 'itemtype'),
-   new PluginReportsColumn('serial', $LANG["common"][19]),
-   new PluginReportsColumn('otherserial', $LANG["common"][20]),
-   new PluginReportsColumn('location', $LANG["common"][15]),
-   new PluginReportsColumn('building', $LANG["setup"][99]),
-   new PluginReportsColumn('room', $LANG["setup"][100]),
-   new PluginReportsColumnLink('groupe', $LANG["common"][35], 'Group'),
-   new PluginReportsColumn('state', $LANG["joblist"][0]),
-   new PluginReportsColumn('immo_number', $LANG["financial"][20]),
-   new PluginReportsColumnDate('buy_date', $LANG["financial"][14]),
-   new PluginReportsColumnDate('use_date', $LANG["financial"][76]),
-   new PluginReportsColumnInteger('warranty_duration', $LANG["financial"][15]),
-   new PluginReportsColumnInteger('warranty_info', $LANG["financial"][16]),
-   new PluginReportsColumnLink('supplier', $LANG["financial"][26], "Supplier"),
-   new PluginReportsColumn('order_number', $LANG["financial"][18]),
-   new PluginReportsColumn('delivery_number', $LANG["financial"][19]),
-   new PluginReportsColumnFloat('value', $LANG["financial"][21]),
-   new PluginReportsColumnFloat('warranty_value', $LANG["financial"][78]),
-   new PluginReportsColumnInteger('sink_time', $LANG["financial"][23]),
-   new PluginReportsColumnInteger('sink_type', $LANG["financial"][22]),
-   new PluginReportsColumnFloat('sink_coeff', $LANG["financial"][77]),
-   new PluginReportsColumn('bill', $LANG["financial"][82]),
-   new PluginReportsColumn('budget', $LANG["financial"][87]),
-);
+$ignored = array('Software', 'CartridgeItem', 'ConsumableItem', 'Consumable', 'Cartridge');
 
-$report->setColumns($cols);
+$type = new PluginReportsItemTypeCriteria($report, '', '', 'infocom_types', $ignored);
+$budg = new PluginReportsDropdownCriteria($report, 'budgets_is', 'glpi_budgets', $LANG['financial'][87]);
 
-$sql = "(SELECT 'SoftwareLicense' AS itemtype,
-                `glpi_manufacturers`.`name` AS manufacturer,
-                `glpi_softwarelicensetypes`.`name` AS type,
-                CONCAT(glpi_softwares.name,' ',buyversion.name) AS model,
-                `glpi_softwarelicenses`.`id`, `serial`, `otherserial`,
-                `glpi_locations`.`completename` AS location, `building`, `room`,
-                `glpi_groups`.`id` AS groupe,
-                `glpi_states`.`name` AS state,
-                `glpi_infocoms`.`value`, `immo_number`, `buy_date`, `use_date`, `warranty_duration`,
-                                `warranty_info`,`order_number`,`delivery_number`, `warranty_value`,
-                                `sink_time`, `sink_type`, `sink_coeff`,`bill`,
-                `glpi_suppliers`.`id` AS supplier,
-                `glpi_budgets`.`name` AS budget
-         FROM `glpi_softwarelicenses`
-         LEFT JOIN `glpi_softwares`
-            ON (`glpi_softwarelicenses`.`softwares_id` = `glpi_softwares`.`id`)
-         LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id` = `glpi_softwares`.`locations_id`)
-         LEFT JOIN `glpi_manufacturers`
-            ON (`glpi_manufacturers`.`id` = `glpi_softwares`.`manufacturers_id`)
-         LEFT JOIN `glpi_softwareversions`
-            ON (`glpi_softwares`.`id` = `glpi_softwareversions`.`softwares_id`)
-         LEFT JOIN `glpi_softwareversions` AS buyversion
-            ON (buyversion.`id` = `glpi_softwarelicenses`.`softwareversions_id_buy`)
-         LEFT JOIN `glpi_states` ON (`glpi_states`.`id` = buyversion.`states_id`)
-         LEFT JOIN `glpi_groups` ON (`glpi_softwares`.`groups_id` = `glpi_groups`.`id`)
-         LEFT JOIN `glpi_softwarelicensetypes`
-            ON (`glpi_softwarelicensetypes`.`id` = `glpi_softwarelicenses`.`softwarelicensetypes_id`)
-         LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`items_id` = `glpi_softwarelicenses`.`id`)
-         LEFT JOIN `glpi_suppliers` ON (`glpi_suppliers`.`id` = `glpi_infocoms`.`suppliers_id`)
-         LEFT JOIN `glpi_budgets` ON (`glpi_budgets`.`id` = `glpi_infocoms`.`budgets_id`)
-         WHERE `glpi_softwares`.`is_deleted` = '0'
-               AND `glpi_softwares`.`is_template` = '0'
-               AND `glpi_infocoms`.`itemtype` = 'SoftwareLicense'
-               AND (`glpi_softwarelicenses`.`otherserial` != ''
-                    OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "glpi_softwares") .")
+//Display criterias form is needed
+$report->displayCriteriasForm();
 
-         UNION (
-         SELECT 'Computer' AS itemtype,
-                `glpi_manufacturers`.`name` AS manufacturer,
-                `glpi_computertypes`.`name` AS type,
-                `glpi_computermodels`.`name` AS model,
-                `glpi_computers`.`id`, `serial`, `otherserial`,
-                `glpi_locations`.`completename` AS location, `building`, `room`,
-                `glpi_groups`.`id` AS groupe,
-                `glpi_states`.`name` AS state,
-                `glpi_infocoms`.`value`, `immo_number`, `buy_date`, `use_date`, `warranty_duration`,
-                                `warranty_info`, `order_number`, `delivery_number`, `warranty_value`,
-                                `sink_time`, `sink_type`, `sink_coeff`, `bill`,
-             `glpi_suppliers`.`id` AS supplier,
-             `glpi_budgets`.`name` AS budget
-         FROM `glpi_computers`
-         LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id` = `glpi_computers`.`locations_id`)
-         LEFT JOIN `glpi_manufacturers`
-               ON (`glpi_manufacturers`.`id` = `glpi_computers`.`manufacturers_id`)
-         LEFT JOIN `glpi_computermodels`
-               ON (`glpi_computermodels`.`id` = `glpi_computers`.`computermodels_id`)
-         LEFT JOIN `glpi_computertypes`
-               ON (`glpi_computertypes`.`id` = `glpi_computers`.`computertypes_id`)
-         LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id` = `glpi_computers`.`groups_id`)
-         LEFT JOIN `glpi_states` ON (`glpi_states`.`id` = `glpi_computers`.`states_id`)
-         LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`items_id` = `glpi_computers`.`id`)
-         LEFT JOIN `glpi_suppliers` ON (`glpi_suppliers`.`id` = `glpi_infocoms`.`suppliers_id`)
-         LEFT JOIN `glpi_budgets` ON (`glpi_budgets`.`id` = `glpi_infocoms`.`budgets_id`)
-         WHERE `glpi_computers`.`is_deleted` = '0'
-               AND `glpi_computers`.`is_template` = '0'
-               AND `glpi_infocoms`.`itemtype` = 'Computer'
-               AND (`glpi_computers`.`otherserial` != ''
-                    OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "glpi_computers") .")
+//If criterias have been validated
+if ($report->criteriasValidated()) {
+   $report->setSubNameAuto();
 
-        UNION (
-         SELECT 'Monitor' AS itemtype,
-                `glpi_manufacturers`.`name` AS manufacturer,
-                `glpi_monitortypes`.`name` AS type,
-                `glpi_monitormodels`.`name` AS model,
-                `glpi_monitors`.`id`, `serial`, `otherserial`,
-                `glpi_locations`.`completename` AS location, `building`, `room`,
-                `glpi_groups`.`id` AS groupe,
-                `glpi_states`.`name` AS state,
-                `glpi_infocoms`.`value`, `immo_number`, `buy_date`, `use_date`, `warranty_duration`,
-                                `warranty_info`,`order_number`,`delivery_number`, `warranty_value`,
-                                `sink_time`, `sink_type`, `sink_coeff`,`bill`,
-                `glpi_suppliers`.`id` AS supplier,
-                `glpi_budgets`.`name` AS budget
-         FROM `glpi_monitors`
-         LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id` = `glpi_monitors`.`locations_id`)
-         LEFT JOIN `glpi_manufacturers`
-               ON (`glpi_manufacturers`.`id` = `glpi_monitors`.`manufacturers_id`)
-         LEFT JOIN `glpi_monitormodels`
-               ON (`glpi_monitormodels`.`id` = `glpi_monitors`.`monitormodels_id`)
-         LEFT JOIN `glpi_monitortypes`
-               ON (`glpi_monitortypes`.`id` = `glpi_monitors`.`monitortypes_id`)
-         LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id` = `glpi_monitors`.`groups_id`)
-         LEFT JOIN `glpi_states` ON (`glpi_states`.`id` = `glpi_monitors`.`states_id`)
-         LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`items_id` = `glpi_monitors`.`id`)
-         LEFT JOIN `glpi_suppliers` ON (`glpi_suppliers`.`id` = `glpi_infocoms`.`suppliers_id`)
-         LEFT JOIN `glpi_budgets` ON (`glpi_budgets`.`id` = `glpi_infocoms`.`budgets_id`)
-         WHERE `glpi_monitors`.`is_deleted` = '0'
-               AND `glpi_monitors`.`is_template` = '0'
-               AND `glpi_infocoms`.`itemtype` = 'Monitor'
-               AND (`glpi_monitors`.`otherserial` != ''
-                    OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "glpi_monitors") .")
+   $cols = array(
+      new PluginReportsColumnType('itemtype', $LANG["state"][6]),
+      new PluginReportsColumn('manufacturer', $LANG["common"][5]),
+      new PluginReportsColumn('type', $LANG["common"][17]),
+      new PluginReportsColumn('model', $LANG["common"][22]),
+      new PluginReportsColumnTypeLink('itemid', $LANG["common"][16], 'itemtype'),
+      new PluginReportsColumn('serial', $LANG["common"][19]),
+      new PluginReportsColumn('otherserial', $LANG["common"][20]),
+      new PluginReportsColumn('location', $LANG["common"][15]),
+      new PluginReportsColumn('building', $LANG["setup"][99]),
+      new PluginReportsColumn('room', $LANG["setup"][100]),
+      new PluginReportsColumnLink('groups_id', $LANG["common"][35], 'Group'),
+      new PluginReportsColumn('state', $LANG["joblist"][0]),
+      new PluginReportsColumn('immo_number', $LANG["financial"][20]),
+      new PluginReportsColumnDate('buy_date', $LANG["financial"][14]),
+      new PluginReportsColumnDate('use_date', $LANG["financial"][76]),
+      new PluginReportsColumnDate('warranty_date', $LANG["financial"][29]),
+      new PluginReportsColumnInteger('warranty_duration', $LANG["financial"][15]),
+      new PluginReportsColumnInteger('warranty_info', $LANG["financial"][16]),
+      new PluginReportsColumnLink('suppliers_id', $LANG["financial"][26], "Supplier"),
+      new PluginReportsColumnDate('order_date', $LANG["financial"][28]),
+      new PluginReportsColumn('order_number', $LANG["financial"][18]),
+      new PluginReportsColumnDate('delivery_date', $LANG["financial"][27]),
+      new PluginReportsColumn('delivery_number', $LANG["financial"][19]),
+      new PluginReportsColumnFloat('value', $LANG["financial"][21]),
+      new PluginReportsColumnFloat('warranty_value', $LANG["financial"][78]),
+      new PluginReportsColumnInteger('sink_time', $LANG["financial"][23]),
+      new PluginReportsColumnInteger('sink_type', $LANG["financial"][22]),
+      new PluginReportsColumnFloat('sink_coeff', $LANG["financial"][77]),
+      new PluginReportsColumn('bill', $LANG["financial"][82]),
+      new PluginReportsColumn('budget', $LANG["financial"][87]),
+      new PluginReportsColumnDate('inventory_date', $LANG["financial"][114]),
+   );
 
-         UNION (
-         SELECT 'Printer' AS itemtype,
-                `glpi_manufacturers`.`name` AS manufacturer,
-                `glpi_printertypes`.`name` AS type,
-                `glpi_printermodels`.`name` AS model,
-                `glpi_printers`.`id`, `serial`, `otherserial`,
-                `glpi_locations`.`completename` AS location, `building`, `room`,
-                `glpi_groups`.`id` AS groupe,
-                `glpi_states`.`name` AS state,
-                `glpi_infocoms`.`value`, `immo_number`, `buy_date`, `use_date`, `warranty_duration`,
-                                `warranty_info`,`order_number`,`delivery_number`, `warranty_value`,
-                                `sink_time`, `sink_type`, `sink_coeff`,`bill`,
-                `glpi_suppliers`.`id` AS supplier,
-                `glpi_budgets`.`name` AS budget
-         FROM `glpi_printers`
-         LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id` = `glpi_printers`.`locations_id`)
-         LEFT JOIN `glpi_manufacturers`
-               ON (`glpi_manufacturers`.`id` = `glpi_printers`.`manufacturers_id`)
-         LEFT JOIN `glpi_printermodels`
-               ON (`glpi_printermodels`.`id` = `glpi_printers`.`printermodels_id`)
-         LEFT JOIN `glpi_printertypes`
-               ON (`glpi_printertypes`.`id` = `glpi_printers`.`printertypes_id`)
-         LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id` = `glpi_printers`.`groups_id`)
-         LEFT JOIN `glpi_states` ON (`glpi_states`.`id` = `glpi_printers`.`states_id`)
-         LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`items_id` = `glpi_printers`.`id`)
-         LEFT JOIN `glpi_suppliers` ON (`glpi_suppliers`.`id` = `glpi_infocoms`.`suppliers_id`)
-         LEFT JOIN `glpi_budgets` ON (`glpi_budgets`.`id` = `glpi_infocoms`.`budgets_id`)
-         WHERE `glpi_printers`.`is_deleted` = '0'
-               AND `glpi_infocoms`.`itemtype` = 'Printer'
-               AND (`glpi_printers`.`otherserial` != ''
-                    OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "glpi_printers") .")
+   $report->setColumns($cols);
+   $bid = $budg->getParameterValue();
+   $sel = $type->getParameterValue();
+   if ($sel) {
+      $types = array($sel);
+   } else {
+      $types = array_diff($CFG_GLPI['infocom_types'], $ignored);
+   }
 
-         UNION (
-         SELECT 'NetworkEquipment' AS itemtype,
-                `glpi_manufacturers`.`name` AS manufacturer,
-                `glpi_networkequipmenttypes`.`name` AS type,
-                `glpi_networkequipmentmodels`.`name` AS model,
-                `glpi_networkequipments`.`id`, `serial`, `otherserial`,
-                `glpi_locations`.`completename` AS location, `building`, `room`,
-                `glpi_groups`.`id` AS groupe,
-                `glpi_states`.`name` AS state,
-                `glpi_infocoms`.`value`, `immo_number`, `buy_date`, `use_date`, `warranty_duration`,
-                                `warranty_info`,`order_number`,`delivery_number`, `warranty_value`,
-                                `sink_time`, `sink_type`, `sink_coeff`,`bill`,
-                `glpi_suppliers`.`id` AS supplier,
-                `glpi_budgets`.`name` AS budget
-         FROM `glpi_networkequipments`
-         LEFT JOIN `glpi_locations`
-            ON (`glpi_locations`.`id` = `glpi_networkequipments`.`locations_id`)
-         LEFT JOIN `glpi_manufacturers`
-            ON (`glpi_manufacturers`.`id` = `glpi_networkequipments`.`manufacturers_id`)
-         LEFT JOIN `glpi_networkequipmentmodels`
-            ON (`glpi_networkequipmentmodels`.`id` = `glpi_networkequipments`.`networkequipmentmodels_id`)
-         LEFT JOIN `glpi_networkequipmenttypes`
-            ON (`glpi_networkequipmenttypes`.`id` = `glpi_networkequipments`.`networkequipmenttypes_id`)
-         LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id` = `glpi_networkequipments`.`groups_id`)
-         LEFT JOIN `glpi_states` ON (`glpi_states`.`id` = `glpi_networkequipments`.`states_id`)
-         LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`items_id` = `glpi_networkequipments`.`id`)
-         LEFT JOIN `glpi_suppliers` ON (`glpi_suppliers`.`id` = `glpi_infocoms`.`suppliers_id`)
-         LEFT JOIN `glpi_budgets` ON (`glpi_budgets`.`id` = `glpi_infocoms`.`budgets_id`)
-         WHERE `glpi_networkequipments`.`is_deleted` = '0'
-               AND `glpi_networkequipments`.`is_template` = '0'
-               AND `glpi_infocoms`.`itemtype` = 'NetworkEquipment'
-               AND (`glpi_networkequipments`.`otherserial` != ''
-                    OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "glpi_networkequipments") .")
+   $sql = '';
+   foreach ($types as $itemtype) {
+      $item = new $itemtype;
+      $table = $item->getTable();
 
-         UNION (
-         SELECT 'Peripheral' AS itemtype,
-                `glpi_manufacturers`.`name` AS manufacturer,
-                `glpi_peripheraltypes`.`name` AS type,
-                `glpi_peripheralmodels`.`name` AS model,
-                `glpi_peripherals`.`id`, `serial`, `otherserial`,
-                `glpi_locations`.`completename` AS location, `building`, `room`,
-                `glpi_groups`.`id` AS groupe,
-                `glpi_states`.`name` AS state,
-                `glpi_infocoms`.`value`, `immo_number`, `buy_date`, `use_date`, `warranty_duration`,
-                                `warranty_info`,`order_number`,`delivery_number`, `warranty_value`,
-                                `sink_time`, `sink_type`, `sink_coeff`,`bill`,
-                `glpi_suppliers`.`id` AS supplier,
-                `glpi_budgets`.`name` AS budget
-         FROM `glpi_peripherals`
-         LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id` = `glpi_peripherals`.`locations_id`)
-         LEFT JOIN `glpi_manufacturers`
-               ON (`glpi_manufacturers`.`id` = `glpi_peripherals`.`manufacturers_id`)
-         LEFT JOIN `glpi_peripheralmodels`
-               ON (`glpi_peripheralmodels`.`id` = `glpi_peripherals`.`peripheralmodels_id`)
-         LEFT JOIN `glpi_peripheraltypes`
-               ON (`glpi_peripheraltypes`.`id` = `glpi_peripherals`.`peripheraltypes_id`)
-         LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id` = `glpi_peripherals`.`groups_id`)
-         LEFT JOIN `glpi_states` ON (`glpi_states`.`id` = `glpi_peripherals`.`states_id`)
-         LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`items_id` = `glpi_peripherals`.`id`)
-         LEFT JOIN `glpi_suppliers` ON (`glpi_suppliers`.`id` = `glpi_infocoms`.`suppliers_id`)
-         LEFT JOIN `glpi_budgets` ON (`glpi_budgets`.`id` = `glpi_infocoms`.`budgets_id`)
-         WHERE `glpi_peripherals`.`is_deleted` = '0'
-               AND `glpi_peripherals`.`is_template` = '0'
-               AND `glpi_infocoms`.`itemtype` = 'Peripheral'
-               AND (`glpi_peripherals`.`otherserial` != ''
-                    OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "glpi_peripherals") .")
+      $select = "SELECT '$itemtype' as itemtype,
+                        `$table`.id AS itemid";
 
-         UNION (
-         SELECT 'Phone' AS itemtype,
-                `glpi_manufacturers`.`name` AS manufacturer,
-                `glpi_phonetypes`.`name` AS type,
-                `glpi_phonemodels`.`name` AS model,
-                `glpi_phones`.`id`, `serial`, `otherserial`,
-                `glpi_locations`.`completename` AS location, `building`, `room`,
-                `glpi_groups`.`id` AS groupe,
-                `glpi_states`.`name` AS state,
-                `glpi_infocoms`.`value`, `immo_number`, `buy_date`, `use_date`, `warranty_duration`,
-                                `warranty_info`,`order_number`,`delivery_number`, `warranty_value`,
-                                `sink_time`, `sink_type`, `sink_coeff`,`bill`,
-                `glpi_suppliers`.`id` AS supplier,
-                `glpi_budgets`.`name` AS budget
-         FROM `glpi_phones`
-         LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id` = `glpi_phones`.`locations_id`)
-         LEFT JOIN `glpi_manufacturers` ON (`glpi_manufacturers`.`id` = `glpi_phones`.`manufacturers_id`)
-         LEFT JOIN `glpi_phonemodels` ON (`glpi_phonemodels`.`id` = `glpi_phones`.`phonemodels_id`)
-         LEFT JOIN `glpi_phonetypes` ON (`glpi_phonetypes`.`id` = `glpi_phones`.`phonetypes_id`)
-         LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id` = `glpi_phones`.`groups_id`)
-         LEFT JOIN `glpi_states` ON (`glpi_states`.`id` = `glpi_phones`.`states_id`)
-         LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`items_id` = `glpi_phones`.`id`)
-         LEFT JOIN `glpi_suppliers` ON (`glpi_suppliers`.`id` = `glpi_infocoms`.`suppliers_id`)
-         LEFT JOIN `glpi_budgets` ON (`glpi_budgets`.`id` = `glpi_infocoms`.`budgets_id`)
-         WHERE `glpi_phones`.`is_deleted` = '0'
-               AND `glpi_phones`.`is_template` = '0'
-               AND `glpi_infocoms`.`itemtype` = 'Phone'
-               AND (`glpi_phones`.`otherserial` != ''
-                    OR `glpi_infocoms`.`immo_number` !='')" .
-               getEntitiesRestrictRequest(" AND ", "glpi_phones") .")";
+      $from = "FROM `$table` ";
+      if ($itemtype == 'SoftwareLicense') {
+         $select .= ", `glpi_manufacturers`.`name` AS manufacturer";
+         $from .= "LEFT JOIN `glpi_softwares`
+                        ON (`glpi_softwarelicenses`.`softwares_id` = `glpi_softwares`.`id`)
+                   LEFT JOIN `glpi_manufacturers`
+                        ON (`glpi_manufacturers`.`id` = `glpi_softwares`.`manufacturers_id`) ";
+      } else if ($item->isField('manufacturers_id')) {
+         $select .= ", `glpi_manufacturers`.`name` AS manufacturer";
+         $from .= "LEFT JOIN `glpi_manufacturers`
+                        ON (`glpi_manufacturers`.`id` = `$table`.`manufacturers_id`) ";
+      } else {
+         $select .= ", '' AS manufacturer";
+      }
 
-$report->setGroupBy('entity');
-$report->setSqlRequest($sql);
-$report->execute();
+      $typeclass = $itemtype.'Type';
+      $typetable = getTableForItemType($typeclass);
+      if (TableExists($typetable)) {
+         $typeitem  = new $typeclass;
+         $typefkey  = $typeitem->getForeignKeyField();
 
+         $select .= ", `$typetable`.`name` AS type";
+         $from .= "LEFT JOIN `$typetable`
+                        ON (`$typetable`.`id` = `$table`.`$typefkey`) ";
+      } else {
+         $select .= ", '' AS type";
+      }
+
+      $modelclass = $itemtype.'Model';
+      $modeltable = getTableForItemType($modelclass);
+      if ($itemtype == 'SoftwareLicense') {
+         $select .= ", CONCAT(glpi_softwares.name,' ',buyversion.name) AS model";
+         $from .= "LEFT JOIN `glpi_softwareversions` AS buyversion
+                          ON (buyversion.`id` = `glpi_softwarelicenses`.`softwareversions_id_buy`) ";
+      } else if (TableExists($modeltable)) {
+         $modelitem  = new $modelclass;
+         $modelitem  = $modelitem->getForeignKeyField();
+
+         $select .= ", `$modeltable`.`name` AS model";
+         $from .= "LEFT JOIN `$modeltable`
+                        ON (`$modeltable`.`id` = `$table`.`$modelitem`) ";
+      } else {
+         $select .= ", '' AS model";
+      }
+      if ($item->isField('serial')) {
+         $select .= ", `$table`.`serial`";
+      } else {
+         $select .= ", '' AS `serial`";
+      }
+      if ($item->isField('otherserial')) {
+         $select .= ", `$table`.`otherserial`";
+         $where = "WHERE (`$table`.`otherserial` != ''
+                          OR `glpi_infocoms`.`immo_number` !='') ";
+      } else {
+         $select .= ", '' AS `otherserial`";
+         $where = "WHERE 1 ";
+      }
+      if ($item->isField('groups_id')) {
+         $select .= ", `$table`.`groups_id`";
+      } else {
+         $select .= ", 0 AS `groups_id`";
+      }
+      if ($item->isField('states_id')) {
+         $select .= ", `glpi_states`.`name` AS state";
+         $from .= "LEFT JOIN `glpi_states`
+                         ON (`glpi_states`.`id` = `$table`.`states_id`)";
+      } else {
+         $select .= ", '' AS `state`";
+      }
+      if ($item->isField('locations_id')) {
+         $select .= ", `glpi_locations`.`completename` AS location
+                     , `glpi_locations`.`building`
+                     , `glpi_locations`.`room`";
+         $from .= "LEFT JOIN `glpi_locations`
+                         ON (`glpi_locations`.`id` = `$table`.`locations_id`)";
+      } else {
+         $select .= ", '' AS location, '' AS building, '' AS room";
+      }
+      $select .= ", `glpi_infocoms`.*
+                  , `glpi_infocoms`.`suppliers_id` AS supplier
+                  , `glpi_budgets`.`name` AS budget";
+      $from .= "LEFT JOIN `glpi_infocoms`
+                      ON (`glpi_infocoms`.`itemtype` = '$itemtype'
+                      AND `glpi_infocoms`.`items_id` = `$table`.`id`)
+                LEFT JOIN `glpi_budgets`
+                      ON (`glpi_budgets`.`id` = `glpi_infocoms`.`budgets_id`)";
+
+      if ($item->maybeDeleted()) {
+         $where .= " AND `$table`.`is_deleted` = 0 ";
+      }
+      if ($item->maybeTemplate()) {
+         $where .= " AND `$table`.`is_template` = 0 ";
+      }
+      if ($item->isEntityAssign()) {
+         $where .= getEntitiesRestrictRequest(" AND ", $table);
+      }
+      if ($bid) {
+         $where .= " AND `glpi_infocoms`.`budgets_id`=$bid";
+      }
+
+      if ($sql) {
+         $sql .= " UNION ";
+      }
+      $sql .= "($select $from $where)";
+   }
+   $report->setGroupBy('entity');
+   $report->setSqlRequest($sql);
+   $report->execute();
+
+} else {
+   commonFooter();
+}
 ?>
