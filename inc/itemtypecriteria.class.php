@@ -39,7 +39,7 @@
 class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
    private $types = array();
 
-   function __construct($report, $name='', $label='', $types=array()) {
+   function __construct($report, $name='', $label='', $types=array(), $ignored=array()) {
       global $LANG, $CFG_GLPI;
 
       parent::__construct(
@@ -56,7 +56,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       } else if (is_string($types) && isset($CFG_GLPI[$types])) {
          // $types is the name of an configured type hashtable (infocom_types, doc_types, ...)
          foreach($CFG_GLPI[$types] as $itemtype) {
-            if (class_exists($itemtype)) {
+            if (class_exists($itemtype) && !in_array($itemtype, $ignored)) {
                $item = new $itemtype();
                $this->types[$itemtype] = $item->getTypeName();
             }
