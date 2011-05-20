@@ -38,10 +38,10 @@
  */
 class PluginReportsUserTitleCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report, $name='title', $label='') {
+   function __construct($report, $name='usertitles_id', $label='') {
       global $LANG;
 
-      parent :: __construct($report, $name, 'glpi_userstitles',
+      parent :: __construct($report, $name, 'glpi_usertitles',
                             ($label ? $label : $LANG['common'][34]." : ".$LANG['common'][57]));
    }
 }
