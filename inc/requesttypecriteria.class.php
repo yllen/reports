@@ -38,7 +38,7 @@
  */
 class PluginReportsRequestTypeCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report, $name='request_type', $label='') {
+   function __construct($report, $name='requesttypes_id', $label='') {
       global $LANG;
 
       parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : $LANG['job'][44]));
