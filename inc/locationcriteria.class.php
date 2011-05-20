@@ -39,9 +39,10 @@
  */
 class PluginReportsLocationCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report, $name = 'locations_id') {
+   function __construct($report, $name = 'locations_id', $label='') {
       global $LANG;
-      parent :: __construct($report, $name, 'glpi_locations', $LANG['common'][15]);
+
+      parent::__construct($report, $name, 'glpi_locations', ($label ? $label :$LANG['common'][15]));
    }
 
 

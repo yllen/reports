@@ -39,15 +39,10 @@
 class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
    private $types = array();
 
-   function __construct($report, $name='', $label='', $types=array(), $ignored=array()) {
+   function __construct($report, $name='itemtype', $label='', $types=array(), $ignored=array()) {
       global $LANG, $CFG_GLPI;
 
-      parent::__construct(
-         $report,
-         ($name ? $name : 'itemtype'),
-         'no_table',
-         ($label ? $label : $LANG['state'][6])
-      );
+      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : $LANG['state'][6]));
 
       if (is_array($types) && count($types)) {
          // $types is an hashtable of itemtype => display name

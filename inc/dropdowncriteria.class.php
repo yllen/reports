@@ -56,14 +56,22 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    private $searchzero = false;
 
 
-   function __construct($report, $name, $table='', $label = '') {
-      parent :: __construct($report, $name);
+   function __construct($report, $name, $tableortype='', $label = '') {
 
-      if (empty($table)) {
-         $table = getTableNameForForeignKeyField($name);
+      parent::__construct($report, $name, $name, $label);
+
+      if (empty($tableortype)) {
+         $this->table = getTableNameForForeignKeyField($name);
+
+      } else if (preg_match("/^glpi_/", $tableortype)) {
+         $this->table = $tableortype;
+
+      } else if ($tableortype == NOT_AVAILABLE) {
+         $this->table = NOT_AVAILABLE;
+
+      } else {
+         $this->table = getTableForItemType($tableortype);
       }
-      $this->table = $table;
-      $this->addCriteriaLabel($this->getName(), $label);
    }
 
 

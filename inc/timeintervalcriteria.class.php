@@ -38,8 +38,9 @@
  */
 class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
 
-   function __construct($report,$sql_field='') {
-      parent :: __construct($report, "time-interval",$sql_field);
+   function __construct($report, $name='time-interval', $label='') {
+
+      parent::__construct($report, $name, $name, $label);
    }
 
 
@@ -97,11 +98,13 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
    function getSubName() {
       global $LANG;
 
-      return " " . (isset ($LANG['plugin_reports']['subname'][$this->getName()])
-                    ? $LANG['plugin_reports']['subname'][$this->getName()] : '') .
+      $title = $this->getCriteriaLabel($this->getName());
+      if (empty($title) && isset($LANG['plugin_reports']['subname'][$this->getName()])) {
+         $title = $LANG['plugin_reports']['subname'][$this->getName()];
+      }
+      return " " . $title .
              " (" . $this->getParameter('starttime') . "," . $this->getParameter('endtime') . ")";
    }
-
 }
 
 ?>

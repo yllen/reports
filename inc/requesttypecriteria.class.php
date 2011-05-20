@@ -38,11 +38,10 @@
  */
 class PluginReportsRequestTypeCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report) {
+   function __construct($report, $name='request_type', $label='') {
       global $LANG;
 
-      //No need to specify a sql field, because priorities are not stored in DB
-      parent :: __construct($report, "request_type", "", $LANG['job'][44]);
+      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : $LANG['job'][44]));
    }
 
 

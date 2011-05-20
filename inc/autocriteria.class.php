@@ -58,19 +58,22 @@ abstract class PluginReportsAutoCriteria {
    /**
     * Contructor
     * @param report the report in which the criteria is added
-    * @param name the criteria's name
-    * @param sql_field the sql field associated with the criteria (can be set later with setSqlField).
+    * @param $name the criteria's name
+    * @param $sql_field the sql field associated with the criteria (can be set later with setSqlField).
     *          - Sql_field can be prefixed with table name
     *          - if sql_field=='' then sql_field=name
+    * @param $label string
 	 */
-   function __construct($report, $name, $sql_field = '') {
+   function __construct($report, $name, $sql_field = '', $label=NULL) {
 
       $this->setName($name);
-
-      if ($sql_field == '') {
-         $this->setSqlField($name);
-      } else {
+      if ($sql_field) {
          $this->setSqlField($sql_field);
+      } else {
+         $this->setSqlField($name);
+      }
+      if (!is_null($label)) {
+         $this->addCriteriaLabel($this->getName(), $label);
       }
       $this->setReport($report);
       $this->report->addCriteria($this);

@@ -38,12 +38,11 @@
  */
 class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
-   function __construct($report, $name='', $label='', $start='', $end='') {
+   function __construct($report, $name='date-interval', $label='', $start='', $end='') {
       global $LANG;
 
-      parent :: __construct($report, $name);
+      parent::__construct($report, $name, $name, $label);
 
-      $this->addCriteriaLabel($this->getName(), $label);
       $this->addCriteriaLabel($this->getName()."_1",
          ($start ? $start : ($label ? $LANG['search'][24] :$LANG['search'][8])));
       $this->addCriteriaLabel($this->getName()."_2",

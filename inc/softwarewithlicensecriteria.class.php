@@ -38,9 +38,10 @@
  */
 class PluginReportsSoftwareWithLicenseCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report) { // varaible = objet rapport
+   function __construct($report, $name='softwares_id', $label='') {
       global $LANG;
-      parent::__construct($report, "softwares_id", "glpi_softwares", $LANG['help'][31]);
+
+      parent::__construct($report, $name, 'glpi_softwares', ($label ? $label :$LANG['help'][31]));
    }
 
    function displayDropdownCriteria() {

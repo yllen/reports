@@ -38,11 +38,10 @@
  */
 class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
 
-   function __construct($report,$sql_field='') {
+   function __construct($report, $name = 'priority', $label='') {
       global $LANG;
-      parent :: __construct($report, "priority",$sql_field);
 
-      $this->addCriteriaLabel($this->getName(), $LANG['joblist'][2]);
+      parent::__construct($report, $name, $name, ($label ? $label :$LANG['joblist'][2]));
    }
 
 

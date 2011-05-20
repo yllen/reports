@@ -42,7 +42,7 @@ class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
    function __construct($report, $name, $label='', $options=array()) {
       global $LANG;
 
-      parent::__construct($report, $name, "no_table", ($label ? $label : $LANG['rulesengine'][16]));
+      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : $LANG['rulesengine'][16]));
       $this->choice = $options;
    }
 

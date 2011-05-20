@@ -60,8 +60,8 @@ $report = new PluginReportsAutoReport();
 $ignored = array('Software', 'CartridgeItem', 'ConsumableItem', 'Consumable', 'Cartridge');
 
 $date = new PluginReportsDateIntervalCriteria($report, '`glpi_infocoms`.`buy_date`', $LANG["financial"][14]);
-$type = new PluginReportsItemTypeCriteria($report, '', '', 'infocom_types', $ignored);
-$budg = new PluginReportsDropdownCriteria($report, '`glpi_infocoms`.`budgets_id`', 'glpi_budgets', $LANG['financial'][87]);
+$type = new PluginReportsItemTypeCriteria($report, 'itemtype', '', 'infocom_types', $ignored);
+$budg = new PluginReportsDropdownCriteria($report, '`glpi_infocoms`.`budgets_id`', 'Budget', $LANG['financial'][87]);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();

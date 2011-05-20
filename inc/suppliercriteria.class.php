@@ -38,13 +38,10 @@
  */
 class PluginReportsSupplierCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report) {
+   function __construct($report, $name='suppliers_id', $label) {
       global $LANG;
 
-      //Add enterprise includes
-      include_once(GLPI_ROOT."/inc/supplier.class.php");
-
-      parent :: __construct($report, "suppliers_id", "glpi_suppliers", $LANG['financial'][26]);
+      parent::__construct($report, $name, 'glpi_suppliers', ($label ? $label : $LANG['financial'][26]));
    }
 
 }

@@ -46,9 +46,8 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
    function __construct($report, $name='value', $label='', $signe='', $min=0, $max=100, $coef=1, $unit='') {
       global $LANG;
 
-      parent :: __construct($report,$name,'no_table');
+      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label :$LANG['financial'][21]));
       $this->setOptions($signe,$min,$max,$coef,$unit);
-      $this->addCriteriaLabel($this->getName(), ($label ? $label :$LANG['financial'][21]));
    }
 
    function setDefaultValues() {

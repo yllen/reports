@@ -35,7 +35,7 @@ $report = new PluginReportsAutoReport($LANG['plugin_reports']['iteminstall'][1])
 
 //Report's search criterias
 $date = new PluginReportsDateIntervalCriteria($report, 'buy_date');
-$type = new PluginReportsItemTypeCriteria($report, '', '', 'infocom_types');
+$type = new PluginReportsItemTypeCriteria($report, 'itemtype', '', 'infocom_types');
 $budg = new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets', $LANG['financial'][87]);
 
 //Display criterias form is needed
