@@ -72,7 +72,9 @@ class PluginReportsAutoReport {
    /**
    * Set column mappings : when a column's value cannot be
    * displays as it is, but needs to be replaced by another one
-   * @param columns_mappings the columns new values
+   * DEPRECATED : should use PluginReportsColumnMap
+   *
+   * @param $columns_mappings array the columns new values
    **/
    function setColumnsMappings($columns_mappings) {
       $this->columns_mapping = $columns_mappings;
@@ -100,8 +102,9 @@ class PluginReportsAutoReport {
 
    /**
    * Set columns names (label to be displayed) - DEPRECATED use setColumns instead
-   * @param columns an array which contains
-   * sql column name => GLPI's locale
+   *
+   * @param $columns array which contains
+   *        sql column name => GLPI's locale
    **/
    function setColumnsNames($columns) {
 
@@ -111,8 +114,9 @@ class PluginReportsAutoReport {
 
    /**
    * Set columns names (label to be displayed)
-   * @param columns an array which contains
-   * sql column name => PluginReportsColumn object
+   *
+   * @param $columns array which contains
+   *        sql column name => PluginReportsColumn object
    **/
    function setColumns($columns) {
 
