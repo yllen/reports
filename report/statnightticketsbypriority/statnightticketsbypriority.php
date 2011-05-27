@@ -38,7 +38,7 @@
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // Really a big SQL request
+$DBCONNECTION_REQUIRED=0; // Not really a big SQL request
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -47,14 +47,14 @@ include (GLPI_ROOT . "/inc/includes.php");
 $report = new PluginReportsAutoReport();
 
 //Report's search criterias
-new PluginReportsDateIntervalCriteria($report,"`glpi_tickets`.`date`");
+new PluginReportsDateIntervalCriteria($report, '`glpi_tickets`.`date`');
 
-$timeInterval = new PluginReportsTimeIntervalCriteria($report,"`glpi_tickets`.`date`");
+$timeInterval = new PluginReportsTimeIntervalCriteria($report, '`glpi_tickets`.`date`');
 
 //Criterias default values
-$timeInterval->setStartTime("19:00");
-$timeInterval->setEndtime("07:00");
-
+$timeInterval->setStartTime($CFG_GLPI['planning_end']);
+$timeInterval->setEndtime($CFG_GLPI['planning_begin']);
+logDebug($CFG_GLPI);
 //Display criterias form is needed
 $report->displayCriteriasForm();
 
@@ -63,24 +63,25 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $colnumsnames = array ("priority"  => $LANG["joblist"][2],
-                          "date"      => $LANG["reports"][60],
-                          "id"        =>$LANG['common'][2],
-                          "tname"      => $LANG["common"][57],
-                          "groupname" => $LANG["common"][35]);
-   $report->setColumnsNames($colnumsnames);
-
-   //Colunmns mappings if needed
-   $columns_mappings = array("priority" => getPriorityLabelsArray());
-   $report->setColumnsMappings($columns_mappings);
+   $report->setColumns(array(
+      new PluginReportsColumnMap('priority', $LANG["joblist"][2], array(), array('sorton' => '`priority`,`date`')),
+      new PluginReportsColumnDateTime('date', $LANG["reports"][60], array('sorton' => '`date`')),
+      new PluginReportsColumn('id2', $LANG['common'][2]),
+      new PluginReportsColumnLink('id', $LANG["common"][57], 'Ticket'),
+      new PluginReportsColumn('groupname', $LANG["common"][35], array('sorton' => '`groups_id`,`date`'))
+   ));
 
    $query = "SELECT `glpi_tickets`.`priority`, `glpi_tickets`.`date` , `glpi_tickets`.`id`,
-                    `glpi_tickets`.`name` AS tname, `glpi_groups`.`name` as groupname
+                    `glpi_tickets`.`id` AS id2, `glpi_groups`.`name` as groupname
              FROM `glpi_tickets`
-             LEFT JOIN `glpi_groups` ON (`glpi_tickets`.`groups_id_assign` = `glpi_groups`.`id`) ".
-             $report->addSqlCriteriasRestriction("WHERE") ."
-                   AND `glpi_tickets`.`status` NOT IN ('solved', 'closed')
-             ORDER BY priority DESC, date ASC";
+             LEFT JOIN `glpi_groups_tickets`
+                  ON (`glpi_groups_tickets`.`tickets_id` = `glpi_tickets`.`id`
+                      AND `glpi_groups_tickets`.`type` = '".Ticket::ASSIGN."')
+             LEFT JOIN `glpi_groups` ON (`glpi_groups_tickets`.`groups_id` = `glpi_groups`.`id`)
+             WHERE `glpi_tickets`.`status` NOT IN ('solved', 'closed') ".
+                  $report->addSqlCriteriasRestriction() .
+                  getEntitiesRestrictRequest(' AND ', 'glpi_tickets').
+             $report->getOrderBy('priority');
 
    $report->setSqlRequest($query);
    $report->execute();
