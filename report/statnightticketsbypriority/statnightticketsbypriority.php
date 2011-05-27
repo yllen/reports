@@ -47,7 +47,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 $report = new PluginReportsAutoReport();
 
 //Report's search criterias
-new PluginReportsDateIntervalCriteria($report, '`glpi_tickets`.`date`');
+new PluginReportsDateIntervalCriteria($report, '`glpi_tickets`.`date`', $LANG["reports"][60]);
 
 $timeInterval = new PluginReportsTimeIntervalCriteria($report, '`glpi_tickets`.`date`');
 
