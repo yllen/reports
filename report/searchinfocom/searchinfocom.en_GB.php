@@ -26,34 +26,9 @@
  along with GLPI; if not, write to the Free Software Foundation, Inc.,
  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  --------------------------------------------------------------------------
- */
+*/
 
-/**
- * class PluginReportsColumn to manage output
- */
-class PluginReportsColumnType extends PluginReportsColumn {
 
-   private $obj = NULL;
+$LANG['plugin_reports']['searchinfocom'][1]="Search in the financial informations";
 
-   function __construct($name, $title, $options=array()) {
-
-      parent::__construct($name, $title, $options);
-   }
-
-   function displayValue($output_type, $row) {
-
-      if (!isset($row[$this->name])
-          || !$row[$this->name]) {
-         return '';
-      }
-      if (!class_exists($row[$this->name])) {
-         return $row[$this->name];
-      }
-      if (is_null($this->obj)
-          || get_class($this->obj)!=$row[$this->name]) {
-         $this->obj = new $row[$this->name];
-      }
-      return $this->obj->getTypeName();
-   }
-}
 ?>

@@ -38,7 +38,11 @@ include (GLPI_ROOT . "/inc/includes.php");
 $report = new PluginReportsAutoReport();
 
 //Report's search criterias
-new PluginReportsDateIntervalCriteria($report, 'buy_date');
+new PluginReportsDateIntervalCriteria($report, 'order_date', $LANG["financial"][28]);
+new PluginReportsDateIntervalCriteria($report, 'buy_date', $LANG["financial"][14]);
+new PluginReportsDateIntervalCriteria($report, 'delivery_date', $LANG["financial"][27]);
+new PluginReportsDateIntervalCriteria($report, 'use_date', $LANG["financial"][76]);
+new PluginReportsDateIntervalCriteria($report, 'inventory_date', $LANG["financial"][114]);
 new PluginReportsTextCriteria($report, 'immo_number', $LANG['financial'][20]);
 new PluginReportsTextCriteria($report, 'order_number', $LANG['financial'][18]);
 new PluginReportsTextCriteria($report, 'delivery_number', $LANG['financial'][19]);
@@ -56,11 +60,14 @@ if ($report->criteriasValidated()) {
    // Report Columns
    $cols = array (new PluginReportsColumnType('itemtype', $LANG['common'][17]),
                   new PluginReportsColumnTypeLink('items_id', $LANG['common'][1], 'itemtype', array('with_comment'=>1)),
-                  new PluginReportsColumnDate('buy_date', $LANG['financial'][14]),
-                  new PluginReportsColumnDate('use_date', $LANG['financial'][76]),
-                  new PluginReportsColumn('immo_number', $LANG['financial'][20]),
+                  new PluginReportsColumnDate('order_date', $LANG['financial'][28]),
                   new PluginReportsColumn('order_number', $LANG['financial'][18]),
+                  new PluginReportsColumnDate('buy_date', $LANG['financial'][14]),
+                  new PluginReportsColumn('delivery_date', $LANG['financial'][27]),
                   new PluginReportsColumn('delivery_number', $LANG['financial'][19]),
+                  new PluginReportsColumn('immo_number', $LANG['financial'][20]),
+                  new PluginReportsColumnDate('use_date', $LANG['financial'][76]),
+                  new PluginReportsColumnDate('inventory_date', $LANG['financial'][114]),
                   new PluginReportsColumnLink('budgets_id', $LANG['financial'][87], 'Budget')
                   );
    $report->setColumns($cols);

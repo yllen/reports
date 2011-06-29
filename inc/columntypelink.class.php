@@ -54,11 +54,15 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
       }
       if (isset($row[$this->nametype])
           && $row[$this->nametype]
-          && (is_null($this->obj) || get_class($this->obj)!=$row[$this->nametype])) {
-         $this->obj = new $row[$this->nametype];
+          && (is_null($this->obj) || $this->obj->getType()!=$row[$this->nametype])) {
+         if (class_exists($row[$this->nametype])) {
+            $this->obj = new $row[$this->nametype];
+         } else {
+            $this->obj = NULL;
+         }
       }
       if (!$this->obj || !$this->obj->getFromDB($row[$this->name])) {
-         return $row[$this->name];
+         return 'ID #'.$row[$this->name];
       }
       if ($output_type==HTML_OUTPUT) {
          return $this->obj->getLink($this->with_comment);
