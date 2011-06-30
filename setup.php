@@ -107,8 +107,8 @@ function plugin_version_reports() {
 
    return array('name'     => $LANG['plugin_reports']['title'][1],
                 'version'  => '1.5.0',
-                'author'   => 'Nelly LASSON',
-                'homepage' => 'https://forge.indepnet.net/projects/show/reports',
+                'author'   => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh',
+                'homepage' => 'https://forge.indepnet.net/projects/reports',
                 'minGlpiVersion' => '0.80');
 }
 
@@ -154,11 +154,11 @@ function plugin_reports_checkRight($plug, $module, $right) {
 function plugin_reports_check_prerequisites() {
    global $LANG;
 
-   if (version_compare(GLPI_VERSION, "0.80", ">=")) {
-      return true;
+   if (version_compare(GLPI_VERSION,'0.80','lt') || version_compare(GLPI_VERSION,'0.81','ge')) {
+      echo "This plugin requires GLPI >= 0.80 and GLPI < 0.81";
+      return false;
    }
-   echo "GLPI version not compatible, need 0.80";
-   return false;
+   return true;
 }
 
 ?>
