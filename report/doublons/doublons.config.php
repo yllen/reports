@@ -70,7 +70,7 @@ if (isset($_GET["delete"])) {
 if (TableExists("glpi_plugin_reports_doublons_backlist")) {
    $DB->query("RENAME TABLE `glpi_plugin_reports_doublons_backlist` to `glpi_plugin_reports_doublons_backlists`");
 
-   $sql = "ALTER TABLE `glpi_plugin_reports_doublons_backlists`
+   $query = "ALTER TABLE `glpi_plugin_reports_doublons_backlists`
             CHANGE `ID` `id` int(11) NOT NULL auto_increment";
    $DB->query($query) or die($DB->error());
 
@@ -133,7 +133,7 @@ while ($data = $DB->fetch_array($res)) {
 }
 
 echo "<tr class='tab_bg_1 center'><td>";
-Dropdown::showFromArray("type", array('value' => $types));
+Dropdown::showFromArray("type", $types);
 echo "</td><td><input type='text' name='addr' size='20'></td><td>".
    "<input type='text' name='comment' size='40'></td>" .
    "<td><input type='submit' name='add' value='".$LANG["buttons"][8]."' class='submit' ></td></tr>\n";
