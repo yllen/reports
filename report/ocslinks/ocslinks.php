@@ -44,12 +44,21 @@ $DBCONNECTION_REQUIRED=0; // Not really a big SQL request
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
+$servers = array();
+$crit = array('FIELDS' => array('id', 'name'));
+foreach ($DB->request('glpi_ocsservers', $crit) as $data) {
+   $servers[$data['id']] = $data['name'];
+}
+if (count($servers)<1) {
+   displayErrorAndDie($LANG['ocsng'][27]);
+}
+
 // Instantiate Report with Name
 $report   = new PluginReportsAutoReport();
 //$critdate = new PluginReportsDateIntervalCriteria($report, 'last_update');
 $critid   = new PluginReportsTextCriteria($report, 'ocsid', $LANG['ocsng'][45]);
 $critdev  = new PluginReportsTextCriteria($report, 'ocs_deviceid', $LANG['plugin_reports']['ocslinks'][3]);
-$critserv = new PluginReportsDropdownCriteria($report, 'ocsservers_id', 'glpi_ocsservers', $LANG['ocsng'][29]);
+$critserv = new PluginReportsArrayCriteria($report, 'ocsservers_id', $LANG['ocsng'][29], $servers);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -65,8 +74,8 @@ if ($report->criteriasValidated()
       new PluginReportsColumnInteger('computers_id', $LANG['common'][2]),
       new PluginReportsColumnLink('cid', $LANG['common'][16], 'Computer'),
       new PluginReportsColumn('ocs_deviceid', $LANG['plugin_reports']['ocslinks'][3]),
-      new PluginReportsColumnDate('last_update', $LANG['ocsng'][13]),
-      new PluginReportsColumnDate('last_ocs_update', $LANG['ocsng'][14]),
+      new PluginReportsColumnDateTime('last_update', $LANG['ocsng'][13]),
+      new PluginReportsColumnDateTime('last_ocs_update', $LANG['ocsng'][14]),
       new PluginReportsColumn('ocs_agent_version', $LANG['ocsng'][49]),
    );
    $report->setColumns($cols);
@@ -84,8 +93,8 @@ if ($report->criteriasValidated()
    if (intval($id)) {
       $restrict .= (empty($restrict) ? ' WHERE ' : ' AND ');
       $restrict .= "`ocsid`=".intval($id);
-   }
-   if ($dev) {
+
+   } else if ($dev) {
       $restrict .= (empty($restrict) ? ' WHERE ' : ' AND ');
       $restrict .= "`ocs_deviceid` LIKE '$dev%'";
    }
