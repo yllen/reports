@@ -45,7 +45,8 @@ define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
 $servers = array();
-$crit = array('FIELDS' => array('id', 'name'));
+$crit = array('FIELDS'    => array('id', 'name'),
+              'is_active' => 1);
 foreach ($DB->request('glpi_ocsservers', $crit) as $data) {
    $servers[$data['id']] = $data['name'];
 }
