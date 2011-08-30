@@ -110,13 +110,9 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
    }
 
    $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname,
-                  A.`computermodels_id` AS Amodel,
                   AA.`ip` AS Aaddr, A.`entities_id` AS entity,
-                  A.`is_ocs_import` AS Aisocsimport,
                   B.`id` AS BID, B.`name` AS Bname,
-                  B.`computermodels_id` AS Bmodel,
-                  BB.`ip` AS Baddr,
-                  B.`is_ocs_import` AS Bisocsimport
+                  BB.`ip` AS Baddr
            FROM `glpi_computers` A,
                 `glpi_computers` B,
                 `glpi_networkports` AA,
@@ -150,13 +146,9 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
       $MacBlacklist .= ",'44:45:53:54:42:00','BA:D0:BE:EF:FA:CE', '00:53:45:00:00:00', '80:00:60:0F:E8:00'";
    }
    $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname,
-                  A.`computermodels_id` AS Amodel,
                   AA.`specificity` AS Aaddr, A.`entities_id` AS entity,
-                  A.`is_ocs_import` AS Aisocsimport,
                   B.`id` AS BID, B.`name` AS Bname,
-                  B.`computermodels_id` AS Bmodel,
-                  BB.`specificity` AS Baddr,
-                  B.`is_ocs_import` AS Bisocsimport
+                  BB.`specificity` AS Baddr
            FROM `glpi_computers` A,
                 `glpi_computers` B,
                 `glpi_computers_devicenetworkcards` AA,
@@ -186,12 +178,8 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
       }
    }
    $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname,
-                  A.`computermodels_id` AS Amodel,
                   A.`entities_id` AS entity,
-                  A.`is_ocs_import` AS Aisocsimport,
-                  B.`id` AS BID, B.`name` AS Bname,
-                  B.`computermodels_id` AS Bmodel,
-                  B.`is_ocs_import` AS Bisocsimport
+                  B.`id` AS BID, B.`name` AS Bname
            FROM `glpi_computers` A,
                 `glpi_computers` B " .
            getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
@@ -222,7 +210,7 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
 
 if ($crit>0) { // Display result
    $canedit = $computer->canUpdate();
-   $colspan = ($col ? 9 : 8) + ($canedit ? 1 : 0);
+   $colspan = ($col ? 8 : 7) + ($canedit ? 1 : 0);
 
    // save crit for massive action
    $_SESSION['plugin_reports_doublons_crit'] = $crit;
@@ -245,11 +233,10 @@ if ($crit>0) { // Display result
       "<th>" . $LANG["common"][5] . "</th>" .
       "<th>" . $LANG["common"][22] . "</th>" .
       "<th>" . $LANG["common"][19] . "</th>" .
-      "<th>".$LANG['common'][20]."</th>";
+      "<th>" . $LANG['common'][20] . "</th>";
    if ($col) {
       echo "<th>$col</th>";
    }
-   echo "<th>".$LANG['ocsng'][7]."</th>";
    echo "<th>".$LANG['ocsng'][14]."</th>";
 
    if ($canedit) {
@@ -265,7 +252,6 @@ if ($crit>0) { // Display result
    if ($col) {
       echo "<th class='blue'>$col</th>";
    }
-   echo "<th class='blue'>".$LANG['ocsng'][7]."</th>";
    echo "<th class='blue'>".$LANG['ocsng'][14]."</th>";
 
    echo "</tr>\n";
@@ -305,7 +291,6 @@ if ($crit>0) { // Display result
       if ($col) {
          echo "<td>" .$data["Aaddr"]. "</td>";
       }
-      echo "<td>" .Dropdown::getYesNo($data['Aisocsimport']). "</td>";
       echo "<td>" .getLastOcsUpdate($data['AID']). "</td>";
 
       if ($canedit) {
@@ -325,10 +310,9 @@ if ($crit>0) { // Display result
          echo "<td colspan='5' class='blue'>".$data["Aname"]."</td>";
       }
       if ($col) {
-         echo "<td>" .$data["Aaddr"]. "</td>";
+         echo "<td class='blue'>" .$data["Aaddr"]. "</td>";
       }
-      echo "<td>" .Dropdown::getYesNo($data['Bisocsimport']). "</td>";
-      echo "<td>" .getLastOcsUpdate($data['BID']). "</td>";
+      echo "<td class='blue'>" .getLastOcsUpdate($data['BID']). "</td>";
 
    echo "</tr>\n";
    }
