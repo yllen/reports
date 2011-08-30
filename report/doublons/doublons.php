@@ -109,14 +109,13 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
       }
    }
 
-   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial,
+   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname,
                   A.`computermodels_id` AS Amodel,
-                  A.`manufacturers_id` AS Amanu, AA.`ip` AS Aaddr, A.`entities_id` AS entity,
-                  A.`otherserial` AS Aotherserial,
+                  AA.`ip` AS Aaddr, A.`entities_id` AS entity,
                   A.`is_ocs_import` AS Aisocsimport,
-                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
+                  B.`id` AS BID, B.`name` AS Bname,
                   B.`computermodels_id` AS Bmodel,
-                  B.`manufacturers_id` AS Bmanu, BB.`ip` AS Baddr, B.`otherserial` AS Botherserial,
+                  BB.`ip` AS Baddr,
                   B.`is_ocs_import` AS Bisocsimport
            FROM `glpi_computers` A,
                 `glpi_computers` B,
@@ -150,14 +149,13 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
    } else {
       $MacBlacklist .= ",'44:45:53:54:42:00','BA:D0:BE:EF:FA:CE', '00:53:45:00:00:00', '80:00:60:0F:E8:00'";
    }
-   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial,
+   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname,
                   A.`computermodels_id` AS Amodel,
-                  A.`manufacturers_id` AS Amanu, AA.`specificity` AS Aaddr, A.`entities_id` AS entity,
-                  A.`otherserial` AS Aotherserial,
+                  AA.`specificity` AS Aaddr, A.`entities_id` AS entity,
                   A.`is_ocs_import` AS Aisocsimport,
-                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
+                  B.`id` AS BID, B.`name` AS Bname,
                   B.`computermodels_id` AS Bmodel,
-                  B.`manufacturers_id` AS Bmanu, BB.`specificity` AS Baddr, B.`otherserial` as Botherserial,
+                  BB.`specificity` AS Baddr,
                   B.`is_ocs_import` AS Bisocsimport
            FROM `glpi_computers` A,
                 `glpi_computers` B,
@@ -187,13 +185,12 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
          $SerialBlacklist .= ",'".addslashes($data["addr"])."'";
       }
    }
-   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname, A.`serial` AS Aserial,
+   $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname,
                   A.`computermodels_id` AS Amodel,
-                  A.`manufacturers_id` AS Amanu, A.`entities_id` AS entity, A.`otherserial` AS Aotherserial,
+                  A.`entities_id` AS entity,
                   A.`is_ocs_import` AS Aisocsimport,
-                  B.`id` AS BID, B.`name` AS Bname, B.`serial` AS Bserial,
+                  B.`id` AS BID, B.`name` AS Bname,
                   B.`computermodels_id` AS Bmodel,
-                  B.`manufacturers_id` AS Bmanu, B.`otherserial` AS Botherserial,
                   B.`is_ocs_import` AS Bisocsimport
            FROM `glpi_computers` A,
                 `glpi_computers` B " .
@@ -269,7 +266,7 @@ if ($crit>0) { // Display result
       echo "<th class='blue'>$col</th>";
    }
    echo "<th class='blue'>".$LANG['ocsng'][7]."</th>";
-   echo "<th>".$LANG['ocsng'][14]."</th>";
+   echo "<th class='blue'>".$LANG['ocsng'][14]."</th>";
 
    echo "</tr>\n";
 
@@ -280,6 +277,7 @@ if ($crit>0) { // Display result
       $DBread = $DB;
    }
 
+   $comp = new Computer();
    $result = $DBread->query($Sql);
    for ($prev=-1, $i=0 ; $data = $DBread->fetch_array($result) ; $i++) {
       if ($prev != $data["entity"]) {
@@ -291,13 +289,19 @@ if ($crit>0) { // Display result
       if ($canedit) {
          echo "<td><input type='checkbox' name='item[".$data["AID"]."]' value='1'></td>";
       }
-      echo "<td><a href='".getItemTypeFormURL('Computer')."?id=".$data["AID"]."'>".$data["AID"]."</a>".
-         "</td>" .
-         "<td>".$data["Aname"]."</td><td>".Dropdown::getDropdownName("glpi_manufacturers",$data["Amanu"]).
-         "</td>".
-         "<td>".Dropdown::getDropdownName("glpi_computermodels",$data["Amodel"])."</td><".
-         "td>".$data["Aserial"]."</td><td>".$data["Aotherserial"]."</td>";
-
+      echo "<td class='b'>".$data["AID"]."</td>";
+      if ($comp->getFromDB($data["AID"])) {
+         echo "<td>";
+         echo $comp->getLink(true);
+         echo "</td><td>";
+         echo Dropdown::getDropdownName("glpi_manufacturers", $comp->getField('manufacturers_id'));
+         echo "</td><td>";
+         echo Dropdown::getDropdownName("glpi_computermodels", $comp->getField('computermodels_id'));
+         echo "</td><td>".$comp->getField('serial');
+         echo "</td><td>".$comp->getField('otherserial')."</td>";
+      } else {
+         echo "<td colspan='5'>".$data["Aname"]."</td>";
+      }
       if ($col) {
          echo "<td>" .$data["Aaddr"]. "</td>";
       }
@@ -307,14 +311,19 @@ if ($crit>0) { // Display result
       if ($canedit) {
          echo "<td><input type='checkbox' name='item[".$data["BID"]."]' value='1'></td>";
       }
-      echo "<td><a href='".getItemTypeFormURL('Computer')."?id=".$data["BID"]."'>".
-         $data["BID"]."</a></td>" .
-         "<td class='blue'>".$data["Bname"]."</td><".
-         "td class='blue'>".Dropdown::getDropdownName("glpi_manufacturers",$data["Bmanu"]).
-         "</td>".
-         "<td class='blue'>".Dropdown::getDropdownName("glpi_computermodels",$data["Bmodel"])."</td>".
-         "<td class='blue'>".$data["Bserial"]."</td><td class='blue'>".$data["Botherserial"]."</td>";
-
+      echo "<td class='b blue'>".$data["BID"]."</td>";
+      if ($comp->getFromDB($data["AID"])) {
+         echo "<td class='blue'>";
+         echo $comp->getLink(true);
+         echo "</td><td class='blue'>";
+         echo Dropdown::getDropdownName("glpi_manufacturers", $comp->getField('manufacturers_id'));
+         echo "</td><td class='blue'>";
+         echo Dropdown::getDropdownName("glpi_computermodels", $comp->getField('computermodels_id'));
+         echo "</td><td class='blue'>".$comp->getField('serial');
+         echo "</td><td class='blue'>".$comp->getField('otherserial')."</td>";
+      } else {
+         echo "<td colspan='5' class='blue'>".$data["Aname"]."</td>";
+      }
       if ($col) {
          echo "<td>" .$data["Aaddr"]. "</td>";
       }
