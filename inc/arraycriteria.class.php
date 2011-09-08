@@ -43,7 +43,8 @@ class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
    function __construct($report, $name, $label='', $options=array()) {
       global $LANG;
 
-      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : $LANG['rulesengine'][16]));
+      parent::__construct($report, $name, NOT_AVAILABLE,
+                          ($label ? $label : $LANG['rulesengine'][16]));
       $this->choice = $options;
    }
 
@@ -60,8 +61,10 @@ class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
 
    public function displayDropdownCriteria() {
 
-      Dropdown::showFromArray($this->getName(), $this->choice, array('value'=>$this->getParameterValue()));
+      Dropdown::showFromArray($this->getName(), $this->choice,
+                              array('value' => $this->getParameterValue()));
    }
+
 
    /**
     * Get SQL code associated with the criteria
@@ -71,5 +74,4 @@ class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
       return $link . " " . $this->getSqlField() . "='".$this->getParameterValue()."' ";
    }
 }
-
 ?>

@@ -81,6 +81,7 @@ abstract class PluginReportsAutoCriteria {
       $this->setDefaultValues();
    }
 
+
    //-------------- Getters ------------------//
 
    /**
@@ -244,6 +245,7 @@ abstract class PluginReportsAutoCriteria {
     */
    abstract public function setDefaultValues();
 
+
    //-------------- Other ------------------//
 
    /**
@@ -282,5 +284,4 @@ abstract class PluginReportsAutoCriteria {
    }
 
 }
-
 ?>

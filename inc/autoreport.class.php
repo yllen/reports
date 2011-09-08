@@ -43,15 +43,15 @@
 **/
 class PluginReportsAutoReport {
 
-   private $criterias = array ();
-   private $columns = array ();
-   private $group_by = array ();
+   private $criterias       = array ();
+   private $columns         = array ();
+   private $group_by        = array ();
    private $columns_mapping = array ();
-   private $sql = "";
-   private $name = "";
-   private $subname = "";
-   private $cpt = 0;
-   private $title = '';
+   private $sql             = "";
+   private $name            = "";
+   private $subname         = "";
+   private $cpt             = 0;
+   private $title           = '';
 
    function __construct($title='') {
 
@@ -149,6 +149,7 @@ class PluginReportsAutoReport {
    function setName($name) {
       list($this->plug,$this->name) = explode('.',$name,2);
    }
+
 
    /**
    * Set report's Title
@@ -264,13 +265,13 @@ class PluginReportsAutoReport {
       }
 
       if ($nbtot == 0) {
-         commonHeader($title, $_SERVER['PHP_SELF'], "utils", "report");
+         Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
          echo "<div class='center'><font class='red b'>".$LANG['search'][15]."</font></div>";
-         commonFooter();
+         Html::footer();
       } else if ($output_type == PDF_OUTPUT_PORTRAIT || $output_type == PDF_OUTPUT_LANDSCAPE) {
          include (GLPI_ROOT . "/lib/ezpdf/class.ezpdf.php");
       } else if ($output_type == HTML_OUTPUT) {
-         commonHeader($title, $_SERVER['PHP_SELF'], "utils", "report");
+         Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
 
          echo "<div class='center'><table class='tab_cadre_fixe'>";
          echo "<tr><th>$title</th></tr>\n";
@@ -299,7 +300,7 @@ class PluginReportsAutoReport {
          echo "</form></td></tr>";
          echo "</table></div>";
 
-         printPager($start, $nbtot, $_SERVER['PHP_SELF'], $param);
+         Html::printPager($start, $nbtot, $_SERVER['PHP_SELF'], $param);
       }
 
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
@@ -395,12 +396,13 @@ class PluginReportsAutoReport {
 
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
          if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
-            openArrowMassive("massiveaction_form", true);
+            Html::openArrowMassives("massiveaction_form", true);
             Dropdown::showForMassiveAction('User');
-            closeArrowMassive();
+            $options = array();
+            Html::closeArrowMassives($options);
             echo "</form>";
          }
-         commonFooter();
+         Html::footer();
       }
    }
 
@@ -419,11 +421,11 @@ class PluginReportsAutoReport {
       //Display commonHeader is output is HTML
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
          if (isStat($this->name)) {
-            commonHeader($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
-                         "maintain", "stat");
+            Html::header($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
+                        "maintain", "stat");
          } else {
-            commonHeader($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
-                         "utils", "report");
+            Html::header($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
+                        "utils", "report");
          }
       } else {
          return;
@@ -524,16 +526,19 @@ class PluginReportsAutoReport {
       $this->criterias[] = $criteria;
    }
 
+
    /**
     * Delete a criteria
     */
    function delCriteria($name) {
+
       foreach ($this->criterias as $key => $crit) {
          if ($crit->getName() == $name) {
             unset($this->criterias[$key]);
          }
       }
    }
+
 
    /**
    * Add a new column in the criterias selection form
@@ -623,6 +628,7 @@ class PluginReportsAutoReport {
       return '';
    }
 
+
    /**
     * Set the GroupBy columns using the Orderby Fields
     * **** name of the columns must be the same than the fields ***
@@ -633,5 +639,4 @@ class PluginReportsAutoReport {
       $this->setGroupBy($this->getOrderByFields($default));
    }
 }
-
 ?>

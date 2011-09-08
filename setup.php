@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @version $Id: HEADER 14684 2011-06-11 06:32:40Z remi $
  -------------------------------------------------------------------------
@@ -38,9 +37,10 @@ foreach (glob(GLPI_ROOT . '/plugins/reports/inc/*.php') as $file) {
 }
 include_once(GLPI_ROOT . '/plugins/reports/inc/function.php');
 
-define ("REPORTS_NO_ENTITY_RESTRICTION",0);
-define ("REPORTS_CURRENT_ENTITY",1);
-define ("REPORTS_SUB_ENTITIES",2);
+define ("REPORTS_NO_ENTITY_RESTRICTION", 0);
+define ("REPORTS_CURRENT_ENTITY", 1);
+define ("REPORTS_SUB_ENTITIES", 2);
+
 
 function plugin_init_reports() {
    global $PLUGIN_HOOKS, $DB, $LANG;
@@ -52,21 +52,23 @@ function plugin_init_reports() {
 
    Plugin::registerClass('PluginReportsStat');
 
-   Plugin::registerClass('PluginReportsProfile');
+   Plugin::registerClass('PluginReportsProfile',
+                         array('addtabon' => array('Profile')));
 
 
    $PLUGIN_HOOKS['change_profile']['reports'] = array('PluginReportsProfile','changeprofile');
 
-   if (haveRight("config", "w")) {
+   if (Session::haveRight("config", "w")) {
       $PLUGIN_HOOKS['headings']['reports']        = 'plugin_get_headings_reports';
       $PLUGIN_HOOKS['headings_action']['reports'] = 'plugin_headings_actions_reports';
       $PLUGIN_HOOKS['config_page']['reports']     = 'front/config.form.php';
    }
    $PLUGIN_HOOKS['menu_entry']['reports']     = false;
-   $PLUGIN_HOOKS['pre_item_purge']['reports'] = array('Profile' => array('PluginReportsProfile','cleanProfiles'));
+   $PLUGIN_HOOKS['pre_item_purge']['reports'] = array('Profile' => array('PluginReportsProfile',
+                                                                         'cleanProfiles'));
 
    $rightreport = array ();
-   $rightstats = array ();
+   $rightstats  = array ();
 
    foreach (searchReport() as $report => $plug) {
       if (plugin_reports_haveRight($plug, $report, "r")) {
@@ -88,6 +90,7 @@ function plugin_init_reports() {
    }
 }
 
+
 /**
  * Indicate if the report must be displayed in reports or statistics menu
  * @param $report_name the name of the report
@@ -105,11 +108,11 @@ function isStat($report_name) {
 function plugin_version_reports() {
    global $LANG;
 
-   return array('name'     => $LANG['plugin_reports']['title'][1],
-                'version'  => '1.5.0',
-                'author'   => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh',
-                'homepage' => 'https://forge.indepnet.net/projects/reports',
-                'minGlpiVersion' => '0.80');
+   return array('name'           => $LANG['plugin_reports']['title'][1],
+                'version'        => '1.6.0',
+                'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh',
+                'homepage'       => 'https://forge.indepnet.net/projects/reports',
+                'minGlpiVersion' => '0.83');
 }
 
 
@@ -141,10 +144,10 @@ function plugin_reports_checkRight($plug, $module, $right) {
    if (!plugin_reports_haveRight($plug, $module, $right)) {
       // Gestion timeout session
       if (!isset ($_SESSION["glpiID"])) {
-         glpi_header($CFG_GLPI["root_doc"] . "/index.php");
-         exit ();
+         Html::redirect($CFG_GLPI["root_doc"] . "/index.php");
+         exit();
       }
-      displayRightError();
+      Html::displayRightError();
    }
 }
 
@@ -154,11 +157,10 @@ function plugin_reports_checkRight($plug, $module, $right) {
 function plugin_reports_check_prerequisites() {
    global $LANG;
 
-   if (version_compare(GLPI_VERSION,'0.80','lt') || version_compare(GLPI_VERSION,'0.81','ge')) {
-      echo "This plugin requires GLPI >= 0.80 and GLPI < 0.81";
+   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
+      echo "This plugin requires GLPI >= 0.83 and GLPI < 0.84";
       return false;
    }
    return true;
 }
-
 ?>

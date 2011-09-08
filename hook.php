@@ -28,48 +28,9 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Nelly LASSON
+// Original Author of file: Nelly Mahu-Lasson
 // Purpose of file:
 // ----------------------------------------------------------------------
-
-function plugin_get_headings_reports($item,$withtemplate) {
-   global $LANG;
-
-   if (get_class($item)=='Profile') {
-      if ($item->fields['interface']!='helpdesk') {
-         return array(1 => $LANG['plugin_reports']['title'][1]);
-      }
-   }
-   return false;
-}
-
-
-function plugin_headings_actions_reports($item) {
-
-   switch (get_class($item)) {
-      case 'Profile' :
-         if ($item->getField('interface')=='central') {
-            return array(1 => "plugin_headings_reports");
-         }
-         break;
-   }
-   return false;
-}
-
-
-function plugin_headings_reports($item, $withtemplate=0) {
-   global $CFG_GLPI;
-
-   $prof = new PluginReportsProfile();
-   switch ($item->getType()) {
-      case 'Profile' :
-         //Check if new reports added
-         $prof->updatePluginRights();
-         PluginReportsProfile::showForProfile($item);
-         break;
-   }
-}
-
 
 function plugin_reports_install() {
 
@@ -88,6 +49,4 @@ function plugin_reports_uninstall() {
 
    return PluginReportsProfile::uninstall();
 }
-
-
 ?>

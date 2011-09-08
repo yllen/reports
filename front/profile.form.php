@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @version $Id: HEADER 14684 2011-06-11 06:32:40Z remi $
  -------------------------------------------------------------------------
@@ -36,12 +35,12 @@
 define('GLPI_ROOT', '../../..');
 include_once (GLPI_ROOT . "/inc/includes.php");
 
-checkRight('profile', 'w');
+Session::checkRight('profile', 'w');
 
 //Save profile
 if (isset ($_POST['update_user_profile'])) {
    PluginReportsProfile::updateForProfile($_POST);
 }
-glpi_header($_SERVER['HTTP_REFERER']);
 
+Html::back();
 ?>

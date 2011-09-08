@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @version $Id: HEADER 14684 2011-06-11 06:32:40Z remi $
  -------------------------------------------------------------------------
@@ -36,11 +35,11 @@
 define('GLPI_ROOT', '../../..');
 include_once (GLPI_ROOT . "/inc/includes.php");
 
-checkRight('profile', 'r');
+Session::checkRight('profile', 'r');
 
 Plugin::load('reports', true);
 
-commonHeader($LANG['plugin_reports']['config'][1], $_SERVER['PHP_SELF'], 'config', 'plugins');
+Html::header($LANG['plugin_reports']['config'][1], $_SERVER['PHP_SELF'], 'config', 'plugins');
 
 require_once "../inc/profile.class.php";
 
@@ -52,11 +51,11 @@ if (isset($_POST['report'])) {
 $prof = new PluginReportsProfile();
 
 if (isset($_POST['delete']) && $report) {
-   checkRight('profile', 'w');
+   Session::checkRight('profile', 'w');
    $prof->deleteByCriteria(array('report' => $report));
 
 } else  if (isset($_POST['update']) && $report) {
-   checkRight('profile', 'w');
+   Session::checkRight('profile', 'w');
    PluginReportsProfile::updateForReport($_POST);
 }
 
@@ -75,21 +74,21 @@ $result=$DB->query($query);
 
 echo "<select name='report'>";
 $plugname = array();
-$rap = array();
+$rap      = array();
 foreach($tab as $key => $plug) {
    $mod = ($plug=='reports' ? $key : $plug.'_'.$key);
    if (!isset($plugname[$plug])) {
       // Retrieve the plugin name
-      $function = "plugin_version_$plug";
-      $tmp = $function();
+      $function        = "plugin_version_$plug";
+      $tmp             = $function();
       $plugname[$plug] = $tmp['name'];
    }
-   $section = (isStat($mod)
-                  ? $LANG['title'][24] . ' - ' . $LANG['Menu'][13]
-                  : $LANG['Menu'][18] . ' - ' . $LANG['Menu'][6]);
+   $section = (isStat($mod) ? $LANG['title'][24] . ' - ' . $LANG['Menu'][13]
+                            : $LANG['Menu'][18] . ' - ' . $LANG['Menu'][6]);
 
    $rap[$plug][$section][$mod] = $LANG["plugin_$plug"][$key][1];
 }
+
 $tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 foreach ($rap as $plug => $tmp1) {
    echo '<optgroup label="'.$LANG['common'][29].' - '.$plugname[$plug].'">';
@@ -102,6 +101,7 @@ foreach ($rap as $plug => $tmp1) {
    }
    echo "</optgroup>\n";
 }
+
 echo "</select>";
 echo "<td><input type='submit' value='".$LANG['buttons'][2]."' class='submit' ></td></tr>";
 echo "</table></form>";
@@ -110,6 +110,5 @@ if ($report) {
    PluginReportsProfile::showForReport($report);
 }
 
-commonFooter();
-
+Html::footer();
 ?>

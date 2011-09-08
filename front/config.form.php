@@ -40,23 +40,25 @@ if (!defined('GLPI_ROOT')) {
 include_once (GLPI_ROOT . "/inc/includes.php");
 Plugin::load('reports');
 
-checkSeveralRightsOr(array("config" => "w", "profile" => "w"));
-commonHeader($LANG['common'][12],$_SERVER['PHP_SELF'],"config","plugins");
+Session::checkSeveralRightsOr(array("config" => "w", "profile" => "w"));
+Html::header($LANG['common'][12], $_SERVER['PHP_SELF'], "config", "plugins");
 
 echo "<div class='center'>";
 echo "<table class='tab_cadre'>";
 echo "<tr><th>".$LANG['plugin_reports']['config'][1]."</th></tr>";
 
-if (haveRight("profile","w")) {
+if (Session::haveRight("profile","w")) {
    echo "<tr class='tab_bg_1 center'><td>";
    echo "<a href='report.form.php'>".$LANG['plugin_reports']['config'][8]."</a>";
    echo "</td/></tr>\n";
 }
-if (haveRight("config","w")) {
+
+if (Session::haveRight("config","w")) {
    foreach (searchReport() as $report => $plug) {
       if (is_file($url=getReportConfigPage($plug,$report))) {
          echo "<tr class='tab_bg_1 center'><td>";
-         echo "<a href='$url'>".$LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports'][$report][1];
+         echo "<a href='$url'>".
+               $LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports'][$report][1];
          echo "</a></td/></tr>";
       }
    }
@@ -64,6 +66,5 @@ if (haveRight("config","w")) {
 
 echo "</table></div>";
 
-commonFooter();
-
+Html::footer();
 ?>
