@@ -45,9 +45,9 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       parent::__construct($report, $name, $name, $label);
 
       $this->addCriteriaLabel($this->getName()."_1",
-         ($start ? $start : ($label ? $LANG['search'][24] :$LANG['search'][8])));
+                              ($start ? $start : ($label ? $LANG['search'][24] :$LANG['search'][8])));
       $this->addCriteriaLabel($this->getName()."_2",
-         ($end ? $end : ($label ? $LANG['search'][23] : $LANG['search'][9])));
+                              ($end ? $end : ($label ? $LANG['search'][23] : $LANG['search'][9])));
    }
 
 
@@ -60,14 +60,18 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->addParameter($this->getName()."_2", $enddate);
    }
 
+
    public function getStartDate() {
+
       $start = $this->getParameter($this->getName()."_1");
       $end   = $this->getParameter($this->getName()."_2");
 
       return ($start=='NULL' || $end=='NULL' || $start < $end ? $start : $end);
    }
 
+
    public function getEndDate() {
+
       $start = $this->getParameter($this->getName()."_1");
       $end   = $this->getParameter($this->getName()."_2");
 
@@ -76,6 +80,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
 
    public function setDefaultValues() {
+
       $this->setStartDate('NULL');
       $this->setEndDate('NULL');
    }
@@ -117,13 +122,16 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       if ($start=='NULL' && $end=='NULL') {
          return '';
       }
+
       $sql = '';
       if ($start!='NULL') {
          $sql .= $this->getSqlField() . ">= '" . $this->getStartDate() . " 00:00:00'";
       }
+
       if ($start!='NULL' && $end!='NULL') {
          $sql .= ' AND ';
       }
+
       if ($end!='NULL') {
          $sql .= $this->getSqlField() . "<='" . $this->getEndDate() . " 23:59:59' ";
       }
@@ -142,12 +150,15 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       if ($start=='NULL' && $end=='NULL') {
          return '';
       }
+
       if (empty($title) && isset($LANG['plugin_reports']['subname'][$this->getName()])) {
          $title = $LANG['plugin_reports']['subname'][$this->getName()];
       }
+
       if ($start=='NULL') {
          return $title . ', ' . $LANG['search'][23] . ' ' . convDate($end);
       }
+
       if ($end=='NULL') {
          return $title . ', ' . $LANG['search'][24] . ' ' . convDate($start);
       }
@@ -156,5 +167,4 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
    }
 
 }
-
 ?>

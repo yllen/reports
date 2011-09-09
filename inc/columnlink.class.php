@@ -33,10 +33,10 @@
  */
 class PluginReportsColumnLink extends PluginReportsColumn {
 
-   private $obj = NULL;
-
+   private $obj           = NULL;
    private $with_comment  = 0;
    private $with_navigate = 0;
+
 
    function __construct($name, $title, $itemtype, $options=array()) {
       global $LANG;
@@ -50,26 +50,32 @@ class PluginReportsColumnLink extends PluginReportsColumn {
       if (isset($options['with_comment'])) {
          $this->with_comment = $options['with_comment'];
       }
+
       if (isset($options['with_navigate'])) {
          $this->with_navigate = $options['with_navigate'];
-         initNavigateListItems($this->obj->getType(), $LANG['Menu'][6]);
+         Session::initNavigateListItems($this->obj->getType(), $LANG['Menu'][6]);
       }
    }
+
 
    function displayValue($output_type, $row) {
 
       if (!isset($row[$this->name]) || !$row[$this->name]) {
          return '';
       }
+
       if (!$this->obj || !$this->obj->getFromDB($row[$this->name])) {
          return $row[$this->name];
       }
+
       if ($this->with_navigate) {
-         addToNavigateListItems($this->obj->getType(), $row[$this->name]);
+         Session::addToNavigateListItems($this->obj->getType(), $row[$this->name]);
       }
+
       if ($output_type==HTML_OUTPUT) {
          return $this->obj->getLink($this->with_comment);
       }
+
       return $this->obj->getNameID();
    }
 }

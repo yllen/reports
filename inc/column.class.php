@@ -46,6 +46,7 @@ class PluginReportsColumn {
    // Manage total for this colum (if handled by sub-type)
    protected $withtotal;
 
+
    function __construct($name, $title, $options=array()) {
 
       $this->name      = $name;
@@ -64,6 +65,7 @@ class PluginReportsColumn {
       $this->sorton = (isset($options['sorton']) ? $options['sorton'] : false);
    }
 
+
    function showTitle($output_type, &$num) {
 
       if ($output_type != HTML_OUTPUT || !$this->sorton) {
@@ -78,7 +80,7 @@ class PluginReportsColumn {
             $order = 'DESC';
          }
       }
-      $link = $_SERVER['PHP_SELF'];
+      $link  = $_SERVER['PHP_SELF'];
       $first = true;
       foreach ($_REQUEST as $name => $value) {
          if (!in_array($name,array('sort','order','PHPSESSID'))) {
@@ -93,23 +95,30 @@ class PluginReportsColumn {
                                   $link, $issort, ($order=='ASC'?'DESC':'ASC'));
    }
 
+
    function showValue($output_type, $row, &$num, $row_num, $bold=false) {
+
       echo Search::showItem($output_type, $this->displayValue($output_type, $row), $num, $row_num,
                             ($bold ? $this->extrabold : $this->extrafine));
    }
 
+
    function showTotal($output_type, &$num, $row_num) {
+
       echo Search::showItem($output_type,
                             ($this->withtotal ? $this->displayTotal($output_type) : ''),
                             $num, $row_num, $this->extrabold);
    }
 
+
    function displayValue($output_type, $row) {
+
       if (isset($row[$this->name])) {
          return $row[$this->name];
       }
       return '';
    }
+
 
    function displayTotal($output_type) {
       return '';

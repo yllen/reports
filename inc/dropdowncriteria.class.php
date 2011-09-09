@@ -83,6 +83,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
       return $this->table;
    }
 
+
    /**
     * Get criteria's related table
     */
@@ -98,8 +99,8 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
       global $CFG_GLPI;
 
       //if (in_array($this->getTable(), $CFG_GLPI["dropdowntree_tables"])) {
-         // TODO find a solution ti check is children exists
-         $this->childrens = true;
+         // TODO find a solution to check is children exists
+      $this->childrens = true;
       //}
    }
 
@@ -206,10 +207,12 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
       if ($value) {
          return $this->getCriteriaLabel()." : ".Dropdown::getDropdownName($this->getTable(), $value);
       }
+
       if ($this->searchzero) {
          // zero
          return $this->getCriteriaLabel() . " : " . $LANG['common'][49];
       }
+
       // All
       return '';
    }
@@ -252,7 +255,8 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
       if ($this->getParameterValue() || $this->searchzero) {
          if (!$this->childrens) {
             return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
-         } else  if ($this->getParameterValue()) {
+         }
+         if ($this->getParameterValue()) {
             return $link . " " . $this->getSqlField() .
                    " IN (" . implode(',', getSonsOf($this->getTable(),
                                                     $this->getParameterValue())) . ") ";
@@ -263,5 +267,4 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
       return '';
    }
 }
-
 ?>

@@ -33,9 +33,9 @@
  */
 class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
 
-   private $obj = NULL;
-
+   private $obj          = NULL;
    private $with_comment = 0;
+
 
    function __construct($name, $itemtype, $options=array()) {
 
@@ -46,16 +46,19 @@ class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
       }
    }
 
+
    function displayValue($output_type, $row) {
 
       if (!isset($row[$this->name]) || !$row[$this->name]) {
          return '';
       }
+
       if ($this->obj
           && $output_type==HTML_OUTPUT
           && $this->obj->can($row[$this->name], 'w')) {
          return "<input type='checkbox' name='item[".$row[$this->name]."]' value='1'>";
       }
+
       return '';
    }
 }

@@ -35,10 +35,11 @@ class PluginReportsColumnType extends PluginReportsColumn {
 
    private $obj = NULL;
 
-   function __construct($name, $title, $options=array()) {
 
+   function __construct($name, $title, $options=array()) {
       parent::__construct($name, $title, $options);
    }
+
 
    function displayValue($output_type, $row) {
 
@@ -46,13 +47,16 @@ class PluginReportsColumnType extends PluginReportsColumn {
           || !$row[$this->name]) {
          return '';
       }
+
       if (!class_exists($row[$this->name])) {
          return $row[$this->name];
       }
+
       if (is_null($this->obj)
-          || get_class($this->obj)!=$row[$this->name]) {
-         $this->obj = new $row[$this->name];
+          || get_class($this->obj) != $row[$this->name]) {
+         $this->obj = new $row[$this->name]();
       }
+
       return $this->obj->getTypeName();
    }
 }

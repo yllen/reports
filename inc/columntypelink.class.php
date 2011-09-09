@@ -33,13 +33,15 @@
  */
 class PluginReportsColumnTypeLink extends PluginReportsColumn {
 
-   private $obj = NULL;
+   private $obj          = NULL;
    private $with_comment = 0;
-   private $nametype = '';
+   private $nametype     = '';
+
 
    function __construct($nameid, $title, $nametype, $options=array()) {
 
       parent::__construct($nameid, $title, $options);
+
       $this->nametype = $nametype;
 
       if (isset($options['with_comment'])) {
@@ -47,26 +49,32 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
       }
    }
 
+
    function displayValue($output_type, $row) {
 
       if (!isset($row[$this->name]) || !$row[$this->name]) {
          return '';
       }
+
       if (isset($row[$this->nametype])
           && $row[$this->nametype]
           && (is_null($this->obj) || $this->obj->getType()!=$row[$this->nametype])) {
+
          if (class_exists($row[$this->nametype])) {
-            $this->obj = new $row[$this->nametype];
+            $this->obj = new $row[$this->nametype]();
          } else {
             $this->obj = NULL;
          }
       }
+
       if (!$this->obj || !$this->obj->getFromDB($row[$this->name])) {
          return 'ID #'.$row[$this->name];
       }
+
       if ($output_type==HTML_OUTPUT) {
          return $this->obj->getLink($this->with_comment);
       }
+
       return $this->obj->getNameID();
    }
 }

@@ -45,6 +45,7 @@ class PluginReportsColumnDateTime extends PluginReportsColumn {
       parent::__construct($name, $title, $options);
    }
 
+
    function displayValue($output_type, $row) {
 
       if (isset($row[$this->name]) && $row[$this->name]) {

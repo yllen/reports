@@ -36,11 +36,13 @@ class PluginReportsColumnTimestamp extends PluginReportsColumn {
    private $total;
    private $withsec;
 
+
    function __construct($name, $title, $options=array()) {
 
       if (!isset($options['extrafine'])) {
          $options['extrafine'] =  "class='right'";
       }
+
       if (!isset($options['extrabold'])) {
          $options['extrabold'] =  "class='b right'";
       }
@@ -53,16 +55,19 @@ class PluginReportsColumnTimestamp extends PluginReportsColumn {
       $this->total = 0;
    }
 
+
    function displayValue($output_type, $row) {
+
       if (isset($row[$this->name])) {
          $this->total += intval($row[$this->name]);
-         return timestampToString($row[$this->name], $this->withsec);
+         return Html::timestampToString($row[$this->name], $this->withsec);
       }
       return '';
    }
 
+
    function displayTotal($output_type) {
-      return timestampToString($this->total, $this->withsec);
+      return Html::timestampToString($this->total, $this->withsec);
    }
 }
 ?>

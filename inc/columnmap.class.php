@@ -35,6 +35,7 @@ class PluginReportsColumnMap extends PluginReportsColumn {
 
    private $map;
 
+
    function __construct($name, $title, $map=array(), $options=array()) {
 
       parent::__construct($name, $title, $options);
@@ -64,6 +65,7 @@ class PluginReportsColumnMap extends PluginReportsColumn {
          }
       }
    }
+
 
    function displayValue($output_type, $row) {
 
