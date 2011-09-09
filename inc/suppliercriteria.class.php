@@ -39,6 +39,7 @@
  */
 class PluginReportsSupplierCriteria extends PluginReportsDropdownCriteria {
 
+
    function __construct($report, $name='suppliers_id', $label) {
       global $LANG;
 
@@ -46,5 +47,4 @@ class PluginReportsSupplierCriteria extends PluginReportsDropdownCriteria {
    }
 
 }
-
 ?>

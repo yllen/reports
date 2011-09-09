@@ -39,18 +39,22 @@
  */
 class PluginReportsTextCriteria extends PluginReportsDropdownCriteria {
 
+
    function __construct($report, $name='value', $label='') {
       global $LANG;
 
       parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label :$LANG['common'][16]));
    }
 
+
    function setDefaultValues() {
       $this->addParameter($this->getName(), '');
    }
 
+
    function displayCriteria() {
       global $LANG;
+
       $this->getReport()->startColumn();
       echo $this->getCriteriaLabel().'&nbsp;:';
       $this->getReport()->endColumn();
@@ -60,9 +64,10 @@ class PluginReportsTextCriteria extends PluginReportsDropdownCriteria {
       $this->getReport()->endColumn();
    }
 
+
    /**
     * Get criteria's subtitle
-    */
+   **/
    public function getSubName() {
 
       $param = $this->getParameterValue();
@@ -72,6 +77,7 @@ class PluginReportsTextCriteria extends PluginReportsDropdownCriteria {
       return '';
    }
 
+
    function getSqlCriteriasRestriction($link = 'AND') {
 
       $param = $this->getParameterValue();
@@ -80,5 +86,6 @@ class PluginReportsTextCriteria extends PluginReportsDropdownCriteria {
       }
       return '';
    }
+
 }
 ?>

@@ -34,11 +34,11 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-
 /**
  * Location selection criteria
  */
 class PluginReportsLocationCriteria extends PluginReportsDropdownCriteria {
+
 
    function __construct($report, $name = 'locations_id', $label='') {
       global $LANG;
@@ -51,14 +51,5 @@ class PluginReportsLocationCriteria extends PluginReportsDropdownCriteria {
       $this->addParameter($this->name, $location);
    }
 
-
-   /**
-    * Deprecated : replace by setWithChildrens
-    */
-   public function setLocationWithChildrens() {
-      $this->setWithChildrens();
-   }
-
 }
-
 ?>

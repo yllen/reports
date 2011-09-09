@@ -44,19 +44,26 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
    private $max   = 100;
    private $coef  = 1;
 
-   function __construct($report, $name='value', $label='', $signe='', $min=0, $max=100, $coef=1, $unit='') {
+
+   function __construct($report, $name='value', $label='', $signe='', $min=0, $max=100, $coef=1,
+                        $unit='') {
       global $LANG;
 
       parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label :$LANG['financial'][21]));
+
       $this->setOptions($signe,$min,$max,$coef,$unit);
    }
 
+
    function setDefaultValues() {
+
       $this->addParameter($this->getName(),0);
       $this->addParameter($this->getName().'_sign','<=');
    }
 
+
    function setOptions($signe='', $min=0, $max=100, $coef=1, $unit='') {
+
       $this->signe = $signe;
       $this->min   = $min;
       $this->max   = $max;
@@ -64,8 +71,10 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
       $this->unit  = $unit;
    }
 
+
    function displayCriteria() {
       global $LANG;
+
       $this->getReport()->startColumn();
       echo $this->getCriteriaLabel().'&nbsp;:';
       $this->getReport()->endColumn();
@@ -73,37 +82,42 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
       $this->getReport()->startColumn();
       if (empty($this->signe)) {
          Dropdown::showFromArray($this->getName()."_sign",
-                                 array('<=' => '<=', '>=' => '>='),
+                                 array('<='    => '<=',
+                                       '>=' => '>='),
                                  array('value' => unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))));
          echo "&nbsp;";
       }
-      Dropdown::showInteger($this->getName(),$this->getParameterValue(),
-                            $this->min, $this->max, 1);
+      Dropdown::showInteger($this->getName(), $this->getParameterValue(), $this->min, $this->max, 1);
       echo '&nbsp; '.$this->unit;
 
       $this->getReport()->endColumn();
    }
 
+
    /**
     * Get criteria's subtitle
-    */
+   **/
    public function getSubName() {
-      global $LANG;
 
       $value = $this->getParameterValue();
       return $this->getCriteriaLabel().' '.$this->getSign()." $value ".$this->unit;
    }
 
+
    function getSign() {
+
       if (empty($this->signe)) {
          return unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"));
       }
       return $this->signe;
    }
 
+
    function getSqlCriteriasRestriction($link = 'AND') {
+
       $param = $this->getParameterValue();
       return $link." ".$this->getSqlField().$this->getSign()."'".($param*$this->coef)."' ";
    }
+
 }
 ?>

@@ -39,11 +39,13 @@
  */
 class PluginReportsTaskCategoryCriteria extends PluginReportsDropdownCriteria {
 
+
    function __construct($report, $name='taskcategories_id', $label='') {
       global $LANG;
 
-      parent::__construct($report, $name, 'glpi_taskcategories', ($label ? $label : $LANG['setup'][98]));
+      parent::__construct($report, $name, 'glpi_taskcategories',
+                          ($label ? $label : $LANG['setup'][98]));
    }
-}
 
+}
 ?>

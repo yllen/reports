@@ -33,23 +33,25 @@
  * Original Author of file: Nelly Lasson
  *
  * Purpose of file:
- * 		Generate a detailed license report
+ *    Generate a detailed license report
  * ----------------------------------------------------------------------
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0;
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
 $report = new PluginReportsAutoReport();
 
-$statever = new PluginReportsStatusCriteria($report, 'statever', $LANG['plugin_reports']['softversioninstallations'][2]);
+$statever = new PluginReportsStatusCriteria($report, 'statever',
+                                            $LANG['plugin_reports']['softversioninstallations'][2]);
 $statever->setSqlField("`glpi_softwareversions`.`states_id`");
 
-$statecpt = new PluginReportsStatusCriteria($report, 'statecpt', $LANG['plugin_reports']['softversioninstallations'][3]);
+$statecpt = new PluginReportsStatusCriteria($report, 'statecpt',
+                                            $LANG['plugin_reports']['softversioninstallations'][3]);
 $statecpt->setSqlField("`glpi_computers`.`states_id`");
 
 
@@ -60,17 +62,16 @@ if ($report->criteriasValidated()) {
 
    $report->setSubNameAuto();
 
-   $report->setColumns(array(
-      new PluginReportsColumnLink('software', $LANG['help'][31], 'Software',
-            array('sorton' => 'software,version')),
-      new PluginReportsColumnLink('version',  $LANG['rulesengine'][78],'SoftwareVersion'),
-      new PluginReportsColumn('statever', $LANG['joblist'][0]),
-      new PluginReportsColumnLink('computer', $LANG['help'][25],'Computer',
-            array('sorton' => 'glpi_computers.name')),
-      new PluginReportsColumn('statecpt', $LANG['joblist'][0]),
-      new PluginReportsColumn('location', $LANG['common'][15],
-            array('sorton' => 'location'))
-   ));
+   $report->setColumns(array(new PluginReportsColumnLink('software', $LANG['help'][31], 'Software',
+                                                         array('sorton' => 'software,version')),
+                             new PluginReportsColumnLink('version', $LANG['rulesengine'][78],
+                                                         'SoftwareVersion'),
+                             new PluginReportsColumn('statever', $LANG['joblist'][0]),
+                             new PluginReportsColumnLink('computer', $LANG['help'][25],'Computer',
+                                                         array('sorton' => 'glpi_computers.name')),
+                             new PluginReportsColumn('statecpt', $LANG['joblist'][0]),
+                             new PluginReportsColumn('location', $LANG['common'][15],
+                                                     array('sorton' => 'location'))));
 
    $query = "SELECT `glpi_softwareversions`.`softwares_id` AS software,
                     `glpi_softwareversions`.`id` AS version,
@@ -80,7 +81,8 @@ if ($report->criteriasValidated()) {
                     `glpi_locations`.`completename` as location
              FROM `glpi_softwareversions`
              INNER JOIN `glpi_computers_softwareversions`
-                  ON (`glpi_computers_softwareversions`.`softwareversions_id` = `glpi_softwareversions`.`id`)
+                  ON (`glpi_computers_softwareversions`.`softwareversions_id`
+                        = `glpi_softwareversions`.`id`)
              INNER JOIN `glpi_computers`
                   ON (`glpi_computers_softwareversions`.`computers_id` = `glpi_computers`.`id`)
              LEFT JOIN `glpi_locations`

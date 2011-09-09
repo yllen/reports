@@ -39,11 +39,12 @@
  */
 class PluginReportsStatusCriteria extends PluginReportsDropdownCriteria {
 
+
    function __construct($report, $name='states_id', $label='') {
       global $LANG;
 
       parent::__construct($report, $name, 'glpi_states', ($label ? $label : $LANG['joblist'][0]));
    }
-}
 
+}
 ?>

@@ -39,13 +39,14 @@
  */
 class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
 
-   function __construct($report, $name='time-interval', $label='') {
 
+   function __construct($report, $name='time-interval', $label='') {
       parent::__construct($report, $name, $name, $label);
    }
 
 
    public function setDefaultValues() {
+
       $this->setStartTime(date("Y-m-d"));
       $this->setEndTime(date("Y-m-d"));
    }
@@ -88,11 +89,10 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
          // ex  08:00:00 <= time < 18:00:00
          return " $link TIME(".$this->getSqlField().") >= '".$this->getParameter('starttime'). ":00'
                  AND TIME(" .$this->getSqlField(). ") < '" .$this->getParameter('endtime'). ":00'";
-      } else {
-         // ex time < 08:00:00 or 18:00:00 <= time
-         return " $link (TIME(". $this->getSqlField().") >= '".$this->getParameter('starttime').":00'
-                         OR TIME(".$this->getSqlField().") < '".$this->getParameter('endtime').":00')";
       }
+      // ex time < 08:00:00 or 18:00:00 <= time
+      return " $link (TIME(". $this->getSqlField().") >= '".$this->getParameter('starttime').":00'
+                      OR TIME(".$this->getSqlField().") < '".$this->getParameter('endtime').":00')";
    }
 
 
@@ -106,6 +106,6 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
       return " " . $title .
              " (" . $this->getParameter('starttime') . "," . $this->getParameter('endtime') . ")";
    }
-}
 
+}
 ?>

@@ -39,16 +39,15 @@ $DBCONNECTION_REQUIRED  = 0;
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-includeLocales("rules");
-
 plugin_reports_checkRight('reports', "rules","r");
+
 
 function plugin_reports_rulelist ($rulecollection, $title) {
    global $LANG;
 
-   checkRight($rulecollection->right,"r");
+   Session::checkRight($rulecollection->right,"r");
 
-   $rulecollection->getCollectionDatas(true,true);
+   $rulecollection->getCollectionDatas(true, true);
    echo "<div class='center'>";
    echo "<table class='tab_cadre' cellpadding='5'>\n";
    echo "<tr><th colspan='6'><a href='".$_SERVER["PHP_SELF"]."'>" .
@@ -60,7 +59,7 @@ function plugin_reports_rulelist ($rulecollection, $title) {
    echo "<th>".$LANG["rulesengine"][7]."</th>";
    echo "<th>".$LANG["common"][60]."</th></tr>\n";
 
-   foreach($rulecollection->RuleList->list as $rule) {
+   foreach ($rulecollection->RuleList->list as $rule) {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . $rule->fields["name"] . "</td>";
       echo "<td>" . $rule->fields["description"] . "</td>";
@@ -76,8 +75,9 @@ function plugin_reports_rulelist ($rulecollection, $title) {
          echo $rule->getCriteriaName($criteria->fields["criteria"]) . " " .
               RuleCriteria::getConditionByID($criteria->fields["condition"], get_class($rule))." ".
               $rule->getCriteriaDisplayPattern($criteria->fields["criteria"],
-                                                $criteria->fields["condition"],
-                                                $criteria->fields["pattern"]) . "<br>";
+                                               $criteria->fields["condition"],
+                                               $criteria->fields["pattern"]) .
+              "<br>";
       }
       echo "</td>";
       echo "<td>";
@@ -85,7 +85,8 @@ function plugin_reports_rulelist ($rulecollection, $title) {
          echo $rule->getActionName($action->fields["field"]) . " " .
                RuleAction::getActionByID($action->fields["action_type"]) . " " .
                stripslashes($rule->getActionValue($action->fields["field"],
-                            $action->fields["value"])) . "<br>";
+                            $action->fields["value"])) .
+               "<br>";
       }
       echo "</td>";
 
@@ -98,7 +99,8 @@ function plugin_reports_rulelist ($rulecollection, $title) {
    }
    echo "</table></div>\n";
 }
-commonHeader($LANG['plugin_reports']['rules'][1],$_SERVER['PHP_SELF'],"utils","report");
+
+Html::header($LANG['plugin_reports']['rules'][1], $_SERVER['PHP_SELF'], "utils", "report");
 
 $type = (isset($_GET["type"]) ? $_GET["type"] : "");
 
@@ -121,28 +123,29 @@ if ($type == "ldap") {
 } else {
    echo "<div class='center'>";
    echo "<table class='tab_cadre' cellpadding='5'>\n";
-   echo "<tr><th>" . $LANG['plugin_reports']['rules'][1] . " - " . $LANG["rulesengine"][24] .
-         "</th></tr>";
+   echo "<tr><th>" . $LANG['plugin_reports']['rules'][1]." - ".$LANG["rulesengine"][24]."</th></tr>";
 
-   if ($CFG_GLPI["use_ocs_mode"] && haveRight("rule_ocs","r")) {
-      echo "<tr class='tab_bg_1'><td class='center b'><a href='".$_SERVER["PHP_SELF"]."?type=ocs'>" .
-            $LANG["rulesengine"][18] . "</a></td></tr>";
+   if ($CFG_GLPI["use_ocs_mode"] && Session::haveRight("rule_ocs","r")) {
+      echo "<tr class='tab_bg_1'><td class='center b'>".
+           "<a href='".$_SERVER["PHP_SELF"]."?type=ocs'>".$LANG["rulesengine"][18]."</a></td></tr>";
    }
-   if (haveRight("rule_ldap","r")) {
-      echo "<tr class='tab_bg_1'><td class='center b'><a href='".$_SERVER["PHP_SELF"]."?type=ldap'>" .
-            $LANG["rulesengine"][19] . "</a></td> </tr>";
+
+   if (Session::haveRight("rule_ldap","r")) {
+      echo "<tr class='tab_bg_1'><td class='center b'>".
+           "<a href='".$_SERVER["PHP_SELF"]."?type=ldap'>".$LANG["rulesengine"][19]."</a></td></tr>";
    }
-   if (haveRight("rule_tracking","r")) {
-      echo "<tr class='tab_bg_1'><td class='center b'><a href='".$_SERVER["PHP_SELF"]."?type=track'>" .
-            $LANG["rulesengine"][28] . "</a></td></tr>";
+
+   if (Session::haveRight("rule_tracking","r")) {
+      echo "<tr class='tab_bg_1'><td class='center b'>".
+           "<a href='".$_SERVER["PHP_SELF"]."?type=track'>".$LANG["rulesengine"][28]."</a></td></tr>";
    }
-   if (haveRight("rule_softwarecategories","r")) {
-      echo "<tr class='tab_bg_1'><td class='center b'><a href='".$_SERVER["PHP_SELF"]."?type=soft'>" .
-            $LANG["rulesengine"][37] . "</a></td></tr>";
+
+   if (Session::haveRight("rule_softwarecategories","r")) {
+      echo "<tr class='tab_bg_1'><td class='center b'>".
+           "<a href='".$_SERVER["PHP_SELF"]."?type=soft'>".$LANG["rulesengine"][37]."</a></td></tr>";
    }
    echo "</table></div>\n";
 }
 
-commonFooter();
-
+Html::footer();
 ?>

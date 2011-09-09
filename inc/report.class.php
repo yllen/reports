@@ -50,5 +50,4 @@ class PluginReportsReport extends CommonGLPI {
    }
 
 }
-
 ?>

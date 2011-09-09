@@ -36,10 +36,8 @@
  *
  * ----------------------------------------------------------------------
  */
-//$NEEDED_ITEMS = array("enterprise");
-//Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // Really a big SQL request
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -57,13 +55,14 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $report->setColumns(array(
-      new PluginReportsColumnMap('priority', $LANG["joblist"][2], array(), array('sorton' => '`priority`,`date`')),
-      new PluginReportsColumnDateTime('date', $LANG["reports"][60], array('sorton' => '`date`')),
-      new PluginReportsColumn('id2', $LANG['common'][2]),
-      new PluginReportsColumnLink('id', $LANG["common"][57], 'Ticket'),
-      new PluginReportsColumn('groupname', $LANG["common"][35], array('sorton' => '`groups_id`,`date`'))
-   ));
+   $report->setColumns(array(new PluginReportsColumnMap('priority', $LANG["joblist"][2], array(),
+                                                        array('sorton' => '`priority`, `date`')),
+                             new PluginReportsColumnDateTime('date', $LANG["reports"][60],
+                                                             array('sorton' => '`date`')),
+                             new PluginReportsColumn('id2', $LANG['common'][2]),
+                             new PluginReportsColumnLink('id', $LANG["common"][57], 'Ticket'),
+                             new PluginReportsColumn('groupname', $LANG["common"][35],
+                                                     array('sorton' => '`groups_id`, `date`'))));
 
    $query = "SELECT `glpi_tickets`.`priority`, DATE(`glpi_tickets`.`date`) AS date,
                     `glpi_tickets`.`id`, `glpi_tickets`.`id` AS id2,
@@ -79,10 +78,9 @@ if ($report->criteriasValidated()) {
              $report->getOrderBy('priority');
 
    $report->setSqlRequest($query);
-	$report->execute();
+   $report->execute();
 
 } else {
-   commonFooter();
+   Html::footer();
 }
-
 ?>

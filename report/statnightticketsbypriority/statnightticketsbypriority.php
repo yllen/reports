@@ -33,17 +33,15 @@
  * Original Author of file: Benoit Machiavello
  *
  * Purpose of file:
- * 		Generate group members report
+ *    Generate group members report
  * ----------------------------------------------------------------------
  */
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // Not really a big SQL request
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
-//include (GLPI_ROOT . "/plugins/reports/inc/function.php");
 
 $report = new PluginReportsAutoReport();
 
@@ -55,7 +53,7 @@ $timeInterval = new PluginReportsTimeIntervalCriteria($report, '`glpi_tickets`.`
 //Criterias default values
 $timeInterval->setStartTime($CFG_GLPI['planning_end']);
 $timeInterval->setEndtime($CFG_GLPI['planning_begin']);
-logDebug($CFG_GLPI);
+
 //Display criterias form is needed
 $report->displayCriteriasForm();
 
@@ -64,13 +62,14 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $report->setColumns(array(
-      new PluginReportsColumnMap('priority', $LANG["joblist"][2], array(), array('sorton' => '`priority`,`date`')),
-      new PluginReportsColumnDateTime('date', $LANG["reports"][60], array('sorton' => '`date`')),
-      new PluginReportsColumn('id2', $LANG['common'][2]),
-      new PluginReportsColumnLink('id', $LANG["common"][57], 'Ticket'),
-      new PluginReportsColumn('groupname', $LANG["common"][35], array('sorton' => '`groups_id`,`date`'))
-   ));
+   $report->setColumns(array(new PluginReportsColumnMap('priority', $LANG["joblist"][2], array(),
+                                                        array('sorton' => '`priority`, `date`')),
+                             new PluginReportsColumnDateTime('date', $LANG["reports"][60],
+                                                             array('sorton' => '`date`')),
+                             new PluginReportsColumn('id2', $LANG['common'][2]),
+                             new PluginReportsColumnLink('id', $LANG["common"][57], 'Ticket'),
+                             new PluginReportsColumn('groupname', $LANG["common"][35],
+                                                     array('sorton' => '`groups_id`, `date`'))));
 
    $query = "SELECT `glpi_tickets`.`priority`, `glpi_tickets`.`date` , `glpi_tickets`.`id`,
                     `glpi_tickets`.`id` AS id2, `glpi_groups`.`name` as groupname
@@ -87,5 +86,4 @@ if ($report->criteriasValidated()) {
    $report->setSqlRequest($query);
    $report->execute();
 }
-
 ?>

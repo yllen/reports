@@ -35,6 +35,8 @@
 function cmpStat ($a, $b) {
    return $a["tot"] - $b["tot"];
 }
+
+
 function doStatBis ($table, $entities, $header) {
    global $DB, $LANG;
 
@@ -49,7 +51,7 @@ function doStatBis ($table, $entities, $header) {
                     AND `entities_id` = '$entity'
               GROUP BY `states_id`";
 
-      $result = $DB->query($sql);
+      $result          = $DB->query($sql);
       $counts[$entity] = array();
       while ($data = $DB->fetch_array($result)) {
          $counts[$entity][$data["states_id"]] = $data["cpt"];
@@ -121,7 +123,7 @@ function doStat ($table, $entity, $header, $level=0) {
            GROUP BY `states_id`";
 
    $result = $DB->query($sql);
-   $count = array();
+   $count  = array();
    while ($data = $DB->fetch_array($result)) {
       $count[$data["states_id"]] = $data["cpt"];
    }
@@ -137,7 +139,7 @@ function doStat ($table, $entity, $header, $level=0) {
 
    // Display counters for this entity
    if ($count["tot"] >0) {
-      echo "<tr class='tab_bg_2'><td class='left'>";
+      echo "<tr class='tab_bg_2'><td>";
       for ($i=0 ; $i<$level ; $i++) {
          echo "&nbsp;&nbsp;&nbsp;";
       }
@@ -155,11 +157,11 @@ function doStat ($table, $entity, $header, $level=0) {
 
    // Call for Childs
    $save = $count["tot"];
-   doStatChilds($table,$entity, $header, $count, $level+1);
+   doStatChilds($table, $entity, $header, $count, $level+1);
 
    // Display total (Current+Childs)
    if ($save != $count["tot"]) {
-      echo "<tr class='tab_bg_1'><td class='left'>";
+      echo "<tr class='tab_bg_1'><td>";
       for ($i=0 ; $i<$level ; $i++) {
          echo "&nbsp;&nbsp;&nbsp;";
       }
@@ -200,15 +202,14 @@ function doStatChilds($table, $entity, $header, &$total, $level) {
 }
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE = 1;
+$USEDBREPLICATE        = 1;
 $DBCONNECTION_REQUIRED = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-includeLocales("pcsbyentity");
 plugin_reports_checkRight('reports', "pcsbyentity","r");
-commonHeader($LANG['plugin_reports']['pcsbyentity'][1],$_SERVER['PHP_SELF'],"utils","report");
+Html::header($LANG['plugin_reports']['pcsbyentity'][1], $_SERVER['PHP_SELF'], "utils", "report");
 
 echo "<div class='center'>";
 
@@ -248,11 +249,13 @@ if (count($_SESSION["glpiactiveentities"]) > 1) {
          "</option>";
    $sel = (isset($_POST["sort"]) && $_POST["sort"] ? "selected='selected'" : "");
 
-   echo "<option value='1' $sel>".$LANG['plugin_reports']['pcsbyentity'][7]."</option></select></td></tr>\n";
+   echo "<option value='1' $sel>".$LANG['plugin_reports']['pcsbyentity'][7]."</option>".
+        "</select></td></tr>\n";
 }
 
-echo "<tr class='tab_bg_1 center'><td colspan='2'><input type='submit' value='valider' class='submit'/>";
-echo "</td></tr>\n";
+echo "<tr class='tab_bg_1 center'>".
+     "<td colspan='2'><input type='submit' value='valider' class='submit'/></td>";
+echo "</tr>\n";
 echo "</table>\n</form></div>\n";
 
 // --------------- Result -------------
@@ -283,6 +286,5 @@ if (isset($_POST["type"]) && $_POST["type"] != '') {
    echo "</table></div>";
 }
 
-commonFooter();
-
+Html::footer();
 ?>

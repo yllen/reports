@@ -38,7 +38,9 @@
  * Ticket status selection criteria
  */
 class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
+
    private $types = array();
+
 
    function __construct($report, $name='itemtype', $label='', $types=array(), $ignored=array()) {
       global $LANG, $CFG_GLPI;
@@ -53,7 +55,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
          // $types is the name of an configured type hashtable (infocom_types, doc_types, ...)
          foreach($CFG_GLPI[$types] as $itemtype) {
             if (class_exists($itemtype) && !in_array($itemtype, $ignored)) {
-               $item = new $itemtype();
+               $item                   = new $itemtype();
                $this->types[$itemtype] = $item->getTypeName();
             }
          }
@@ -61,20 +63,19 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
 
       } else {
          // No types, use helpdesk_types
-         $this->types = Ticket::getAllTypesForHelpdesk();
+         $this->types     = Ticket::getAllTypesForHelpdesk();
          $this->types[''] = $LANG['common'][66];
       }
    }
 
+
    function getSubName() {
-      global $LANG;
 
       $itemtype = $this->getParameterValue();
       if ($itemtype && class_exists($itemtype)) {
          $item = new $itemtype();
          $name = $item->getTypeName();
       } else {
-         //$name = $LANG['common'][66];
          // All
          return '';
       }
@@ -83,8 +84,10 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
 
 
    public function displayDropdownCriteria() {
-      Dropdown::showFromArray($this->getName(), $this->types, array('value'=>$this->getParameterValue()));
-   }
-}
 
+      Dropdown::showFromArray($this->getName(), $this->types,
+                              array('value'=>$this->getParameterValue()));
+   }
+
+}
 ?>

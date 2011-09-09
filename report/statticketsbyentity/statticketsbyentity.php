@@ -29,8 +29,8 @@
 */
 
 //	Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=1;
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 1;
 
 // Initialization of the variables
 define('GLPI_ROOT',  '../../../..');
@@ -39,7 +39,8 @@ include (GLPI_ROOT . "/inc/includes.php");
 $report = new PluginReportsAutoReport($LANG['plugin_reports']['statticketsbyentity'][1]);
 
 //Report's search criterias
-$prof = new PluginReportsDropdownCriteria($report,'profiles_id','glpi_profiles',$LANG['profiles'][22]);
+$prof = new PluginReportsDropdownCriteria($report, 'profiles_id', 'glpi_profiles',
+                                          $LANG['profiles'][22]);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -49,18 +50,22 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $cols = array (new PluginReportsColumn('name', $LANG['entity'][0],
-                                           array('sorton' => '`glpi_entities`.`completename`')),
-                  new PluginReportsColumnInteger('nbusers', $LANG['plugin_reports']['statticketsbyentity'][5],
-                                                 array('withtotal' => true,
-                                                       'sorton'    => 'nbusers')),
-                  new PluginReportsColumnInteger('number', $LANG['plugin_reports']['statticketsbyentity'][2],
-                                                 array('withtotal' => true,
-                                                       'sorton'    => 'number')),
-                  new PluginReportsColumnDateTime('mindate', $LANG['plugin_reports']['statticketsbyentity'][3],
-                                                  array('sorton' => 'mindate')),
-                  new PluginReportsColumnDateTime('maxdate', $LANG['plugin_reports']['statticketsbyentity'][4],
-                                                  array('sorton' => 'maxdate')));
+   $cols = array(new PluginReportsColumn('name', $LANG['entity'][0],
+                                         array('sorton' => '`glpi_entities`.`completename`')),
+                 new PluginReportsColumnInteger('nbusers',
+                                                $LANG['plugin_reports']['statticketsbyentity'][5],
+                                                array('withtotal' => true,
+                                                      'sorton'    => 'nbusers')),
+                 new PluginReportsColumnInteger('number',
+                                                $LANG['plugin_reports']['statticketsbyentity'][2],
+                                                array('withtotal' => true,
+                                                      'sorton'    => 'number')),
+                 new PluginReportsColumnDateTime('mindate',
+                                                 $LANG['plugin_reports']['statticketsbyentity'][3],
+                                                 array('sorton' => 'mindate')),
+                 new PluginReportsColumnDateTime('maxdate',
+                                                 $LANG['plugin_reports']['statticketsbyentity'][4],
+                                                 array('sorton' => 'maxdate')));
    $report->setColumns($cols);
 
    $subcpt = "SELECT COUNT(*)
@@ -83,7 +88,6 @@ if ($report->criteriasValidated()) {
    $report->execute(array('withtotal'=>true));
 
 } else {
-   commonFooter();
+   Html::footer();
 }
-
 ?>

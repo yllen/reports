@@ -29,8 +29,8 @@
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // Really a big SQL request
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -58,18 +58,19 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    // Report Columns
-   $cols = array (new PluginReportsColumnType('itemtype', $LANG['common'][17]),
-                  new PluginReportsColumnTypeLink('items_id', $LANG['common'][1], 'itemtype', array('with_comment'=>1)),
-                  new PluginReportsColumnDate('order_date', $LANG['financial'][28]),
-                  new PluginReportsColumn('order_number', $LANG['financial'][18]),
-                  new PluginReportsColumnDate('buy_date', $LANG['financial'][14]),
-                  new PluginReportsColumn('delivery_date', $LANG['financial'][27]),
-                  new PluginReportsColumn('delivery_number', $LANG['financial'][19]),
-                  new PluginReportsColumn('immo_number', $LANG['financial'][20]),
-                  new PluginReportsColumnDate('use_date', $LANG['financial'][76]),
-                  new PluginReportsColumnDate('inventory_date', $LANG['financial'][114]),
-                  new PluginReportsColumnLink('budgets_id', $LANG['financial'][87], 'Budget')
-                  );
+   $cols = array(new PluginReportsColumnType('itemtype', $LANG['common'][17]),
+                 new PluginReportsColumnTypeLink('items_id', $LANG['common'][1], 'itemtype',
+                                                 array('with_comment' => 1)),
+                 new PluginReportsColumnDate('order_date', $LANG['financial'][28]),
+                 new PluginReportsColumn('order_number', $LANG['financial'][18]),
+                 new PluginReportsColumnDate('buy_date', $LANG['financial'][14]),
+                 new PluginReportsColumn('delivery_date', $LANG['financial'][27]),
+                 new PluginReportsColumn('delivery_number', $LANG['financial'][19]),
+                 new PluginReportsColumn('immo_number', $LANG['financial'][20]),
+                 new PluginReportsColumnDate('use_date', $LANG['financial'][76]),
+                 new PluginReportsColumnDate('inventory_date', $LANG['financial'][114]),
+                 new PluginReportsColumnLink('budgets_id', $LANG['financial'][87], 'Budget'));
+
    $report->setColumns($cols);
 
    // Build SQL request
@@ -83,7 +84,8 @@ if ($report->criteriasValidated()) {
    $report->setGroupBy('itemtype');
    $report->setSqlRequest($sql);
    $report->execute();
+
 } else {
-   commonFooter();
+   Html::footer();
 }
 ?>

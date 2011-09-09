@@ -39,6 +39,7 @@
  */
 class PluginReportsUserCriteria extends PluginReportsDropdownCriteria {
 
+
    function __construct($report, $name='user', $label='') {
       global $LANG;
 
@@ -56,5 +57,4 @@ class PluginReportsUserCriteria extends PluginReportsDropdownCriteria {
    }
 
 }
-
 ?>

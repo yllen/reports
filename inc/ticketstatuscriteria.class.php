@@ -36,9 +36,11 @@
 
 /**
  * Ticket status selection criteria
- */
+**/
 class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
+
    private $choice = array();
+
 
    function __construct($report, $name='status', $label='', $option=1) {
       global $LANG;
@@ -47,18 +49,22 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
          foreach ($option as $opt) {
             $tab[$opt] = Ticket::getStatus($opt);
          }
+
       } else if ($option == 1) {
          $tab = Ticket::getAllStatusArray(true);
+
       } else {
          $tab = Ticket::getAllStatusArray(false);
       }
+
       // Parent is PluginReportsArrayCriteria
       parent::__construct($report, $name, ($label ? $label : $LANG['joblist'][0]), $tab);
    }
 
+
    /**
     * Get SQL code associated with the criteria
-    */
+   **/
    public function getSqlCriteriasRestriction($link = 'AND') {
 
       $status = $this->getParameterValue();
@@ -90,5 +96,6 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
       }
       return $link . " " . $this->getSqlField() . " IN ($list) ";
    }
+
 }
 ?>

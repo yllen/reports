@@ -39,6 +39,7 @@
  */
 class PluginReportsUserTypeCriteria extends PluginReportsDropdownCriteria {
 
+
    function __construct($report, $name='usercategories_id', $label='') {
       global $LANG;
 
@@ -47,5 +48,4 @@ class PluginReportsUserTypeCriteria extends PluginReportsDropdownCriteria {
    }
 
 }
-
 ?>

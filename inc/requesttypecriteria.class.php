@@ -36,8 +36,9 @@
 
 /**
  * User titles selection criteria
- */
+**/
 class PluginReportsRequestTypeCriteria extends PluginReportsDropdownCriteria {
+
 
    function __construct($report, $name='requesttypes_id', $label='') {
       global $LANG;
@@ -48,6 +49,7 @@ class PluginReportsRequestTypeCriteria extends PluginReportsDropdownCriteria {
 
    //Dropdown priorities is not a generic dropdown, so the function needs to be overwritten
    public function displayDropdownCriteria() {
+
       Dropdown::show('RequestType', array('name'  => $this->getName(),
                                           'value' => $this->getParameterValue()));
    }
@@ -66,5 +68,4 @@ class PluginReportsRequestTypeCriteria extends PluginReportsDropdownCriteria {
    }
 
 }
-
 ?>

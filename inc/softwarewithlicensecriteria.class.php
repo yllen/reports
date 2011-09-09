@@ -39,11 +39,13 @@
  */
 class PluginReportsSoftwareWithLicenseCriteria extends PluginReportsDropdownCriteria {
 
+
    function __construct($report, $name='softwares_id', $label='') {
       global $LANG;
 
       parent::__construct($report, $name, 'glpi_softwares', ($label ? $label :$LANG['help'][31]));
    }
+
 
    function displayDropdownCriteria() {
       global $DB, $LANG;
@@ -74,6 +76,6 @@ class PluginReportsSoftwareWithLicenseCriteria extends PluginReportsDropdownCrit
          echo "<font class='red b'>".$LANG['search'][15]."</font>";
       }
    }
-}
 
+}
 ?>

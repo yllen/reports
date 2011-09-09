@@ -36,7 +36,7 @@
 
 /**
  * Priority selection criteria
- */
+**/
 class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
 
    function __construct($report, $name = 'priority', $label='') {
@@ -69,9 +69,10 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
 
       if (!$this->getParameterValue()) {
          $priority = $LANG['common'][66];
+
       } else {
          if ($this->getParameterValue() < 0) {
-            $priority = $LANG['search'][16] . Ticket::getPriorityName(abs($this->getParameterValue()));
+            $priority = $LANG['search'][16].Ticket::getPriorityName(abs($this->getParameterValue()));
          } else {
             $priority = Ticket::getPriorityName($this->getParameterValue());
          }
@@ -93,11 +94,11 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
       if ($this->getParameterValue() > 0) {
          return $link . " " . $this->getSqlField() . "= '" . $this->getParameterValue() . "'";
       }
+
       if ($this->getParameterValue() < 0) {
          return $link . " " . $this->getSqlField() . ">= '" . abs($this->getParameterValue()) ."'";
       }
    }
 
 }
-
 ?>
