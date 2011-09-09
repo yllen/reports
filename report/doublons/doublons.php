@@ -87,7 +87,7 @@ if ($crit > 0) {
    echo "<td>";
    //Add parameters to uri to be saved as bookmarks
    $_SERVER["REQUEST_URI"] = buildBookmarkUrl($_SERVER["REQUEST_URI"],$crit);
-   Bookmark::showSaveButton(BOOKMARK_SEARCH,'Computer');
+   Bookmark::showSaveButton(BOOKMARK_URI,'Computer');
    echo "</td>";
 }
 echo"</tr>\n";
