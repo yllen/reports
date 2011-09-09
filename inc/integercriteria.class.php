@@ -84,7 +84,7 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
          Dropdown::showFromArray($this->getName()."_sign",
                                  array('<='    => '<=',
                                        '>=' => '>='),
-                                 array('value' => unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))));
+                                 array('value' => Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))));
          echo "&nbsp;";
       }
       Dropdown::showInteger($this->getName(), $this->getParameterValue(), $this->min, $this->max, 1);
@@ -107,7 +107,7 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
    function getSign() {
 
       if (empty($this->signe)) {
-         return unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"));
+         return Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"));
       }
       return $this->signe;
    }

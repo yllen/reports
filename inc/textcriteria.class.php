@@ -82,7 +82,7 @@ class PluginReportsTextCriteria extends PluginReportsDropdownCriteria {
 
       $param = $this->getParameterValue();
       if ($param) {
-         return makeTextCriteria($this->getSqlField(), $param, false, $link);
+         return Search::makeTextCriteria($this->getSqlField(), $param, false, $link);
       }
       return '';
    }

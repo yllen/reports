@@ -30,7 +30,7 @@
 
 /*
  * ----------------------------------------------------------------------
- * Original Author of file: Nelly Lasson
+ * Original Author of file: Nelly Mahu-Lasson
  *
  * Purpose of file:
  *       Generate location report
@@ -39,8 +39,8 @@
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // Really a big SQL request
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -123,5 +123,4 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
 $report->setGroupBy("entity");
 $report->setSqlRequest($query);
 $report->execute();
-
 ?>

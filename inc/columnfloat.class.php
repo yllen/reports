@@ -68,7 +68,7 @@ class PluginReportsColumnFloat extends PluginReportsColumn {
          $this->total += floatval($row[$this->name]);
 
          if ($row[$this->name] || $this->with_zero) {
-            return formatNumber($row[$this->name], false, $this->decimal);
+            return Html::formatNumber($row[$this->name], false, $this->decimal);
          }
       }
       return '';
@@ -76,7 +76,7 @@ class PluginReportsColumnFloat extends PluginReportsColumn {
 
 
    function displayTotal($output_type) {
-      return formatNumber($this->total, false, $this->decimal);;
+      return Html::formatNumber($this->total, false, $this->decimal);;
    }
 }
 ?>

@@ -98,7 +98,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      showDateFormItem($this->getName()."_1", $this->getStartDate(), false);
+      Html::showDateFormItem($this->getName()."_1", $this->getStartDate(), false);
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -109,7 +109,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      showDateFormItem($this->getName()."_2", $this->getEndDate(), false);
+      Html::showDateFormItem($this->getName()."_2", $this->getEndDate(), false);
       $this->getReport()->endColumn();
    }
 
@@ -156,14 +156,14 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       }
 
       if ($start=='NULL') {
-         return $title . ', ' . $LANG['search'][23] . ' ' . convDate($end);
+         return $title . ', ' . $LANG['search'][23] . ' ' . Html::convDate($end);
       }
 
       if ($end=='NULL') {
-         return $title . ', ' . $LANG['search'][24] . ' ' . convDate($start);
+         return $title . ', ' . $LANG['search'][24] . ' ' . Html::convDate($start);
       }
 
-      return $title . ' (' . convDate($start) . ',' .convDate($end) . ')';
+      return $title . ' (' . Html::convDate($start) . ',' .Html::convDate($end) . ')';
    }
 
 }

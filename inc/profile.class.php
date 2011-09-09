@@ -46,12 +46,12 @@ class PluginReportsProfile extends CommonDBTM {
 
 
    function canCreate() {
-      return haveRight('profile', 'w');
+      return Session::haveRight('profile', 'w');
    }
 
 
    function canView() {
-      return haveRight('profile', 'r');
+      return Session::haveRight('profile', 'r');
    }
 
 

@@ -38,8 +38,8 @@
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // not really a big SQL request
+$USEDBREPLICATE        = 1;
+$DBCONNECTION_REQUIRED = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -72,5 +72,4 @@ $report->setGroupBy(array('completename',
                           'groupid'));
 $report->setSqlRequest($query);
 $report->execute();
-
 ?>

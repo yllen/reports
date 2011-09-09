@@ -33,8 +33,8 @@
 // ----------------------------------------------------------------------
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=1; // Really a big SQL request
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 1; // Really a big SQL request
 
 define ('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -45,7 +45,7 @@ plugin_reports_checkRight('reports', "histohard","r");
 $computer = new Computer();
 $computer->checkGlobal('r');
 
-commonHeader($LANG['plugin_reports']['histohard'][1],$_SERVER['PHP_SELF'],"utils","report");
+Html::header($LANG['plugin_reports']['histohard'][1],$_SERVER['PHP_SELF'],"utils","report");
 
 echo "<div class='center'>";
 echo "<table class='tab_cadrehov'>\n";
@@ -64,9 +64,10 @@ $sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `item
         LEFT JOIN `glpi_computers` ON (`glpi_logs`.`items_id` = `glpi_computers`.`id`)
         WHERE `glpi_logs`.`date_mod` > DATE_SUB(Now(), INTERVAL 21 DAY)
               AND `itemtype` = 'Computer'
-              AND `linked_action` IN (".HISTORY_CONNECT_DEVICE.", ".HISTORY_DISCONNECT_DEVICE.", "
-                                       .HISTORY_DELETE_DEVICE.", " .HISTORY_UPDATE_DEVICE.", "
-                                       .HISTORY_ADD_DEVICE.")
+              AND `linked_action` IN (".Log::HISTORY_CONNECT_DEVICE.",
+                                      ".Log::HISTORY_DISCONNECT_DEVICE.",
+                                      ".Log::HISTORY_DELETE_DEVICE.", " .Log::HISTORY_UPDATE_DEVICE.",
+                                      ".Log::HISTORY_ADD_DEVICE.")
               AND `glpi_computers`.`entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
         ORDER BY `glpi_logs`.`id` DESC
         LIMIT 0,100";
@@ -82,9 +83,9 @@ while ($data = $DB->fetch_array($result)) {
          echo "</td></tr>\n";
       }
       $prev = $data["dat"].$data["name"];
-      echo "<tr class='" . $class . " top'><td>". convDateTime($data["dat"]) . "</td>" .
+      echo "<tr class='" . $class . " top'><td>". Html::convDateTime($data["dat"]) . "</td>" .
             "<td>". $data["user_name"] . "&nbsp;</td>".
-            "<td><a href='". getItemTypeFormURL('Computer')."?id=" . $data["cid"] . "'>" .
+            "<td><a href='". Toolbox::getItemTypeFormURL('Computer')."?id=" . $data["cid"] . "'>" .
             $data["name"] . "</a></td><td>";
       $prevclass = $class;
       $class = ($class=="tab_bg_2" ? "tab_bg_1" : "tab_bg_2");
@@ -93,7 +94,7 @@ while ($data = $DB->fetch_array($result)) {
    if ($data["linked_action"]) {
    // Yes it is an internal device
       switch ($data["linked_action"]) {
-         case HISTORY_ADD_DEVICE :
+         case Log::HISTORY_ADD_DEVICE :
             $field = NOT_AVAILABLE;
             if (class_exists($data["itemtype_link"])) {
                $item = new $data["itemtype_link"]();
@@ -102,7 +103,7 @@ while ($data = $DB->fetch_array($result)) {
             $change = $LANG["devices"][25]."&nbsp;<strong>:</strong>&nbsp;'".$data[ "new_value"]."'";
             break;
 
-         case HISTORY_UPDATE_DEVICE :
+         case Log::HISTORY_UPDATE_DEVICE :
                $field = NOT_AVAILABLE;
                $change = '';
                if (class_exists($data["itemtype_link"])) {
@@ -113,7 +114,7 @@ while ($data = $DB->fetch_array($result)) {
             $change .= $data[ "old_value"]."'&nbsp;<strong>--></strong>&nbsp;'".$data[ "new_value"]."'";
             break;
 
-         case HISTORY_DELETE_DEVICE :
+         case Log::HISTORY_DELETE_DEVICE :
             $field = NOT_AVAILABLE;
             if (class_exists($data["itemtype_link"])) {
                $item = new $data["itemtype_link"]();
@@ -122,7 +123,7 @@ while ($data = $DB->fetch_array($result)) {
             $change = $LANG["devices"][26]."&nbsp;<strong>:</strong>&nbsp;'".$data["old_value"]."'";
             break;
 
-         case HISTORY_DISCONNECT_DEVICE :
+         case Log::HISTORY_DISCONNECT_DEVICE :
             if (!class_exists($data["itemtype_link"])) {
                continue;
             }
@@ -131,7 +132,7 @@ while ($data = $DB->fetch_array($result)) {
             $change = $LANG["central"][6]."&nbsp;<strong>:</strong>&nbsp;'".$data["old_value"]."'";
             break;
 
-         case HISTORY_CONNECT_DEVICE :
+         case Log::HISTORY_CONNECT_DEVICE :
             if (!class_exists($data["itemtype_link"])) {
                continue;
             }
@@ -149,6 +150,5 @@ if (!empty($prev)) {
 }
 echo "</table><p>".$LANG['plugin_reports']['histohard'][4]."</p></div>\n";
 
-commonFooter();
-
+Html::footer();
 ?>

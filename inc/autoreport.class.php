@@ -296,7 +296,7 @@ class PluginReportsAutoReport {
                $param .= "$key=" . urlencode($val);
             }
          }
-         displayOutputFormat();
+         Dropdown::showOutputFormat();
          echo "</form></td></tr>";
          echo "</table></div>";
 
@@ -418,7 +418,7 @@ class PluginReportsAutoReport {
       //Get criteria's values
       $this->manageCriteriasValues();
 
-      //Display commonHeader is output is HTML
+      //Display Html::header is output is HTML
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
          if (isStat($this->name)) {
             Html::header($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],

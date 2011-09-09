@@ -39,8 +39,8 @@
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // Really a big SQL request
+$USEDBREPLICATE        = 1;
+$DBCONNECTION_REQUIRED = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -49,12 +49,14 @@ $report = new PluginReportsAutoReport();
 $loc = new PluginReportsLocationCriteria($report);
 
 $report->setColumns(array(new PluginReportsColumnType('itemtype', $LANG['common'][17]),
-                          new PluginReportsColumnTypeLink('items_id', $LANG['common'][1], 'itemtype', array('with_comment'=>1)),
-                          new PluginReportsColumn('serial',$LANG['common'][19]),
+                          new PluginReportsColumnTypeLink('items_id', $LANG['common'][1],
+                                                          'itemtype', array('with_comment' => 1)),
+                          new PluginReportsColumn('serial', $LANG['common'][19]),
                           new PluginReportsColumn('otherserial', $LANG['common'][20]),
-                          new PluginReportsColumnModelType('models_id',$LANG['common'][22],'itemtype',array('with_comment'=>1)),
-                          new PluginReportsColumnTypeType('types_id',$LANG['common'][17],'itemtype',array('with_comment'=>1)),
-                          ));
+                          new PluginReportsColumnModelType('models_id', $LANG['common'][22],
+                                                           'itemtype', array('with_comment' => 1)),
+                          new PluginReportsColumnTypeType('types_id', $LANG['common'][17],
+                                                          'itemtype', array('with_comment' => 1))));
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -63,7 +65,7 @@ $report->displayCriteriasForm();
 if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
-   $query= getSqlSubRequest("Computer",$loc,new Computer());
+   $query = getSqlSubRequest("Computer",$loc,new Computer());
    foreach($CFG_GLPI["infocom_types"] as $itemtype) {
       $obj = new $itemtype;
       if ($obj->isField('locations_id')) {
@@ -75,8 +77,9 @@ if ($report->criteriasValidated()) {
    $report->execute();
 }
 else {
-   commonFooter();
+   Html::footer();
 }
+
 
 function getSqlSubRequest($itemtype,$loc,$obj) {
 
@@ -100,18 +103,23 @@ function getSqlSubRequest($itemtype,$loc,$obj) {
          $query_where .= ", '' AS $alias";
       }
    }
+
    $query_where .= " FROM `$table` ";
+
    if ($obj->isEntityAssign()) {
       $query_where .= getEntitiesRestrictRequest('WHERE', "$table");
    } else {
       $query_where .= 'WHERE 1';
    }
+
    if ($obj->maybeTemplate()) {
       $query_where .= " AND `is_template`='0'";
    }
+
    if ($obj->maybeDeleted()) {
       $query_where .= " AND `is_deleted`='0'";
    }
+
    $query_where .= $loc->getSqlCriteriasRestriction();
 
    return $query_where;

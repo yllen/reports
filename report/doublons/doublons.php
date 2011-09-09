@@ -41,9 +41,9 @@ plugin_reports_checkRight('reports', "doublons","r");
 $computer = new Computer();
 $computer->checkGlobal('r');
 
-commonHeader($LANG['plugin_reports']['doublons'][1],$_SERVER['PHP_SELF'],"utils","report");
+Html::header($LANG['plugin_reports']['doublons'][1], $_SERVER['PHP_SELF'], "utils", "report");
 
-$crits = array(0 => DROPDOWN_EMPTY_VALUE,
+$crits = array(0 => Dropdown::EMPTY_VALUE,
                1 => $LANG["common"][16],        // Name
                2 => $LANG["common"][22]." + ".$LANG["common"][19],   // Model + Serial
                3 => $LANG["common"][16]." + ".$LANG["common"][22]." + ".$LANG["common"][19], // Name + Model + Serial
@@ -53,10 +53,13 @@ $crits = array(0 => DROPDOWN_EMPTY_VALUE,
 
 if (isset($_GET["crit"])) {
    $crit = $_GET["crit"];
+
 } else if (isset($_POST["crit"])) {
    $crit = $_POST["crit"];
+
 } else if (isset($_SESSION['plugin_reports_doublons_crit'])) {
    $crit = $_SESSION['plugin_reports_doublons_crit'];
+
 } else {
    $crit = 0;
 }
@@ -67,12 +70,14 @@ echo "<table class='tab_cadre' cellpadding='5'>\n";
 echo "<tr class='tab_bg_1 center'><th colspan='3'>" . $LANG['plugin_reports']['doublons'][1] .
       "</th></tr>\n";
 
-if (haveRight("config","r")) { // Check only read as we probably use the replicate (no 'w' in this case)
+if (Session::haveRight("config","r")) { // Check only read as we probably use the replicate (no 'w' in this case)
    echo "<tr class='tab_bg_3 center'><td colspan='".($crit>0?'3':'2')."'>";
-   echo "<a href='./doublons.config.php'>" . $LANG['plugin_reports']['config'][11] . "</a></td></tr>\n";
+   echo "<a href='./doublons.config.php'>" . $LANG['plugin_reports']['config'][11]."</a></td></tr>\n";
 }
+
 echo "<tr class='tab_bg_1'><td class='right'>" . $LANG["rulesengine"][6] . "&nbsp;:&nbsp;</td><td>";
 echo "<select name='crit'>";
+
 foreach ($crits as $key => $val) {
    echo "<option value='$key'" . ($crit==$key ? "selected" : "") . ">$val</option>";
 }
@@ -131,7 +136,7 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
                  AND A.`is_deleted` = '0'
                  AND B.`is_deleted` = '0'";
 
-   $col=$LANG["networking"][14];
+   $col = $LANG["networking"][14];
 
 } else if ($crit==4) { // Search Duplicate Mac Address - From glpi_computer_device
    $MacBlacklist = "''";
@@ -143,7 +148,8 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
          $MacBlacklist .= ",'".addslashes($data["addr"])."'";
       }
    } else {
-      $MacBlacklist .= ",'44:45:53:54:42:00','BA:D0:BE:EF:FA:CE', '00:53:45:00:00:00', '80:00:60:0F:E8:00'";
+      $MacBlacklist .= ",'44:45:53:54:42:00', 'BA:D0:BE:EF:FA:CE', '00:53:45:00:00:00',
+                         '80:00:60:0F:E8:00'";
    }
    $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname,
                   AA.`specificity` AS Aaddr, A.`entities_id` AS entity,
@@ -221,7 +227,7 @@ if ($crit>0) { // Display result
    }
    echo "<table class='tab_cadrehov' cellpadding='5'>" .
       "<tr><th colspan='$colspan'>" . $LANG['plugin_reports']['doublons'][2] . "</th>" .
-      "<th class='blue' colspan='$colspan'>" . $LANG['plugin_reports']['doublons'][3] . "</th></tr>\n" .
+      "<th class='blue' colspan='$colspan'>" . $LANG['plugin_reports']['doublons'][3]."</th></tr>\n" .
       "<tr>";
    $colspan *= 2;
 
@@ -326,29 +332,33 @@ if ($crit>0) { // Display result
    echo "</table>";
    if ($canedit) {
       if ($i) {
-         openArrowMassive("massiveaction_form");
+         Html::openArrowMassives("massiveaction_form");
          Dropdown::showForMassiveAction('Computer');
-         closeArrowMassive();
+         $options = array();
+         Html::closeArrowMassives($options);
       }
       echo "</form>";
    }
 }
-commonFooter();
+Html::footer();
 
 
 function buildBookmarkUrl($url,$crit) {
    return $url."?crit=".$crit;
 }
 
+
 function getLastOcsUpdate($computers_id) {
    global $DB;
-   $query = "SELECT `last_ocs_update` FROM `glpi_ocslinks` WHERE `computers_id`='$computers_id'";
+
+   $query = "SELECT `last_ocs_update`
+             FROM `glpi_ocslinks`
+             WHERE `computers_id` = '$computers_id'";
    $results = $DB->query($query);
+
    if ($DB->numrows($results) > 0) {
       return $DB->result($results,0,'last_ocs_update');
-   } else {
-      return '';
    }
+   return '';
 }
-
 ?>

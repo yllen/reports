@@ -33,7 +33,7 @@
 // ----------------------------------------------------------------------
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE = 1;
+$USEDBREPLICATE        = 1;
 $DBCONNECTION_REQUIRED = 1; // Really a big SQL request
 
 define('GLPI_ROOT', '../../../..');
@@ -47,7 +47,7 @@ $computer->checkGlobal('r');
 $software = new Software();
 $software->checkGlobal('r');
 
-commonHeader($LANG['plugin_reports']['histoinst'][1],$_SERVER['PHP_SELF'],"utils","report");
+Html::header($LANG['plugin_reports']['histoinst'][1], $_SERVER['PHP_SELF'], "utils", "report");
 
 echo "<div class='center'>";
 echo "<table class='tab_cadrehov' cellpadding='5'>\n";
@@ -64,7 +64,7 @@ $sql = "SELECT a.`date_mod` AS dat, a.`new_value`, `glpi_computers`.`id` AS cid,
         FROM (SELECT `date_mod`, `new_value`, `user_name`, `items_id`, `id`
               FROM `glpi_logs`
               WHERE `glpi_logs`.`date_mod` > DATE_SUB(Now(), INTERVAL 21 DAY)
-                    AND `linked_action` = '" .HISTORY_INSTALL_SOFTWARE ."'
+                    AND `linked_action` = '" .Log::HISTORY_INSTALL_SOFTWARE ."'
                     AND `itemtype` = 'Computer') a
         LEFT JOIN `glpi_computers` ON (a.`items_id` = `glpi_computers`.`id`)
         WHERE `glpi_computers`.`entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
@@ -82,10 +82,11 @@ while ($data = $DB->fetch_array($result)) {
          echo "</td></tr>\n";
       }
       $prev = $data["dat"].$data["name"];
-      echo "<tr class='" . $class . " top'><td class='center'>". convDateTime($data["dat"]) . "</td>" .
+      echo "<tr class='" . $class . " top'>".
+            "<td class='center'>". Html::convDateTime($data["dat"]) . "</td>" .
             "<td>". $data["user_name"] . "&nbsp;</td>".
-            "<td><a href='". getItemTypeFormURL('Computer') . "?id=" . $data["cid"] . "'>" .
-            $data["name"] . "</a></td>".
+            "<td><a href='". Toolbox::getItemTypeFormURL('Computer') . "?id=" . $data["cid"]."'>" .
+                  $data["name"] . "</a></td>".
             "<td>";
       $class = ($class=="tab_bg_2" ? "tab_bg_1" : "tab_bg_2");
    }
@@ -97,6 +98,5 @@ if (!empty($prev)) {
 }
 echo "</table><p>". $LANG['plugin_reports']['histoinst'][6]."</p></div>\n";
 
-commonFooter();
-
+Html::footer();
 ?>

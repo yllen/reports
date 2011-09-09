@@ -33,32 +33,34 @@
  * Original Author of file: Remi Collet
  *
  * Purpose of file:
- * 		Generate location report
- * 		Illustrate use of simpleReport
+ *    Generate location report
+ *    Illustrate use of simpleReport
  * ----------------------------------------------------------------------
  */
 
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // Not really a big SQL request
+$USEDBREPLICATE        = 1;
+$DBCONNECTION_REQUIRED = 0; // Not really a big SQL request
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
 $servers = array();
-$crit = array('FIELDS'    => array('id', 'name'),
-              'is_active' => 1);
+$crit    = array('FIELDS'    => array('id', 'name'),
+                 'is_active' => 1);
+
 foreach ($DB->request('glpi_ocsservers', $crit) as $data) {
    $servers[$data['id']] = $data['name'];
 }
 if (count($servers)<1) {
-   displayErrorAndDie($LANG['ocsng'][27]);
+   Html::displayErrorAndDie($LANG['ocsng'][27]);
 }
 
 // Instantiate Report with Name
 $report   = new PluginReportsAutoReport();
 //$critdate = new PluginReportsDateIntervalCriteria($report, 'last_update');
 $critid   = new PluginReportsTextCriteria($report, 'ocsid', $LANG['ocsng'][45]);
-$critdev  = new PluginReportsTextCriteria($report, 'ocs_deviceid', $LANG['plugin_reports']['ocslinks'][3]);
+$critdev  = new PluginReportsTextCriteria($report, 'ocs_deviceid',
+                                          $LANG['plugin_reports']['ocslinks'][3]);
 $critserv = new PluginReportsArrayCriteria($report, 'ocsservers_id', $LANG['ocsng'][29], $servers);
 
 //Display criterias form is needed
@@ -70,17 +72,15 @@ if ($report->criteriasValidated()
     && $_REQUEST['ocsservers_id']
     && ($_REQUEST['ocsid'] || $_REQUEST['ocs_deviceid'] )) {
 
-   $cols = array(
-      new PluginReportsColumnInteger('ocsid', $LANG['ocsng'][45]),
-      new PluginReportsColumnInteger('computers_id', $LANG['common'][2]),
-      new PluginReportsColumnLink('cid', $LANG['common'][16], 'Computer'),
-      new PluginReportsColumn('ocs_deviceid', $LANG['plugin_reports']['ocslinks'][3]),
-      new PluginReportsColumnDateTime('last_update', $LANG['ocsng'][13]),
-      new PluginReportsColumnDateTime('last_ocs_update', $LANG['ocsng'][14]),
-      new PluginReportsColumn('ocs_agent_version', $LANG['ocsng'][49]),
-   );
-   $report->setColumns($cols);
+   $cols = array(new PluginReportsColumnInteger('ocsid', $LANG['ocsng'][45]),
+                 new PluginReportsColumnInteger('computers_id', $LANG['common'][2]),
+                 new PluginReportsColumnLink('cid', $LANG['common'][16], 'Computer'),
+                 new PluginReportsColumn('ocs_deviceid', $LANG['plugin_reports']['ocslinks'][3]),
+                 new PluginReportsColumnDateTime('last_update', $LANG['ocsng'][13]),
+                 new PluginReportsColumnDateTime('last_ocs_update', $LANG['ocsng'][14]),
+                 new PluginReportsColumn('ocs_agent_version', $LANG['ocsng'][49]));
 
+   $report->setColumns($cols);
 
    $report->setSubNameAuto();
 
@@ -115,5 +115,5 @@ if ($report->criteriasValidated()
 
 } else {
    echo "<p class='center red b'>".$LANG['plugin_reports']['ocslinks'][2]."</p>";
-   commonFooter();
+   Html::footer();
 }

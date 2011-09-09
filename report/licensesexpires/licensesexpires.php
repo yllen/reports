@@ -34,13 +34,13 @@
  * Original Author of file: Remi Collet
  *
  * Purpose of file:
- * 		Generate a detailed license report
+ *    Generate a detailed license report
  * ----------------------------------------------------------------------
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE = 1;
-$DBCONNECTION_REQUIRED = 0;
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0;
 
 define('GLPI_ROOT', '../../../..');
 include (GLPI_ROOT . "/inc/includes.php");
@@ -84,5 +84,4 @@ $report->setGroupBy(array('expire',
                           'name'));
 $report->setSqlRequest($query);
 $report->execute();
-
 ?>

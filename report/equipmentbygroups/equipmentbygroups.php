@@ -47,7 +47,8 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 includeLocales("equipmentbygroups");
 
-commonHeader($LANG['plugin_reports']['equipmentbygroups'][1], $_SERVER['PHP_SELF'], "utils", "report");
+Html::header($LANG['plugin_reports']['equipmentbygroups'][1], $_SERVER['PHP_SELF'], "utils",
+             "report");
 
 if (isset ($_GET["reset_search"])) {
    resetSearch();
@@ -76,11 +77,12 @@ while ($datas = $DB->fetch_array($result)) {
    getObjectsByGroupAndEntity($datas["group_id"], $_SESSION["glpiactive_entity"]);
 }
 
-commonFooter();
+Html::footer();
+
 
 /**
  * Display group form
- */
+**/
 function displaySearchForm() {
    global $_SERVER, $_GET, $LANG, $CFG_GLPI;
 
@@ -130,47 +132,19 @@ function resetSearch() {
 
 
 /**
- * Get all the users in a group
- * @group_id the ID of the group
- * @entity the current entity
- * @return an array with user's ID an name
- */
-function getAllUsersInGroup($group_id, $entity) {
-   global $DB, $LANG;
-
-   $sql = "SELECT `glpi_users`.`id` AS user_id, `glpi_users`.`name` as user_name
-           FROM `glpi_users`, `glpi_groups_users`, `glpi_groups`
-           WHERE `glpi_groups`.`entities_id` = '$entity'
-                 AND `glpi_groups`.`id` = `glpi_groups_users`.`groups_id`
-                 AND `glpi_groups_users`.`users_id` = `glpi_groups`.`id`
-                 AND `glpi_groups`.`id` = '$group_id'
-           ORDER BY user_name";
-   $result = $DB->query($sql);
-
-   $users = array ();
-   while ($datas = $DB->fetch_array($result)) {
-      $users[$datas["user_id"]] = $datas["user_name"];
-   }
-   //Add element 0, which means all devices not linked to a user
-   $users[0] = $LANG["common"][49];
-
-   return $users;
-}
-
-
-/**
  * Display all devices by group
- * @group_id the group ID
- * @entity the current entity
- */
+ *
+ * @param $group_id the group ID
+ * @param $entity the current entity
+**/
 function getObjectsByGroupAndEntity($group_id, $entity) {
    global $DB, $LANG;
 
    $display_header = false;
 
-   $types = array('Computer', 'Monitor', 'Printer', 'Phone', 'NetworkEquipment');
+   $types = array('Computer', 'Monitor', 'NetworkEquipment', 'Phone', 'Printer');
    foreach ($types as $type) {
-      $item = new $type;
+      $item = new $type();
 
       $query = "SELECT `".$item->getTable()."`.`id`, `name`, `groups_id`, `serial`, `otherserial`,
                        `immo_number`, `suppliers_id`, `buy_date`
@@ -184,6 +158,7 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
                       AND `is_deleted` = '0'";
 
       $result = $DB->query($query);
+
       if ($DB->numrows($result) > 0) {
          if (!$display_header) {
             echo "<br><table class='tab_cadre_fixehov'>";
@@ -214,7 +189,7 @@ function displayUserDevices($type, $result) {
    $item = new $type();
    while ($data = $DB->fetch_array($result)) {
       $link = $data["name"];
-      $url = getItemTypeFormURL("$type");
+      $url  = Toolbox::getItemTypeFormURL("$type");
       $link = "<a href='" . $url . "?id=" . $data["id"] . "'>" . $link .
                (($CFG_GLPI["is_ids_visible"] || empty ($link)) ? " (" . $data["id"] . ")" : "") .
                "</a>";
@@ -223,7 +198,8 @@ function displayUserDevices($type, $result) {
          $linktype = $LANG["common"][35] . " " . $groups[$data["groups_id"]];
       }
 
-      echo "<tr class='tab_bg_1'><td class='center'>".$item->getTypeName()."</td><td class='center'>$link</td>";
+      echo "<tr class='tab_bg_1'><td class='center'>".$item->getTypeName()."</td>".
+            "<td class='center'>$link</td>";
 
       echo "<td class='center'>";
       if (isset ($data["serial"]) && !empty ($data["serial"])) {
@@ -232,26 +208,30 @@ function displayUserDevices($type, $result) {
          echo '&nbsp;';
       }
       echo "</td><td class='center'>";
+
       if (isset ($data["otherserial"]) && !empty ($data["otherserial"])) {
          echo $data["otherserial"];
       } else {
          echo '&nbsp;';
       }
       echo "</td><td class='center'>";
+
       if (isset ($data["immo_number"]) && !empty ($data["immo_number"])) {
          echo $data["immo_number"];
       } else {
          echo '&nbsp;';
       }
       echo "</td><td class='center'>";
+
       if (isset ($data["suppliers_id"]) && !empty ($data["suppliers_id"])) {
          echo Dropdown::getDropdownName("glpi_suppliers", $data["suppliers_id"]);
       } else {
          echo '&nbsp;';
       }
       echo "</td><td class='center'>";
+
       if (isset ($data["buy_date"]) && !empty ($data["buy_date"])) {
-         echo convDate($data["buy_date"]);
+         echo Html::convDate($data["buy_date"]);
       } else {
          echo '&nbsp;';
       }

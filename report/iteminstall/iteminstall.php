@@ -29,8 +29,8 @@
 */
 
 //	Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=1;
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 1;
 
 // Initialization of the variables
 define('GLPI_ROOT',  '../../../..');
@@ -41,7 +41,8 @@ $report = new PluginReportsAutoReport($LANG['plugin_reports']['iteminstall'][1])
 //Report's search criterias
 $date = new PluginReportsDateIntervalCriteria($report, 'buy_date');
 $type = new PluginReportsItemTypeCriteria($report, 'itemtype', '', 'infocom_types');
-$budg = new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets', $LANG['financial'][87]);
+$budg = new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets',
+                                          $LANG['financial'][87]);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -51,18 +52,18 @@ $display_type = HTML_OUTPUT;
 //If criterias have been validated
 if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
-   $title = $report->getFullTitle();
-
+   $title    = $report->getFullTitle();
    $itemtype = $type->getParameterValue();
+
    if ($itemtype) {
       $types = array($itemtype);
    } else {
       $types = array();
-      $sql = "SELECT DISTINCT `itemtype`
-              FROM `glpi_infocoms` ".
-              getEntitiesRestrictRequest('WHERE', 'glpi_infocoms').
-              $date->getSqlCriteriasRestriction('AND').
-              $budg->getSqlCriteriasRestriction('AND');
+      $sql   = "SELECT DISTINCT `itemtype`
+                FROM `glpi_infocoms` ".
+                getEntitiesRestrictRequest('WHERE', 'glpi_infocoms').
+                    $date->getSqlCriteriasRestriction('AND').
+                    $budg->getSqlCriteriasRestriction('AND');
       foreach ($DB->request($sql) as $data) {
          $types[] = $data['itemtype'];
       }
@@ -72,10 +73,10 @@ if ($report->criteriasValidated()) {
    foreach ($types as $type) {
       $result[$type] = array();
       // Total of buy equipment
-      $crit = "itemtype='$type' ".
+      $crit = "itemtype = '$type' ".
               getEntitiesRestrictRequest('AND','glpi_infocoms').
-              $budg->getSqlCriteriasRestriction('AND').
-              $date->getSqlCriteriasRestriction('AND');
+                 $budg->getSqlCriteriasRestriction('AND').
+                 $date->getSqlCriteriasRestriction('AND');
 
       $result[$type]['buy'] = countElementsInTable('glpi_infocoms', $crit);
 
@@ -90,8 +91,9 @@ if ($report->criteriasValidated()) {
          }
          $result[$type]["$deb-$fin"] = countElementsInTable('glpi_infocoms', $crit2);
       }
-      $crit2 = $crit;
-      $crit2 .= " AND (`use_date` IS NULL OR `use_date` >= DATE_ADD(`buy_date`, INTERVAL 12 MONTH))";
+      $crit2  = $crit;
+      $crit2 .= " AND (`use_date` IS NULL
+                       OR `use_date` >= DATE_ADD(`buy_date`, INTERVAL 12 MONTH))";
       $result[$type]['12+'] = countElementsInTable('glpi_infocoms', $crit2);
    }
 
@@ -100,9 +102,10 @@ if ($report->criteriasValidated()) {
          echo "<tr><th>$title</th></tr>\n";
          echo "</table></div>\n";
    }
+
    $nbres = count($result);
    if ($nbres > 0) {
-      if ($nbres>1) {
+      if ($nbres > 1) {
          $nbrows = $nbres*2+2;
          $result['total'] = array();
          reset($result);
@@ -131,9 +134,11 @@ if ($report->criteriasValidated()) {
       foreach ($result as $itemtype => $row) {
          if ($itemtype == 'total') {
             $name = $LANG['common'][33];
+
          } else if (class_exists($itemtype)) {
             $item = new $itemtype();
             $name = $item->getTypeName();
+
          } else {
             continue;
          }
@@ -143,15 +148,16 @@ if ($report->criteriasValidated()) {
          echo Search::showItem($display_type, $name, $numcol, $row_num, "class='b'");
          foreach ($row as $ref => $val) {
             $val = $result[$itemtype][$ref];
-            echo Search::showItem($display_type, ($val ? $val : ''), $numcol, $row_num, "class='right'");
-            if ($itemtype!='total' && isset($result['total'])) {
+            echo Search::showItem($display_type, ($val ? $val : ''), $numcol, $row_num,
+                                  "class='right'");
+            if ($itemtype != 'total' && isset($result['total'])) {
                $result['total'][$ref] += $val;
             }
          }
          echo Search::showEndLine($display_type);
          $row_num++;
 
-         $numcol=1;
+         $numcol = 1;
          echo Search::showNewLine($display_type);
          echo Search::showItem($display_type, '', $numcol, $row_num);
          foreach ($row as $ref => $val) {
@@ -184,7 +190,6 @@ if ($report->criteriasValidated()) {
    echo Search::showFooter($display_type, $title);
 }
 if ($display_type == HTML_OUTPUT) {
-   commonFooter();
+   Html::footer();
 }
-
 ?>

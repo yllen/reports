@@ -49,7 +49,7 @@ class PluginReportsColumnDate extends PluginReportsColumn {
    function displayValue($output_type, $row) {
 
       if (isset($row[$this->name]) && $row[$this->name]) {
-         return convDate($row[$this->name]);
+         return Html::convDate($row[$this->name]);
       }
       return '';
    }

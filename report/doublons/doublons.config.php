@@ -38,11 +38,9 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 Plugin::load('reports');
 
-includeLocales("doublons");
+Session::checkRight("profile","w");
 
-checkRight("profile","w");
-
-commonHeader($LANG['plugin_reports']['doublons'][1],$_SERVER['PHP_SELF'],"config","plugins");
+Html::header($LANG['plugin_reports']['doublons'][1], $_SERVER['PHP_SELF'], "config", "plugins");
 
 $types = array(1 => $LANG["networking"][15], // Mac
                2 => $LANG["networking"][14], // IP
@@ -58,8 +56,8 @@ if (isset($_GET["delete"])) {
            && isset($_POST["type"])
            && isset($_POST["addr"])
            && !empty($_POST["addr"])) {
-   $query = "INSERT INTO
-             `glpi_plugin_reports_doublons_backlists`
+
+   $query = "INSERT INTO `glpi_plugin_reports_doublons_backlists`
              SET `type` = '".$_POST["type"]."',
                  `addr` = '".trim($_POST["addr"])."',
                  `comment` = '".trim($_POST["comment"])."'";
@@ -67,12 +65,14 @@ if (isset($_GET["delete"])) {
 }
 
 // Initial creation
+$migration = new Migration(160);
 if (TableExists("glpi_plugin_reports_doublons_backlist")) {
-   $DB->query("RENAME TABLE `glpi_plugin_reports_doublons_backlist` to `glpi_plugin_reports_doublons_backlists`");
+   $migration->renameTable("glpi_plugin_reports_doublons_backlist",
+                           "glpi_plugin_reports_doublons_backlists");
 
-   $query = "ALTER TABLE `glpi_plugin_reports_doublons_backlists`
-            CHANGE `ID` `id` int(11) NOT NULL auto_increment";
-   $DB->query($query) or die($DB->error());
+   $migration->changeField("glpi_plugin_reports_doublons_backlists", "ID", "id", 'autoincrement');
+
+   $migration->executeMigration();
 
 } else if (!TableExists("glpi_plugin_reports_doublons_backlists")) {
    $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_doublons_backlists` (
@@ -84,8 +84,8 @@ if (TableExists("glpi_plugin_reports_doublons_backlist")) {
              ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
    $DB->query($query) or die($DB->error());
 
-   $query = "INSERT INTO
-             `glpi_plugin_reports_doublons_backlists` (`type`, `addr`, `comment`)
+   $query = "INSERT INTO`glpi_plugin_reports_doublons_backlists`
+                    (`type`, `addr`, `comment`)
              VALUES (1, '44:45:53:54:42:00', 'Nortel IPSECSHM Adapter'),
                     (1, 'BA:D0:BE:EF:FA:CE', 'GlobeTrotter Module 3G+ Network Card'),
                     (1, '00:53:45:00:00:00', 'WAN (PPP/SLIP) Interface'),
@@ -98,7 +98,7 @@ if (TableExists("glpi_plugin_reports_doublons_backlist")) {
 
 // ---------- Form ------------
 echo "<div class='center'><table class='tab_cadre' cellpadding='5'>\n";
-echo "<tr class='tab_bg_1 center'><th><a href='".GLPI_ROOT . "/plugins/reports/front/config.form.php'>" .
+echo "<tr class='tab_bg_1 center'><th><a href='".GLPI_ROOT."/plugins/reports/front/config.form.php'>".
       $LANG['plugin_reports']['config'][1] . "</a><br />&nbsp;<br />" .
       $LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports']['doublons'][1] .
       "</th></tr>\n";
@@ -140,6 +140,5 @@ echo "</td><td><input type='text' name='addr' size='20'></td><td>".
 
 echo "</table>\n</form>\n</div>";
 
-commonFooter();
-
+Html::footer();
 ?>

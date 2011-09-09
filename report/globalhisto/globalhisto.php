@@ -31,28 +31,28 @@
 /*
  * ----------------------------------------------------------------------
  * Original Author of file: Remi Collet
- * 
- * Purpose of file: 
+ *
+ * Purpose of file:
  *    Generate location report
  *    Illustrate use of simpleReport
  * ----------------------------------------------------------------------
- */ 
+ */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0; // Really a big SQL request
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0; // not really a big SQL request
 
-define('GLPI_ROOT', '../../../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
+define('GLPI_ROOT', '../../../..');
+include (GLPI_ROOT . "/inc/includes.php");
 
 $report = new PluginReportsAutoReport();
 
 //Report's search criterias
 //Possible current values are :
-//	- date-interval
-//	- time-interval
-//	- group
-new PluginReportsDateIntervalCriteria($report,"date_mod");
+// - date-interval
+// - time-interval
+// - group
+new PluginReportsDateIntervalCriteria($report, "date_mod");
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -68,21 +68,22 @@ if ($report->criteriasValidated()) {
                                   'linked_action' => $LANG['event'][19]));
 
    //Colunmns mappings if needed
-   $columns_mappings 
-      = array('linked_action' => array(HISTORY_DELETE_ITEM        => $LANG['log'][22],
-                                       HISTORY_RESTORE_ITEM       => $LANG['log'][23],
-                                       HISTORY_ADD_DEVICE         => $LANG['devices'][25],
-                                       HISTORY_UPDATE_DEVICE      => $LANG['log'][28],
-                                       HISTORY_DELETE_DEVICE      => $LANG['devices'][26],
-                                       HISTORY_INSTALL_SOFTWARE   => $LANG['software'][44],
-                                       HISTORY_UNINSTALL_SOFTWARE => $LANG['software'][45],
-                                       HISTORY_DISCONNECT_DEVICE  => $LANG['central'][6],
-                                       HISTORY_CONNECT_DEVICE     => $LANG['log'][55],
-                                       HISTORY_OCS_IMPORT         => $LANG['ocsng'][7],
-                                       HISTORY_OCS_DELETE         => $LANG['ocsng'][46],
-                                       HISTORY_OCS_LINK           => $LANG['ocsng'][47],
-                                       HISTORY_OCS_IDCHANGED      => $LANG['ocsng'][48],
-                                       HISTORY_LOG_SIMPLE_MESSAGE => ""));
+   $columns_mappings
+      = array('linked_action' => array(Log::HISTORY_DELETE_ITEM        => $LANG['log'][22],
+                                       Log::HISTORY_RESTORE_ITEM       => $LANG['log'][23],
+                                       Log::HISTORY_ADD_DEVICE         => $LANG['devices'][25],
+                                       Log::HISTORY_UPDATE_DEVICE      => $LANG['log'][28],
+                                       Log::HISTORY_DELETE_DEVICE      => $LANG['devices'][26],
+                                       Log::HISTORY_INSTALL_SOFTWARE   => $LANG['software'][44],
+                                       Log::HISTORY_UNINSTALL_SOFTWARE => $LANG['software'][45],
+                                       Log::HISTORY_DISCONNECT_DEVICE  => $LANG['central'][6],
+                                       Log::HISTORY_CONNECT_DEVICE     => $LANG['log'][55],
+                                       Log::HISTORY_OCS_IMPORT         => $LANG['ocsng'][7],
+                                       Log::HISTORY_OCS_DELETE         => $LANG['ocsng'][46],
+                                       Log::HISTORY_OCS_LINK           => $LANG['ocsng'][47],
+                                       Log::HISTORY_OCS_IDCHANGED      => $LANG['ocsng'][48],
+                                       Log::HISTORY_LOG_SIMPLE_MESSAGE => ""));
+
    $report->setColumnsMappings($columns_mappings);
 
    $query = "SELECT `id`, `date_mod`, `user_name`, `linked_action`
@@ -94,6 +95,5 @@ if ($report->criteriasValidated()) {
    $report->execute();
 }
 
-commonFooter();
-
+Html::footer();
 ?>
