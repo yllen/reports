@@ -444,7 +444,7 @@ class PluginReportsAutoReport {
          if ($this->criteriasValidated()) {
             //Add parameters to uri to be saved as bookmarks
             $_SERVER["REQUEST_URI"] = $this->buildBookmarkUrl();
-            Bookmark::showSaveButton(BOOKMARK_URI,
+            Bookmark::showSaveButton(Bookmark::URI,
                                      (isStat($this->name)?'PluginReportsStat':'PluginReportsReport'));
          }
          echo "</th></tr>\n";
