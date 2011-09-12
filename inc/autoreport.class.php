@@ -434,7 +434,7 @@ class PluginReportsAutoReport {
       plugin_reports_checkRight($this->plug, $this->name, "r");
 
       //Display form only if there're criterias
-      if (!empty ($this->criterias)) {
+      if (!empty($this->criterias)) {
          echo "<div class='center'>";
          echo "<form method='post' name='form' action='".$_SERVER['PHP_SELF']."'>";
          echo "<table class='tab_cadre_fixe'>";

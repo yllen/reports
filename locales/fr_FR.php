@@ -42,7 +42,9 @@ $LANG['plugin_reports']['config'][9]   = "Droits des profils";
 $LANG['plugin_reports']['config'][10]  = "Rapport";
 $LANG['plugin_reports']['config'][11]  = "Configuration du rapport";
 
-$LANG['plugin_reports']['reports'][1]  ="Critères de recherche";
+$LANG['plugin_reports']['reports'][1]  = "Critères de recherche";
+$LANG['plugin_reports']['reports'][2]  = "Statistique";
+$LANG['plugin_reports']['reports'][3]  = "Rapport";
 
 $LANG['plugin_reports']['subname']['date-interval']   = "Période";
 $LANG['plugin_reports']['subname']['time-interval']   = "Période";

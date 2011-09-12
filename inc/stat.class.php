@@ -41,12 +41,17 @@ class PluginReportsStat extends CommonGLPI {
     * Return the localized name of the current Type
     * Shoudl be overloaded in each new class
     *
+    * $nb for singular / plural
+    *
     * @return string
     */
-   static function getTypeName() {
+   static function getTypeName($nb=0) {
       global $LANG;
 
-      return $LANG['help'][30];
+      if ($nb < 2) {
+         return $LANG['plugin_reports']['reports'][2];
+      }
+      return $LANG['Menu'][13];
    }
 
 }
