@@ -53,17 +53,18 @@ Html::header($LANG['plugin_reports']['equipmentbygroups'][1], $_SERVER['PHP_SELF
 if (isset ($_GET["reset_search"])) {
    resetSearch();
 }
-
 $_GET = getValues($_GET, $_POST);
+
 displaySearchForm();
 
-$sql = "SELECT `id` AS group_id, `name` AS group_name
+$sql = "SELECT `id` AS group_id,
+               `name` AS group_name
         FROM `glpi_groups`
         WHERE `entities_id` = ".$_SESSION["glpiactive_entity"].
-              ($_GET["group"] ? " AND `glpi_groups`.`id` = ".$_GET["group"] : "") . "
+              ($_GET["groups_id"] ? " AND `glpi_groups`.`id` = ".$_GET["groups_id"] : "") . "
         ORDER BY `name`";
 $result = $DB->query($sql);
-
+Toolbox::logDebug (" requete ", $sql);
 $last_group_id = -1;
 
 while ($datas = $DB->fetch_array($result)) {
@@ -90,10 +91,11 @@ function displaySearchForm() {
    echo "<table class='tab_cadre' cellpadding='5'>";
    echo "<tr class='tab_bg_1 center'>";
    echo "<td>";
-   echo $LANG["common"][35] . " :";
+   echo $LANG["common"][35] . " : ";
    Dropdown::show('Group', array('name =>' => "group",
                                  'value'   => $_GET["group"],
-                                 'entity'  => $_SESSION["glpiactive_entity"]));
+                                 'entity'  => $_SESSION["glpiactive_entity"],
+                                 'condition' => "is_requester = 1"));
    echo "</td>";
 
    // Display Reset search
