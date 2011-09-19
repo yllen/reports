@@ -56,10 +56,14 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    // search for zero if true, else treat zero as "all" (no criteria)
    private $searchzero = false;
 
+   // For special condition
+   private $condition = '';
 
-   function __construct($report, $name, $tableortype='', $label = '') {
+   function __construct($report, $name, $tableortype='', $label = '', $condition='') {
 
       parent::__construct($report, $name, $name, $label);
+
+      $this->condition = $condition;
 
       if (empty($tableortype)) {
          $this->table = getTableNameForForeignKeyField($name);
@@ -239,11 +243,15 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
     */
    public function displayDropdownCriteria() {
 
-      Dropdown::show($this->getItemType(),
-                     array('name'     => $this->getName(),
-                           'value'    => $this->getParameterValue(),
-                           'comments' => $this->getDisplayComments(),
-                           'entity'   => $this->getEntityRestrict()));
+      $options = array('name'     => $this->getName(),
+                       'value'    => $this->getParameterValue(),
+                       'comments' => $this->getDisplayComments(),
+                       'entity'   => $this->getEntityRestrict());
+
+      if ($this->condition) {
+         $options['condition'] = $this->condition;
+      }
+      Dropdown::show($this->getItemType(), $options);
    }
 
 

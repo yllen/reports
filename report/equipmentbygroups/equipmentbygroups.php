@@ -61,10 +61,10 @@ $sql = "SELECT `id` AS group_id,
                `name` AS group_name
         FROM `glpi_groups`
         WHERE `entities_id` = ".$_SESSION["glpiactive_entity"].
-              ($_GET["groups_id"] ? " AND `glpi_groups`.`id` = ".$_GET["groups_id"] : "") . "
+              (isset($_GET["groups_id"]) && $_GET["groups_id"]
+                     ? " AND `glpi_groups`.`id` = ".$_GET["groups_id"] : "") . "
         ORDER BY `name`";
 $result = $DB->query($sql);
-Toolbox::logDebug (" requete ", $sql);
 $last_group_id = -1;
 
 while ($datas = $DB->fetch_array($result)) {
@@ -95,7 +95,7 @@ function displaySearchForm() {
    Dropdown::show('Group', array('name =>' => "group",
                                  'value'   => $_GET["group"],
                                  'entity'  => $_SESSION["glpiactive_entity"],
-                                 'condition' => "is_requester = 1"));
+                                 'condition' => "is_itemgroup"));
    echo "</td>";
 
    // Display Reset search
