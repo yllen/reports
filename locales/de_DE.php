@@ -44,8 +44,10 @@ $LANG['plugin_reports']['config'][10]  = "Report";
 $LANG['plugin_reports']['config'][11]  = "Konfiguration Report";
 
 $LANG['plugin_reports']['reports'][1]  = "Search criterias";
+$LANG['plugin_reports']['reports'][2]  = "Statistic";
+$LANG['plugin_reports']['reports'][3]  = "Report";
+$LANG['plugin_reports']['reports'][4]  = "Number pending";
 
 $LANG['plugin_reports']['subname']['date-interval']   = "Date interval";
 $LANG['plugin_reports']['subname']['time-interval']   = "Time interval";
-
 ?>

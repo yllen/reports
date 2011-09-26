@@ -41,8 +41,10 @@ $LANG['plugin_reports']['config'][10]  = "Informe";
 $LANG['plugin_reports']['config'][11]  = "Configuración del informe";
 
 $LANG['plugin_reports']['reports'][1]  = "Criterios de búsqueda";
+$LANG['plugin_reports']['reports'][2]  = "Statistic";
+$LANG['plugin_reports']['reports'][3]  = "Report";
+$LANG['plugin_reports']['reports'][4]  = "Number pending";
 
 $LANG['plugin_reports']['subname']['date-interval']   = "Intervalo fecha";
 $LANG['plugin_reports']['subname']['time-interval']   = "Intervalo hora";
-
 ?>

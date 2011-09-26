@@ -40,8 +40,10 @@ $LANG['plugin_reports']['config'][10]  = "Rapor";
 $LANG['plugin_reports']['config'][11]  = "Rapor ayarları";
 
 $LANG['plugin_reports']['reports'][1]  = "Arama Kriterleri";
+$LANG['plugin_reports']['reports'][2]  = "Statistic";
+$LANG['plugin_reports']['reports'][3]  = "Report";
+$LANG['plugin_reports']['reports'][4]  = "Number pending";
 
 $LANG['plugin_reports']['subname']['date-interval']   = "Tarih aralığı";
 $LANG['plugin_reports']['subname']['time-interval']   = "Saat aralığı";
-
 ?>

@@ -51,5 +51,4 @@ $LANG['plugin_reports']['subname']['date-interval']   = "Période";
 $LANG['plugin_reports']['subname']['time-interval']   = "Période";
 
 $LANG['plugin_reports']['job'][21] = "Nombre déjà en cours";
-
 ?>
