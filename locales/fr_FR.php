@@ -45,8 +45,11 @@ $LANG['plugin_reports']['config'][11]  = "Configuration du rapport";
 $LANG['plugin_reports']['reports'][1]  = "Critères de recherche";
 $LANG['plugin_reports']['reports'][2]  = "Statistique";
 $LANG['plugin_reports']['reports'][3]  = "Rapport";
+$LANG['plugin_reports']['reports'][4]  = "Nombre déjà en cours";
 
 $LANG['plugin_reports']['subname']['date-interval']   = "Période";
 $LANG['plugin_reports']['subname']['time-interval']   = "Période";
+
+$LANG['plugin_reports']['job'][21] = "Nombre déjà en cours";
 
 ?>
