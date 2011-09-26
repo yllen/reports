@@ -96,8 +96,7 @@ while ($data = $DB->fetch_array($result)) {
       switch ($data["linked_action"]) {
          case Log::HISTORY_ADD_DEVICE :
             $field = NOT_AVAILABLE;
-            if (class_exists($data["itemtype_link"])) {
-               $item = new $data["itemtype_link"]();
+            if ($item = getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
             $change = $LANG["devices"][25]."&nbsp;<strong>:</strong>&nbsp;'".$data[ "new_value"]."'";
@@ -106,9 +105,8 @@ while ($data = $DB->fetch_array($result)) {
          case Log::HISTORY_UPDATE_DEVICE :
                $field = NOT_AVAILABLE;
                $change = '';
-               if (class_exists($data["itemtype_link"])) {
-                  $item = new $data["itemtype_link"]();
-                  $field = $item->getTypeName();
+               if ($item = getItemForItemtype($data["itemtype_link"])) {
+                  $field  = $item->getTypeName();
                   $change = $item->getSpecifityLabel()."&nbsp;<strong>:</strong>&nbsp;''";
                }
             $change .= $data[ "old_value"]."'&nbsp;<strong>--></strong>&nbsp;'".$data[ "new_value"]."'";
@@ -116,28 +114,25 @@ while ($data = $DB->fetch_array($result)) {
 
          case Log::HISTORY_DELETE_DEVICE :
             $field = NOT_AVAILABLE;
-            if (class_exists($data["itemtype_link"])) {
-               $item = new $data["itemtype_link"]();
+            if ($item = getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
             $change = $LANG["devices"][26]."&nbsp;<strong>:</strong>&nbsp;'".$data["old_value"]."'";
             break;
 
          case Log::HISTORY_DISCONNECT_DEVICE :
-            if (!class_exists($data["itemtype_link"])) {
+            if (!($item = getItemForItemtype($data["itemtype_link"]))) {
                continue;
             }
-            $item = new $data["itemtype_link"];
-            $field = $item->getTypeName();
+            $field  = $item->getTypeName();
             $change = $LANG["central"][6]."&nbsp;<strong>:</strong>&nbsp;'".$data["old_value"]."'";
             break;
 
          case Log::HISTORY_CONNECT_DEVICE :
-            if (!class_exists($data["itemtype_link"])) {
+            if (!($item = getItemForItemtype($data["itemtype_link"]))) {
                continue;
             }
-            $item = new $data["itemtype_link"];
-            $field = $item->getTypeName();
+            $field  = $item->getTypeName();
             $change = $LANG["log"][55]."&nbsp;<strong>:</strong>&nbsp;'".$data["new_value"]."'";
             break;
       }//fin du switch

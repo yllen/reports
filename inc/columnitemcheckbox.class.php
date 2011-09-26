@@ -41,9 +41,7 @@ class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
 
       parent::__construct($name, '&nbsp;', $options);
 
-      if (class_exists($itemtype)) {
-         $this->obj = new $itemtype();
-      }
+      $this->obj = getItemForItemtype($itemtype);
    }
 
 

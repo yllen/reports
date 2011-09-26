@@ -54,8 +54,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       } else if (is_string($types) && isset($CFG_GLPI[$types])) {
          // $types is the name of an configured type hashtable (infocom_types, doc_types, ...)
          foreach($CFG_GLPI[$types] as $itemtype) {
-            if (class_exists($itemtype) && !in_array($itemtype, $ignored)) {
-               $item                   = new $itemtype();
+            if (($item = getItemForItemtypec($itemtype)) && !in_array($itemtype, $ignored)) {
                $this->types[$itemtype] = $item->getTypeName();
             }
          }
@@ -72,8 +71,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
    function getSubName() {
 
       $itemtype = $this->getParameterValue();
-      if ($itemtype && class_exists($itemtype)) {
-         $item = new $itemtype();
+      if ($itemtype && ($item = getItemForItemtype($itemtype))) {
          $name = $item->getTypeName();
       } else {
          // All

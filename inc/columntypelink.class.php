@@ -60,9 +60,7 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
           && $row[$this->nametype]
           && (is_null($this->obj) || $this->obj->getType()!=$row[$this->nametype])) {
 
-         if (class_exists($row[$this->nametype])) {
-            $this->obj = new $row[$this->nametype]();
-         } else {
+         if (!($this->obj = getItemForItemtype($row[$this->nametype]))) {
             $this->obj = NULL;
          }
       }

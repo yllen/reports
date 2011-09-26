@@ -135,8 +135,7 @@ if ($report->criteriasValidated()) {
          if ($itemtype == 'total') {
             $name = $LANG['common'][33];
 
-         } else if (class_exists($itemtype)) {
-            $item = new $itemtype();
+         } else if ($item = getItemForItemtype($itemtype)) {
             $name = $item->getTypeName();
 
          } else {

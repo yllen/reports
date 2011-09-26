@@ -48,8 +48,8 @@ class PluginReportsColumnType extends PluginReportsColumn {
          return '';
       }
 
-      if (!class_exists($row[$this->name])) {
-         return $row[$this->name];
+      if (!($value = getItemForItemtype($row[$this->name]))) {
+         return $value;
       }
 
       if (is_null($this->obj)
