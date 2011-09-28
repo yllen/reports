@@ -79,8 +79,9 @@ if ($report->criteriasValidated()) {
                     MIN(`glpi_tickets`.`date`) as mindate,
                     MAX(`glpi_tickets`.`date`) as maxdate
              FROM `glpi_entities`
-             INNER JOIN `glpi_tickets` ON (`glpi_tickets`.`entities_id`=`glpi_entities`.`id`)".
-             getEntitiesRestrictRequest(" WHERE ", "glpi_entities") .
+             INNER JOIN `glpi_tickets` ON (`glpi_tickets`.`entities_id`=`glpi_entities`.`id`)
+             WHERE NOT `glpi_tickets`.`is_deleted` ".
+                   getEntitiesRestrictRequest('AND', "glpi_entities") .
             "GROUP BY `glpi_entities`.`id`".
             $report->getOrderBy('name');
 

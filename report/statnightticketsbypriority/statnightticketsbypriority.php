@@ -78,7 +78,8 @@ if ($report->criteriasValidated()) {
                   ON (`glpi_groups_tickets`.`tickets_id` = `glpi_tickets`.`id`
                       AND `glpi_groups_tickets`.`type` = '".Ticket::ASSIGN."')
              LEFT JOIN `glpi_groups` ON (`glpi_groups_tickets`.`groups_id` = `glpi_groups`.`id`)
-             WHERE `glpi_tickets`.`status` NOT IN ('solved', 'closed') ".
+             WHERE `glpi_tickets`.`status` NOT IN ('solved', 'closed')
+                  AND NOT `glpi_tickets`.`is_deleted` ".
                   $report->addSqlCriteriasRestriction() .
                   getEntitiesRestrictRequest(' AND ', 'glpi_tickets').
              $report->getOrderBy('priority');
