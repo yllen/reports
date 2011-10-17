@@ -71,14 +71,31 @@ if ($report->criteriasValidated()) {
 
    $result = array();
    foreach ($types as $type) {
+      if (!class_exists($type)) {
+         continue;
+      }
+      $item  = new $type();
+      $table = $item->getTable();
+      $sql = "SELECT COUNT(*) AS cpt
+              FROM `$table`
+              INNER JOIN `glpi_infocoms` ON (`glpi_infocoms`.`itemtype`='$type'
+                                             AND `glpi_infocoms`.`items_id`=`$table`.`id`)".
+              getEntitiesRestrictRequest('WHERE', $table);
+      if ($item->maybeDeleted()) {
+         $sql .= " AND NOT `$table`.`is_deleted` ";
+      }
+      if ($item->maybeTemplate()) {
+         $sql .= " AND NOT `$table`.`is_template` ";
+      }
       $result[$type] = array();
-      // Total of buy equipment
-      $crit = "itemtype = '$type' ".
-              getEntitiesRestrictRequest('AND','glpi_infocoms').
-                 $budg->getSqlCriteriasRestriction('AND').
-                 $date->getSqlCriteriasRestriction('AND');
 
-      $result[$type]['buy'] = countElementsInTable('glpi_infocoms', $crit);
+      // Total of buy equipment
+      $crit = $budg->getSqlCriteriasRestriction('AND').
+              $date->getSqlCriteriasRestriction('AND');
+
+      foreach ($DB->request($sql.$crit) as $data) {
+         $result[$type]['buy'] = $data['cpt'];
+      }
 
       for ($deb=0 ; $deb<12 ; $deb=$fin) {
          $fin = $deb+2;
@@ -89,12 +106,16 @@ if ($report->criteriasValidated()) {
          if ($fin) {
             $crit2 .= " AND `use_date` < DATE_ADD(`buy_date`, INTERVAL $fin MONTH) ";
          }
-         $result[$type]["$deb-$fin"] = countElementsInTable('glpi_infocoms', $crit2);
+         foreach ($DB->request($sql.$crit2) as $data) {
+            $result[$type]["$deb-$fin"] = $data['cpt'];
+         }
       }
       $crit2  = $crit;
       $crit2 .= " AND (`use_date` IS NULL
                        OR `use_date` >= DATE_ADD(`buy_date`, INTERVAL 12 MONTH))";
-      $result[$type]['12+'] = countElementsInTable('glpi_infocoms', $crit2);
+      foreach ($DB->request($sql.$crit2) as $data) {
+         $result[$type]['12+'] = $data['cpt'];
+      }
    }
 
    if ($display_type == HTML_OUTPUT) {
