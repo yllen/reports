@@ -63,7 +63,8 @@ if ($report->criteriasValidated()) {
                                         'sorton'        => 'glpi_printers.name')),
       new PluginReportsColumn('state', $LANG['state'][0]),
       new PluginReportsColumn('manu', $LANG['common'][5]),
-      new PluginReportsColumn('model', $LANG['common'][22]),
+      new PluginReportsColumn('model', $LANG['common'][22],
+                              array('sorton' => 'glpi_manufacturers.name, glpi_printermodels.name')),
       new PluginReportsColumn('serial', $LANG['common'][19]),
       new PluginReportsColumn('otherserial', $LANG['common'][20]),
       new PluginReportsColumn('immo_number', $LANG['financial'][20]),
@@ -120,10 +121,11 @@ if ($report->criteriasValidated()) {
            LEFT JOIN `glpi_states` ON (`glpi_states`.`id`=`glpi_printers`.`states_id`)
            LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`itemtype`='Printer' AND `glpi_infocoms`.`items_id`=`glpi_printers`.`id`)
            LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id`=`glpi_printers`.`locations_id`)
+           LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id`=`glpi_printers`.`groups_id`)
            ".
            getEntitiesRestrictRequest('WHERE', 'glpi_printers').
            $report->addSqlCriteriasRestriction().
-           $report->getOrderBy('id');
+           $report->getOrderBy('groupe');
 
    $report->setSqlRequest($sql);
    $report->execute();
