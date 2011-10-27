@@ -1,5 +1,3 @@
-<?php
-/*
  * @version $Id: HEADER 15930 2011-10-25 10:47:55Z jmd $
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
@@ -25,12 +23,3 @@
  You should have received a copy of the GNU General Public License
  along with reports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
-*/
-
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['equipmentbylocation'][1] = "Number of equipments by location";
-
-?>
