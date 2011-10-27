@@ -25,52 +25,10 @@
  You should have received a copy of the GNU General Public License
  along with reports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
- */
+*/
 
-/**
- * class PluginReportsColumn to manage output
- */
-class PluginReportsColumnInteger extends PluginReportsColumn {
-
-   private $total;
-   private $with_zero = 1;
-
-
-   function __construct($name, $title, $options=array()) {
-
-      if (!isset($options['extrafine'])) {
-         $options['extrafine'] =  "class='right'";
-      }
-
-      if (!isset($options['extrabold'])) {
-         $options['extrabold'] =  "class='b right'";
-      }
-
-      if (isset($options['with_zero'])) {
-         $this->with_zero = $options['with_zero'];
-      }
-
-      parent::__construct($name, $title, $options);
-
-      $this->total = 0;
-   }
-
-
-   function displayValue($output_type, $row) {
-
-      if (isset($row[$this->name])) {
-         $this->total += intval($row[$this->name]);
-
-         if ($row[$this->name] || $this->with_zero) {
-            return Html::formatNumber($row[$this->name], false, 0);
-         }
-      }
-      return '';
-   }
-
-
-   function displayTotal($output_type) {
-      return Html::formatNumber($this->total, false, 0);
-   }
-}
-?>
+$LANG['plugin_reports']['printers'][1] = $LANG['Menu'][2];
+$LANG['plugin_reports']['printers'][2] = "Ordinateurs du groupe";
+$LANG['plugin_reports']['printers'][3] = "Utilisateurs du groupe";
+$LANG['plugin_reports']['printers'][4] = "Ordinateurs du lieu";
+$LANG['plugin_reports']['printers'][5] = "Utilisateurs du lieu";
