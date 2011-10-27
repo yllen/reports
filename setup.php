@@ -27,10 +27,6 @@
  --------------------------------------------------------------------------
 */
 
-
-foreach (glob(GLPI_ROOT . '/plugins/reports/inc/*.php') as $file) {
-   //include_once ($file);
-}
 include_once(GLPI_ROOT . '/plugins/reports/inc/function.php');
 
 define ("REPORTS_NO_ENTITY_RESTRICTION", 0);
