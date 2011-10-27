@@ -47,7 +47,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 $report = new PluginReportsAutoReport();
 
 // Definition of the criteria
-$grpcrit = new PluginReportsGroupCriteria($report, 'glpi_printers.groups_id', '', 'is_requester');
+$grpcrit = new PluginReportsGroupCriteria($report, 'glpi_printers.groups_id', '', 'is_itemgroup');
 $loccrit = new PluginReportsLocationCriteria($report, 'glpi_printers.locations_id');
 
 //Display criterias form is needed
