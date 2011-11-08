@@ -1,6 +1,6 @@
 <?php
 /*
- * @version $Id: HEADER 15930 2011-10-25 10:47:55Z jmd $
+ * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
  Copyright (C) 2003-2011 by the reports Development Team.
@@ -103,6 +103,7 @@ function plugin_version_reports() {
    return array('name'           => $LANG['plugin_reports']['title'][1],
                 'version'        => '1.6.0',
                 'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh',
+                'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/reports',
                 'minGlpiVersion' => '0.83');
 }
