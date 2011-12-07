@@ -54,7 +54,7 @@ if (isset($_GET["delete"])) {
 } else if (isset($_POST["add"])
            && isset($_POST["type"])
            && isset($_POST["addr"])
-           && !empty($_POST["addr"])) {
+           && strlen($_POST["addr"])) {
 
    $query = "INSERT INTO `glpi_plugin_reports_doublons_backlists`
              SET `type` = '".$_POST["type"]."',
