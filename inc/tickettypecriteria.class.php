@@ -49,7 +49,7 @@ class PluginReportsTicketTypeCriteria extends PluginReportsArrayCriteria {
 
       parent::__construct($report,
                           $name,
-                          ($label ? $label : $LANG['setup'][79]),
+                          ($label ? $label : $LANG['common'][17]),
                           $options);
    }
 }
