@@ -42,7 +42,7 @@ class PluginReportsTicketTypeCriteria extends PluginReportsArrayCriteria {
    function __construct($report, $name='type', $label='') {
       global $LANG;
 
-      $options = array(0 => Dropdown::EMPTY_VALUE);
+      $options = array('all' => Dropdown::EMPTY_VALUE);
       foreach (Ticket::getTypes() as $k => $v) {
          $options[$k] = $v;
       }
