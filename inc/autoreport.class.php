@@ -422,9 +422,11 @@ class PluginReportsAutoReport {
          if (isStat($this->name)) {
             Html::header($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
                         "maintain", "stat");
+            Stat::title();
          } else {
             Html::header($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
                         "utils", "report");
+            Report::title();
          }
       } else {
          return;
