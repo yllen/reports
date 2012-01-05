@@ -51,6 +51,7 @@ if ($report->criteriasValidated()) {
             array('sorton' => 'glpi_computers.name')),
       new PluginReportsColumn('operatingsystems', $LANG['computers'][9],
             array('sorton' => 'operatingsystems')),
+      new PluginReportsColumn('state', $LANG['joblist'][0]),
       new PluginReportsColumn('entity', $LANG['entity'][0],
             array('sorton' => 'entity,location')),
       new PluginReportsColumn('location', $LANG['common'][15]." - ".$LANG['help'][25],
@@ -58,10 +59,13 @@ if ($report->criteriasValidated()) {
    ));
    
    $query = "SELECT `glpi_computers`.`id` AS computer,
+                    `glpi_states`.`name` AS state,
                     `glpi_operatingsystems`.`name` as operatingsystems,
                     `glpi_locations`.`completename` as location,
                     `glpi_entities`.`completename` as entity
              FROM `glpi_computers`
+             LEFT JOIN `glpi_states`
+                  ON (`glpi_states`.`id` = `glpi_computers`.`states_id`)
              LEFT JOIN `glpi_operatingsystems`
                   ON (`glpi_operatingsystems`.`id` = `glpi_computers`.`operatingsystems_id`)
              LEFT JOIN `glpi_locations`
