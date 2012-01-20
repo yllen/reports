@@ -380,16 +380,17 @@ class PluginReportsAutoReport {
             echo Search::showEndLine($output_type);
             $prev = $crt;
          } // Each row
-      }
-      if (isset($options['withtotal']) && $options['withtotal']) {
-            echo Search::showNewLine($output_type);
-            $num = 1;
 
-            foreach ($colsname as $colname => $column) {
-               $column->showTotal($output_type, $num, $row_num);
-            }
+         if (isset($options['withtotal']) && $options['withtotal']) {
+               echo Search::showNewLine($output_type);
+               $num = 1;
 
-            echo Search::showEndLine($output_type);
+               foreach ($colsname as $colname => $column) {
+                  $column->showTotal($output_type, $num, $row_num);
+               }
+
+               echo Search::showEndLine($output_type);
+         }
       }
       echo Search::showFooter($output_type, $title);
 
