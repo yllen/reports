@@ -265,13 +265,14 @@ class PluginReportsAutoReport {
 
       if ($nbtot == 0) {
          Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
+         Report::title();
          echo "<div class='center'><font class='red b'>".$LANG['search'][15]."</font></div>";
          Html::footer();
       } else if ($output_type == PDF_OUTPUT_PORTRAIT || $output_type == PDF_OUTPUT_LANDSCAPE) {
          include (GLPI_ROOT . "/lib/ezpdf/class.ezpdf.php");
       } else if ($output_type == HTML_OUTPUT) {
          Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
-
+         Report::title();
          echo "<div class='center'><table class='tab_cadre_fixe'>";
          echo "<tr><th>$title</th></tr>\n";
          echo "<tr class='tab_bg_2 center'><td class='center'>";

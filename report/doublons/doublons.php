@@ -42,6 +42,8 @@ $computer->checkGlobal('r');
 
 Html::header($LANG['plugin_reports']['doublons'][1], $_SERVER['PHP_SELF'], "utils", "report");
 
+Report::title();
+
 $crits = array(0 => Dropdown::EMPTY_VALUE,
                1 => $LANG["common"][16],        // Name
                2 => $LANG["common"][22]." + ".$LANG["common"][19],   // Model + Serial
@@ -86,7 +88,7 @@ if ($crit > 0) {
    echo "<td>";
    //Add parameters to uri to be saved as bookmarks
    $_SERVER["REQUEST_URI"] = buildBookmarkUrl($_SERVER["REQUEST_URI"],$crit);
-   Bookmark::showSaveButton(BOOKMARK_URI,'Computer');
+   Bookmark::showSaveButton(Bookmark::SEARCH,'Computer');
    echo "</td>";
 }
 echo"</tr>\n";

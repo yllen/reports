@@ -46,6 +46,8 @@ $computer->checkGlobal('r');
 
 Html::header($LANG['plugin_reports']['histohard'][1],$_SERVER['PHP_SELF'],"utils","report");
 
+Report::title();
+
 echo "<div class='center'>";
 echo "<table class='tab_cadrehov'>\n";
 echo "<tr class='tab_bg_1 center'><th colspan='5'>" . $LANG['plugin_reports']['histohard'][1] .

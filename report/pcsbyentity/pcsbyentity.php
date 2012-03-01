@@ -210,6 +210,8 @@ include (GLPI_ROOT . "/inc/includes.php");
 plugin_reports_checkRight('reports', "pcsbyentity","r");
 Html::header($LANG['plugin_reports']['pcsbyentity'][1], $_SERVER['PHP_SELF'], "utils", "report");
 
+Report::title();
+
 echo "<div class='center'>";
 
 // ---------- Form ------------

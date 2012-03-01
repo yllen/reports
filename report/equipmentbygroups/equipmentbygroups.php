@@ -49,6 +49,8 @@ includeLocales("equipmentbygroups");
 Html::header($LANG['plugin_reports']['equipmentbygroups'][1], $_SERVER['PHP_SELF'], "utils",
              "report");
 
+Report::title();
+
 if (isset ($_GET["reset_search"])) {
    resetSearch();
 }

@@ -48,6 +48,8 @@ $software->checkGlobal('r');
 
 Html::header($LANG['plugin_reports']['histoinst'][1], $_SERVER['PHP_SELF'], "utils", "report");
 
+Report::title();
+
 echo "<div class='center'>";
 echo "<table class='tab_cadrehov' cellpadding='5'>\n";
 echo "<tr class='tab_bg_1 center'><th colspan='4'>" . $LANG['plugin_reports']['histoinst'][1] .

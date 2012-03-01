@@ -101,6 +101,8 @@ function plugin_reports_rulelist ($rulecollection, $title) {
 
 Html::header($LANG['plugin_reports']['rules'][1], $_SERVER['PHP_SELF'], "utils", "report");
 
+Report::title();
+
 $type = (isset($_GET["type"]) ? $_GET["type"] : "");
 
 if ($type == "ldap") {
