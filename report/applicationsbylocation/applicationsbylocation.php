@@ -66,12 +66,13 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    $report->setColumns(array(
-				new PluginReportsColumnLink('soft', $LANG['help'][31], 'Software', array('sorton' => 'soft,version')),
-				new PluginReportsColumnLink('locat', $LANG['common'][15], 'Location', array('sorton' => 'glpi_locations.name')),
-                             new PluginReportsColumnLink('computer', $LANG['help'][25],'Computer', array('sorton' => 'glpi_computers.name')),
-                             new PluginReportsColumn('statecpt', $LANG['joblist'][0]),
-                             new PluginReportsColumnLink('version', $LANG['rulesengine'][78], 'SoftwareVersion'),
-                             new PluginReportsColumnLink('user', $LANG['common'][34], 'User', array('sorton' => 'glpi_users.name'))));
+      new PluginReportsColumnLink('soft', $LANG['help'][31], 'Software', array('sorton' => 'soft,version')),
+      new PluginReportsColumnLink('locat', $LANG['common'][15], 'Location', array('sorton' => 'glpi_locations.name')),
+      new PluginReportsColumnLink('computer', $LANG['help'][25],'Computer', array('sorton' => 'glpi_computers.name')),
+      new PluginReportsColumn('statecpt', $LANG['joblist'][0]),
+      new PluginReportsColumnLink('version', $LANG['rulesengine'][78], 'SoftwareVersion'),
+      new PluginReportsColumnLink('user', $LANG['common'][34], 'User', array('sorton' => 'glpi_users.name'))
+   ));
 
    $query = "SELECT `glpi_softwareversions`.`softwares_id` AS soft,
                     `glpi_softwareversions`.`name` AS software,
@@ -81,16 +82,16 @@ if ($report->criteriasValidated()) {
                     `state_cpt`.`name` AS statecpt,
                     `glpi_locations`.`name` as location,
                     `glpi_softwareversions`.`id` AS version,
-					`glpi_computers`.`users_id` AS user
+                    `glpi_computers`.`users_id` AS user
              FROM `glpi_softwareversions`
              INNER JOIN `glpi_computers_softwareversions`
-                  ON (`glpi_computers_softwareversions`.`softwareversions_id` = `glpi_softwareversions`.`id`)
+                   ON (`glpi_computers_softwareversions`.`softwareversions_id` = `glpi_softwareversions`.`id`)
              INNER JOIN `glpi_computers`
-                  ON (`glpi_computers_softwareversions`.`computers_id` = `glpi_computers`.`id`)
-			 INNER JOIN `glpi_softwares`
-					ON (`glpi_softwares`.`id` = `glpi_softwareversions`.`softwares_id`)
-			 LEFT JOIN `glpi_softwarecategories`
-					ON (`glpi_softwares`.`softwarecategories_id` = `glpi_softwarecategories`.`id`)
+                   ON (`glpi_computers_softwareversions`.`computers_id` = `glpi_computers`.`id`)
+             INNER JOIN `glpi_softwares`
+                   ON (`glpi_softwares`.`id` = `glpi_softwareversions`.`softwares_id`)
+             LEFT JOIN `glpi_softwarecategories`
+                  ON (`glpi_softwares`.`softwarecategories_id` = `glpi_softwarecategories`.`id`)
              LEFT JOIN `glpi_locations`
                   ON (`glpi_locations`.`id` = `glpi_computers`.`locations_id`)
              LEFT JOIN `glpi_states` state_ver
