@@ -398,7 +398,7 @@ class PluginReportsAutoReport {
       if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
          if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
             Html::openArrowMassives("massiveaction_form", true);
-            Dropdown::showForMassiveAction('User');
+            Dropdown::showForMassiveAction($options['withmassiveaction']);
             $options = array();
             Html::closeArrowMassives($options);
             echo "</form>";
