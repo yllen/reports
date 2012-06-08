@@ -222,7 +222,7 @@ class PluginReportsAutoReport {
    * Execute the report
 	**/
    function execute($options=array()) {
-      global $DB, $LANG, $CFG_GLPI;
+      global $DB, $LANG, $CFG_GLPI, $HEADER_LOADED;
 
       // Require (for pager) when not called by displayCriteriasForm
       $this->manageCriteriasValues();
@@ -264,15 +264,19 @@ class PluginReportsAutoReport {
       }
 
       if ($nbtot == 0) {
-         Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
-         Report::title();
+         if (!$HEADER_LOADED) {
+            Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
+            Report::title();
+         }
          echo "<div class='center'><font class='red b'>".$LANG['search'][15]."</font></div>";
          Html::footer();
       } else if ($output_type == PDF_OUTPUT_PORTRAIT || $output_type == PDF_OUTPUT_LANDSCAPE) {
          include (GLPI_ROOT . "/lib/ezpdf/class.ezpdf.php");
       } else if ($output_type == HTML_OUTPUT) {
-         Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
-         Report::title();
+         if (!$HEADER_LOADED) {
+            Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
+            Report::title();
+         }
          echo "<div class='center'><table class='tab_cadre_fixe'>";
          echo "<tr><th>$title</th></tr>\n";
          echo "<tr class='tab_bg_2 center'><td class='center'>";
@@ -414,13 +418,16 @@ class PluginReportsAutoReport {
     * @param params the search criterias
     */
    function displayCriteriasForm() {
-      global $LANG;
+      global $LANG, $HEADER_LOADED;
 
       //Get criteria's values
       $this->manageCriteriasValues();
 
       //Display Html::header is output is HTML
-      if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
+      if (isset ($_POST["display_type"]) && $_POST["display_type"] != HTML_OUTPUT) {
+         return;
+      }
+      if (!$HEADER_LOADED) {
          if (isStat($this->name)) {
             Html::header($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
                         "maintain", "stat");
@@ -430,8 +437,6 @@ class PluginReportsAutoReport {
                         "utils", "report");
             Report::title();
          }
-      } else {
-         return;
       }
 
       plugin_reports_checkRight($this->plug, $this->name, "r");
