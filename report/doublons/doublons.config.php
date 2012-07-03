@@ -133,10 +133,7 @@ $res = $DB->query($query);
 while ($data = $DB->fetch_array($res)) {
    echo "<tr class='tab_bg_1 center'><td>" . $types[$data["type"]] . "</td>" .
       "<td>" . $data["addr"] . "</td><td>" . $data["comment"] . "</td><td>";
-   echo "<form method='post' action='".$_SERVER["PHP_SELF"]."'>";
-   echo "<input type='hidden' name='id' value='".$data["id"]."'>";
-   echo "<input type='submit' name='delete' value='".$LANG["buttons"][6]."' class='submit' >";
-   Html::closeForm();
+   Html::showMinimalForm($_SERVER["PHP_SELF"], 'delete', $LANG["buttons"][6], array('id' => $data["id"]));
    echo "</td></td></tr>\n";
 }
 
