@@ -304,7 +304,7 @@ if ($crit>0) { // Display result
          echo "<td><input type='checkbox' name='item[".$data["BID"]."]' value='1'></td>";
       }
       echo "<td class='b blue'>".$data["BID"]."</td>";
-      if ($comp->getFromDB($data["AID"])) {
+      if ($comp->getFromDB($data["BID"])) {
          echo "<td class='blue'>";
          echo $comp->getLink(true);
          echo "</td><td class='blue'>";
