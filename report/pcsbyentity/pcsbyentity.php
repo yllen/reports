@@ -257,7 +257,9 @@ if (count($_SESSION["glpiactiveentities"]) > 1) {
 echo "<tr class='tab_bg_1 center'>".
      "<td colspan='2'><input type='submit' value='valider' class='submit'/></td>";
 echo "</tr>\n";
-echo "</table>\n</form></div>\n";
+echo "</table>\n";
+Html::closeForm();
+echo "</div>\n";
 
 // --------------- Result -------------
 if (isset($_POST["type"]) && $_POST["type"] != '') {

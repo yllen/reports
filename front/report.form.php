@@ -103,7 +103,8 @@ foreach ($rap as $plug => $tmp1) {
 
 echo "</select>";
 echo "<td><input type='submit' value='".$LANG['buttons'][2]."' class='submit' ></td></tr>";
-echo "</table></form>";
+echo "</table>";
+Html::closeForm();
 
 if ($report) {
    PluginReportsProfile::showForReport($report);

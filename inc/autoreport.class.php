@@ -301,7 +301,8 @@ class PluginReportsAutoReport {
             }
          }
          Dropdown::showOutputFormat();
-         echo "</form></td></tr>";
+         Html::closeForm();
+         echo "</td></tr>";
          echo "</table></div>";
 
          Html::printPager($start, $nbtot, $_SERVER['PHP_SELF'], $param);
@@ -405,7 +406,7 @@ class PluginReportsAutoReport {
             Dropdown::showForMassiveAction($options['withmassiveaction']);
             $options = array();
             Html::closeArrowMassives($options);
-            echo "</form>";
+            Html::closeForm();
          }
          Html::footer();
       }
@@ -467,7 +468,8 @@ class PluginReportsAutoReport {
          echo "<tr class='tab_bg_2'><td colspan='4' class='center'>";
          echo "<input type='submit' name='find' value='" . $LANG['buttons'][0] . "' class='submit'>";
          echo "</td></tr>";
-         echo "</table></div></form>";
+         echo "</table></div>";
+         Html::closeForm();
       }
    }
 

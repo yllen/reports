@@ -111,7 +111,8 @@ function displaySearchForm() {
    echo "<input type='submit' value='Valider' class='submit' />";
    echo "</td>";
 
-   echo "</tr></table></form>";
+   echo "</tr></table>";
+   Html::closeForm();
 }
 
 

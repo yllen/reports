@@ -137,7 +137,9 @@ echo "</td><td><input type='text' name='addr' size='20'></td><td>".
    "<input type='text' name='comment' size='40'></td>" .
    "<td><input type='submit' name='add' value='".$LANG["buttons"][8]."' class='submit' ></td></tr>\n";
 
-echo "</table>\n</form>\n</div>";
+echo "</table>";
+Html::closeForm();
+echo "</div>";
 
 Html::footer();
 ?>

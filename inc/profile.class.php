@@ -117,9 +117,10 @@ class PluginReportsProfile extends CommonDBTM {
          echo "<input type='submit' name='update_user_profile' value='".
                 $LANG['buttons'][7]."' class='submit'>";
          echo "</td></tr>\n";
-         echo "</table></form>";
+         echo "</table>";
+         Html::closeForm();
       } else {
-         echo "</table><";
+         echo "</table>";
       }
    }
 
@@ -170,7 +171,8 @@ class PluginReportsProfile extends CommonDBTM {
                 "class='submit'>&nbsp;&nbsp;&nbsp;";
          echo "<input type='submit' name='delete' value='".$LANG['buttons'][6]."' class='submit'>";
          echo "</td></tr>\n";
-         echo "</table></form>\n";
+         echo "</table>\n";
+         Html::closeForm();
       } else {
          echo "</table>\n";
       }

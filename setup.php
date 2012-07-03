@@ -37,6 +37,8 @@ define ("REPORTS_SUB_ENTITIES", 2);
 function plugin_init_reports() {
    global $PLUGIN_HOOKS, $DB, $LANG;
 
+   $PLUGIN_HOOKS['csrf_compliant']['reports'] = true;
+
    $plugin = new plugin;
 
    //Define only for bookmarks
@@ -101,11 +103,11 @@ function plugin_version_reports() {
    global $LANG;
 
    return array('name'           => $LANG['plugin_reports']['title'][1],
-                'version'        => '1.6.0',
+                'version'        => '1.6.1',
                 'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/reports',
-                'minGlpiVersion' => '0.83');
+                'minGlpiVersion' => '0.83.3');
 }
 
 
@@ -150,8 +152,8 @@ function plugin_reports_checkRight($plug, $module, $right) {
 function plugin_reports_check_prerequisites() {
    global $LANG;
 
-   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
-      echo "This plugin requires GLPI >= 0.83 and GLPI < 0.84";
+   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
+      echo "This plugin requires GLPI >= 0.83.3 and GLPI < 0.84";
       return false;
    }
    return true;

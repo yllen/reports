@@ -96,7 +96,8 @@ echo"</tr>\n";
 echo "<tr class='tab_bg_1 center'><td colspan='".($crit>0?'3':'2')."'>";
 echo "<input type='submit' value='valider' class='submit'/>";
 echo "</td></tr>\n";
-echo "</table>\n</form>\n";
+echo "</table>\n";
+Html::closeForm();
 
 if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
    $IPBlacklist = "AA.`ip` != ''
@@ -338,7 +339,7 @@ if ($crit>0) { // Display result
          $options = array();
          Html::closeArrowMassives($options);
       }
-      echo "</form>";
+      Html::closeForm();
    }
 }
 Html::footer();
