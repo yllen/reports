@@ -317,7 +317,7 @@ if ($crit>0) { // Display result
          echo "<td colspan='5' class='blue'>".$data["Aname"]."</td>";
       }
       if ($col) {
-         echo "<td class='blue'>" .$data["Aaddr"]. "</td>";
+         echo "<td class='blue'>" .$data["Baddr"]. "</td>";
       }
       echo "<td class='blue'>" .getLastOcsUpdate($data['BID']). "</td>";
 
