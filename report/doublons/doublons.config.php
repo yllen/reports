@@ -45,10 +45,10 @@ $types = array(1 => $LANG["networking"][15], // Mac
                2 => $LANG["networking"][14], // IP
                3 => $LANG["common"][19]);    // Serial
 
-if (isset($_GET["delete"])) {
+if (isset($_POST["delete"]) && isset($_POST['id'])) {
    $query = "DELETE
              FROM `glpi_plugin_reports_doublons_backlists`
-             WHERE `id` = '".$_GET["delete"]."'";
+             WHERE `id` = '".$_POST['id']."'";
    $DB->query($query);
 
 } else if (isset($_POST["add"])
@@ -64,8 +64,8 @@ if (isset($_GET["delete"])) {
 }
 
 // Initial creation
-$migration = new Migration(160);
 if (TableExists("glpi_plugin_reports_doublons_backlist")) {
+   $migration = new Migration(160);
    $migration->renameTable("glpi_plugin_reports_doublons_backlist",
                            "glpi_plugin_reports_doublons_backlists");
 
@@ -119,6 +119,12 @@ echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'><br />" .
       $LANG["networking"][14]."/".$LANG["networking"][15] . "</th>" .
    "<th>" . $LANG["common"][25] . "</th><th>&nbsp;</th></tr>\n";
 
+echo "<tr class='tab_bg_1 center'><td>";
+Dropdown::showFromArray("type", $types);
+echo "</td><td><input type='text' name='addr' size='20'></td><td>".
+   "<input type='text' name='comment' size='40'></td>" .
+   "<td><input type='submit' name='add' value='".$LANG["buttons"][8]."' class='submit' ></td></tr>\n";
+
 $query = "SELECT *
           FROM `glpi_plugin_reports_doublons_backlists`
           ORDER BY `type`, `addr`";
@@ -126,16 +132,13 @@ $res = $DB->query($query);
 
 while ($data = $DB->fetch_array($res)) {
    echo "<tr class='tab_bg_1 center'><td>" . $types[$data["type"]] . "</td>" .
-      "<td>" . $data["addr"] . "</td><td>" . $data["comment"] . "</td>" .
-      "<td><a href='".$_SERVER["PHP_SELF"]."?delete=".$data["id"]."'>".$LANG["buttons"][6].
-      "</a></td></tr>\n";
+      "<td>" . $data["addr"] . "</td><td>" . $data["comment"] . "</td><td>";
+   echo "<form method='post' action='".$_SERVER["PHP_SELF"]."'>";
+   echo "<input type='hidden' name='id' value='".$data["id"]."'>";
+   echo "<input type='submit' name='delete' value='".$LANG["buttons"][6]."' class='submit' >";
+   Html::closeForm();
+   echo "</td></td></tr>\n";
 }
-
-echo "<tr class='tab_bg_1 center'><td>";
-Dropdown::showFromArray("type", $types);
-echo "</td><td><input type='text' name='addr' size='20'></td><td>".
-   "<input type='text' name='comment' size='40'></td>" .
-   "<td><input type='submit' name='add' value='".$LANG["buttons"][8]."' class='submit' ></td></tr>\n";
 
 echo "</table>";
 Html::closeForm();
