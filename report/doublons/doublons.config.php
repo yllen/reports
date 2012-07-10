@@ -133,7 +133,8 @@ $res = $DB->query($query);
 while ($data = $DB->fetch_array($res)) {
    echo "<tr class='tab_bg_1 center'><td>" . $types[$data["type"]] . "</td>" .
       "<td>" . $data["addr"] . "</td><td>" . $data["comment"] . "</td><td>";
-   Html::showMinimalForm($_SERVER["PHP_SELF"], 'delete', $LANG["buttons"][6], array('id' => $data["id"]));
+   Html::showSimpleForm($_SERVER["PHP_SELF"], 'delete', $LANG["buttons"][6],
+                        array('id' => $data["id"]));
    echo "</td></td></tr>\n";
 }
 
