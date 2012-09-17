@@ -37,10 +37,25 @@ class PluginReportsProfile extends CommonDBTM {
 
 
    //if profile deleted
-   static function cleanProfiles(Profile $prof) {
+   static function cleanProfile(Profile $prof) {
 
       $plugprof = new self();
       $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
+   }
+
+
+   //if profile cloned
+   static function cloneProfile(Profile $prof) {
+      global $DB;
+
+      $plugprof = new self();
+      $crit = array('profiles_id' => $prof->input['_old_id']);
+      foreach ($DB->request($plugprof->getTable(), $crit) as $data) {
+         $input = ToolBox::addslashes_deep($data);
+         unset($input['id']);
+         $input['profiles_id'] = $prof->getID();
+         $plugprof->add($input);
+      }
    }
 
 

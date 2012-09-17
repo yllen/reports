@@ -59,7 +59,9 @@ function plugin_init_reports() {
    }
    $PLUGIN_HOOKS['menu_entry']['reports']     = false;
    $PLUGIN_HOOKS['pre_item_purge']['reports'] = array('Profile' => array('PluginReportsProfile',
-                                                                         'cleanProfiles'));
+                                                                         'cleanProfile'));
+   $PLUGIN_HOOKS['item_clone']['reports']     = array('Profile' => array('PluginReportsProfile',
+                                                                         'cloneProfile'));
 
    $rightreport = array ();
    $rightstats  = array ();
