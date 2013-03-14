@@ -69,7 +69,7 @@ class PluginReportsColumnLink extends PluginReportsColumn {
          Session::addToNavigateListItems($this->obj->getType(), $row[$this->name]);
       }
 
-      if ($output_type==HTML_OUTPUT) {
+      if ($output_type == Search::HTML_OUTPUT) {
          return $this->obj->getLink($this->with_comment);
       }
 

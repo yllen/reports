@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,18 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-// Original Author of file: Balpe Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-define('GLPI_ROOT', '../../..');
-include_once (GLPI_ROOT . "/inc/includes.php");
+include_once ("../../../inc/includes.php");
 
 Session::checkRight('profile', 'r');
 
 Plugin::load('reports', true);
 
-Html::header($LANG['plugin_reports']['config'][1], $_SERVER['PHP_SELF'], 'config', 'plugins');
+Html::header(__('Reports plugin configuration', 'reports'), $_SERVER['PHP_SELF'], 'config',
+             'plugins');
 
 require_once "../inc/profile.class.php";
 
@@ -61,36 +57,37 @@ if (isset($_POST['delete']) && $report) {
 $tab = $prof->updatePluginRights();
 
 echo "<form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
-echo "<table class='tab_cadre'><tr><th colspan='2'><a href='config.form.php'>";
-echo $LANG['plugin_reports']['config'][1]."</a><br>&nbsp;<br>";
-echo $LANG['plugin_reports']['config'][8] . "</th></tr>\n";
+echo "<table class='tab_cadre'><tr><th colspan='2'>";
+echo "<a href='config.form.php'>".__('Reports plugin configuration', 'reports')."</a><br>&nbsp;<br>";
+echo __('Rights management by report', 'reports'). "</th></tr>\n";
 
-echo "<tr class='tab_bg_1'><td>" . $LANG['plugin_reports']['config'][10] . "&nbsp;: ";
+echo "<tr class='tab_bg_1'><td>".__('Report', 'Reports', 1). "&nbsp; ";
 $query = "SELECT `id`, `name`
           FROM `glpi_profiles`
           ORDER BY `name`";
-$result=$DB->query($query);
+$result = $DB->query($query);
 
 echo "<select name='report'>";
 $plugname = array();
 $rap      = array();
 foreach($tab as $key => $plug) {
-   $mod = ($plug=='reports' ? $key : $plug.'_'.$key);
+   $mod = (($plug == 'reports') ? $key : $plug.'_'.$key);
    if (!isset($plugname[$plug])) {
       // Retrieve the plugin name
       $function        = "plugin_version_$plug";
       $tmp             = $function();
       $plugname[$plug] = $tmp['name'];
    }
-   $section = (isStat($mod) ? $LANG['title'][24] . ' - ' . $LANG['Menu'][13]
-                            : $LANG['Menu'][18] . ' - ' . $LANG['Menu'][6]);
+   $section = (isStat($mod) ? sprintf(__('%1$s - %2$s'), __('Assistance'), __('Statistics'))
+                            : sprintf(__('%1$s - %2$s'), __('Tools'), __('Report', 'Reports', 2)));
 
+   // TODO $LANG
    $rap[$plug][$section][$mod] = $LANG["plugin_$plug"][$key][1];
 }
 
 $tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 foreach ($rap as $plug => $tmp1) {
-   echo '<optgroup label="'.$LANG['common'][29].' - '.$plugname[$plug].'">';
+   echo '<optgroup label="'.sprintf(__('%1$s - %2$s'), __('Plugins'), $plugname[$plug]).'">';
    foreach ($tmp1 as $section => $tmp2) {
       echo '<optgroup label="'.$tab."&raquo;&nbsp;".$section.'">';
       foreach ($tmp2 as $mod => $name) {
@@ -102,7 +99,7 @@ foreach ($rap as $plug => $tmp1) {
 }
 
 echo "</select>";
-echo "<td><input type='submit' value='".$LANG['buttons'][2]."' class='submit' ></td></tr>";
+echo "<td><input type='submit' value='"._sx('button', 'Post')."' class='submit' ></td></tr>";
 echo "</table>";
 Html::closeForm();
 

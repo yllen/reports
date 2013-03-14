@@ -46,7 +46,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 $report = new PluginReportsAutoReport();
 
-$report->setColumnsNames(array('expire'       => $LANG['financial'][88],
+$report->setColumns(array('expire'       => $LANG['financial'][88],
                                'name'         => $LANG['plugin_reports']['licensesexpires'][2],
                                'software'     => $LANG['plugin_reports']['licensesexpires'][3],
                                'serial'       => $LANG['common'][19],

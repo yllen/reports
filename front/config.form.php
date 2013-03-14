@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,36 +27,29 @@
  --------------------------------------------------------------------------
  */
 
-// Original Author of file: Balpe Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-if (!defined('GLPI_ROOT')) {
-   define('GLPI_ROOT', '../../..');
-}
-
-include_once (GLPI_ROOT . "/inc/includes.php");
+include_once ("../../../inc/includes.php");
 Plugin::load('reports');
 
-Session::checkSeveralRightsOr(array("config" => "w", "profile" => "w"));
-Html::header($LANG['common'][12], $_SERVER['PHP_SELF'], "config", "plugins");
+Session::checkSeveralRightsOr(array("config"  => "w",
+                                    "profile" => "w"));
+Html::header(__('Setup'), $_SERVER['PHP_SELF'], "config", "plugins");
 
 echo "<div class='center'>";
 echo "<table class='tab_cadre'>";
-echo "<tr><th>".$LANG['plugin_reports']['config'][1]."</th></tr>";
+echo "<tr><th>".__('Reports plugin configuration', 'reports')."</th></tr>";
 
 if (Session::haveRight("profile","w")) {
    echo "<tr class='tab_bg_1 center'><td>";
-   echo "<a href='report.form.php'>".$LANG['plugin_reports']['config'][8]."</a>";
+   echo "<a href='report.form.php'>".__('Reports plugin configuration', 'reports')."</a>";
    echo "</td/></tr>\n";
 }
 
 if (Session::haveRight("config","w")) {
    foreach (searchReport() as $report => $plug) {
-      if (is_file($url=getReportConfigPage($plug,$report))) {
+      if (is_file($url = getReportConfigPage($plug,$report))) {
          echo "<tr class='tab_bg_1 center'><td>";
-         echo "<a href='$url'>".
-               $LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports'][$report][1];
+         echo "<a href='$url'>".sprintf(__('%1$s: %2$s'), __('Report configuration'), $report);
+//               $LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports'][$report][1];
          echo "</a></td/></tr>";
       }
    }

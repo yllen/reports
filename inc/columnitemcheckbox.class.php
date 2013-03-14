@@ -51,7 +51,7 @@ class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
       }
 
       if ($this->obj
-          && $output_type==HTML_OUTPUT
+          && ($output_type == Search::HTML_OUTPUT)
           && $this->obj->can($row[$this->name], 'w')) {
          return "<input type='checkbox' name='item[".$row[$this->name]."]' value='1'>";
       }

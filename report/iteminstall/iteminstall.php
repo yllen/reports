@@ -46,7 +46,7 @@ $budg = new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets',
 //Display criterias form is needed
 $report->displayCriteriasForm();
 
-$display_type = HTML_OUTPUT;
+$display_type = Search::HTML_OUTPUT;
 
 //If criterias have been validated
 if ($report->criteriasValidated()) {
@@ -117,7 +117,7 @@ if ($report->criteriasValidated()) {
       }
    }
 
-   if ($display_type == HTML_OUTPUT) {
+   if ($display_type == Search::HTML_OUTPUT) {
          echo "<div class='center'><table class='tab_cadre_fixe'>";
          echo "<tr><th>$title</th></tr>\n";
          echo "</table></div>\n";
@@ -193,7 +193,7 @@ if ($report->criteriasValidated()) {
          $row_num++;
       }
 
-      if ($display_type == HTML_OUTPUT) {
+      if ($display_type == Search::HTML_OUTPUT) {
          $row = array_pop($result); // Last line : total or single type
          unset($row['buy']);
          Stat::showGraph(array($title => $row), array('type' => 'pie'));
@@ -208,7 +208,7 @@ if ($report->criteriasValidated()) {
    }
    echo Search::showFooter($display_type, $title);
 }
-if ($display_type == HTML_OUTPUT) {
+if ($display_type == Search::HTML_OUTPUT) {
    Html::footer();
 }
 ?>

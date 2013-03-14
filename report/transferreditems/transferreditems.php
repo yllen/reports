@@ -68,7 +68,7 @@ if($report->criteriasValidated()) {
                                             $LANG['plugin_reports']['transferreditems'][4]),
                     new PluginReportsColumnDateTime('date_mod',
                                                     $LANG['plugin_reports']['transferreditems'][2]));
-   $report->setColumnsNames($columns);
+   $report->setColumns($columns);
 
    $query = "SELECT `$table`.`id` as `items_id`,
                     `$table`.`name`,

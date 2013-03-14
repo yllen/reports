@@ -67,7 +67,7 @@ class PluginReportsColumn {
 
    function showTitle($output_type, &$num) {
 
-      if ($output_type != HTML_OUTPUT || !$this->sorton) {
+      if (($output_type != Search::HTML_OUTPUT) || !$this->sorton) {
           echo Search::showHeaderItem($output_type, $this->title, $num);
           return;
       }

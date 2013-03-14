@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,11 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Ticket status selection criteria
  */
@@ -40,10 +34,9 @@ class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
    private $choice = array();
 
    function __construct($report, $name, $label='', $options=array()) {
-      global $LANG;
 
       parent::__construct($report, $name, NOT_AVAILABLE,
-                          ($label ? $label : $LANG['rulesengine'][16]));
+                          ($label ? $label : _n('Criterion', 'Criteria', 2)));
       $this->choice = $options;
    }
 
@@ -54,7 +47,7 @@ class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
       if (empty($val) || $val=='all') {
          return '';
       }
-      return " " . $this->getCriteriaLabel() . " : " . $this->choice[$val];
+      return " " . sprintf(__('%1$s: %2$s'), $this->getCriteriaLabel(), $this->choice[$val]);
    }
 
 
@@ -71,7 +64,7 @@ class PluginReportsArrayCriteria extends PluginReportsDropdownCriteria {
    public function getSqlCriteriasRestriction($link = 'AND') {
 
       $val = $this->getParameterValue();
-      if (empty($val) || $val=='all') {
+      if (empty($val) || ($val == 'all')) {
          return '';
       }
       return $link . " " . $this->getSqlField() . "='$val' ";

@@ -61,7 +61,7 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $report->setColumnsNames(array('id'            => $LANG['common'][2],
+   $report->setColumns(array('id'            => $LANG['common'][2],
                                   'date_mod'      => $LANG['common'][27],
                                   'user_name'     => $LANG['common'][34],
                                   'linked_action' => $LANG['event'][19]));
@@ -83,6 +83,7 @@ if ($report->criteriasValidated()) {
                                        Log::HISTORY_OCS_IDCHANGED      => $LANG['ocsng'][48],
                                        Log::HISTORY_LOG_SIMPLE_MESSAGE => ""));
 
+    //TODO DEPRECATED FUNCTION
    $report->setColumnsMappings($columns_mappings);
 
    $query = "SELECT `id`, `date_mod`, `user_name`, `linked_action`

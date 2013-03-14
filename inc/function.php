@@ -103,7 +103,7 @@ function simpleReport($name, $sql, $cols=array(), $subname="", $group=array()) {
    $report = new AutoReport($name);
 
    if (count($cols)) {
-      $report->setColumnsNames($cols);
+      $report->setColumns($cols);
    }
 
    if (!empty($subname)) {

@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,12 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-// Original Author of file: Balpe Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-define('GLPI_ROOT', '../../..');
-include_once (GLPI_ROOT . "/inc/includes.php");
+include_once ("../../../inc/includes.php");
 
 Session::checkRight('profile', 'w');
 

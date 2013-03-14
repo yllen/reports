@@ -57,7 +57,7 @@ if ($report->criteriasValidated()
 
    $report->setSubNameAuto();
 
-   $report->setColumnsNames(array("license" => $LANG['software'][11],
+   $report->setColumns(array("license" => $LANG['software'][11],
                                   "serial"  => $LANG['common'][19],
                                   "nombre"  => $LANG['tracking'][29],
                                   "type"    => $LANG['common'][17],

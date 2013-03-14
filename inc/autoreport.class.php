@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,11 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
 * Class to create, execute and display a new record
 * The class stores a collection of criterias and
@@ -51,6 +46,7 @@ class PluginReportsAutoReport {
    private $subname         = "";
    private $cpt             = 0;
    private $title           = '';
+
 
    function __construct($title='') {
 
@@ -82,14 +78,13 @@ class PluginReportsAutoReport {
 
 
    /**
-   * Defined "GROUP BY" columns
-   * for output improvment
-   * first line displayed in bold
-   * next lines not displayed
-   *
-   * $colmuns : column name or array of column names
-   *
-    */
+    * Defined "GROUP BY" columns
+    * for output improvment
+    * first line displayed in bold
+    * next lines not displayed
+    *
+    * @param $columns    column name or array of column names
+   **/
    function setGroupBy($columns) {
 
       if (is_array($columns)) {
@@ -97,18 +92,6 @@ class PluginReportsAutoReport {
       } else {
          $this->group_by = array($columns);
       }
-   }
-
-
-   /**
-   * Set columns names (label to be displayed) - DEPRECATED use setColumns instead
-   *
-   * @param $columns array which contains
-   *        sql column name => GLPI's locale
-   **/
-   function setColumnsNames($columns) {
-
-      $this->setColumns($columns);
    }
 
 
@@ -152,6 +135,7 @@ class PluginReportsAutoReport {
 
    /**
    * Set report's Title
+   *
    * @param $title the title of the report
    **/
    function setTitle($title) {
@@ -161,16 +145,17 @@ class PluginReportsAutoReport {
          $this->title = $title;
 
       } else {
+         // TODO $LANG
          $this->title = (isset($LANG['plugin_'.$this->plug][$this->name][1])
                              ? $LANG['plugin_'.$this->plug][$this->name][1]
-                             : $LANG['plugin_reports']['config'][10]);
+                             : __('Report', 'Reports', 1));
       }
    }
 
 
    /**
     * Get the report's title (main title + sub title from criteria)
-    */
+   **/
    function getFullTitle() {
 
       if ($this->subname) {
@@ -181,17 +166,18 @@ class PluginReportsAutoReport {
 
 
    /**
-   * Set the report's subname
-   * @param subname the report's subname to display
-	**/
+    * Set the report's subname
+    *
+    * @param subname the report's subname to display
+   **/
    function setSubName($subname) {
       $this->subname = $subname;
    }
 
 
    /**
-   * Generate automatically the report's subname
-	**/
+    * Generate automatically the report's subname
+   **/
    function setSubNameAuto() {
 
       $subname = "";
@@ -210,19 +196,22 @@ class PluginReportsAutoReport {
 
    //------------- Other -------------//
    /**
-   * Indicates if the criteria's form is validated or not
-   * @return true if form is validated
-	**/
+    * Indicates if the criteria's form is validated or not
+    *
+    * @return true if form is validated
+   **/
    function criteriasValidated() {
       return isset ($_POST['find']);
    }
 
 
    /**
-   * Execute the report
-	**/
+    * Execute the report
+    *
+    * @param $options   array
+   **/
    function execute($options=array()) {
-      global $DB, $LANG, $CFG_GLPI, $HEADER_LOADED;
+      global $DB, $CFG_GLPI, $HEADER_LOADED;
 
       // Require (for pager) when not called by displayCriteriasForm
       $this->manageCriteriasValues();
@@ -238,25 +227,25 @@ class PluginReportsAutoReport {
          $output_type = $_POST["display_type"];
          if ($output_type < 0) {
             $output_type = - $output_type;
-            $limit = 0;
+            $limit       = 0;
          }
       } else {
-         $output_type = HTML_OUTPUT;
+         $output_type = Search::HTML_OUTPUT;
       }
 
       $title = $this->title;
       if ($this->subname) {
-         $title .= " - $this->subname";
+         $title = sprintf(__('%1$s - %2$s'), $title, $this->subname);
       }
 
-      $res = $DB->query($this->sql);
+      $res   = $DB->query($this->sql);
       $nbtot = ($res ? $DB->numrows($res) : 0);
       if ($limit) {
          $start = (isset ($_GET["start"]) ? $_GET["start"] : 0);
          if ($start >= $nbtot) {
             $start = 0;
          }
-         if ($start > 0 || $start + $limit < $nbtot) {
+         if (($start > 0) || (($start + $limit) < $nbtot)) {
             $res = $DB->query($this->sql . " LIMIT $start,$limit");
          }
       } else {
@@ -268,17 +257,17 @@ class PluginReportsAutoReport {
             Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
             Report::title();
          }
-         echo "<div class='center'><font class='red b'>".$LANG['search'][15]."</font></div>";
+         echo "<div class='center'><font class='red b'>".__('No item found')."</font></div>";
          Html::footer();
-      } else if ($output_type == PDF_OUTPUT_PORTRAIT || $output_type == PDF_OUTPUT_LANDSCAPE) {
+      } else if (($output_type == PDF_OUTPUT_PORTRAIT) || ($output_type == PDF_OUTPUT_LANDSCAPE)) {
          include (GLPI_ROOT . "/lib/ezpdf/class.ezpdf.php");
-      } else if ($output_type == HTML_OUTPUT) {
+      } else if ($output_type == Search::HTML_OUTPUT) {
          if (!$HEADER_LOADED) {
             Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
             Report::title();
          }
          echo "<div class='center'><table class='tab_cadre_fixe'>";
-         echo "<tr><th>$title</th></tr>\n";
+         echo "<tr><th>".$title."</th></tr>\n";
          echo "<tr class='tab_bg_2 center'><td class='center'>";
          echo "<form method='POST' action='" .$_SERVER["PHP_SELF"] . "?start=$start'>\n";
 
@@ -293,7 +282,7 @@ class PluginReportsAutoReport {
                   $param .= $key."[".$k."]=".urlencode($v);
                }
             } else {
-               echo "<input type='hidden' name='$key' value='$val' >";
+               echo "<input type='hidden' name='".$key."' value='$val' >";
                if (!empty ($param)) {
                   $param .= "&";
                }
@@ -308,7 +297,7 @@ class PluginReportsAutoReport {
          Html::printPager($start, $nbtot, $_SERVER['PHP_SELF'], $param);
       }
 
-      if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
+      if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
          if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
             echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"".
                   $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
@@ -316,24 +305,23 @@ class PluginReportsAutoReport {
       }
       plugin_reports_checkRight($this->plug, $this->name, "r");
 
-      if ($res && $nbtot >0) {
+      if ($res && ($nbtot > 0)) {
          $nbcols = $DB->num_fields($res);
          $nbrows = $DB->numrows($res);
 
          echo Search::showHeader($output_type, $nbrows, $nbcols, true);
-
          echo Search::showNewLine($output_type);
          $num = 1;
 
          // fill $sqlcols with default sql query fields so we can validate $columns
          $sqlcols = array();
          for ($i = 0 ; $i < $nbcols ; $i++) {
-            $colname = $DB->field_name($res, $i);
+            $colname   = $DB->field_name($res, $i);
             $sqlcols[] = $colname;
          }
          $colsname = array();
          // if $columns is not empty, display $columns
-         if (count($this->columns)>0) {
+         if (count($this->columns) > 0) {
             foreach ($this->columns as $colname => $column) {
                // display only $columns that are valid
                if (in_array($colname, $sqlcols)) {
@@ -377,8 +365,8 @@ class PluginReportsAutoReport {
                   $column->showValue($output_type, $row, $num, $row_num);
                } else if ($crt == $prev) {
                   $column->showValue($output_type,
-                                         ($output_type == CSV_OUTPUT ? $row : array()),
-                                         $num, $row_num);
+                                     (($output_type == Search::CSV_OUTPUT) ? $row : array()),
+                                     $num, $row_num);
                } else {
                   $column->showValue($output_type, $row, $num, $row_num, true);
                }
@@ -400,7 +388,7 @@ class PluginReportsAutoReport {
       }
       echo Search::showFooter($output_type, $title);
 
-      if (!isset ($_POST["display_type"]) || $_POST["display_type"] == HTML_OUTPUT) {
+      if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
          if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
             Html::openArrowMassives("massiveaction_form", true);
             Dropdown::showForMassiveAction($options['withmassiveaction']);
@@ -425,7 +413,7 @@ class PluginReportsAutoReport {
       $this->manageCriteriasValues();
 
       //Display Html::header is output is HTML
-      if (isset ($_POST["display_type"]) && $_POST["display_type"] != HTML_OUTPUT) {
+      if (isset ($_POST["display_type"]) && $_POST["display_type"] != Search::HTML_OUTPUT) {
          return;
       }
       if (!$HEADER_LOADED) {
