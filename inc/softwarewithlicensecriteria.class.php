@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,26 +27,26 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Dropdown for softwares with license
  */
 class PluginReportsSoftwareWithLicenseCriteria extends PluginReportsDropdownCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default 'softwares_id')
+    * @param $label     (default '')
+   **/
    function __construct($report, $name='softwares_id', $label='') {
-      global $LANG;
 
-      parent::__construct($report, $name, 'glpi_softwares', ($label ? $label :$LANG['help'][31]));
+      parent::__construct($report, $name, 'glpi_softwares',
+                          ($label ? $label : _n('Software', 'Software', 1)));
    }
 
 
    function displayDropdownCriteria() {
-      global $DB, $LANG;
+      global $DB;
 
       $query = "SELECT `glpi_softwares`.`name`, `glpi_softwares`.`id`
                 FROM `glpi_softwarelicenses`
@@ -56,7 +55,7 @@ class PluginReportsSoftwareWithLicenseCriteria extends PluginReportsDropdownCrit
                 LEFT JOIN `glpi_entities`
                      ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)
                 WHERE `glpi_softwarelicenses`.`entities_id`
-                           IN(" . $_SESSION['glpiactiveentities_string'] . ")
+                           IN (" . $_SESSION['glpiactiveentities_string'] . ")
                 GROUP BY `glpi_softwares`.`name`";
       $result = $DB->query($query);
 
@@ -72,7 +71,7 @@ class PluginReportsSoftwareWithLicenseCriteria extends PluginReportsDropdownCrit
          }
          echo "</select>";
       } else {
-         echo "<font class='red b'>".$LANG['search'][15]."</font>";
+         echo "<span class='red b center'>".__('No item found')."</span>";
       }
    }
 

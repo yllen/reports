@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,10 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
 
 /**
  * Ticket status selection criteria
@@ -41,10 +36,17 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
    private $types = array();
 
 
+   /**
+    * @param $report
+    * @param $name            (default 'itemtype')
+    * @param $label           (default '')
+    * @param $types     array
+    * @param $ignored   array
+   **/
    function __construct($report, $name='itemtype', $label='', $types=array(), $ignored=array()) {
-      global $LANG, $CFG_GLPI;
+      global $CFG_GLPI;
 
-      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : $LANG['state'][6]));
+      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : __('Item type')));
 
       if (is_array($types) && count($types)) {
          // $types is an hashtable of itemtype => display name
@@ -57,12 +59,12 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
                $this->types[$itemtype] = $item->getTypeName();
             }
          }
-         $this->types[''] = $LANG['common'][66];
+         $this->types[''] = __('All');
 
       } else {
          // No types, use helpdesk_types
          $this->types     = Ticket::getAllTypesForHelpdesk();
-         $this->types[''] = $LANG['common'][66];
+         $this->types[''] = __('All');
       }
    }
 
@@ -83,7 +85,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
    public function displayDropdownCriteria() {
 
       Dropdown::showFromArray($this->getName(), $this->types,
-                              array('value'=>$this->getParameterValue()));
+                              array('value'=> $this->getParameterValue()));
    }
 
 }

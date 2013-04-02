@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
@@ -28,11 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Ticket status selection criteria
 **/
@@ -41,8 +35,13 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
    private $choice = array();
 
 
+   /**
+    * @param $report
+    * @param $name      (default 'status')
+    * @param $label     (default '')
+    * @param $option    (default 1)
+   **/
    function __construct($report, $name='status', $label='', $option=1) {
-      global $LANG;
 
       if (is_array($option)) {
          foreach ($option as $opt) {
@@ -57,35 +56,39 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
       }
 
       // Parent is PluginReportsArrayCriteria
-      parent::__construct($report, $name, ($label ? $label : $LANG['joblist'][0]), $tab);
+      parent::__construct($report, $name, ($label ? $label : _n('Status', 'Statuses', 1)), $tab);
    }
 
 
    /**
     * Get SQL code associated with the criteria
+    *
+    * @see plugins/reports/inc/PluginReportsArrayCriteria::getSqlCriteriasRestriction()
    **/
-   public function getSqlCriteriasRestriction($link = 'AND') {
+   public function getSqlCriteriasRestriction($link='AND') {
 
       $status = $this->getParameterValue();
       switch ($status) {
          case "notold" :
-            $list = "'new','plan','assign','waiting'";
+            $list  = Ticket::getNewStatusArray();
+            $list .= Ticket::getProcessStatusArray();
+            $list .= Ticket::WAITING;
             break;
 
          case "old" :
-            $list = "'solved','closed'";
+            $list = Ticket::getClosedStatusArray();
             break;
 
          case "process" :
-            $list = "'plan','assign'";
+            $list = Ticket::getProcessStatusArray();
             break;
 
-         case "new" :
-         case "assign" :
-         case "plan" :
-         case "waiting" :
-         case "solved" :
-         case "closed" :
+         case Ticket::INCOMING :
+         case Ticket::ASSIGNED :
+         case Ticket::PLANNED :
+         case Ticket::WAITING :
+         case Ticket::SOLVED :
+         case Ticket::CLOSED :
             $list = "'$status'";
             break;
 

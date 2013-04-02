@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,17 +27,17 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Criteria which allows to select a time interval
  */
 class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default time-interval)
+    * @param $label     (default '')
+   **/
    function __construct($report, $name='time-interval', $label='') {
       parent::__construct($report, $name, $name, $label);
    }
@@ -62,10 +61,11 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
 
 
    function displayCriteria() {
-      global $LANG;
 
       $this->getReport()->startColumn();
-      echo $LANG['plugin_reports']['reports'][4] . " " . $LANG['buttons'][33].'&nbsp;:';
+
+      printf(__('Start at %s'), __('Number pending', 'reports'));
+      echo "&nbsp;&nbsp;";
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -73,7 +73,8 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      echo $LANG['plugin_reports']['reports'][4] . " " . $LANG['buttons'][32].'&nbsp;:';
+      printf(__('End at %s'), __('Number pending', 'reports'));
+      echo "&nbsp;&nbsp;";
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -82,7 +83,10 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
    }
 
 
-   function getSqlCriteriasRestriction($link = 'AND') {
+   /**
+    * @see plugins/reports/inc/PluginReportsAutoCriteria::getSqlCriteriasRestriction()
+   **/
+   function getSqlCriteriasRestriction($link='AND') {
 
       if ($this->getParameter("starttime") < $this->getParameter("endtime")) {
          // ex  08:00:00 <= time < 18:00:00
@@ -96,14 +100,17 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
 
 
    function getSubName() {
-      global $LANG;
 
       $title = $this->getCriteriaLabel($this->getName());
-      if (empty($title) && isset($LANG['plugin_reports']['subname'][$this->getName()])) {
-         $title = $LANG['plugin_reports']['subname'][$this->getName()];
+      if (empty($title)) {
+         if ($this->getName() == 'date-interval') {
+            $title = __('Date interval', 'reports');
+         } if ($this->getName() == 'time-interval') {
+            $title = __('Time interval', 'reports');
+         }
       }
-      return " " . $title .
-             " (" . $this->getParameter('starttime') . "," . $this->getParameter('endtime') . ")";
+      return sprintf(__('%1$s (%2$s)'), "$nbsp;" . $title,
+                     $this->getParameter('starttime') . "," . $this->getParameter('endtime'));
    }
 
 }

@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,15 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file: Dévi Balpe
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 class PluginReportsProfile extends CommonDBTM {
 
 
-   //if profile deleted
+   /**
+    * if profile deleted
+    *
+    * @param $prof   Profile  object
+   **/
    static function cleanProfile(Profile $prof) {
 
       $plugprof = new self();
@@ -44,12 +42,16 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
-   //if profile cloned
+   /**
+    * if profile cloned
+    *
+    * @param $prof   Profile  object
+   **/
    static function cloneProfile(Profile $prof) {
       global $DB;
 
       $plugprof = new self();
-      $crit = array('profiles_id' => $prof->input['_old_id']);
+      $crit     = array('profiles_id' => $prof->input['_old_id']);
       foreach ($DB->request($plugprof->getTable(), $crit) as $data) {
          $input = ToolBox::addslashes_deep($data);
          unset($input['id']);
@@ -69,8 +71,11 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
+   /**
+    * @param $prof   Profile object
+   **/
    static function showForProfile(Profile $prof){
-      global $LANG,$DB;
+      global $DB;
 
       $target = Toolbox::getItemTypeFormURL(__CLASS__);
 
@@ -83,12 +88,14 @@ class PluginReportsProfile extends CommonDBTM {
          echo "<form action='".$target."' method='post'>";
       }
       echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='4' class='center b'>".
-             $LANG['plugin_reports']['config'][4]." ".$prof->getField('profile')."</th></tr>";
+      echo "<tr><th colspan='4' class='center b'>";
+      printf(__('%1$s: %2$s'), __('Rights management by profil', 'reports'),
+             $prof->getField('profile'));
+      echo "</th></tr>";
 
       $plugname = array();
       foreach(searchReport() as $key => $plug) {
-         $mod = ($plug=='reports' ? $key : "${plug}_${key}");
+         $mod = (($plug == 'reports') ? $key : "${plug}_${key}");
          echo "<tr class='tab_bg_1'>";
          if (!isset($plugname[$plug])) {
             // Retrieve the plugin name
@@ -98,30 +105,32 @@ class PluginReportsProfile extends CommonDBTM {
          }
          echo "<td>".$plugname[$plug]."</td>";
          if (strpos($key,'stat') === false) {
-            echo "<td>".$LANG['Menu'][6]."</td>";
+            echo "<td>"._n('Report', 'Reports', 2)."</td>";
          } else {
-            echo "<td>".$LANG['Menu'][13]."</td>";
+            echo "<td>".__('Statistics')."</td>";
          }
+         // TODO $lang
          echo "<td>".$LANG["plugin_$plug"][$key][1]." :</td><td>";
-         if ((isStat($key) && $prof->getField('statistic')==1)
-             || (!isStat($key) && $prof->getField('reports')=='r')) {
+         if ((isStat($key) && ( $prof->getField('statistic')== 1))
+             || (!isStat($key) && ($prof->getField('reports') == 'r'))) {
             Profile::dropdownNoneReadWrite($mod, (isset($rights[$mod])?$rights[$mod]:''), 1, 1, 0);
          } else {
             // Can't access because missing right from GLPI core
             // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
-            echo "<input type='hidden' name='$mod' value='NULL'>".$LANG['profiles'][12];
+            echo "<input type='hidden' name='$mod' value='NULL'>".__('No Access');
             echo (isStat($key) ? " **" : " *");
          }
          echo "</td></tr>";
       }
 
-      if ($prof->getField('statistic')!=1 || $prof->getField('reports')!='r') {
+      if (($prof->getField('statistic')!= 1)
+          || ($prof->getField('reports') != 'r')) {
          echo "<tr class='b tab_bg_4'><td colspan='4'>";
          if ($prof->getField('reports')!='r') {
-            echo '*  '.$LANG['plugin_reports']['config'][2].'.<br>';
+            echo '*  '.__('No right on Tools / Reports', 'REPORTS').'.<br>';
          }
          if ($prof->getField('statistic')!=1) {
-            echo '** '.$LANG['plugin_reports']['config'][3].'.';
+            echo '** '.__('No right on Assistance / Statistics', 'REPORTS').'.';
          }
          echo "</td></tr>\n";
       }
@@ -129,8 +138,8 @@ class PluginReportsProfile extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          echo "<td class='center' colspan='4'>";
          echo "<input type='hidden' name='profiles_id' value=$profiles_id>";
-         echo "<input type='submit' name='update_user_profile' value='".
-                $LANG['buttons'][7]."' class='submit'>";
+         echo "<input type='submit' name='update_user_profile' value='"._sx('button', 'Update')."'
+                class='submit'>";
          echo "</td></tr>\n";
          echo "</table>";
          Html::closeForm();
@@ -140,8 +149,11 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
+   /**
+    * @param $report
+   **/
    static function showForReport($report) {
-      global $DB, $LANG;
+      global $DB;
 
       if (empty($report) || !Session::haveRight('profile', 'r')) {
          return false;
@@ -154,7 +166,7 @@ class PluginReportsProfile extends CommonDBTM {
       }
 
       echo "<table class='tab_cadre'>\n";
-      echo "<tr><th colspan='2'>".$LANG['plugin_reports']['config'][9].": </th></tr>\n";
+      echo "<tr><th colspan='2'>".__('Profils rights', 'reports')."</th></tr>\n";
 
 
       $query = "SELECT `id`, `name`, `statistic`, `reports`
@@ -163,28 +175,32 @@ class PluginReportsProfile extends CommonDBTM {
 
       foreach ($DB->request($query) as $data) {
          echo "<tr class='tab_bg_1'><td>" . $data['name'] . "&nbsp: </td><td>";
-         if ((isStat($report) && $data['statistic']==1)
-             || (!isStat($report) && $data['reports']=='r')) {
+         if ((isStat($report) && ($data['statistic'] == 1))
+             || (!isStat($report) && ($data['reports'] == 'r'))) {
             Profile::dropdownNoneReadWrite($data['id'], (isset($current[$data['id']])?'r':''),
                                            1, 1, 0);
          } else {
             // Can't access because missing right from GLPI core
             // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
-            echo "<input type='hidden' name='".$data['id']."' value='NULL'>".$LANG['profiles'][12].
-                   " *";
+            echo "<input type='hidden' name='".$data['id']."' value='NULL'>".__('No access')." *";
          }
          echo "</td></tr>\n";
       }
       echo "<tr class='tab_bg_4'><td colspan='2'>* ";
-      echo $LANG['plugin_reports']['config'][isStat($report) ? 3 : 2];
+      if (isStat($report)) {
+         _e('No right on Assistance / Statistics', 'reports');
+      } else {
+         _e('No right on Tools / Reports', 'reports');
+      }
       echo "</tr>";
 
       if ($canedit) {
          echo "<tr class='tab_bg_1'><td colspan='2' class='center'>";
          echo "<input type='hidden' name='report' value='$report'>";
-         echo "<input type='submit' name='update' value='".$LANG['buttons'][7]."' ".
+         echo "<input type='submit' name='update' value='"._sx('button', 'Update')."' ".
                 "class='submit'>&nbsp;&nbsp;&nbsp;";
-         echo "<input type='submit' name='delete' value='".$LANG['buttons'][6]."' class='submit'>";
+         echo "<input type='submit' name='delete' value='"._sx('button', 'Delete permanently')."'
+                class='submit'>";
          echo "</td></tr>\n";
          echo "</table>\n";
          Html::closeForm();
@@ -194,6 +210,9 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
+   /**
+    * @param $input
+   **/
    static function updateForProfile($input) {
 
       $prof = new self();
@@ -203,7 +222,7 @@ class PluginReportsProfile extends CommonDBTM {
       foreach(searchReport() as $key => $plug) {
          $mod = ($plug=='reports' ? $key : "${plug}_${key}");
 
-         if ($input[$mod]=='r') {
+         if ($input[$mod] == 'r') {
             if (isset($current[$mod])) {
                unset($current[$mod]);
             } else {
@@ -220,6 +239,9 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
+   /**
+    * @param $input
+   **/
    static function updateForReport($input) {
 
       $prof    = new self();
@@ -246,15 +268,18 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
+   /**
+    * @param $reports
+   **/
    function updateRights($reports) {
       global $DB;
 
       $rights = array();
-      foreach($reports as $report => $plug) {
-         if ($plug =='reports') {
-            $rights[$report]=1;
+      foreach ($reports as $report => $plug) {
+         if ($plug == 'reports') {
+            $rights[$report] = 1;
          } else {
-            $rights["${plug}_${report}"]=1;
+            $rights["${plug}_${report}"] = 1;
          }
       }
 
@@ -282,13 +307,17 @@ class PluginReportsProfile extends CommonDBTM {
                      VALUES (4, '$right', 'r')");
 
          // For immediate availability
-         if ($_SESSION['glpiactiveprofile']['id']==4) {
+         if ($_SESSION['glpiactiveprofile']['id'] == 4) {
             $_SESSION['glpi_plugin_reports_profile'][$right] = 'r';
          }
       }
    }
 
 
+   /**
+    * @param $crit
+    * @param $full   (false by default)
+   **/
    static function getAllRights($crit, $full=false) {
       global $DB;
 
@@ -391,13 +420,14 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
-
+   /**
+    * @see inc/CommonGLPI::getTabNameForItem()
+   **/
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
 
       if ($item->getType() == 'Profile') {
          if ($item->fields['interface'] != 'helpdesk') {
-            return array(1 => $LANG['plugin_reports']['title'][1]);
+            return array(1 => _n('Report', 'Reports', 2));
          }
       }
       return '';
@@ -407,7 +437,7 @@ class PluginReportsProfile extends CommonDBTM {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
 
       if ($item->getType() == 'Profile') {
-         if ($item->getField('interface')=='central') {
+         if ($item->getField('interface') == 'central') {
             $prof = new self();
             $prof->updatePluginRights();
             self::showForProfile($item);

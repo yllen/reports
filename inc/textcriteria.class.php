@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,21 +27,20 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * User titles selection criteria
  */
 class PluginReportsTextCriteria extends PluginReportsDropdownCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default 'value')
+    * @param $label     (default '')
+   **/
    function __construct($report, $name='value', $label='') {
-      global $LANG;
 
-      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label :$LANG['common'][16]));
+   	parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : __('Name')));
    }
 
 
@@ -52,7 +50,6 @@ class PluginReportsTextCriteria extends PluginReportsDropdownCriteria {
 
 
    function displayCriteria() {
-      global $LANG;
 
       $this->getReport()->startColumn();
       echo $this->getCriteriaLabel().'&nbsp;:';

@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,22 +27,23 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * User types selection criteria
  */
 class PluginReportsUserTypeCriteria extends PluginReportsDropdownCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default usercategories_id)
+    * @param $label     (default '')
+   **/
    function __construct($report, $name='usercategories_id', $label='') {
-      global $LANG;
 
       parent::__construct($report, $name, 'glpi_usercategories',
-                          ($label ? $label : $LANG['common'][34]." : ".$LANG['common'][17]));
+                          ($label ? $label : sprintf(__('%1$s: %2$s'),
+                                                     _n('User', 'Users', 1),
+                                                     _n('Type', 'Types', 1))));
    }
 
 }

@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,21 +27,21 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file: Alexis CHARLES
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * SoftwareCategories selection criteria
  */
 class PluginReportsSoftwareCategoriesCriteria extends PluginReportsDropdownCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default 'softwarecategories_id')
+    * @param $label     (default '')
+   **/
    function __construct($report, $name = 'softwarecategories_id', $label='') {
-      global $LANG;
 
-      parent::__construct($report, $name, 'glpi_softwarecategories', ($label ? $label :$LANG['softwarecategories'][5]));
+      parent::__construct($report, $name, 'glpi_softwarecategories',
+                          ($label ? $label : -n('Software category', 'Software categories', 1)));
    }
 
 

@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,21 +27,21 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Devices status selection criteria
  */
 class PluginReportsStatusCriteria extends PluginReportsDropdownCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default 'states_id')
+    * @param $label     (default '')
+   **/
    function __construct($report, $name='states_id', $label='') {
-      global $LANG;
 
-      parent::__construct($report, $name, 'glpi_states', ($label ? $label : $LANG['joblist'][0]));
+      parent::__construct($report, $name, 'glpi_states',
+                          ($label ? $label : _n('Status', 'Statuses', 1)));
    }
 
 }

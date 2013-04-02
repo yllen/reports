@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -38,10 +37,15 @@
 **/
 class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
 
-   function __construct($report, $name = 'priority', $label='') {
-      global $LANG;
 
-      parent::__construct($report, $name, $name, ($label ? $label :$LANG['joblist'][2]));
+   /**
+    * @param $report
+    * @param $name      (default 'priority')
+    * @param $label     (default '')
+   **/
+   function __construct($report, $name='priority', $label='') {
+
+      parent::__construct($report, $name, $name, ($label ? $label : __('Priority')));
    }
 
 
@@ -51,7 +55,6 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
 
 
    public function displayCriteria() {
-      global $LANG;
 
       $this->getReport()->startColumn();
       echo $this->getCriteriaLabel().'&nbsp;:';
@@ -64,14 +67,14 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
 
 
    function getSubName() {
-      global $LANG;
 
       if (!$this->getParameterValue()) {
-         $priority = $LANG['common'][66];
+         $priority = __('All');
 
       } else {
          if ($this->getParameterValue() < 0) {
-            $priority = $LANG['search'][16].Ticket::getPriorityName(abs($this->getParameterValue()));
+            $priority = sprintf(__('%1$s %2$s'), __('At least', 'reports'),
+                                 Ticket::getPriorityName(abs($this->getParameterValue())));
          } else {
             $priority = Ticket::getPriorityName($this->getParameterValue());
          }
@@ -80,12 +83,18 @@ class PluginReportsPriorityCriteria extends PluginReportsAutoCriteria {
    }
 
 
+   /**
+    * @param $priority
+   **/
    function setDefaultPriorityValue($priority) {
       $this->addParameter($this->getName(), $priority);
    }
 
 
-   public function getSqlCriteriasRestriction($link = 'AND') {
+   /**
+    * @see plugins/reports/inc/PluginReportsAutoCriteria::getSqlCriteriasRestriction()
+   */
+   public function getSqlCriteriasRestriction($link='AND') {
       //If value > 0 : a priority is selected
       //If value == 0 : no priority selected
       //If value < 0 : means "priority above the priority selected"

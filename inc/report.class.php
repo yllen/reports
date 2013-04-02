@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -30,7 +29,6 @@
 
 // ----------------------------------------------------------------------
 // Original Author of file: Dévi Balpe
-// Purpose of file:
 // ----------------------------------------------------------------------
 
 class PluginReportsReport extends CommonGLPI {
@@ -40,17 +38,12 @@ class PluginReportsReport extends CommonGLPI {
     * Return the localized name of the current Type
     * Shoudl be overloaded in each new class
     *
-    * $nb for singular / plural
+    * @param $nb  integer  for singular / plural
     *
     * @return string
     */
    static function getTypeName($nb=0) {
-      global $LANG;
-
-      if ($nb < 2) {
-         return $LANG['plugin_reports']['reports'][3];
-      }
-      return $LANG['Menu'][6];
+      return _n('Report', 'Reports', $nb);
    }
 
 }

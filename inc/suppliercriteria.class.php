@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,21 +27,21 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * User titles selection criteria
  */
 class PluginReportsSupplierCriteria extends PluginReportsDropdownCriteria {
 
 
-   function __construct($report, $name='suppliers_id', $label) {
-      global $LANG;
+   /**
+    * @param $report
+    * @param $name      (default 'suppliers_id')
+    * @param $label     default '')
+   **/
+   function __construct($report, $name='suppliers_id', $label='') {
 
-      parent::__construct($report, $name, 'glpi_suppliers', ($label ? $label : $LANG['financial'][26]));
+      parent::__construct($report, $name, 'glpi_suppliers',
+                          ($label ? $label : _n('Supplier', 'Suppliers', 1)));
    }
 
 }

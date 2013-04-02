@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,9 +27,6 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
 
 /**
  * Search for reports in all activated plugins
@@ -54,13 +51,13 @@ function searchReport() {
 /**
  * Include locales for a specific report
  *
- * @param $report_name the name of the report to use
- * @param $plugin plugins name
+ * @param $report_name  the name of the report to use
+ * @param $plugin       plugins name (default 'reports')
  *
  * @return boolean, true if locale found
 **/
 function includeLocales($report_name, $plugin='reports') {
-   global $CFG_GLPI, $LANG;
+   global $CFG_GLPI;
 
    $prefix = GLPI_ROOT . "/plugins/$plugin/report/". $report_name ."/" . $report_name;
 
@@ -72,11 +69,9 @@ function includeLocales($report_name, $plugin='reports') {
    } else if (file_exists($prefix . ".en_GB.php")) {
       include_once  ($prefix . ".en_GB.php");
 
-   } else if (file_exists($prefix . ".fr_FR.php")) {
-      include_once  ($prefix . ".fr_FR.php");
-
    } else {
       // At least defined report name
+      // TODO $lang
       if (!isset($LANG["plugin_$plugin"][$report_name][1])) {
          $LANG["plugin_$plugin"][$report_name][1] = $report_name;
       }
@@ -91,14 +86,14 @@ function includeLocales($report_name, $plugin='reports') {
 /**
  * Manage display and export of an sql query
  *
- * @param name name of the report
- * @param sql the sql query to execute
- * @param cols an array which contains the columns and their name to display
- * @param subname second level of name to display
- * @param group an array which contains all the fields to use in GROUP BY sql instruction
+ * @param $name             name of the report
+ * @param $sql              the sql query to execute
+ * @param $cols     array   which contains the columns and their name to display
+ * @param $subname          second level of name to display (default '')
+ * @param $group    array   which contains all the fields to use in GROUP BY sql instruction
 **/
 function simpleReport($name, $sql, $cols=array(), $subname="", $group=array()) {
-   global $DB, $LANG, $CFG_GLPI;
+   global $DB, $CFG_GLPI;
 
    $report = new AutoReport($name);
 

@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -38,14 +37,18 @@
  */
 class PluginReportsGroupCriteria extends PluginReportsDropdownCriteria {
 
-   function __construct($report, $name='groups_id', $label='', $condition='') {
-      global $LANG;
 
-      parent::__construct($report,
-                          $name,
-                          'glpi_groups',
-                          ($label ? $label : $LANG['common'][35]),
+   /**
+    * @param $report
+    * @param $name         (default 'groups_id')
+    * @param $label        (default '')
+    * @param $condition    (default '')
+   **/
+   function __construct($report, $name='groups_id', $label='', $condition='') {
+
+      parent::__construct($report, $name, 'glpi_groups', ($label ? $label : __('Group')),
                           $condition);
    }
+
 }
 ?>

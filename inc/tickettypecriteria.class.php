@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,28 +27,24 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Ticket category selection criteria
  */
 class PluginReportsTicketTypeCriteria extends PluginReportsArrayCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default 'type')
+    * @param $label     (default '')
+   **/
    function __construct($report, $name='type', $label='') {
-      global $LANG;
 
       $options = array('all' => Dropdown::EMPTY_VALUE);
       foreach (Ticket::getTypes() as $k => $v) {
          $options[$k] = $v;
       }
 
-      parent::__construct($report,
-                          $name,
-                          ($label ? $label : $LANG['common'][17]),
-                          $options);
+      parent::__construct($report, $name, ($label ? $label : _n('Type', 'Type', 1)), $options);
    }
 }

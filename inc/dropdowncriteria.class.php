@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,12 +26,6 @@
  along with reports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
-
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 
 /**
  * Manage criterias from dropdown tables
@@ -58,7 +51,15 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    // For special condition
    private $condition = '';
 
-   function __construct($report, $name, $tableortype='', $label = '', $condition='') {
+
+   /**
+    * @param $report
+    * @param $name
+    * @param $tableortype  (default '')
+    * @param $label        (default '')
+    * @param $condition    (default '')
+   **/
+   function __construct($report, $name, $tableortype='', $label='', $condition='') {
 
       parent::__construct($report, $name, $name, $label);
 
@@ -81,7 +82,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Get criteria's related table
-    */
+   **/
    public function getTable() {
       return $this->table;
    }
@@ -89,7 +90,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Get criteria's related table
-    */
+   **/
    public function getItemType() {
       return getItemTypeForTable($this->table);
    }
@@ -97,7 +98,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Will display dropdown childrens (in table in hierarchical)
-    */
+   **/
    public function setWithChildrens() {
       global $CFG_GLPI;
 
@@ -110,7 +111,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Will display dropdown childrens (in table in hierarchical)
-    */
+   **/
    public function setSearchZero() {
       $this->searchzero = true;
    }
@@ -118,7 +119,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Set default criteria value to 0 and entity restriction to current entity only
-    */
+   **/
    public function setDefaultValues() {
 
       $this->addParameter($this->getName(), 0);
@@ -129,7 +130,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Show dropdown comments (enable by defaults)
-    */
+   **/
    public function setDisplayComments() {
       $this->displayComments = true;
    }
@@ -137,7 +138,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Hide dropdown comments
-    */
+   **/
    public function setNoDisplayComments () {
       $this->displayComments = false;
    }
@@ -145,7 +146,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Get display comments status
-    */
+   **/
    public function getDisplayComments() {
       return $this->displayComments;
    }
@@ -153,10 +154,13 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Change criteria's label
-    * @param label the new label to display
-    * @param name the name of the criteria whose label should be changed (if no name is provided, the default criteria will be used)
-    */
-   public function setCriteriaLabel ($label,$name='') {
+    *
+    * @param label   the new label to display
+    * @param name    the name of the criteria whose label should be changed
+    *                (if no name is provided, the default criteria will be used)
+    *                (default '')
+   **/
+   public function setCriteriaLabel ($label, $name='') {
 
       if ($name == '') {
          $this->criterias_labels[$this->name] = $label;
@@ -168,11 +172,13 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Change entity restriction
+    *
+    * @param $restriction
     * Values are :
     * REPORTS_NO_ENTITY_RESTRICTION : no entity restriction (everything is displayed)
     * REPORTS_CURRENT_ENTITY : only values from the current entity
     * REPORTS_SUB_ENTITIES : values from the current entity + sub-entities
-    */
+   **/
    public function setEntityRestriction($restriction) {
       global $CFG_GLPI;
 
@@ -194,7 +200,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Get entity restrict status
-    */
+   **/
    public function getEntityRestrict() {
       return $this->entity_restrict;
    }
@@ -202,9 +208,8 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Get criteria's subtitle
-    */
+   **/
    public function getSubName() {
-      global $LANG;
 
       $value = $this->getParameterValue();
       if ($value) {
@@ -213,7 +218,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
       if ($this->searchzero) {
          // zero
-         return $this->getCriteriaLabel() . " : " . $LANG['common'][49];
+         return sprintf(__('%1$s: %2$s'), $this->getCriteriaLabel(), __('None'));
       }
 
       // All
@@ -223,9 +228,8 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Display criteria in the criteria's selection form
-    */
+   **/
    public function displayCriteria() {
-      global $LANG;
 
       $this->getReport()->startColumn();
       echo $this->getCriteriaLabel().'&nbsp;:';
@@ -239,7 +243,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Display dropdown
-    */
+   **/
    public function displayDropdownCriteria() {
 
       $options = array('name'     => $this->getName(),
@@ -256,8 +260,10 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
    /**
     * Get SQL code associated with the criteria
-    */
-   public function getSqlCriteriasRestriction($link = 'AND') {
+    *
+    * @see plugins/reports/inc/PluginReportsAutoCriteria::getSqlCriteriasRestriction()
+   **/
+   public function getSqlCriteriasRestriction($link='AND') {
 
       if ($this->getParameterValue() || $this->searchzero) {
          if (!$this->childrens) {
@@ -273,5 +279,6 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
       // Zero => means ALL => no criteria
       return '';
    }
+
 }
 ?>

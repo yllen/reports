@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,22 +27,23 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Ticket category selection criteria
  */
 class PluginReportsTicketCategoryCriteria extends PluginReportsDropdownCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default 'itilcategories_id')
+    * @param $label     (default '')
+    * @param $type      (default '')
+   **/
    function __construct($report, $name='itilcategories_id', $label='', $type='') {
-      global $LANG;
 
       parent::__construct($report, $name, 'glpi_itilcategories',
-                          ($label ? $label : $LANG['setup'][79]), $type);
+                          ($label ? $label : _n('Categorie of ticket', 'Categories of tickets', 1)),
+                          $type);
    }
 
 }

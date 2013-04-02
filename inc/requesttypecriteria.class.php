@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,10 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
 
 /**
  * User titles selection criteria
@@ -39,10 +34,15 @@
 class PluginReportsRequestTypeCriteria extends PluginReportsDropdownCriteria {
 
 
+   /**
+    * @param $report
+    * @param $name      (default 'requesttypes_id')
+    * @param $label     (default '')
+   **/
    function __construct($report, $name='requesttypes_id', $label='') {
-      global $LANG;
 
-      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : $LANG['job'][44]));
+      parent::__construct($report, $name, NOT_AVAILABLE,
+                          ($label ? $label : _n('Request source', 'Request sources', 1)));
    }
 
 

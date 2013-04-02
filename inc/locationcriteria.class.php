@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,24 +27,26 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Location selection criteria
  */
 class PluginReportsLocationCriteria extends PluginReportsDropdownCriteria {
 
 
-   function __construct($report, $name = 'locations_id', $label='') {
-      global $LANG;
+   /**
+    * @param $report
+    * @param $name      (default 'locations_id')
+    * @param $label     (default '')
+   **/
+   function __construct($report, $name='locations_id', $label='') {
 
-      parent::__construct($report, $name, 'glpi_locations', ($label ? $label :$LANG['common'][15]));
+      parent::__construct($report, $name, 'glpi_locations', ($label ? $label : __('Location')));
    }
 
 
+   /**
+    * @param $location
+   **/
    public function setDefaultLocation($location) {
       $this->addParameter($this->name, $location);
    }

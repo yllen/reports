@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,11 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * User titles selection criteria
  */
@@ -44,11 +38,20 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
    private $coef  = 1;
 
 
+   /**
+    * @param $report
+    * @param $name            (default 'value')
+    * @param $label           (default '')
+    * @param $signe           (default '')
+    * @param $min             (default 0)
+    * @param $max             (default 100)
+    * @param $coef            (default 1)
+    * @param $unit            (default '')
+   **/
    function __construct($report, $name='value', $label='', $signe='', $min=0, $max=100, $coef=1,
                         $unit='') {
-      global $LANG;
 
-      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label :$LANG['financial'][21]));
+      parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : __('Value')));
 
       $this->setOptions($signe,$min,$max,$coef,$unit);
    }
@@ -61,6 +64,13 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
    }
 
 
+   /**
+    * @param $signe     (default '')
+    * @param $min       (default 0)
+    * @param $max       (default 100)
+    * @param $coef      (default 1)
+    * @param $unit      (default '')
+   **/
    function setOptions($signe='', $min=0, $max=100, $coef=1, $unit='') {
 
       $this->signe = $signe;
@@ -72,7 +82,6 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
 
 
    function displayCriteria() {
-      global $LANG;
 
       $this->getReport()->startColumn();
       echo $this->getCriteriaLabel().'&nbsp;:';
@@ -82,7 +91,7 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
       if (empty($this->signe)) {
          Dropdown::showFromArray($this->getName()."_sign",
                                  array('<='    => '<=',
-                                       '>=' => '>='),
+                                       '>='    => '>='),
                                  array('value' => Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))));
          echo "&nbsp;";
       }
@@ -112,7 +121,10 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
    }
 
 
-   function getSqlCriteriasRestriction($link = 'AND') {
+   /**
+    * @see plugins/reports/inc/PluginReportsDropdownCriteria::getSqlCriteriasRestriction()
+   **/
+   function getSqlCriteriasRestriction($link='AND') {
 
       $param = $this->getParameterValue();
       return $link." ".$this->getSqlField().$this->getSign()."'".($param*$this->coef)."' ";
