@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -31,19 +31,17 @@
 // Purpose of file: Generate "doublons" report
 // ----------------------------------------------------------------------
 
-define('GLPI_ROOT', '../../../..');
-
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
 Plugin::load('reports');
 
 Session::checkRight("profile","w");
 
-Html::header($LANG['plugin_reports']['doublons'][1], $_SERVER['PHP_SELF'], "config", "plugins");
+Html::header(__('Duplicate computers', 'reports'), $_SERVER['PHP_SELF'], "config", "plugins");
 
-$types = array(1 => $LANG["networking"][15], // Mac
-               2 => $LANG["networking"][14], // IP
-               3 => $LANG["common"][19]);    // Serial
+$types = array(1 => __('MAC'),
+               2 => __('IP'),
+               3 => __('Serial number'));
 
 if (isset($_POST["delete"]) && isset($_POST['id'])) {
    $query = "DELETE
@@ -98,32 +96,34 @@ if (TableExists("glpi_plugin_reports_doublons_backlist")) {
 // ---------- Form ------------
 echo "<div class='center'><table class='tab_cadre' cellpadding='5'>\n";
 echo "<tr class='tab_bg_1 center'><th><a href='".GLPI_ROOT."/plugins/reports/front/config.form.php'>".
-      $LANG['plugin_reports']['config'][1] . "</a><br />&nbsp;<br />" .
-      $LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports']['doublons'][1] .
+      __('Reports plugin configuration', 'reports') . "</a><br />&nbsp;<br />" .
+      sprintf(__('%1$s: %2$s'), __('Report configuration', 'reports'),
+              __('Duplicate computers', 'reports')) .
       "</th></tr>\n";
 
 $plug = new Plugin();
 if ($plug->isActivated('reports')) {
    echo "<tr class='tab_bg_1 center'><td>";
-   echo "<a href='./doublons.php'>" .$LANG['plugin_reports']['config'][10] . " - " .
-         $LANG['plugin_reports']['doublons'][1] . "</a></td></tr>\n";
+   echo "<a href='./doublons.php'>" .sprintf(__('%1$s - %2$s'), __('Report'),
+                                             __('Duplicate computers', 'reports'))."</a>";
+   echo "</td></tr>\n";
 }
 
 echo "</table>\n";
 
 echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'><br />" .
-   "<table class='tab_cadre' cellpadding='5'>\n" .
-   "<tr class='tab_bg_1 center'><th colspan='4'>" . $LANG['plugin_reports']['doublons'][4] .
-   "</th></tr>\n" .
-   "<tr class='tab_bg_1 center'><th>" . $LANG["common"][17] . "</th><th>" .
-      $LANG["networking"][14]."/".$LANG["networking"][15] . "</th>" .
-   "<th>" . $LANG["common"][25] . "</th><th>&nbsp;</th></tr>\n";
+      "<table class='tab_cadre' cellpadding='5'>\n" .
+      "<tr class='tab_bg_1 center'><th colspan='4'>".__('Exception list setup', 'reports')."</th>".
+      "</tr>\n" .
+      "<tr class='tab_bg_1 center'><th>" . _n('Type', 'Types', 1) . "</th><th>" .
+       sprintf(__('%1$s / %2$s'), __('IP'), __('MAC')) . "</th>" .
+       "<th>" . __('Comments') . "</th><th>&nbsp;</th></tr>\n";
 
 echo "<tr class='tab_bg_1 center'><td>";
 Dropdown::showFromArray("type", $types);
 echo "</td><td><input type='text' name='addr' size='20'></td><td>".
    "<input type='text' name='comment' size='40'></td>" .
-   "<td><input type='submit' name='add' value='".$LANG["buttons"][8]."' class='submit' ></td></tr>\n";
+   "<td><input type='submit' name='add' value='"._sx('button', 'Add')."' class='submit' ></td></tr>\n";
 
 $query = "SELECT *
           FROM `glpi_plugin_reports_doublons_backlists`

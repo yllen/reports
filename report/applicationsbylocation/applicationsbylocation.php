@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -36,25 +36,25 @@
  * ----------------------------------------------------------------------
  */
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
+//Need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
 $report = new PluginReportsAutoReport();
 
-$softwarecategories = new PluginReportsSoftwareCategoriesCriteria($report, 'softwarecategories', $LANG['softwarecategories'][5]);
+$softwarecategories = new PluginReportsSoftwareCategoriesCriteria($report, 'softwarecategories',
+                                                                  __('Software category'));
 $softwarecategories->setSqlField("`glpi_softwarecategories`.`id`");
 
-$software = new PluginReportsSoftwareCriteria($report, 'software', $LANG['plugin_reports']['applicationsbylocation'][2]);
+$software = new PluginReportsSoftwareCriteria($report, 'software', __('Applications', 'reports'));
 $software->setSqlField("`glpi_softwares`.`id`");
 
-$statecpt = new PluginReportsStatusCriteria($report, 'statecpt', $LANG['plugin_reports']['applicationsbylocation'][3]);
+$statecpt = new PluginReportsStatusCriteria($report, 'statecpt', __('Computer status', 'reports'));
 $statecpt->setSqlField("`glpi_computers`.`states_id`");
 
-$location = new PluginReportsLocationCriteria($report, 'location', $LANG['plugin_reports']['applicationsbylocation'][4]);
+$location = new PluginReportsLocationCriteria($report, 'location', _n('Location', 'Locations', 2));
 $location->setSqlField("`glpi_computers`.`locations_id`");
 
 
@@ -65,14 +65,21 @@ if ($report->criteriasValidated()) {
 
    $report->setSubNameAuto();
 
-   $report->setColumns(array(
-      new PluginReportsColumnLink('soft', $LANG['help'][31], 'Software', array('sorton' => 'soft,version')),
-      new PluginReportsColumnLink('locat', $LANG['common'][15], 'Location', array('sorton' => 'glpi_locations.name')),
-      new PluginReportsColumnLink('computer', $LANG['help'][25],'Computer', array('sorton' => 'glpi_computers.name')),
-      new PluginReportsColumn('statecpt', $LANG['joblist'][0]),
-      new PluginReportsColumnLink('version', $LANG['rulesengine'][78], 'SoftwareVersion'),
-      new PluginReportsColumnLink('user', $LANG['common'][34], 'User', array('sorton' => 'glpi_users.name'))
-   ));
+   $report->setColumns(array(new PluginReportsColumnLink('soft', _n('Software', 'Software', 1),
+                                                         'Software',
+                                                         array('sorton' => 'soft,version')),
+                             new PluginReportsColumnLink('locat', _n('Location', 'Locations', 1),
+                                                         'Location',
+                                                         array('sorton' => 'glpi_locations.name')),
+                             new PluginReportsColumnLink('computer', _n('Computer', 'Computers', 1),
+                                                         'Computer',
+                                                         array('sorton' => 'glpi_computers.name')),
+                             new PluginReportsColumn('statecpt', _n('Status', 'Statuses', 1)),
+                             new PluginReportsColumnLink('version', __('Version name'),
+                                                         'SoftwareVersion'),
+                             new PluginReportsColumnLink('user', _n('User', 'Users', 1), 'User',
+                                                         array('sorton' => 'glpi_users.name'))
+                      ));
 
    $query = "SELECT `glpi_softwareversions`.`softwares_id` AS soft,
                     `glpi_softwareversions`.`name` AS software,
