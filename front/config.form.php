@@ -46,10 +46,9 @@ if (Session::haveRight("profile","w")) {
 
 if (Session::haveRight("config","w")) {
    foreach (searchReport() as $report => $plug) {
-      if (is_file($url = getReportConfigPage($plug,$report))) {
+      if (is_file($url = getReportConfigPage($plug, $report))) {
          echo "<tr class='tab_bg_1 center'><td>";
          echo "<a href='$url'>".sprintf(__('%1$s: %2$s'), __('Report configuration'), $report);
-//               $LANG['plugin_reports']['config'][11] . " : " . $LANG['plugin_reports'][$report][1];
          echo "</a></td/></tr>";
       }
    }

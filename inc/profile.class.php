@@ -61,12 +61,12 @@ class PluginReportsProfile extends CommonDBTM {
    }
 
 
-   function canCreate() {
+   static function canCreate() {
       return Session::haveRight('profile', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return Session::haveRight('profile', 'r');
    }
 
@@ -109,8 +109,7 @@ class PluginReportsProfile extends CommonDBTM {
          } else {
             echo "<td>".__('Statistics')."</td>";
          }
-         // TODO $lang
-         echo "<td>".$LANG["plugin_$plug"][$key][1]." :</td><td>";
+         echo "<td>".sprintf(__('%s'), $key)."</td><td>";
          if ((isStat($key) && ( $prof->getField('statistic')== 1))
              || (!isStat($key) && ($prof->getField('reports') == 'r'))) {
             Profile::dropdownNoneReadWrite($mod, (isset($rights[$mod])?$rights[$mod]:''), 1, 1, 0);

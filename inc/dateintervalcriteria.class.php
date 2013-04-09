@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,25 +27,19 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 /**
  * Criteria which allows to select a date interval
  */
 class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
    function __construct($report, $name='date-interval', $label='', $start='', $end='') {
-      global $LANG;
 
       parent::__construct($report, $name, $name, $label);
 
       $this->addCriteriaLabel($this->getName()."_1",
-                              ($start ? $start : ($label ? $LANG['search'][24] :$LANG['search'][8])));
+                              ($start ? $start : ($label ? __('After') : __('Start date'))));
       $this->addCriteriaLabel($this->getName()."_2",
-                              ($end ? $end : ($label ? $LANG['search'][23] : $LANG['search'][9])));
+                              ($end ? $end : ($label ? __('Before') : __('End date'))));
    }
 
 
@@ -65,7 +58,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $start = $this->getParameter($this->getName()."_1");
       $end   = $this->getParameter($this->getName()."_2");
 
-      return ($start=='NULL' || $end=='NULL' || $start < $end ? $start : $end);
+      return (($start == 'NULL') || ($end == 'NULL') || (($start < $end) ? $start : $end));
    }
 
 
@@ -74,7 +67,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $start = $this->getParameter($this->getName()."_1");
       $end   = $this->getParameter($this->getName()."_2");
 
-      return ($start=='NULL' || $end=='NULL' || $start < $end ? $end : $start);
+      return (($start == 'NULL') || ($end == 'NULL') || (($start < $end) ? $end : $start));
    }
 
 
@@ -86,7 +79,6 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
 
    public function displayCriteria() {
-      global $LANG;
 
       $this->getReport()->startColumn();
       $name = $this->getCriteriaLabel($this->getName());
@@ -118,20 +110,20 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $start = $this->getStartDate();
       $end   = $this->getEndDate();
 
-      if ($start=='NULL' && $end=='NULL') {
+      if (($start == 'NULL') && ($end == 'NULL')) {
          return '';
       }
 
       $sql = '';
-      if ($start!='NULL') {
+      if ($start != 'NULL') {
          $sql .= $this->getSqlField() . ">= '" . $this->getStartDate() . " 00:00:00'";
       }
 
-      if ($start!='NULL' && $end!='NULL') {
+      if (($start != 'NULL') && ($end != 'NULL')) {
          $sql .= ' AND ';
       }
 
-      if ($end!='NULL') {
+      if ($end != 'NULL') {
          $sql .= $this->getSqlField() . "<='" . $this->getEndDate() . " 23:59:59' ";
       }
 
@@ -140,29 +132,28 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
 
    function getSubName() {
-      global $LANG;
 
       $start = $this->getStartDate();
       $end   = $this->getEndDate();
       $title = $this->getCriteriaLabel($this->getName());
 
-      if ($start=='NULL' && $end=='NULL') {
+      if (($start == 'NULL') && ($end == 'NULL')) {
          return '';
       }
 
-      if (empty($title) && isset($LANG['plugin_reports']['subname'][$this->getName()])) {
-         $title = $LANG['plugin_reports']['subname'][$this->getName()];
+      if (empty($title) && isset($this->getName())) {
+         $title = sprintf(__('%s'), $this->getName());
       }
 
-      if ($start=='NULL') {
-         return $title . ', ' . $LANG['search'][23] . ' ' . Html::convDate($end);
+      if ($start == 'NULL') {
+         return $title . ', ' . sprintf(__('%1$s %2$s'), __('Before'), Html::convDate($end));
       }
 
-      if ($end=='NULL') {
-         return $title . ', ' . $LANG['search'][24] . ' ' . Html::convDate($start);
+      if ($end == 'NULL') {
+         return $title . ', ' . sprintf(__('%1$s %2$s'), __('After'), Html::convDate($start));
       }
 
-      return $title . ' (' . Html::convDate($start) . ',' .Html::convDate($end) . ')';
+      return sprintf(__('%1$s (%2$s)'), $title, Html::convDate($start) . ',' .Html::convDate($end));
    }
 
 }

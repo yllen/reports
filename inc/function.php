@@ -71,10 +71,7 @@ function includeLocales($report_name, $plugin='reports') {
 
    } else {
       // At least defined report name
-      // TODO $lang
-      if (!isset($LANG["plugin_$plugin"][$report_name][1])) {
-         $LANG["plugin_$plugin"][$report_name][1] = $report_name;
-      }
+      sprintf(__('%s'), $report_name);
       Toolbox::logInFile('php-errors', "includeLocales($report_name,$plugin) => not found\n");
       return false;
    }

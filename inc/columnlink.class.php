@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -38,7 +38,6 @@ class PluginReportsColumnLink extends PluginReportsColumn {
 
 
    function __construct($name, $title, $itemtype, $options=array()) {
-      global $LANG;
 
       parent::__construct($name, $title, $options);
 
@@ -50,7 +49,7 @@ class PluginReportsColumnLink extends PluginReportsColumn {
 
       if (isset($options['with_navigate'])) {
          $this->with_navigate = $options['with_navigate'];
-         Session::initNavigateListItems($this->obj->getType(), $LANG['Menu'][6]);
+         Session::initNavigateListItems($this->obj->getType(), _n('Report', 'Reports', 2));
       }
    }
 

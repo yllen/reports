@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,9 +27,6 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Nelly Mahu-Lasson
-// Purpose of file:
-// ----------------------------------------------------------------------
 
 function plugin_reports_install() {
 

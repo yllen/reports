@@ -139,15 +139,13 @@ class PluginReportsAutoReport {
    * @param $title the title of the report
    **/
    function setTitle($title) {
-      global $LANG;
 
       if ($title) {
          $this->title = $title;
 
       } else {
-         // TODO $LANG
-         $this->title = (isset($LANG['plugin_'.$this->plug][$this->name][1])
-                             ? $LANG['plugin_'.$this->plug][$this->name][1]
+         $this->title = (isset($this->name)
+                             ? sprintf(__('%s'), $this->name)
                              : __('Report', 'Reports', 1));
       }
    }
@@ -407,7 +405,7 @@ class PluginReportsAutoReport {
     * @param params the search criterias
     */
    function displayCriteriasForm() {
-      global $LANG, $HEADER_LOADED;
+      global $HEADER_LOADED;
 
       //Get criteria's values
       $this->manageCriteriasValues();
@@ -418,11 +416,10 @@ class PluginReportsAutoReport {
       }
       if (!$HEADER_LOADED) {
          if (isStat($this->name)) {
-            Html::header($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
-                        "maintain", "stat");
+            Html::header(sprintf(__('%s'), $this->name), $_SERVER['PHP_SELF'], "maintain", "stat");
             Stat::title();
          } else {
-            Html::header($LANG['plugin_'.$this->plug][$this->name][1], $_SERVER['PHP_SELF'],
+            Html::header(sprintf(__('%s'), $this->name), $_SERVER['PHP_SELF'],
                         "utils", "report");
             Report::title();
          }
@@ -435,7 +432,7 @@ class PluginReportsAutoReport {
          echo "<div class='center'>";
          echo "<form method='post' name='form' action='".$_SERVER['PHP_SELF']."'>";
          echo "<table class='tab_cadre_fixe'>";
-         echo "<tr><th colspan='6'>" . $LANG['plugin_reports']['reports'][1];
+         echo "<tr><th colspan='6'>" . __('Search criteria', 'reports');
 
          //If form is validated, then display the bookmark button
          if ($this->criteriasValidated()) {
@@ -454,7 +451,7 @@ class PluginReportsAutoReport {
          $this->closeColumn();
 
          echo "<tr class='tab_bg_2'><td colspan='4' class='center'>";
-         echo "<input type='submit' name='find' value='" . $LANG['buttons'][0] . "' class='submit'>";
+         echo "<input type='submit' name='find' value='"._sx('button', 'Search')."' class='submit'>";
          echo "</td></tr>";
          echo "</table></div>";
          Html::closeForm();

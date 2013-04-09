@@ -81,8 +81,7 @@ foreach($tab as $key => $plug) {
    $section = (isStat($mod) ? sprintf(__('%1$s - %2$s'), __('Assistance'), __('Statistics'))
                             : sprintf(__('%1$s - %2$s'), __('Tools'), __('Report', 'Reports', 2)));
 
-   // TODO $LANG
-   $rap[$plug][$section][$mod] = $LANG["plugin_$plug"][$key][1];
+   $rap[$plug][$section][$mod] = sprintf(__('%s'), $key);
 }
 
 $tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
