@@ -257,7 +257,8 @@ class PluginReportsAutoReport {
          }
          echo "<div class='center'><font class='red b'>".__('No item found')."</font></div>";
          Html::footer();
-      } else if (($output_type == PDF_OUTPUT_PORTRAIT) || ($output_type == PDF_OUTPUT_LANDSCAPE)) {
+      } else if (($output_type == Search::PDF_OUTPUT_PORTRAIT)
+                 || ($output_type == Search::PDF_OUTPUT_LANDSCAPE)) {
          include (GLPI_ROOT . "/lib/ezpdf/class.ezpdf.php");
       } else if ($output_type == Search::HTML_OUTPUT) {
          if (!$HEADER_LOADED) {

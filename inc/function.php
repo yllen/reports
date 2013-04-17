@@ -43,7 +43,6 @@ function searchReport() {
          includeLocales(basename($path), $plug['directory']);
       }
    }
-
    return $tab;
 }
 
@@ -57,22 +56,25 @@ function searchReport() {
  * @return boolean, true if locale found
 **/
 function includeLocales($report_name, $plugin='reports') {
-   global $CFG_GLPI;
+   global $CFG_GLPI, $LANG;
 
    $prefix = GLPI_ROOT . "/plugins/$plugin/report/". $report_name ."/" . $report_name;
 
    if (isset ($_SESSION["glpilanguage"])
-       && file_exists($prefix . "." . $CFG_GLPI["languages"][$_SESSION["glpilanguage"]][1])) {
+       && file_exists($prefix . "." . $_SESSION["glpilanguage"].".php")) {
 
-      include_once  ($prefix . "." . $CFG_GLPI["languages"][$_SESSION["glpilanguage"]][1]);
+      include_once  ($prefix . "." . $_SESSION["glpilanguage"].".php");
 
    } else if (file_exists($prefix . ".en_GB.php")) {
       include_once  ($prefix . ".en_GB.php");
 
    } else {
       // At least defined report name
-      sprintf(__('%s'), $report_name);
-      Toolbox::logInFile('php-errors', "includeLocales($report_name,$plugin) => not found\n");
+      $LANG['plugin_'.$plugin][$report_name][1] = __($report_name.'_report_title');
+      // For dev
+      if ($LANG['plugin_'.$plugin][$report_name][1] == $report_name.'_report_title') {
+         Toolbox::logInFile('php-errors', "includeLocales($report_name,$plugin) => not found\n");
+      }
       return false;
    }
 

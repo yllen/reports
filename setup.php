@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -46,17 +46,15 @@ function plugin_init_reports() {
 
    Plugin::registerClass('PluginReportsStat');
 
-   Plugin::registerClass('PluginReportsProfile',
-                         array('addtabon' => array('Profile')));
+   Plugin::registerClass('PluginReportsProfile', array('addtabon' => array('Profile')));
 
 
    $PLUGIN_HOOKS['change_profile']['reports'] = array('PluginReportsProfile','changeprofile');
 
    if (Session::haveRight("config", "w")) {
-      $PLUGIN_HOOKS['headings']['reports']        = 'plugin_get_headings_reports';
-      $PLUGIN_HOOKS['headings_action']['reports'] = 'plugin_headings_actions_reports';
       $PLUGIN_HOOKS['config_page']['reports']     = 'front/config.form.php';
    }
+
    $PLUGIN_HOOKS['menu_entry']['reports']     = false;
    $PLUGIN_HOOKS['pre_item_purge']['reports'] = array('Profile' => array('PluginReportsProfile',
                                                                          'cleanProfile'));
@@ -68,17 +66,17 @@ function plugin_init_reports() {
 
    foreach (searchReport() as $report => $plug) {
       if (plugin_reports_haveRight($plug, $report, "r")) {
-         $tmp = $LANG["plugin_$plug"][$report][1];
+         $tmp = $LANG["plugin_$plug"][$report];
          //If the report's name contains 'stat' then display it in the statistics page
          //(instead of Report page)
          if (isStat($report)) {
             if (!isset($PLUGIN_HOOKS['stats'][$plug])) {
-               $PLUGIN_HOOKS['stats'][$plug]=array();
+               $PLUGIN_HOOKS['stats'][$plug] = array();
             }
             $PLUGIN_HOOKS['stats'][$plug]["report/$report/$report.php"] = $tmp;
          } else {
             if (!isset($PLUGIN_HOOKS['reports'][$plug])) {
-               $PLUGIN_HOOKS['reports'][$plug]=array();
+               $PLUGIN_HOOKS['reports'][$plug] = array();
             }
             $PLUGIN_HOOKS['reports'][$plug]["report/$report/$report.php"] = $tmp;
          }
@@ -102,14 +100,13 @@ function isStat($report_name) {
 
 
 function plugin_version_reports() {
-   global $LANG;
 
-   return array('name'           => $LANG['plugin_reports']['title'][1],
-                'version'        => '1.6.1',
+   return array('name'           => _n('Report', 'Reports', 2),
+                'version'        => '1.7.0',
                 'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/reports',
-                'minGlpiVersion' => '0.83.3');
+                'minGlpiVersion' => '0.84');
 }
 
 
@@ -120,7 +117,7 @@ function plugin_reports_check_config() {
 
 function plugin_reports_haveRight($plug, $report, $right) {
 
-   $module = ($plug=='reports' ? $report : $plug.'_'.$report);
+   $module = ($plug == 'reports' ? $report : $plug.'_'.$report);
    $matches = array(""  => array("","r","w"), // ne doit pas arriver normalement
                     "r" => array("r","w"),
                     "w" => array("w"),
@@ -154,8 +151,8 @@ function plugin_reports_checkRight($plug, $module, $right) {
 function plugin_reports_check_prerequisites() {
    global $LANG;
 
-   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
-      echo "This plugin requires GLPI >= 0.83.3 and GLPI < 0.84";
+   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
+      echo "This plugin requires GLPI >= 0.84 and GLPI < 0.85";
       return false;
    }
    return true;

@@ -31,9 +31,9 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['applicationsbylocation'][1] = "Applications par lieux et versions";
-$LANG['plugin_reports']['applicationsbylocation'][2] = "Applications";
-$LANG['plugin_reports']['applicationsbylocation'][3] = "Statut des ordinateurs";
-$LANG['plugin_reports']['applicationsbylocation'][4] = "Lieux";
+$LANG['plugin_reports']['applicationsbylocation'] = "Applications par lieux et versions";
+/*$LANG['plugin_reports']['applicationsbylocation'] = "Applications";
+$LANG['plugin_reports']['applicationsbylocation'] = "Statut des ordinateurs";
+$LANG['plugin_reports']['applicationsbylocation'] = "Lieux";*/
 
 ?>

@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -39,13 +39,12 @@
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('statnightticketsbypriority_report_title'));
 
 //Report's search criterias
-new PluginReportsDateIntervalCriteria($report, '`glpi_tickets`.`date`', $LANG["reports"][60]);
+new PluginReportsDateIntervalCriteria($report, '`glpi_tickets`.`date`', __('Opening date'));
 
 $timeInterval = new PluginReportsTimeIntervalCriteria($report, '`glpi_tickets`.`date`');
 
@@ -61,13 +60,13 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $report->setColumns(array(new PluginReportsColumnMap('priority', $LANG["joblist"][2], array(),
+   $report->setColumns(array(new PluginReportsColumnMap('priority', __('Priority'), array(),
                                                         array('sorton' => '`priority`, `date`')),
-                             new PluginReportsColumnDateTime('date', $LANG["reports"][60],
+                             new PluginReportsColumnDateTime('date', __('Opening date'),
                                                              array('sorton' => '`date`')),
-                             new PluginReportsColumn('id2', $LANG['common'][2]),
-                             new PluginReportsColumnLink('id', $LANG["common"][57], 'Ticket'),
-                             new PluginReportsColumn('groupname', $LANG["common"][35],
+                             new PluginReportsColumn('id2', __('ID')),
+                             new PluginReportsColumnLink('id', __('Title'), 'Ticket'),
+                             new PluginReportsColumn('groupname', __('Group'),
                                                      array('sorton' => '`groups_id`, `date`'))));
 
    $query = "SELECT `glpi_tickets`.`priority`, `glpi_tickets`.`date` , `glpi_tickets`.`id`,
@@ -75,7 +74,7 @@ if ($report->criteriasValidated()) {
              FROM `glpi_tickets`
              LEFT JOIN `glpi_groups_tickets`
                   ON (`glpi_groups_tickets`.`tickets_id` = `glpi_tickets`.`id`
-                      AND `glpi_groups_tickets`.`type` = '".Ticket::ASSIGN."')
+                      AND `glpi_groups_tickets`.`type` = '".CommonITILActor::ASSIGN."')
              LEFT JOIN `glpi_groups` ON (`glpi_groups_tickets`.`groups_id` = `glpi_groups`.`id`)
              WHERE `glpi_tickets`.`status` NOT IN ('solved', 'closed')
                   AND NOT `glpi_tickets`.`is_deleted` ".

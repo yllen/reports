@@ -140,9 +140,12 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       if (($start == 'NULL') && ($end == 'NULL')) {
          return '';
       }
-
-      if (empty($title) && isset($this->getName())) {
-         $title = sprintf(__('%s'), $this->getName());
+      if (empty($title)) {
+         if ($this->getName() == 'date-interval') {
+            $title = __('Date interval', 'reports');
+         } if ($this->getName() == 'time-interval') {
+            $title = __('Time interval', 'reports');
+         }
       }
 
       if ($start == 'NULL') {

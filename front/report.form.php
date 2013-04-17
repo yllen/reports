@@ -81,7 +81,7 @@ foreach($tab as $key => $plug) {
    $section = (isStat($mod) ? sprintf(__('%1$s - %2$s'), __('Assistance'), __('Statistics'))
                             : sprintf(__('%1$s - %2$s'), __('Tools'), __('Report', 'Reports', 2)));
 
-   $rap[$plug][$section][$mod] = sprintf(__('%s'), $key);
+   $rap[$plug][$section][$mod] = $LANG["plugin_$plug"][$key];
 }
 
 $tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -90,6 +90,7 @@ foreach ($rap as $plug => $tmp1) {
    foreach ($tmp1 as $section => $tmp2) {
       echo '<optgroup label="'.$tab."&raquo;&nbsp;".$section.'">';
       foreach ($tmp2 as $mod => $name) {
+      	toolbox::logdebug("tmp", $tmp2, "mod", $mod, "name", $name);
          echo "<option value='$mod' ".($report=="$mod"?"selected":"").">${tab}${tab}$name</option>\n";
       }
       echo "</optgroup>\n";

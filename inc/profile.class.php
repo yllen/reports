@@ -75,7 +75,7 @@ class PluginReportsProfile extends CommonDBTM {
     * @param $prof   Profile object
    **/
    static function showForProfile(Profile $prof){
-      global $DB;
+      global $DB, $LANG;
 
       $target = Toolbox::getItemTypeFormURL(__CLASS__);
 
@@ -83,14 +83,18 @@ class PluginReportsProfile extends CommonDBTM {
       $prof->check($profiles_id, 'r');
       $canedit = $prof->can($profiles_id, 'w');
 
+      $prof = new Profile();
+      if ($profiles_id){
+         $prof->getFromDB($profiles_id);
+      }
+
       $rights = self::getAllRights(array('profiles_id' => $profiles_id));
       if ($canedit) {
          echo "<form action='".$target."' method='post'>";
       }
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='4' class='center b'>";
-      printf(__('%1$s: %2$s'), __('Rights management by profil', 'reports'),
-             $prof->getField('profile'));
+      printf(__('%1$s: %2$s'), __('Rights management by profil', 'reports'), $prof->fields["name"]);
       echo "</th></tr>";
 
       $plugname = array();
@@ -99,9 +103,9 @@ class PluginReportsProfile extends CommonDBTM {
          echo "<tr class='tab_bg_1'>";
          if (!isset($plugname[$plug])) {
             // Retrieve the plugin name
-            $function = "plugin_version_$plug";
-            $tmp = $function();
-            $plugname[$plug] = $tmp['name'];
+            $function         = "plugin_version_$plug";
+            $tmp              = $function();
+            $plugname[$plug]  = $tmp['name'];
          }
          echo "<td>".$plugname[$plug]."</td>";
          if (strpos($key,'stat') === false) {
@@ -109,7 +113,7 @@ class PluginReportsProfile extends CommonDBTM {
          } else {
             echo "<td>".__('Statistics')."</td>";
          }
-         echo "<td>".sprintf(__('%s'), $key)."</td><td>";
+         echo "<td>".$LANG["plugin_$plug"][$key]."</td><td>";
          if ((isStat($key) && ( $prof->getField('statistic')== 1))
              || (!isStat($key) && ($prof->getField('reports') == 'r'))) {
             Profile::dropdownNoneReadWrite($mod, (isset($rights[$mod])?$rights[$mod]:''), 1, 1, 0);
@@ -126,10 +130,10 @@ class PluginReportsProfile extends CommonDBTM {
           || ($prof->getField('reports') != 'r')) {
          echo "<tr class='b tab_bg_4'><td colspan='4'>";
          if ($prof->getField('reports')!='r') {
-            echo '*  '.__('No right on Tools / Reports', 'REPORTS').'.<br>';
+            echo '*  '.__('No right on Tools / Reports', 'reports').'.<br>';
          }
          if ($prof->getField('statistic')!=1) {
-            echo '** '.__('No right on Assistance / Statistics', 'REPORTS').'.';
+            echo '** '.__('No right on Assistance / Statistics', 'reports').'.';
          }
          echo "</td></tr>\n";
       }

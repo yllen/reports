@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,8 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: 
-// Purpose of file:
-// ----------------------------------------------------------------------
-$LANG['plugin_reports']["statnightticketsbypriority"][1]="Tickets opened at night, sorted by priority";
+$LANG['plugin_reports']["statnightticketsbypriority"] = "Tickets opened at night, sorted by priority";
 ?>

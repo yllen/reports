@@ -36,13 +36,15 @@
  * ----------------------------------------------------------------------
  */
 
+
 //Need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+//TRANS: The name of the report = Applications by locations and versions
+$report = new PluginReportsAutoReport(__('applicationsbylocations_report_title'));
 
 $softwarecategories = new PluginReportsSoftwareCategoriesCriteria($report, 'softwarecategories',
                                                                   __('Software category'));

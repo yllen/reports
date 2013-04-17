@@ -32,14 +32,13 @@ $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 1;
 
 // Initialization of the variables
-define('GLPI_ROOT',  '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport($LANG['plugin_reports']['statticketsbyentity'][1]);
+$report = new PluginReportsAutoReport(__('statticketsbyentity_report_title'));
 
 //Report's search criterias
 $prof = new PluginReportsDropdownCriteria($report, 'profiles_id', 'glpi_profiles',
-                                          $LANG['profiles'][22]);
+                                          __('Profile'));
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -49,21 +48,17 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $cols = array(new PluginReportsColumn('name', $LANG['entity'][0],
+   $cols = array(new PluginReportsColumn('name', __('Entity'),
                                          array('sorton' => '`glpi_entities`.`completename`')),
-                 new PluginReportsColumnInteger('nbusers',
-                                                $LANG['plugin_reports']['statticketsbyentity'][5],
+                 new PluginReportsColumnInteger('nbusers', __('Users count', 'reports'),
                                                 array('withtotal' => true,
                                                       'sorton'    => 'nbusers')),
-                 new PluginReportsColumnInteger('number',
-                                                $LANG['plugin_reports']['statticketsbyentity'][2],
+                 new PluginReportsColumnInteger('number', __('Tickets count', 'reports'),
                                                 array('withtotal' => true,
                                                       'sorton'    => 'number')),
-                 new PluginReportsColumnDateTime('mindate',
-                                                 $LANG['plugin_reports']['statticketsbyentity'][3],
+                 new PluginReportsColumnDateTime('mindate', __('Older', 'reports'),
                                                  array('sorton' => 'mindate')),
-                 new PluginReportsColumnDateTime('maxdate',
-                                                 $LANG['plugin_reports']['statticketsbyentity'][4],
+                 new PluginReportsColumnDateTime('maxdate', __('Older', 'reports'),
                                                  array('sorton' => 'maxdate')));
    $report->setColumns($cols);
 

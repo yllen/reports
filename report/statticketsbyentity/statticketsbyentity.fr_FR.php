@@ -29,11 +29,11 @@
 
 global $LANG;
 
-$LANG['plugin_reports']['statticketsbyentity'][1]  = "Montée en charge Assistance";
-
+$LANG['plugin_reports']['statticketsbyentity'] = "Montée en charge Assistance";
+/*
 $LANG['plugin_reports']['statticketsbyentity'][2]  = "Nombre de tickets";
 $LANG['plugin_reports']['statticketsbyentity'][3]  = "Plus ancien";
 $LANG['plugin_reports']['statticketsbyentity'][4]  = "Plus récent";
 $LANG['plugin_reports']['statticketsbyentity'][5]  = "Nombre d'utilisateurs";
-
+*/
 ?>

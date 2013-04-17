@@ -80,19 +80,19 @@ if ($report->criteriasValidated()) {
                        SELECT COUNT(*)
                        FROM `glpi_tickets_users`
                        WHERE `glpi_users`.`id` = `glpi_tickets_users`.`users_id`
-                             AND `glpi_tickets_users`.`type`=".Ticket::REQUESTER."
+                             AND `glpi_tickets_users`.`type`=".CommonITILActor::REQUESTER."
                     ) AS nb2,
                     (
                        SELECT COUNT(*)
                        FROM `glpi_tickets_users`
                        WHERE `glpi_users`.`id` = `glpi_tickets_users`.`users_id`
-                             AND `glpi_tickets_users`.`type`=".Ticket::OBSERVER."
+                             AND `glpi_tickets_users`.`type`=".CommonITILActor::OBSERVER."
                     ) AS nb3,
                     (
                        SELECT COUNT(*)
                        FROM `glpi_tickets_users`
                        WHERE `glpi_users`.`id` = `glpi_tickets_users`.`users_id`
-                             AND `glpi_tickets_users`.`type`=".Ticket::ASSIGN."
+                             AND `glpi_tickets_users`.`type`=".CommonITILActor::ASSIGN."
                     ) AS nb4,
                     `phone`, `glpi_locations`.`completename` as location,
                     `glpi_useremails`.`email`
