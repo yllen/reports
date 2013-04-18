@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -26,11 +26,5 @@
  along with reports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
 */
-
-// Original Author of file: WoitiX
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['globalhisto'][1] = "Totale geschiedenis(voor Test / Voorbeeld)";
-
+$LANG['plugin_reports']['globalhisto'] = "Totale geschiedenis(voor Test / Voorbeeld)";
 ?>

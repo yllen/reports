@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,33 +27,26 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Nelly Mahu-Lasson
- *
- * Purpose of file:
- *       Generate location report
- *       Illustrate use of simpleReport
- * ----------------------------------------------------------------------
- */
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('equipmentbylocation_report_title'));
 
-$report->setColumns(array(new PluginReportsColumn('entity', $LANG['entity'][0]),
-                          new PluginReportsColumn('location', $LANG['common'][15]),
-                          new PluginReportsColumnInteger('computernumber',$LANG['Menu'][0]),
-                          new PluginReportsColumnInteger('networknumber', $LANG['Menu'][1]),
-                          new PluginReportsColumnInteger('monitornumber', $LANG['Menu'][3]),
-                          new PluginReportsColumnInteger('printernumber', $LANG['Menu'][2]),
-                          new PluginReportsColumnInteger('peripheralnumber', $LANG['Menu'][16]),
-                          new PluginReportsColumnInteger('phonenumber', $LANG['Menu'][34])));
+$report->setColumns(array(new PluginReportsColumn('entity', __('Entity')),
+                          new PluginReportsColumn('location', __('Location')),
+                          new PluginReportsColumnInteger('computernumber',
+                                                          _n('Computer', 'Computers', 2)),
+                          new PluginReportsColumnInteger('networknumber',
+                                                         _n('Network', 'Networks', 2)),
+                          new PluginReportsColumnInteger('monitornumber',
+                                                         _n('Monitor', 'Monitors', 2)),
+                          new PluginReportsColumnInteger('printernumber',
+                                                         _n('Printer', 'Printers', 2)),
+                          new PluginReportsColumnInteger('peripheralnumber',
+                                                          _n('Device', 'Devices', 2)),
+                          new PluginReportsColumnInteger('phonenumber', _n('Phone', 'Phones', 2))));
 
 $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`,
                  i.`monitornumber`, i.`printernumber`, j.`peripheralnumber`, l.`phonenumber`

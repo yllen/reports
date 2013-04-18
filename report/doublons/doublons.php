@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -31,8 +31,11 @@
 // Purpose of file: Handle configuration for "doublons" report
 // ----------------------------------------------------------------------
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+
+//***********************REQUETES À REVOIR********************************
+//*************************************************************************
+
+include ("../../../../inc/includes.php");
 
 includeLocales("doublons");
 
@@ -40,17 +43,17 @@ plugin_reports_checkRight('reports', "doublons","r");
 $computer = new Computer();
 $computer->checkGlobal('r');
 
-Html::header($LANG['plugin_reports']['doublons'][1], $_SERVER['PHP_SELF'], "utils", "report");
+Html::header(__('doublons_report_title'), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 
 $crits = array(0 => Dropdown::EMPTY_VALUE,
-               1 => $LANG["common"][16],        // Name
-               2 => $LANG["common"][22]." + ".$LANG["common"][19],   // Model + Serial
-               3 => $LANG["common"][16]." + ".$LANG["common"][22]." + ".$LANG["common"][19], // Name + Model + Serial
-               4 => $LANG["device_iface"][2],   // Mac Address
-               5 => $LANG["networking"][14],    // IP Address
-               6 => $LANG['common'][20]);
+               1 => __('Name'),
+               2 => __('Model')." + ".__('Serial number'),
+               3 => __('Name')." + ".__('Model')." + ".__('Serial number'),
+               4 => __('MAC address'),
+               5 => __('IP address'),
+               6 => __('Inventory number'));
 
 if (isset($_GET["crit"])) {
    $crit = $_GET["crit"];
@@ -68,19 +71,19 @@ if (isset($_GET["crit"])) {
 // ---------- Form ------------
 echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'>";
 echo "<table class='tab_cadre' cellpadding='5'>\n";
-echo "<tr class='tab_bg_1 center'><th colspan='3'>" . $LANG['plugin_reports']['doublons'][1] .
-      "</th></tr>\n";
+echo "<tr class='tab_bg_1 center'>";
+echo "<th colspan='3'>".__('Duplicate computers', 'reports')."</th></tr>\n";
 
 if (Session::haveRight("config","r")) { // Check only read as we probably use the replicate (no 'w' in this case)
-   echo "<tr class='tab_bg_3 center'><td colspan='".($crit>0?'3':'2')."'>";
-   echo "<a href='./doublons.config.php'>" . $LANG['plugin_reports']['config'][11]."</a></td></tr>\n";
+   echo "<tr class='tab_bg_3 center'><td colspan='".(($crit > 0)?'3':'2')."'>";
+   echo "<a href='./doublons.config.php'>".__('Report configuration', 'reports')."</a></td></tr>\n";
 }
 
-echo "<tr class='tab_bg_1'><td class='right'>" . $LANG["rulesengine"][6] . "&nbsp;:&nbsp;</td><td>";
+echo "<tr class='tab_bg_1'><td class='right'>"._n('Criterion', 'Criteria', 2). "</td><td>";
 echo "<select name='crit'>";
 
 foreach ($crits as $key => $val) {
-   echo "<option value='$key'" . ($crit==$key ? "selected" : "") . ">$val</option>";
+   echo "<option value='$key'" . (($crit == $key) ? "selected" : "") . ">$val</option>";
 }
 echo "</select></td>";
 
@@ -93,13 +96,13 @@ if ($crit > 0) {
 }
 echo"</tr>\n";
 
-echo "<tr class='tab_bg_1 center'><td colspan='".($crit>0?'3':'2')."'>";
+echo "<tr class='tab_bg_1 center'><td colspan='".(($crit > 0)?'3':'2')."'>";
 echo "<input type='submit' value='valider' class='submit'/>";
 echo "</td></tr>\n";
 echo "</table>\n";
 Html::closeForm();
 
-if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
+if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
    $IPBlacklist = "AA.`ip` != ''
                    AND AA.`ip` != '0.0.0.0'";
    if (TableExists("glpi_plugin_reports_doublons_backlists")) {
@@ -138,14 +141,14 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
                  AND A.`is_deleted` = '0'
                  AND B.`is_deleted` = '0'";
 
-   $col = $LANG["networking"][14];
+   $col = __('IP');
 
-} else if ($crit==4) { // Search Duplicate Mac Address - From glpi_computer_device
+} else if ($crit == 4) { // Search Duplicate Mac Address - From glpi_computer_device
    $MacBlacklist = "''";
    if (TableExists("glpi_plugin_reports_doublons_backlists")) {
       $res = $DB->query("SELECT `addr`
-                        FROM `glpi_plugin_reports_doublons_backlists`
-                        WHERE `type` = '1'");
+                         FROM `glpi_plugin_reports_doublons_backlists`
+                         WHERE `type` = '1'");
       while ($data = $DB->fetch_array($res)) {
          $MacBlacklist .= ",'".addslashes($data["addr"])."'";
       }
@@ -173,9 +176,9 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
                  AND A.`is_deleted` = '0'
                  AND B.`is_deleted` = '0'";
 
-   $col = $LANG["networking"][15];
+   $col = __('MAC');
 
-} else if ($crit>0) { // Search Duplicate Name and/ord Serial or Otherserial - From glpi_computers
+} else if ($crit > 0) { // Search Duplicate Name and/ord Serial or Otherserial - From glpi_computers
    $SerialBlacklist = "''";
    if (TableExists("glpi_plugin_reports_doublons_backlists")) {
       $res = $DB->query("SELECT `addr`
@@ -216,7 +219,7 @@ if ($crit==5) { // Search Duplicate IP Address - From glpi_networking_ports
 }
 
 
-if ($crit>0) { // Display result
+if ($crit > 0) { // Display result
    $canedit = $computer->canUpdate();
    $colspan = ($col ? 8 : 7) + ($canedit ? 1 : 0);
 
@@ -228,39 +231,39 @@ if ($crit>0) { // Display result
             $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
    }
    echo "<table class='tab_cadrehov' cellpadding='5'>" .
-      "<tr><th colspan='$colspan'>" . $LANG['plugin_reports']['doublons'][2] . "</th>" .
-      "<th class='blue' colspan='$colspan'>" . $LANG['plugin_reports']['doublons'][3]."</th></tr>\n" .
+      "<tr><th colspan='$colspan'>" . __('First computer', 'reports') . "</th>" .
+      "<th class='blue' colspan='$colspan'>" . __('Second computer', 'reports')."</th></tr>\n" .
       "<tr>";
    $colspan *= 2;
 
    if ($canedit) {
       echo "<th>&nbsp;</th>";
    }
-   echo "<th>" . $LANG["common"][2] . "</th>" .
-      "<th>" . $LANG["common"][16] . "</th>" .
-      "<th>" . $LANG["common"][5] . "</th>" .
-      "<th>" . $LANG["common"][22] . "</th>" .
-      "<th>" . $LANG["common"][19] . "</th>" .
-      "<th>" . $LANG['common'][20] . "</th>";
+   echo "<th>" . __('ID') . "</th>" .
+      "<th>" . __('Name') . "</th>" .
+      "<th>" . __('Manufacturer') . "</th>" .
+      "<th>" . __('Model') . "</th>" .
+      "<th>" . __('Serial number') . "</th>" .
+      "<th>" . __('Inventory number') . "</th>";
    if ($col) {
       echo "<th>$col</th>";
    }
-   echo "<th>".$LANG['ocsng'][14]."</th>";
+   echo "<th>".__('Last inventory date', 'reports')."</th>";
 
    if ($canedit) {
       echo "<th>&nbsp;</th>";
    }
 
-   echo "<th class='blue'>" . $LANG["common"][2] . "</th>" .
-      "<th class='blue'>" . $LANG["common"][16] . "</th>" .
-      "<th class='blue'>" . $LANG["common"][5] . "</th>" .
-      "<th class='blue'>" . $LANG["common"][22] . "</th>" .
-      "<th class='blue'>" . $LANG["common"][19] . "</th>".
-      "<th class='blue'>".$LANG['common'][20]."</th>";
+   echo "<th class='blue'>" . __('ID') . "</th>" .
+        "<th class='blue'>" . __('Name') . "</th>" .
+        "<th class='blue'>" . __('Manufacturer') . "</th>" .
+        "<th class='blue'>" . __('Inventory number') . "</th>" .
+        "<th class='blue'>" . __('Serial number') . "</th>".
+        "<th class='blue'>".__('Inventory number')."</th>";
    if ($col) {
       echo "<th class='blue'>$col</th>";
    }
-   echo "<th class='blue'>".$LANG['ocsng'][14]."</th>";
+   echo "<th class='blue'>".__('Last inventory date', 'reports')."</th>";
 
    echo "</tr>\n";
 
@@ -326,9 +329,9 @@ if ($crit>0) { // Display result
    }
    echo "<tr class='tab_bg_4'><td class='center' colspan='$colspan'>";
    if ($i) {
-      echo $LANG['plugin_reports']['doublons'][1] . " : $i";
+      printf(__('%1$s: %2$s'), __('Duplicate computers', 'reports'), $i);
    } else {
-      echo $LANG['search'][15];
+      _e('No item found');
    }
    echo "</td></tr>\n";
    echo "</table>";

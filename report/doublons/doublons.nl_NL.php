@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -31,7 +31,7 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['doublons'][1]="Dubbele computers";
+$LANG['plugin_reports']['doublons'] = "Dubbele computers";
 $LANG['plugin_reports']['doublons'][2]="Eerste computer";
 $LANG['plugin_reports']['doublons'][3]="Tweede computer";
 $LANG['plugin_reports']['doublons'][4]="Configureer uitzonderingen";

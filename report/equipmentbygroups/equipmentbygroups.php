@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,26 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Walid Nouh
- *
- * Purpose of file:
- *
- * ----------------------------------------------------------------------
- */
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0; // Not really a big SQL request
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
 includeLocales("equipmentbygroups");
 
-Html::header($LANG['plugin_reports']['equipmentbygroups'][1], $_SERVER['PHP_SELF'], "utils",
-             "report");
+Html::header(__('equipmentbygroups_report_title'), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 
@@ -65,13 +52,14 @@ $sql = "SELECT `id` AS group_id,
               (isset($_GET["groups_id"]) && $_GET["groups_id"]
                      ? " AND `glpi_groups`.`id` = ".$_GET["groups_id"] : "") . "
         ORDER BY `name`";
+
 $result = $DB->query($sql);
 $last_group_id = -1;
 
 while ($datas = $DB->fetch_array($result)) {
    if ($last_group_id != $datas["group_id"]) {
       echo "<table class='tab_cadre' cellpadding='5'>";
-      echo "<tr><th>" . $LANG["common"][35] . " : " . $datas["group_name"] . "</th></th></tr>";
+      echo "<tr><th>".sprintf(__('%1$s: %2$s'), __('Group'), $datas['group_name'])."</th></th></tr>";
       $last_group_id = $datas["group_id"];
       echo "</table>";
    }
@@ -86,24 +74,24 @@ Html::footer();
  * Display group form
 **/
 function displaySearchForm() {
-   global $_SERVER, $_GET, $LANG, $CFG_GLPI;
+   global $_SERVER, $_GET, $CFG_GLPI;
 
    echo "<form action='" . $_SERVER["PHP_SELF"] . "' method='post'>";
    echo "<table class='tab_cadre' cellpadding='5'>";
    echo "<tr class='tab_bg_1 center'>";
    echo "<td>";
-   echo $LANG["common"][35] . " : ";
-   Dropdown::show('Group', array('name =>' => "group",
-                                 'value'   => $_GET["group"],
-                                 'entity'  => $_SESSION["glpiactive_entity"],
-                                 'condition' => "is_itemgroup"));
+   echo __('Group')."&nbsp;&nbsp;";
+   Group::dropdown(array('name =>'  => "group",
+                         'value'    => $_GET["group"],
+                         'entity'   => $_SESSION["glpiactive_entity"],
+                         'condition' => "is_itemgroup"));
    echo "</td>";
 
    // Display Reset search
    echo "<td>";
    echo "<a href='" . $CFG_GLPI["root_doc"] .
          "/plugins/reports/report/equipmentbygroups/equipmentbygroups.php?reset_search=reset_search'>".
-         "<img title='" . $LANG["buttons"][16] . "' alt='" . $LANG["buttons"][16] . "' src='" .
+         "<img title='" . __s('Blank') . "' alt='" . __s('Blank') . "' src='" .
          $CFG_GLPI["root_doc"] . "/pics/reset.png' class='calendrier'></a>";
    echo "</td>";
 
@@ -129,7 +117,7 @@ function getValues($get, $post) {
 
 /**
  * Reset search
- */
+**/
 function resetSearch() {
    $_GET["group"] = 0;
 }
@@ -138,11 +126,11 @@ function resetSearch() {
 /**
  * Display all devices by group
  *
- * @param $group_id the group ID
- * @param $entity the current entity
+ * @param $group_id  the group ID
+ * @param $entity    the current entity
 **/
 function getObjectsByGroupAndEntity($group_id, $entity) {
-   global $DB, $LANG;
+   global $DB;
 
    $display_header = false;
 
@@ -166,10 +154,10 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
       if ($DB->numrows($result) > 0) {
          if (!$display_header) {
             echo "<br><table class='tab_cadre_fixehov'>";
-            echo "<tr><th>" . $LANG["common"][17] . "</th><th>" . $LANG["common"][16] . "</th>";
-            echo "<th>" . $LANG["common"][19] . "</th><th>" . $LANG["common"][20] . "</th>";
-            echo "<th>" . $LANG["financial"][20] ."</th>";
-            echo "<th>" . $LANG["financial"][26] . "</th><th>" . $LANG["financial"][14] . "</th>";
+            echo "<tr><th>" .__('Type'). "</th><th>" .__('Name'). "</th>";
+            echo "<th>" .__('Serial number'). "</th><th>" . __('Inventory number'). "</th>";
+            echo "<th>" .__('Immobilization number')."</th>";
+            echo "<th>" .__('Supplier'). "</th><th>" .__('Date of purchase'). "</th>";
             echo "</tr>";
             $display_header = true;
          }
@@ -182,11 +170,10 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
 
 /**
  * Display all device for a group
- * @user_id the user ID
- * @user_name the user name
- * @type the objet type
- * @result the resultset of all the devices found
- */
+ *
+ * @param $type      the objet type
+ * @param $result    the resultset of all the devices found
+**/
 function displayUserDevices($type, $result) {
    global $DB, $CFG_GLPI, $LANG;
 
@@ -199,7 +186,7 @@ function displayUserDevices($type, $result) {
                "</a>";
       $linktype = "";
       if (isset ($groups[$data["groups_id"]])) {
-         $linktype = $LANG["common"][35] . " " . $groups[$data["groups_id"]];
+         $linktype = sprintf(__('%1$s %2$s'), __('Group'), $groups[$data["groups_id"]]);
       }
 
       echo "<tr class='tab_bg_1'><td class='center'>".$item->getTypeName()."</td>".

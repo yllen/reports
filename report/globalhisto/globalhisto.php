@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,24 +27,12 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Remi Collet
- *
- * Purpose of file:
- *    Generate location report
- *    Illustrate use of simpleReport
- * ----------------------------------------------------------------------
- */
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0; // not really a big SQL request
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('globalhisto_report_title'));
 
 //Report's search criterias
 //Possible current values are :
@@ -61,29 +49,37 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $report->setColumns(array('id'            => $LANG['common'][2],
-                                  'date_mod'      => $LANG['common'][27],
-                                  'user_name'     => $LANG['common'][34],
-                                  'linked_action' => $LANG['event'][19]));
+   $report->setColumns(array('id'            => __('ID'),
+                             'date_mod'      => __('Date'),
+                             'user_name'     => __('User'),
+                             'linked_action' => _x('noun','Update')));
 
    //Colunmns mappings if needed
-   $columns_mappings
-      = array('linked_action' => array(Log::HISTORY_DELETE_ITEM        => $LANG['log'][22],
-                                       Log::HISTORY_RESTORE_ITEM       => $LANG['log'][23],
-                                       Log::HISTORY_ADD_DEVICE         => $LANG['devices'][25],
-                                       Log::HISTORY_UPDATE_DEVICE      => $LANG['log'][28],
-                                       Log::HISTORY_DELETE_DEVICE      => $LANG['devices'][26],
-                                       Log::HISTORY_INSTALL_SOFTWARE   => $LANG['software'][44],
-                                       Log::HISTORY_UNINSTALL_SOFTWARE => $LANG['software'][45],
-                                       Log::HISTORY_DISCONNECT_DEVICE  => $LANG['central'][6],
-                                       Log::HISTORY_CONNECT_DEVICE     => $LANG['log'][55],
-                                       Log::HISTORY_OCS_IMPORT         => $LANG['ocsng'][7],
-                                       Log::HISTORY_OCS_DELETE         => $LANG['ocsng'][46],
-                                       Log::HISTORY_OCS_LINK           => $LANG['ocsng'][47],
-                                       Log::HISTORY_OCS_IDCHANGED      => $LANG['ocsng'][48],
+   $columns_mappings = array('linked_action'
+                              => array(Log::HISTORY_DELETE_ITEM
+                                          => __('Delete the item'),
+                                       Log::HISTORY_RESTORE_ITEM
+                                          => __('Restore the item'),
+                                       Log::HISTORY_ADD_DEVICE
+                                          => __('Add the component'),
+                                       Log::HISTORY_UPDATE_DEVICE
+                                          => __('modification of components', 'reports'),
+                                       Log::HISTORY_DELETE_DEVICE
+                                          => __('Delete the component'),
+                                       Log::HISTORY_INSTALL_SOFTWARE
+                                          => __('Install the software'),
+                                       Log::HISTORY_UNINSTALL_SOFTWARE
+                                          => __('Uninstall the software'),
+                                       Log::HISTORY_DISCONNECT_DEVICE
+                                          => __('Logout'),
+                                       Log::HISTORY_CONNECT_DEVICE
+                                          => __('Connection'),
+                                       Log::HISTORY_LOCK_DEVICE
+                                          => __('Lock the item'),
+                                       Log::HISTORY_UNLOCK_DEVICE
+                                          => __('Unlock the item'),
                                        Log::HISTORY_LOG_SIMPLE_MESSAGE => ""));
 
-    //TODO DEPRECATED FUNCTION
    $report->setColumnsMappings($columns_mappings);
 
    $query = "SELECT `id`, `date_mod`, `user_name`, `linked_action`
