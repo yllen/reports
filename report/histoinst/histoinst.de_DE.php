@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -31,11 +31,10 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['histoinst'][1]="Historie der letzten Software Installationen";
+$LANG['plugin_reports']['histoinst'] = "Historie der letzten Software Installationen";
 $LANG['plugin_reports']['histoinst'][2]="Datum der Inventarisierung";
 $LANG['plugin_reports']['histoinst'][3]="Benutzer";
 $LANG['plugin_reports']['histoinst'][4]="Computername";
 $LANG['plugin_reports']['histoinst'][5]="Software (version)";
 $LANG['plugin_reports']['histoinst'][6]="Liste beschränkt auf 200 Ereignisse und 21 Tage";
-
 ?>

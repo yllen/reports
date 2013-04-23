@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -37,12 +37,10 @@
  * ----------------------------------------------------------------------
  */
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
 /*
  * TODO : add more criteria
@@ -53,15 +51,15 @@ include (GLPI_ROOT . "/inc/includes.php");
  *
  */
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('infocom_report_title'));
 
 $ignored = array('Cartridge', 'CartridgeItem', 'Consumable', 'ConsumableItem', 'Software');
 
 $date = new PluginReportsDateIntervalCriteria($report, '`glpi_infocoms`.`buy_date`',
-                                              $LANG["financial"][14]);
+                                              __('Date of purchase'));
 $type = new PluginReportsItemTypeCriteria($report, 'itemtype', '', 'infocom_types', $ignored);
 $budg = new PluginReportsDropdownCriteria($report, '`glpi_infocoms`.`budgets_id`', 'Budget',
-                                          $LANG['financial'][87]);
+                                          __('Budget'));
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -70,37 +68,37 @@ $report->displayCriteriasForm();
 if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
-   $cols = array(new PluginReportsColumnType('itemtype', $LANG["state"][6]),
-                 new PluginReportsColumn('manufacturer', $LANG["common"][5]),
-                 new PluginReportsColumn('type', $LANG["common"][17]),
-                 new PluginReportsColumn('model', $LANG["common"][22]),
-                 new PluginReportsColumnTypeLink('itemid', $LANG["common"][16], 'itemtype'),
-                 new PluginReportsColumn('serial', $LANG["common"][19]),
-                 new PluginReportsColumn('otherserial', $LANG["common"][20]),
-                 new PluginReportsColumn('location', $LANG["common"][15]),
-                 new PluginReportsColumn('building', $LANG["setup"][99]),
-                 new PluginReportsColumn('room', $LANG["setup"][100]),
-                 new PluginReportsColumnLink('groups_id', $LANG["common"][35], 'Group'),
-                 new PluginReportsColumn('state', $LANG["joblist"][0]),
-                 new PluginReportsColumn('immo_number', $LANG["financial"][20]),
-                 new PluginReportsColumnDate('buy_date', $LANG["financial"][14]),
-                 new PluginReportsColumnDate('use_date', $LANG["financial"][76]),
-                 new PluginReportsColumnDate('warranty_date', $LANG["financial"][29]),
-                 new PluginReportsColumnInteger('warranty_duration', $LANG["financial"][15]),
-                 new PluginReportsColumnInteger('warranty_info', $LANG["financial"][16]),
-                 new PluginReportsColumnLink('suppliers_id', $LANG["financial"][26], "Supplier"),
-                 new PluginReportsColumnDate('order_date', $LANG["financial"][28]),
-                 new PluginReportsColumn('order_number', $LANG["financial"][18]),
-                 new PluginReportsColumnDate('delivery_date', $LANG["financial"][27]),
-                 new PluginReportsColumn('delivery_number', $LANG["financial"][19]),
-                 new PluginReportsColumnFloat('value', $LANG["financial"][21]),
-                 new PluginReportsColumnFloat('warranty_value', $LANG["financial"][78]),
-                 new PluginReportsColumnInteger('sink_time', $LANG["financial"][23]),
-                 new PluginReportsColumnInteger('sink_type', $LANG["financial"][22]),
-                 new PluginReportsColumnFloat('sink_coeff', $LANG["financial"][77]),
-                 new PluginReportsColumn('bill', $LANG["financial"][82]),
-                 new PluginReportsColumn('budget', $LANG["financial"][87]),
-                 new PluginReportsColumnDate('inventory_date', $LANG["financial"][114]));
+   $cols = array(new PluginReportsColumnType('itemtype', __('Item type')),
+                 new PluginReportsColumn('manufacturer', __('Manufacturer')),
+                 new PluginReportsColumn('type', __('Type')),
+                 new PluginReportsColumn('model', __('Model')),
+                 new PluginReportsColumnTypeLink('itemid', __('Name'), 'itemtype'),
+                 new PluginReportsColumn('serial', __('Serial number')),
+                 new PluginReportsColumn('otherserial', __('Inventory number')),
+                 new PluginReportsColumn('location', __('Location')),
+                 new PluginReportsColumn('building', __('Building number')),
+                 new PluginReportsColumn('room', __('Room number')),
+                 new PluginReportsColumnLink('groups_id', __('Group'), 'Group'),
+                 new PluginReportsColumn('state', __('Status')),
+                 new PluginReportsColumn('immo_number', __('Immobilization number')),
+                 new PluginReportsColumnDate('buy_date', __('Date of purchase')),
+                 new PluginReportsColumnDate('use_date', __('Startup date')),
+                 new PluginReportsColumnDate('warranty_date', __('Start date of warranty')),
+                 new PluginReportsColumnInteger('warranty_duration', __('Warranty duration')),
+                 new PluginReportsColumnInteger('warranty_info', __('Warranty information')),
+                 new PluginReportsColumnLink('suppliers_id', __('Supplier'), "Supplier"),
+                 new PluginReportsColumnDate('order_date', __('Order date')),
+                 new PluginReportsColumn('order_number', __('Order number')),
+                 new PluginReportsColumnDate('delivery_date', __('Delivery date')),
+                 new PluginReportsColumn('delivery_number', __('Delivery form')),
+                 new PluginReportsColumnFloat('value', __('Value')),
+                 new PluginReportsColumnFloat('warranty_value', __('Warranty extension value')),
+                 new PluginReportsColumnInteger('sink_time', __('Amortization duration')),
+                 new PluginReportsColumnInteger('sink_type', __('Amortization type')),
+                 new PluginReportsColumnFloat('sink_coeff',__('Amortization coefficient')),
+                 new PluginReportsColumn('bill', __('Invoice number')),
+                 new PluginReportsColumn('budget', __('Budget')),
+                 new PluginReportsColumnDate('inventory_date', __('Date of last physical inventory')));
 
    $report->setColumns($cols);
    $sel = $type->getParameterValue();

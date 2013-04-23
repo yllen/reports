@@ -1,9 +1,9 @@
 <?php
-/*	----------------------------------------------------------------------
+/*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,21 +27,18 @@
  --------------------------------------------------------------------------
 */
 
-//	Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 1;
 
 // Initialization of the variables
-define('GLPI_ROOT',  '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport($LANG['plugin_reports']['iteminstall'][1]);
+$report = new PluginReportsAutoReport(__('iteminstall_report_title'));
 
 //Report's search criterias
 $date = new PluginReportsDateIntervalCriteria($report, 'buy_date');
 $type = new PluginReportsItemTypeCriteria($report, 'itemtype', '', 'infocom_types');
-$budg = new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets',
-                                          $LANG['financial'][87]);
+$budg = new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets', __('Budget'));
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -139,8 +136,8 @@ if ($report->criteriasValidated()) {
       echo Search::showHeader($display_type, $nbrows, $nbcols, true);
       echo Search::showNewLine($display_type);
       $numcol=1;
-      echo Search::showHeaderItem($display_type, $LANG['state'][6], $numcol); // itemtype
-      echo Search::showHeaderItem($display_type, $LANG['common'][33], $numcol); // total
+      echo Search::showHeaderItem($display_type, __('Item type'), $numcol);
+      echo Search::showHeaderItem($display_type, __('Total'), $numcol);
       echo Search::showHeaderItem($display_type, '0-1', $numcol);
       echo Search::showHeaderItem($display_type, '2-3', $numcol);
       echo Search::showHeaderItem($display_type, '4-5', $numcol);
@@ -153,7 +150,7 @@ if ($report->criteriasValidated()) {
       $row_num = 1;
       foreach ($result as $itemtype => $row) {
          if ($itemtype == 'total') {
-            $name = $LANG['common'][33];
+            $name = __('Total');
 
          } else if ($item = getItemForItemtype($itemtype)) {
             $name = $item->getTypeName();
@@ -182,7 +179,7 @@ if ($report->criteriasValidated()) {
          foreach ($row as $ref => $val) {
             $val = $result[$itemtype][$ref];
             $buy = $result[$itemtype]['buy'];
-            if ($ref=='buy' || $buy==0 || $val==0) {
+            if (($ref == 'buy') || ($buy == 0) || ($val == 0)) {
                $tmp = '';
             } else {
                $tmp = round($val*100/$buy,0)."%";
@@ -203,7 +200,7 @@ if ($report->criteriasValidated()) {
       echo Search::showHeader($display_type, $nbrows, $nbcols, true);
       echo Search::showNewLine($display_type);
       $num=1;
-      echo Search::showHeaderItem($display_type, $LANG['search'][15], $num); // Nothing found
+      echo Search::showHeaderItem($display_type, __('No item found'), $num);
       echo Search::showEndLine($display_type);
    }
    echo Search::showFooter($display_type, $title);

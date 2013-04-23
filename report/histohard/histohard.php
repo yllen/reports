@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,15 +28,12 @@
  */
 
 // Original Author of file: Benoit Machiavello
-// Purpose of file:
 // ----------------------------------------------------------------------
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 1; // Really a big SQL request
 
-define ('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
 includeLocales("histohard");
 
@@ -44,20 +41,22 @@ plugin_reports_checkRight('reports', "histohard","r");
 $computer = new Computer();
 $computer->checkGlobal('r');
 
-Html::header($LANG['plugin_reports']['histohard'][1],$_SERVER['PHP_SELF'],"utils","report");
+$title = __('histohard_report_title');
+Html::header(__("History of last hardware's installations", 'reports'), $_SERVER['PHP_SELF'],
+             "utils","report");
 
 Report::title();
 
 echo "<div class='center'>";
 echo "<table class='tab_cadrehov'>\n";
-echo "<tr class='tab_bg_1 center'><th colspan='5'>" . $LANG['plugin_reports']['histohard'][1] .
-      "</th></tr>\n";
+echo "<tr class='tab_bg_1 center'>".
+     "<th colspan='5'>". __("History of last hardware's installations", 'reports')."</th></tr>\n";
 
-echo "<tr><th>". $LANG['plugin_reports']['histohard'][2] . "</th>" .
-      "<th>". $LANG["common"][34] . "</th>".
-      "<th>". $LANG["help"][25] . "</th>".
-      "<th>". $LANG["event"][18] . "</th>".
-      "<th>". $LANG['plugin_reports']['histohard'][3] . "</th></tr>\n";
+echo "<tr><th>".__('glpi.pot', 'reports'). "</th>" .
+      "<th>". __('User') . "</th>".
+      "<th>". __('Network device') . "</th>".
+      "<th>". __(-'Field') . "</th>".
+      "<th>". __('Modification', 'reports') . "</th></tr>\n";
 
 $sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `itemtype_link`,
                `old_value`, `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`
@@ -67,14 +66,15 @@ $sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `item
               AND `itemtype` = 'Computer'
               AND `linked_action` IN (".Log::HISTORY_CONNECT_DEVICE.",
                                       ".Log::HISTORY_DISCONNECT_DEVICE.",
-                                      ".Log::HISTORY_DELETE_DEVICE.", " .Log::HISTORY_UPDATE_DEVICE.",
+                                      ".Log::HISTORY_DELETE_DEVICE.",
+                                      ".Log::HISTORY_UPDATE_DEVICE.",
                                       ".Log::HISTORY_ADD_DEVICE.")
               AND `glpi_computers`.`entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
         ORDER BY `glpi_logs`.`id` DESC
         LIMIT 0,100";
 $result = $DB->query($sql);
 
-$prev = "";
+$prev  = "";
 $class = "tab_bg_2";
 while ($data = $DB->fetch_array($result)) {
    if ($prev == $data["dat"].$data["name"]) {
@@ -100,16 +100,16 @@ while ($data = $DB->fetch_array($result)) {
             if ($item = getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
-            $change = $LANG["devices"][25]."&nbsp;<strong>:</strong>&nbsp;'".$data[ "new_value"]."'";
+            $change = sprintf(__('%1$s: %2$s'), __('Add the component'), $data[ "new_value"]);
             break;
 
          case Log::HISTORY_UPDATE_DEVICE :
-               $field = NOT_AVAILABLE;
-               $change = '';
-               if ($item = getItemForItemtype($data["itemtype_link"])) {
-                  $field  = $item->getTypeName();
-                  $change = $item->getSpecifityLabel()."&nbsp;<strong>:</strong>&nbsp;''";
-               }
+            $field = NOT_AVAILABLE;
+            $change = '';
+            if ($item = getItemForItemtype($data["itemtype_link"])) {
+               $field  = $item->getTypeName();
+               $change = sprintf(__('%1$s: %2$s'), $item->getSpecifityLabel(), "");
+            }
             $change .= $data[ "old_value"]."'&nbsp;<strong>--></strong>&nbsp;'".$data[ "new_value"]."'";
             break;
 
@@ -118,7 +118,7 @@ while ($data = $DB->fetch_array($result)) {
             if ($item = getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
-            $change = $LANG["devices"][26]."&nbsp;<strong>:</strong>&nbsp;'".$data["old_value"]."'";
+            $change = sprintf(__('%1$s: %1$s'), __('Delete the component'), $data["old_value"]);
             break;
 
          case Log::HISTORY_DISCONNECT_DEVICE :
@@ -126,7 +126,7 @@ while ($data = $DB->fetch_array($result)) {
                continue;
             }
             $field  = $item->getTypeName();
-            $change = $LANG["central"][6]."&nbsp;<strong>:</strong>&nbsp;'".$data["old_value"]."'";
+            $change = sprintf(__('%1$s: %2$s'), __('Logout'), $data["old_value"]);
             break;
 
          case Log::HISTORY_CONNECT_DEVICE :
@@ -134,7 +134,7 @@ while ($data = $DB->fetch_array($result)) {
                continue;
             }
             $field  = $item->getTypeName();
-            $change = $LANG["log"][55]."&nbsp;<strong>:</strong>&nbsp;'".$data["new_value"]."'";
+            $change = sprintf(__('%1$s: %2$s'), __('Logout'), $data["new_value"]);
             break;
       }//fin du switch
    }
@@ -144,7 +144,7 @@ while ($data = $DB->fetch_array($result)) {
 if (!empty($prev)) {
    echo "</td></tr>\n";
 }
-echo "</table><p>".$LANG['plugin_reports']['histohard'][4]."</p></div>\n";
+echo "</table><p>".__('The list is limited to 100 items and 21 days', 'reports')."</p></div>\n";
 
 Html::footer();
 ?>

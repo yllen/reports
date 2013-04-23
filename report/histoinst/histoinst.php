@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -31,12 +31,10 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE        = 1;
 $DBCONNECTION_REQUIRED = 1; // Really a big SQL request
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
 includeLocales("histoinst");
 
@@ -46,19 +44,22 @@ $computer->checkGlobal('r');
 $software = new Software();
 $software->checkGlobal('r');
 
-Html::header($LANG['plugin_reports']['histoinst'][1], $_SERVER['PHP_SELF'], "utils", "report");
+$title = __('histoinst_report_title');
+Html::header(__("History of last software's installations", "reports"), $_SERVER['PHP_SELF'],
+             "utils", "report");
 
 Report::title();
 
 echo "<div class='center'>";
 echo "<table class='tab_cadrehov' cellpadding='5'>\n";
-echo "<tr class='tab_bg_1 center'><th colspan='4'>" . $LANG['plugin_reports']['histoinst'][1] .
+echo "<tr class='tab_bg_1 center'>".
+      "<th colspan='4'>" . __("History of last software's installations", "reports") .
       "</th></tr>\n";
 
-echo "<tr class='tab_bg_2'><th>". $LANG['plugin_reports']['histoinst'][2] . "</th>" .
-      "<th>". $LANG['plugin_reports']['histoinst'][3] . "</th>".
-      "<th>". $LANG['plugin_reports']['histoinst'][4] . "</th>".
-      "<th>". $LANG['plugin_reports']['histoinst'][5] . "</th></tr>\n";
+echo "<tr class='tab_bg_2'><th>". __('Date of inventory', 'reports') . "</th>" .
+      "<th>". __('User') . "</th>".
+      "<th>". __("Computer's name") . "</th>".
+      "<th>". sprintf(__('%1$s (%2$s)'), _n('Software', 'Software', 1), __('version'))."</th></tr>\n";
 
 $sql = "SELECT a.`date_mod` AS dat, a.`new_value`, `glpi_computers`.`id` AS cid, `name`,
                a.`user_name`
@@ -97,7 +98,7 @@ while ($data = $DB->fetch_array($result)) {
 if (!empty($prev)) {
    echo "</td></tr>\n";
 }
-echo "</table><p>". $LANG['plugin_reports']['histoinst'][6]."</p></div>\n";
+echo "</table><p>". __('The list is limited to 200 items and 21 days', 'reports')."</p></div>\n";
 
 Html::footer();
 ?>

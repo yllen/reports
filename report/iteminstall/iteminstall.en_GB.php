@@ -1,9 +1,9 @@
 <?php
-/*	----------------------------------------------------------------------
+/*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,9 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-global $LANG;
-
-$LANG['plugin_reports']['iteminstall'][1]  = "Time before equipment start-up";
-
-
+$LANG['plugin_reports']['iteminstall'] = "Time before equipment start-up";
 ?>
