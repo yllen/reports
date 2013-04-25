@@ -27,9 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Andrea Benini
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['equipmentbylocation'] = "Numero di dispositivi per location";
 ?>

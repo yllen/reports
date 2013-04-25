@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,17 +27,13 @@
  --------------------------------------------------------------------------
  */
 
-// Original Author of file: Remi Collet
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 function cmpStat ($a, $b) {
    return $a["tot"] - $b["tot"];
 }
 
 
 function doStatBis ($table, $entities, $header) {
-   global $DB, $LANG;
+   global $DB;
 
    // Compute stat
    $counts = array();
@@ -97,7 +93,7 @@ function doStatBis ($table, $entities, $header) {
 
    // Display total
    if (count($entities) >1) {
-      echo "<tr class='tab_bg_1'><td class='left'>".$LANG['plugin_reports']['pcsbyentity'][3]."</td>";
+      echo "<tr class='tab_bg_1'><td class='left'>".__('Total')."</td>";
       echo "<td class='right'>" . $total["tot"] . "</td>";
       foreach ($header as $id => $name) {
          echo "<td class='right'>" . $total[$id] . "</td>";
@@ -108,7 +104,7 @@ function doStatBis ($table, $entities, $header) {
 
 
 function doStat ($table, $entity, $header, $level=0) {
-   global $DB, $LANG;
+   global $DB;
 
    $Ent = new Entity();
    $Ent->getFromDB($entity);
@@ -143,10 +139,11 @@ function doStat ($table, $entity, $header, $level=0) {
          echo "&nbsp;&nbsp;&nbsp;";
       }
       if ($entity) {
-         echo $Ent->fields["name"] . "</td>";
+         echo $Ent->fields["name"];
       }else {
-         echo $LANG["entity"][2] . "</td>";
+         -e('Root entity');
       }
+      echo "</td>";
       echo "<td class='right'>" . $count["tot"] . "</td>";
       foreach ($header as $id => $name) {
          echo "<td class='right'>" . $count[$id] . "</td>";
@@ -164,13 +161,14 @@ function doStat ($table, $entity, $header, $level=0) {
       for ($i=0 ; $i<$level ; $i++) {
          echo "&nbsp;&nbsp;&nbsp;";
       }
-      echo $LANG['plugin_reports']['pcsbyentity'][3] . " ";
+      _e('Total');
 
       if ($entity) {
-         echo $Ent->fields["name"] . "</td>";
+         echo $Ent->fields["name"];
       } else {
-         echo $LANG["entity"][2] . "</td>";
+         _e ('Root entity');
       }
+      echo "</td>";
       echo "<td class='right'>" . $count["tot"] . "</td>";
       foreach ($header as $id => $name) {
          echo "<td class='right'>" . $count[$id] . "</td>";
@@ -182,7 +180,7 @@ function doStat ($table, $entity, $header, $level=0) {
 
 
 function doStatChilds($table, $entity, $header, &$total, $level) {
-   global $DB, $LANG;
+   global $DB;
 
    // Search child entities
    $sql = "SELECT `id`
@@ -200,15 +198,14 @@ function doStatChilds($table, $entity, $header, &$total, $level) {
    }
 }
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE        = 1;
 $DBCONNECTION_REQUIRED = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
+$title = __('pcsbyentity_report_title');
 plugin_reports_checkRight('reports', "pcsbyentity","r");
-Html::header($LANG['plugin_reports']['pcsbyentity'][1], $_SERVER['PHP_SELF'], "utils", "report");
+Html::header(__('Number of items by entity', 'reports'), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 
@@ -217,17 +214,16 @@ echo "<div class='center'>";
 // ---------- Form ------------
 echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'>";
 echo "<table class='tab_cadre' cellpadding='5'>\n";
-echo "<tr class='tab_bg_1 center'><th colspan='2'>" . $LANG['plugin_reports']['pcsbyentity'][1] .
+echo "<tr class='tab_bg_1 center'><th colspan='2'>" . __('Number of items by entity', 'reports') .
       "</th></tr>\n";
-echo "<tr class='tab_bg_1'><td class='right'>" . $LANG['plugin_reports']['pcsbyentity'][2] .
-      "&nbsp;:&nbsp;</td>";
-echo "<td><select name='type'><option value=''>-----</option>";
+echo "<tr class='tab_bg_1'><td class='right'>" . __('Item type') ."</td>";
+echo "<td><select name='type'><option value=''>".Dropdown::EMPTY_VALUE."</option>";
 
-$choix = array('Computer'         => $LANG["Menu"][0],
-               'Monitor'          => $LANG["Menu"][3],
-               'Printer'          => $LANG["Menu"][2],
-               'NetworkEquipment' => $LANG["title"][6],
-               'Phone'            => $LANG["help"][35]);
+$choix = array('Computer'         => _n('Computer', 'Computers', 2),
+               'Monitor'          => _n('Monitor', 'Monitors', 2),
+               'Printer'          => _n('Printer', 'Printers', 2),
+               'NetworkEquipment' => __('Networking'),
+               'Phone'            => _n('Phone', 'Phones', 2));
 
 foreach ($choix as $id => $name) {
    $item = new $id();
@@ -244,13 +240,11 @@ foreach ($choix as $id => $name) {
 echo "</select></td></tr>\n";
 
 if (count($_SESSION["glpiactiveentities"]) > 1) {
-   echo "<tr class='tab_bg_1'><td class='right'>" . $LANG['plugin_reports']['pcsbyentity'][5] .
-         "&nbsp;:&nbsp;</td>";
-   echo "<td><select name='sort'><option value='0'>".$LANG['plugin_reports']['pcsbyentity'][6].
-         "</option>";
+   echo "<tr class='tab_bg_1'><td class='right'>" . __('Display', 'reports') ."</td>";
+   echo "<td><select name='sort'><option value='0'>".__('Entity tree', 'reports')."</option>";
    $sel = (isset($_POST["sort"]) && $_POST["sort"] ? "selected='selected'" : "");
 
-   echo "<option value='1' $sel>".$LANG['plugin_reports']['pcsbyentity'][7]."</option>".
+   echo "<option value='1' $sel>".__('Sort by count', 'reports')."</option>".
         "</select></td></tr>\n";
 }
 
@@ -265,23 +259,23 @@ echo "</div>\n";
 if (isset($_POST["type"]) && $_POST["type"] != '') {
    echo "<table class='tab_cadre'>\n";
 
-   echo "<tr><th>".$LANG["entity"][0]. "</th>" .
-         "<th>&nbsp;" . $LANG['plugin_reports']['pcsbyentity'][3] . "&nbsp;</th>" .
-         "<th>&nbsp;" . $LANG['plugin_reports']['pcsbyentity'][4] . "&nbsp;</th>";
+   echo "<tr><th>".__('Entity'). "</th>" .
+         "<th>&nbsp;" . __('Total') . "&nbsp;</th>" .
+         "<th>&nbsp;" . __('Unknown', 'reports') . "&nbsp;</th>";
 
    $sql = "SELECT `id`, `name`
            FROM `glpi_states`
            ORDER BY `id`";
    $result = $DB->query($sql);
 
-   $header[0] = $LANG['plugin_reports']['pcsbyentity'][4];
+   $header[0] = __('Unknown', 'reports');
    while ($data = $DB->fetch_array($result)) {
       $header[$data["id"]] = $data["name"];
       echo "<th>&nbsp;" . $data["name"] . "&nbsp;</th>";
    }
    echo "</tr>\n";
 
-   if (isset($_POST["sort"]) && $_POST["sort"] >0) {
+   if (isset($_POST["sort"]) && ($_POST["sort"] > 0)) {
       doStatBis(getTableForItemType($_POST["type"]), $_SESSION["glpiactiveentities"], $header);
    } else {
       doStat(getTableForItemType($_POST["type"]), $_SESSION["glpiactive_entity"], $header);

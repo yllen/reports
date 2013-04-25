@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,27 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file:
-// Purpose of file:
-// ----------------------------------------------------------------------
-$LANG['plugin_reports']['title'][1] = "Rapports";
-
-$LANG['plugin_reports']['config'][1]   = "Configuration du plugin";
-$LANG['plugin_reports']['config'][2]   = "Pas de droit sur Outils / Rapports";
-$LANG['plugin_reports']['config'][3]   = "Pas de droit sur Assistance / Statistiques";
-$LANG['plugin_reports']['config'][4]   = "Gestion des droits";
-$LANG['plugin_reports']['config'][8]   = "Gestion des droits par rapport";
-$LANG['plugin_reports']['config'][9]   = "Droits des profils";
-$LANG['plugin_reports']['config'][10]  = "Rapport";
-$LANG['plugin_reports']['config'][11]  = "Configuration du rapport";
-
-$LANG['plugin_reports']['reports'][1]  = "Critères de recherche";
-$LANG['plugin_reports']['reports'][2]  = "Statistique";
-$LANG['plugin_reports']['reports'][3]  = "Rapport";
-$LANG['plugin_reports']['reports'][4]  = "Nombre déjà en cours";
-
-$LANG['plugin_reports']['subname']['date-interval']   = "Période";
-$LANG['plugin_reports']['subname']['time-interval']   = "Période";
-
-$LANG['plugin_reports']['job'][21] = "Nombre déjà en cours";
+$LANG['plugin_reports']['title'] = "Rapports";
 ?>

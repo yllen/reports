@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,15 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Souleye Ndiaye
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['pcsbyentity'][1]="Anzahl der Assets pro Einheit";
-$LANG['plugin_reports']['pcsbyentity'][2]="Typ der Assets";
-$LANG['plugin_reports']['pcsbyentity'][3]="Gesamt";
-$LANG['plugin_reports']['pcsbyentity'][4]="Unbekannt";
-$LANG['plugin_reports']['pcsbyentity'][5]="Ansicht";
-$LANG['plugin_reports']['pcsbyentity'][6]="Baumansicht der Einheiten";
-$LANG['plugin_reports']['pcsbyentity'][7]="Sortierung Gesamtanzahl";
+$LANG['plugin_reports']['pcsbyentity'] = "Anzahl der Assets pro Einheit";
 ?>

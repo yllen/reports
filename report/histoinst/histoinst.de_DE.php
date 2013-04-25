@@ -27,14 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Souleye Ndiaye
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histoinst'] = "Historie der letzten Software Installationen";
-$LANG['plugin_reports']['histoinst'][2]="Datum der Inventarisierung";
-$LANG['plugin_reports']['histoinst'][3]="Benutzer";
-$LANG['plugin_reports']['histoinst'][4]="Computername";
-$LANG['plugin_reports']['histoinst'][5]="Software (version)";
-$LANG['plugin_reports']['histoinst'][6]="Liste beschränkt auf 200 Ereignisse und 21 Tage";
 ?>

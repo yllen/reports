@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,25 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-$LANG['plugin_reports']['title'][1] = "Reports";
-
-$LANG['plugin_reports']['config'][1]   = "Reports plugin configuration";
-$LANG['plugin_reports']['config'][2]   = "No right on Tools / Reports";
-$LANG['plugin_reports']['config'][3]   = "No Right on Assistance / Statistics";
-$LANG['plugin_reports']['config'][4]   = "Rights management by profil";
-$LANG['plugin_reports']['config'][8]   = "Rights management by report";
-$LANG['plugin_reports']['config'][9]   = "Profils rights";
-$LANG['plugin_reports']['config'][10]  = "Report";
-$LANG['plugin_reports']['config'][11]  = "Report configuration";
-
-$LANG['plugin_reports']['reports'][1]  = "Search criterias";
-$LANG['plugin_reports']['reports'][2]  = "Statistic";
-$LANG['plugin_reports']['reports'][3]  = "Report";
-$LANG['plugin_reports']['reports'][4]  = "Number pending";
-
-$LANG['plugin_reports']['subname']['date-interval']   = "Date interval";
-$LANG['plugin_reports']['subname']['time-interval']   = "Time interval";
+$LANG['plugin_reports']['title'] = "Reports";
 ?>

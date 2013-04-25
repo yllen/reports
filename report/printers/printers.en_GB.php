@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,8 +27,4 @@
  --------------------------------------------------------------------------
 */
 
-$LANG['plugin_reports']['printers'][1] = $LANG['Menu'][2];
-$LANG['plugin_reports']['printers'][2] = "Computers in the group";
-$LANG['plugin_reports']['printers'][3] = "Users in the group";
-$LANG['plugin_reports']['printers'][4] = "Computers in the location";
-$LANG['plugin_reports']['printers'][5] = "Users in the location";
+$LANG['plugin_reports']['printers'] = _n('Printer', 'Printers', 2);

@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,12 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: WoitiX
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['licensesexpires'][1] = "Licentie per afloop datum";
-$LANG['plugin_reports']['licensesexpires'][2] = "Licentie naam";
-$LANG['plugin_reports']['licensesexpires'][3] = "Software - koop versie";
-
+$LANG['plugin_reports']['licensesexpires'] = "Licentie per afloop datum";
 ?>

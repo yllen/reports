@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,15 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['pcsbyentity'][1]="Nombre d'équipements par entité";
-$LANG['plugin_reports']['pcsbyentity'][2]="Type d'équipement";
-$LANG['plugin_reports']['pcsbyentity'][3]="Total";
-$LANG['plugin_reports']['pcsbyentity'][4]="Inconnu";
-$LANG['plugin_reports']['pcsbyentity'][5]="Affichage";
-$LANG['plugin_reports']['pcsbyentity'][6]="Arborescence des entités";
-$LANG['plugin_reports']['pcsbyentity'][7]="Trié par nombre total";
+$LANG['plugin_reports']['pcsbyentity'] = "Nombre d'équipements par entité";
 ?>

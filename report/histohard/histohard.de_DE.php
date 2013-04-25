@@ -27,13 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Souleye Ndiaye
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histohard'] = "Historie der letzten Hardware Änderungen";
-$LANG['plugin_reports']['histohard'][2]="Datum der Inventarisierung";
-$LANG['plugin_reports']['histohard'][3]="Änderung";
-$LANG['plugin_reports']['histohard'][4]="Liste beschränkt auf 100 Ereignisse und 21 Tage";
-
 ?>

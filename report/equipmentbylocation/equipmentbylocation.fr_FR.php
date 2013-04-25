@@ -27,9 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['equipmentbylocation'] = "Nombre d'équipements par lieu";
 ?>

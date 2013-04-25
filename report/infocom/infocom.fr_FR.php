@@ -27,10 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['infocom'] = "Informations financières";
-
 ?>

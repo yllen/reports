@@ -27,12 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: WoitiX
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['doublons'] = "Dubbele computers";
-$LANG['plugin_reports']['doublons'][2]="Eerste computer";
-$LANG['plugin_reports']['doublons'][3]="Tweede computer";
-$LANG['plugin_reports']['doublons'][4]="Configureer uitzonderingen";
 ?>

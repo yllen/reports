@@ -27,13 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Benoit Machiavello
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histohard'] = "History of last hardware's installations";
-$LANG['plugin_reports']['histohard'][2]="Date of inventory";
-$LANG['plugin_reports']['histohard'][3]="Modification";
-$LANG['plugin_reports']['histohard'][4]="The list is limited to 100 items and 21 days";
-
 ?>

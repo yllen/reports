@@ -52,7 +52,7 @@ echo "<table class='tab_cadrehov'>\n";
 echo "<tr class='tab_bg_1 center'>".
      "<th colspan='5'>". __("History of last hardware's installations", 'reports')."</th></tr>\n";
 
-echo "<tr><th>".__('glpi.pot', 'reports'). "</th>" .
+echo "<tr><th>".__('Date of inventory', 'reports'). "</th>" .
       "<th>". __('User') . "</th>".
       "<th>". __('Network device') . "</th>".
       "<th>". __(-'Field') . "</th>".

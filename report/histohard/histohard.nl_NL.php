@@ -27,13 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: WoitiX
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histohard'] = "Geschiedenis van de laatste hardware installaties";
-$LANG['plugin_reports']['histohard'][2]="Datum van inventarisatie";
-$LANG['plugin_reports']['histohard'][3]="Verandering";
-$LANG['plugin_reports']['histohard'][4]="De lijst is gelimiteerd tot 100 items en de laatste 3 weken";
-
 ?>

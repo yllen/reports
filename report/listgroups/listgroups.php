@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -36,22 +36,20 @@
  * ----------------------------------------------------------------------
  */
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE        = 1;
 $DBCONNECTION_REQUIRED = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('listgroups_report_title'));
 //$group = new GroupCriteria($report);
 
-$report->setColumns(array(new PluginReportsColumn('completename', $LANG["entity"][0]),
-                          new PluginReportsColumnLink('groupid', $LANG["common"][35], 'Group'),
-                          new PluginReportsColumnLink('userid', $LANG["setup"][18], 'User'),
-                          new PluginReportsColumn('firstname', $LANG["common"][43]),
-                          new PluginReportsColumn('realname', $LANG["common"][48]),
-                          new PluginReportsColumnDateTime('last_login', $LANG['login'][0])));
+$report->setColumns(array(new PluginReportsColumn('completename', __('Entity')),
+                          new PluginReportsColumnLink('groupid', __('Group'), 'Group'),
+                          new PluginReportsColumnLink('userid', __('Login'), 'User'),
+                          new PluginReportsColumn('firstname', __('First name')),
+                          new PluginReportsColumn('realname', __('Surname')),
+                          new PluginReportsColumnDateTime('last_login', __('Last login'))));
 
 $query = "SELECT `glpi_entities`.`completename`,
                  `glpi_groups`.`id` AS groupid,

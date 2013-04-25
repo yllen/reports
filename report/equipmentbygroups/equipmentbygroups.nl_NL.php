@@ -27,9 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: WoitiX
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['equipmentbygroups'] = "Lijst van alle apparaten van een groep, gesorteerd op gebruiker";
 ?>

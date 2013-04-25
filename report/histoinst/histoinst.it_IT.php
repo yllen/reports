@@ -27,14 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Andrea Benini
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histoinst'] = "Storico delle ultime installazioni software";
-$LANG['plugin_reports']['histoinst'][2]="Data inventario";
-$LANG['plugin_reports']['histoinst'][3]="Utente";
-$LANG['plugin_reports']['histoinst'][4]="Nome Computer";
-$LANG['plugin_reports']['histoinst'][5]="Software (versione)";
-$LANG['plugin_reports']['histoinst'][6]="La lista &egrave; limitata agli ultimi 200 elementi delle ultime 21 giorni";
 ?>

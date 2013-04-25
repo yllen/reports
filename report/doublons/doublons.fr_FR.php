@@ -27,12 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Remi Collet
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['doublons'] = "Ordinateurs en doublons";
-$LANG['plugin_reports']['doublons'][2]="Premier ordinateur";
-$LANG['plugin_reports']['doublons'][3]="Second ordinateur";
-$LANG['plugin_reports']['doublons'][4]="Configuration des listes d'exceptions";
 ?>

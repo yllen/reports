@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,24 +27,12 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Remi Collet
- *
- * Purpose of file:
- *    Big UNION to have a report including all inventory
- *
- * ----------------------------------------------------------------------
- */
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('printers_report_title'));
 
 // Definition of the criteria
 $grpcrit = new PluginReportsGroupCriteria($report, 'glpi_printers.groups_id', '', 'is_itemgroup');
@@ -58,30 +46,30 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    $cols = array(
-      new PluginReportsColumnLink('id', $LANG['common'][16], 'Printer',
+      new PluginReportsColumnLink('id', __('Name'), 'Printer',
                                   array('with_navigate' => true,
                                         'sorton'        => 'glpi_printers.name')),
-      new PluginReportsColumn('state', $LANG['state'][0]),
-      new PluginReportsColumn('manu', $LANG['common'][5]),
-      new PluginReportsColumn('model', $LANG['common'][22],
+      new PluginReportsColumn('state', __('Status')),
+      new PluginReportsColumn('manu', __('Manufacturer')),
+      new PluginReportsColumn('model', __('Model'),
                               array('sorton' => 'glpi_manufacturers.name, glpi_printermodels.name')),
-      new PluginReportsColumn('serial', $LANG['common'][19]),
-      new PluginReportsColumn('otherserial', $LANG['common'][20]),
-      new PluginReportsColumn('immo_number', $LANG['financial'][20]),
-      new PluginReportsColumnDate('buy_date', $LANG['financial'][14],
+      new PluginReportsColumn('serial', __('Serial number')),
+      new PluginReportsColumn('otherserial', __('Inventory number')),
+      new PluginReportsColumn('immo_number', __('Immobilization number')),
+      new PluginReportsColumnDate('buy_date', __('Date of purchase'),
                                   array('sorton' => 'glpi_infocoms.buy_date')),
-      new PluginReportsColumnDate('use_date', $LANG['financial'][76],
+      new PluginReportsColumnDate('use_date', __('Startup date'),
                                   array('sorton' => 'glpi_infocoms.use_date')),
-      new PluginReportsColumnInteger('last_pages_counter', $LANG['printers'][31]),
-      new PluginReportsColumnLink('user', $LANG['common'][34], 'User'),
-      new PluginReportsColumnLink('groupe', $LANG['common'][35], 'Group',
+      new PluginReportsColumnInteger('last_pages_counter', __('Printed pages')),
+      new PluginReportsColumnLink('user', __('User'), 'User'),
+      new PluginReportsColumnLink('groupe', __('Group'), 'Group',
                                   array('sorton' => 'glpi_groups.name')),
-      new PluginReportsColumnInteger('compgrp', $LANG['plugin_reports']['printers'][2]),
-      new PluginReportsColumnInteger('usergrp', $LANG['plugin_reports']['printers'][3]),
-      new PluginReportsColumnLink('location', $LANG['common'][15], 'Location',
+      new PluginReportsColumnInteger('compgrp', __('Computers in the group', 'reports')),
+      new PluginReportsColumnInteger('usergrp', __('Users in the group', 'reports')),
+      new PluginReportsColumnLink('location', __('Location'), 'Location',
                                   array('sorton' => 'glpi_locations.completename')),
-      new PluginReportsColumnInteger('comploc', $LANG['plugin_reports']['printers'][4]),
-      new PluginReportsColumnInteger('userloc', $LANG['plugin_reports']['printers'][5]),
+      new PluginReportsColumnInteger('comploc', __('Computers in the location', 'reports')),
+      new PluginReportsColumnInteger('userloc', __('Users in the location', 'reports'))
    );
 
    $report->setColumns($cols);
@@ -111,18 +99,25 @@ if ($report->criteriasValidated()) {
                   `glpi_printermodels`.`name` AS model,
                   `glpi_manufacturers`.`name` AS manu,
                   `glpi_printers`.`users_id` AS user,
-                  `glpi_printers`.`groups_id` AS groupe, ($compgrp) AS compgrp, ($usergrp) AS usergrp,
-                  `glpi_locations`.`id` AS location, ($comploc) AS comploc, ($userloc) AS userloc,
-                  `glpi_infocoms`.`immo_number`, `glpi_infocoms`.`buy_date`, `glpi_infocoms`.`use_date`,
+                  `glpi_printers`.`groups_id` AS groupe,
+                  (".$compgrp.") AS compgrp,
+                  (".$usergrp.") AS usergrp,
+                  `glpi_locations`.`id` AS location,
+                  (".$comploc.") AS comploc,
+                  (".$userloc.") AS userloc,
+                  `glpi_infocoms`.`immo_number`, `glpi_infocoms`.`buy_date`,
+                  `glpi_infocoms`.`use_date`,
                   `glpi_states`.`name` AS state
            FROM `glpi_printers`
-           LEFT JOIN `glpi_printermodels` ON (`glpi_printermodels`.`id`=`glpi_printers`.`printermodels_id`)
-           LEFT JOIN `glpi_manufacturers` ON (`glpi_manufacturers`.`id`=`glpi_printers`.`manufacturers_id`)
+           LEFT JOIN `glpi_printermodels`
+               ON (`glpi_printermodels`.`id`=`glpi_printers`.`printermodels_id`)
+           LEFT JOIN `glpi_manufacturers`
+               ON (`glpi_manufacturers`.`id`=`glpi_printers`.`manufacturers_id`)
            LEFT JOIN `glpi_states` ON (`glpi_states`.`id`=`glpi_printers`.`states_id`)
-           LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`itemtype`='Printer' AND `glpi_infocoms`.`items_id`=`glpi_printers`.`id`)
+           LEFT JOIN `glpi_infocoms` ON (`glpi_infocoms`.`itemtype`='Printer'
+                                         AND `glpi_infocoms`.`items_id`=`glpi_printers`.`id`)
            LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id`=`glpi_printers`.`locations_id`)
-           LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id`=`glpi_printers`.`groups_id`)
-           ".
+           LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id`=`glpi_printers`.`groups_id`) ".
            getEntitiesRestrictRequest('WHERE', 'glpi_printers').
            $report->addSqlCriteriasRestriction().
            $report->getOrderBy('groupe');

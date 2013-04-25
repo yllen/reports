@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,32 +27,20 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Remi Collet
- *
- * Purpose of file:
- * 		Generate location report
- * 		Illustrate use of simpleReport
- * ----------------------------------------------------------------------
- */
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE        = 1;
 $DBCONNECTION_REQUIRED = 0; // not really a big SQL request
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
 // Instantiate Report with Name
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('location_report_title'));
 
 // Columns title (optional), from $LANG
-$report->setColumns(array(new PluginReportsColumn('entity', $LANG["entity"][0],
+$report->setColumns(array(new PluginReportsColumn('entity', __('Entity'),
                                                   array('sorton' => 'entity,location')),
-                          new PluginReportsColumn('location', $LANG["common"][15],
+                          new PluginReportsColumn('location', __('Location'),
                                                   array('sorton' => 'location')),
-                          new PluginReportsColumnLink('link', $LANG['title'][34],'Location',
+                          new PluginReportsColumnLink('link', _n('Link', 'Links', 2),'Location',
                                                   array('sorton' => '`glpi_locations`.`name`'))));
 
 // SQL statement

@@ -27,12 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Remi Collet
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['doublons'] = "Duplicate computers";
-/*$LANG['plugin_reports']['doublons'][2]="First computer";
-$LANG['plugin_reports']['doublons'][3]="Second computer";
-$LANG['plugin_reports']['doublons'][4]="Exception list setup";*/
 ?>

@@ -1,10 +1,9 @@
 <?php
-
 /*
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -28,31 +27,22 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Remi Collet
- *
- * Purpose of file:
- *    Generate a detailed license report
- * ----------------------------------------------------------------------
- */
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('licensesexpire_report_title'));
 
-$report->setColumns(array('expire'       => $LANG['financial'][88],
-                               'name'         => $LANG['plugin_reports']['licensesexpires'][2],
-                               'software'     => $LANG['plugin_reports']['licensesexpires'][3],
-                               'serial'       => $LANG['common'][19],
-                               'completename' => $LANG['entity'][0],
-                               'comments'     => $LANG['common'][25],
-                               'ordinateur'   => $LANG['help'][25]));
+$report->setColumns(array('expire'       => __('Valid to', 'reports'),
+                          'name'         => __('License name'),
+                          'software'     => sprintf(__('%1$s - %2$s'),
+                                                    _n('Software', 'Software', 1),
+                                                     __('Purchase version')),
+                          'serial'       => __('Serial number'),
+                          'completename' => __('Entity'),
+                          'comments'     => __('Comments'),
+                          'ordinateur'   => __('Computer')));
 
 $query = "SELECT `glpi_softwarelicenses`.`expire`,
                  `glpi_softwarelicenses`.`name`,

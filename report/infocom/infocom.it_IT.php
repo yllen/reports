@@ -27,10 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Andrea Benini
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['infocom'] = "Informazioni finanziarie";
-
 ?>

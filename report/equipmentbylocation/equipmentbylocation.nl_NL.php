@@ -27,9 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: WoitiX
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['equipmentbylocation'] = "Aantal apparaten per locatie";
 ?>

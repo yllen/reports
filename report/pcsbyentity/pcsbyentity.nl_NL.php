@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,15 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: WoitiX
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['pcsbyentity'][1]="Aantal items per entiteit";
-$LANG['plugin_reports']['pcsbyentity'][2]="Item type";
-$LANG['plugin_reports']['pcsbyentity'][3]="Totaal";
-$LANG['plugin_reports']['pcsbyentity'][4]="Onbekend";
-$LANG['plugin_reports']['pcsbyentity'][5]="Weergeven";
-$LANG['plugin_reports']['pcsbyentity'][6]="Entiteiten";
-$LANG['plugin_reports']['pcsbyentity'][7]="Sorteer op aantal";
+$LANG['plugin_reports']['pcsbyentity'] = "Aantal items per entiteit";
 ?>

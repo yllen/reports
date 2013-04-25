@@ -27,14 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: WoitiX
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histoinst'] = "Geschiedenis van de laatste software installaties";
-$LANG['plugin_reports']['histoinst'][2]="Datum van inventarisatie";
-$LANG['plugin_reports']['histoinst'][3]="Gebruiker";
-$LANG['plugin_reports']['histoinst'][4]="Computer naam";
-$LANG['plugin_reports']['histoinst'][5]="Software (versie)";
-$LANG['plugin_reports']['histoinst'][6]="De lijst is gelimiteerd tot 200 items en de laatste 3 weken";
 ?>

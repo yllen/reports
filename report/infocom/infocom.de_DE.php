@@ -27,10 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Souleye Ndiaye
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['infocom'] = "Finanzinformationen";
-
 ?>

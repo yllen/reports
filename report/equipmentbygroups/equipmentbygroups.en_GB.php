@@ -27,9 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['equipmentbygroups'] = "List all devices of a group, ordered by users";
 ?>

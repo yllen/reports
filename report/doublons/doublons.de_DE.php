@@ -27,13 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Souleye Ndiaye
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['doublons'] = "Computer Duplikate";
-$LANG['plugin_reports']['doublons'][2]="Erster computer";
-$LANG['plugin_reports']['doublons'][3]="Zweiter computer";
-$LANG['plugin_reports']['doublons'][4]="Konfiguration von Ausnahmen";
-
 ?>

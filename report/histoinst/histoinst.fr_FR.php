@@ -27,15 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histoinst'] = "Historique des dernières installations de logiciels";
-$LANG['plugin_reports']['histoinst'][2]="Date de l'inventaire";
-$LANG['plugin_reports']['histoinst'][3]="Utilisateur";
-$LANG['plugin_reports']['histoinst'][4]="Nom de l'ordinateur";
-$LANG['plugin_reports']['histoinst'][5]="Logiciel (version)";
-$LANG['plugin_reports']['histoinst'][6]="Liste limitée à 200 évenements et 21 jours";
-
 ?>

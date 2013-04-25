@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,34 +27,22 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Nelly Lasson
- *
- * Purpose of file:
- *       Generate location report
- *       Illustrate use of simpleReport
- * ----------------------------------------------------------------------
- */
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE        = 1;
 $DBCONNECTION_REQUIRED = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
-$loc = new PluginReportsLocationCriteria($report);
+$report = new PluginReportsAutoReport(__('listequipmentbylocation_report_title'));
+$loc    = new PluginReportsLocationCriteria($report);
 
-$report->setColumns(array(new PluginReportsColumnType('itemtype', $LANG['common'][17]),
-                          new PluginReportsColumnTypeLink('items_id', $LANG['common'][1],
+$report->setColumns(array(new PluginReportsColumnType('itemtype', __('Type')),
+                          new PluginReportsColumnTypeLink('items_id', __('Item'),
                                                           'itemtype', array('with_comment' => 1)),
-                          new PluginReportsColumn('serial', $LANG['common'][19]),
-                          new PluginReportsColumn('otherserial', $LANG['common'][20]),
-                          new PluginReportsColumnModelType('models_id', $LANG['common'][22],
+                          new PluginReportsColumn('serial', __('Serial number')),
+                          new PluginReportsColumn('otherserial', __('Inventory number')),
+                          new PluginReportsColumnModelType('models_id', __('Model'),
                                                            'itemtype', array('with_comment' => 1)),
-                          new PluginReportsColumnTypeType('types_id', $LANG['common'][17],
+                          new PluginReportsColumnTypeType('types_id', __('Type'),
                                                           'itemtype', array('with_comment' => 1))));
 
 //Display criterias form is needed

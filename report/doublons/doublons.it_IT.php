@@ -27,12 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Andrea Benini
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['doublons'] = "Computer Duplicati";
-$LANG['plugin_reports']['doublons'][2]="Primo computer";
-$LANG['plugin_reports']['doublons'][3]="Secondo computer";
-$LANG['plugin_reports']['doublons'][4]="Impostazioni lista accezioni";
 ?>

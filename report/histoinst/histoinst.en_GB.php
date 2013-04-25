@@ -27,14 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: BALPE Dévi
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histoinst'] = "History of last software's installations";
-$LANG['plugin_reports']['histoinst'][2]="Date of inventory";
-$LANG['plugin_reports']['histoinst'][3]="User";
-$LANG['plugin_reports']['histoinst'][4]="Computer's name";
-$LANG['plugin_reports']['histoinst'][5]="Software (version)";
-$LANG['plugin_reports']['histoinst'][6]="The list is limited to 200 items and 21 days";
 ?>

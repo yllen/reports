@@ -27,13 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Andrea Benini
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histohard'] = "Storico delle ultime installazioni hardware";
-$LANG['plugin_reports']['histohard'][2]="Data di inventario";
-$LANG['plugin_reports']['histohard'][3]="Modifica";
-$LANG['plugin_reports']['histohard'][4]="La lists &egrave; limitata a 100 elementi e le ultime 21 giorni";
-
 ?>

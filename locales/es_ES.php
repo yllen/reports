@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -26,24 +26,6 @@
  along with reports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
 */
-// Spanish translation: Jorge López Díaz
-// ----------------------------------------------------------------------
-$LANG['plugin_reports']['title'][1] = "Informes";
 
-$LANG['plugin_reports']['config'][1]   = "Configuración del plugin Informes";
-$LANG['plugin_reports']['config'][2]   = "Sin derechos en Utilidades / Informes";
-$LANG['plugin_reports']['config'][3]   = "Sin derechos en Soporte / Estadísticas";
-$LANG['plugin_reports']['config'][4]   = "Derechos por perfil";
-$LANG['plugin_reports']['config'][8]   = "Derechos por informe";
-$LANG['plugin_reports']['config'][9]   = "Derechos de perfiles";
-$LANG['plugin_reports']['config'][10]  = "Informe";
-$LANG['plugin_reports']['config'][11]  = "Configuración del informe";
-
-$LANG['plugin_reports']['reports'][1]  = "Criterios de búsqueda";
-$LANG['plugin_reports']['reports'][2]  = "Statistic";
-$LANG['plugin_reports']['reports'][3]  = "Report";
-$LANG['plugin_reports']['reports'][4]  = "Number pending";
-
-$LANG['plugin_reports']['subname']['date-interval']   = "Intervalo fecha";
-$LANG['plugin_reports']['subname']['time-interval']   = "Intervalo hora";
+$LANG['plugin_reports']['title'] = "Informes";
 ?>

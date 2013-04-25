@@ -27,13 +27,7 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Alexis CHARLES
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['applicationsbylocation'] = "Applications by locations and versions";
-/*$LANG['plugin_reports']['applicationsbylocation'] = "Applications";
-$LANG['plugin_reports']['applicationsbylocation'] = "Computer status";
-$LANG['plugin_reports']['applicationsbylocation'] = "Locations";*/
-
+$LANG['plugin_reports']['applicationsbylocation'][2] = "Applications";
+$LANG['plugin_reports']['applicationsbylocation'][3] = "Computer status";
 ?>

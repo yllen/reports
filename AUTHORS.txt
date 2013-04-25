@@ -1,7 +1,19 @@
 Plugin Reports developers :
 
+Developpers
 Dévi Balpe
 Alexis CHARLES
 Remi Collet
 Nelly Mahu-Lasson
 Walid Nouh
+
+Traductors
+Dévi Balpe (en_GB, fr_FR)
+Andrea Benini (it_IT)
+Alexis CHARLES (en_GB, fr_FR)
+Remi Collet (en_GB, fr_FR)
+Jorge López Díaz (es_ES)
+Nelly Mahu-Lasson -en_GB, fr_FR)
+Benoit Machiavello (en_GB, fr_FR)
+Souleye Ndiaye (de_DE)
+WoitiX (nl_NL)

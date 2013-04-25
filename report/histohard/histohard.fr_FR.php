@@ -27,13 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Benoit Machiavello
-// Purpose of file:
-// ----------------------------------------------------------------------
-
 $LANG['plugin_reports']['histohard'] = "Historique des dernières modifications de matériels";
-$LANG['plugin_reports']['histohard'][2] = "Date de l'inventaire";
-$LANG['plugin_reports']['histohard'][3] = "Modification";
-$LANG['plugin_reports']['histohard'][4] = "Liste limitée à 100 évènements et 21 jours";
-
 ?>
