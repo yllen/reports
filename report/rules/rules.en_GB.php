@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,11 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Remi Collet
-// Purpose of file: English locale for "rules" report
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['rules'][1] = "Rule's catalog";
-$LANG['plugin_reports']['rules'][2] = "AND";
-$LANG['plugin_reports']['rules'][3] = "OR";
+$LANG['plugin_reports']['rules'] = "Rule's catalog";
 ?>

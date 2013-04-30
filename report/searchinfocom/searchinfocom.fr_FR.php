@@ -28,6 +28,5 @@
 */
 
 
-$LANG['plugin_reports']['searchinfocom'][1]="Recherche dans les informations financières";
-
+$LANG['plugin_reports']['searchinfocom'] = "Recherche dans les informations financières";
 ?>

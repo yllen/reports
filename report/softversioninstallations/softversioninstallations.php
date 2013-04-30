@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,30 +27,19 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Nelly Lasson
- *
- * Purpose of file:
- *    Generate a detailed license report
- * ----------------------------------------------------------------------
- */
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('softversionsinstallations_report_title'));
 
 $statever = new PluginReportsStatusCriteria($report, 'statever',
-                                            $LANG['plugin_reports']['softversioninstallations'][2]);
+                                            __('Software version status', 'reports'));
 $statever->setSqlField("`glpi_softwareversions`.`states_id`");
 
 $statecpt = new PluginReportsStatusCriteria($report, 'statecpt',
-                                            $LANG['plugin_reports']['softversioninstallations'][3]);
+                                            __('Computer status', 'reports'));
 $statecpt->setSqlField("`glpi_computers`.`states_id`");
 
 
@@ -61,15 +50,16 @@ if ($report->criteriasValidated()) {
 
    $report->setSubNameAuto();
 
-   $report->setColumns(array(new PluginReportsColumnLink('software', $LANG['help'][31], 'Software',
+   $report->setColumns(array(new PluginReportsColumnLink('software', _n('Software', 'Software', 1),
+                                                         'Software',
                                                          array('sorton' => 'software,version')),
-                             new PluginReportsColumnLink('version', $LANG['rulesengine'][78],
+                             new PluginReportsColumnLink('version', __('Version'),
                                                          'SoftwareVersion'),
-                             new PluginReportsColumn('statever', $LANG['joblist'][0]),
-                             new PluginReportsColumnLink('computer', $LANG['help'][25],'Computer',
+                             new PluginReportsColumn('statever', __('Status')),
+                             new PluginReportsColumnLink('computer', __('Computer'),'Computer',
                                                          array('sorton' => 'glpi_computers.name')),
-                             new PluginReportsColumn('statecpt', $LANG['joblist'][0]),
-                             new PluginReportsColumn('location', $LANG['common'][15],
+                             new PluginReportsColumn('statecpt', __('Status')),
+                             new PluginReportsColumn('location', __('Location'),
                                                      array('sorton' => 'location'))));
 
    $query = "SELECT `glpi_softwareversions`.`softwares_id` AS software,

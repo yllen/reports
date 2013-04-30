@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,12 +27,5 @@
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Remi Collet
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['softversioninstallations'][1] = "État détaillé des installations par statut des versions";
-$LANG['plugin_reports']['softversioninstallations'][2] = "Statut des versions";
-$LANG['plugin_reports']['softversioninstallations'][3] = "Statut des ordinateurs";
-
+$LANG['plugin_reports']['softversioninstallations'] = "État détaillé des installations par statut des versions";
 ?>

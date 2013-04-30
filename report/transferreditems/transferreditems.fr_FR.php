@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -32,8 +32,5 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-$LANG['plugin_reports']['transferreditems'][1]="Liste des objets transférés";
-$LANG['plugin_reports']['transferreditems'][2]="Date du transfert";
-$LANG['plugin_reports']['transferreditems'][3]="Ancienne entité";
-$LANG['plugin_reports']['transferreditems'][4]="Nouvelle entité";
+$LANG['plugin_reports']['transferreditems'] = "Liste des objets transférés";
 ?>

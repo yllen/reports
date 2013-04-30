@@ -1,11 +1,18 @@
 Plugin Reports developers :
 
-Developpers
+Plugin core
+Dévi Balpe
+Remi Collet
+Nelly Mahu-Lasson
+Walid Nouh
+
+
+Reports
 Dévi Balpe
 Alexis CHARLES
 Remi Collet
 Nelly Mahu-Lasson
-Walid Nouh
+
 
 Traductors
 Dévi Balpe (en_GB, fr_FR)

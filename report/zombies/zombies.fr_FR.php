@@ -26,6 +26,6 @@
  along with reports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
 */
-
+/*
 $LANG['plugin_reports']['zombies'][1]="Utilisateurs sans droit";
 $LANG['plugin_reports']['zombies'][2]="Sans ticket";

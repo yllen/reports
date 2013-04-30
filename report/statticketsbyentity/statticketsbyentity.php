@@ -58,7 +58,7 @@ if ($report->criteriasValidated()) {
                                                       'sorton'    => 'number')),
                  new PluginReportsColumnDateTime('mindate', __('Older', 'reports'),
                                                  array('sorton' => 'mindate')),
-                 new PluginReportsColumnDateTime('maxdate', __('Older', 'reports'),
+                 new PluginReportsColumnDateTime('maxdate', __('Newer', 'reports'),
                                                  array('sorton' => 'maxdate')));
    $report->setColumns($cols);
 

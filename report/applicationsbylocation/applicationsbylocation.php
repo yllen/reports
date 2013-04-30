@@ -27,17 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Alexis CHARLES
- *
- * Purpose of file:
- *    Generate a detailed license report
- * ----------------------------------------------------------------------
- */
-
-
-//Need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 

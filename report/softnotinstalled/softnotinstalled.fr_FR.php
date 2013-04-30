@@ -2,36 +2,30 @@
 /*
  * @version $Id: softversioninstallations.fr_FR.php 158 2011-06-28 15:46:31Z remi $
  -------------------------------------------------------------------------
- GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2011 by the INDEPNET Development Team.
+ reports - Additional reports plugin for GLPI
+ Copyright (C) 2003-2013 by the reports Development Team.
 
- http://indepnet.net/   http://glpi-project.org
+ https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
 
  LICENSE
 
- This file is part of GLPI.
+ This file is part of reports.
 
- GLPI is free software; you can redistribute it and/or modify
+ reports is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- GLPI is distributed in the hope that it will be useful,
+ reports is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with GLPI; if not, write to the Free Software Foundation, Inc.,
- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ along with reports. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
 */
 
-// Original Author of file: Remi Collet
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-$LANG['plugin_reports']['softnotinstalled'][1] = "Logiciels importants non installés";
-
+$LANG['plugin_reports']['softnotinstalled'] = "Logiciels importants non installés";
 ?>

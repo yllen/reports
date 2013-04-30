@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,13 +27,6 @@
  --------------------------------------------------------------------------
 */
 
-global $LANG;
-
 $LANG['plugin_reports']['statticketsbyentity'] = "Helpdesk requesters and tickets by entity";
-/*
-$LANG['plugin_reports']['statticketsbyentity'][2]  = "Tickets count";
-$LANG['plugin_reports']['statticketsbyentity'][3]  = "Older";
 $LANG['plugin_reports']['statticketsbyentity'][4]  = "Newer";
-$LANG['plugin_reports']['statticketsbyentity'][5]  = "Users count";
-*/
 ?>

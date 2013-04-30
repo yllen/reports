@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,25 +27,23 @@
  --------------------------------------------------------------------------
  */
 
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport();
+$report = new PluginReportsAutoReport(__('searchinfocom_report_title'));
 
 //Report's search criterias
-new PluginReportsDateIntervalCriteria($report, 'order_date', $LANG["financial"][28]);
-new PluginReportsDateIntervalCriteria($report, 'buy_date', $LANG["financial"][14]);
-new PluginReportsDateIntervalCriteria($report, 'delivery_date', $LANG["financial"][27]);
-new PluginReportsDateIntervalCriteria($report, 'use_date', $LANG["financial"][76]);
-new PluginReportsDateIntervalCriteria($report, 'inventory_date', $LANG["financial"][114]);
-new PluginReportsTextCriteria($report, 'immo_number', $LANG['financial'][20]);
-new PluginReportsTextCriteria($report, 'order_number', $LANG['financial'][18]);
-new PluginReportsTextCriteria($report, 'delivery_number', $LANG['financial'][19]);
-new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets', $LANG['financial'][87]);
+new PluginReportsDateIntervalCriteria($report, 'order_date', __('Order date'));
+new PluginReportsDateIntervalCriteria($report, 'buy_date', __('Date of purchase'));
+new PluginReportsDateIntervalCriteria($report, 'delivery_date', __('Delivery date'));
+new PluginReportsDateIntervalCriteria($report, 'use_date', __('Startup date'));
+new PluginReportsDateIntervalCriteria($report, 'inventory_date', __('Date of last physical inventory'));
+new PluginReportsTextCriteria($report, 'immo_number', __('Immobilization number'));
+new PluginReportsTextCriteria($report, 'order_number', __('Order number'));
+new PluginReportsTextCriteria($report, 'delivery_number', __('Delivery form'));
+new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets', __('Budget'));
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -57,18 +55,18 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    // Report Columns
-   $cols = array(new PluginReportsColumnType('itemtype', $LANG['common'][17]),
-                 new PluginReportsColumnTypeLink('items_id', $LANG['common'][1], 'itemtype',
+   $cols = array(new PluginReportsColumnType('itemtype', __('Type')),
+                 new PluginReportsColumnTypeLink('items_id', __('Item'), 'itemtype',
                                                  array('with_comment' => 1)),
-                 new PluginReportsColumnDate('order_date', $LANG['financial'][28]),
-                 new PluginReportsColumn('order_number', $LANG['financial'][18]),
-                 new PluginReportsColumnDate('buy_date', $LANG['financial'][14]),
-                 new PluginReportsColumn('delivery_date', $LANG['financial'][27]),
-                 new PluginReportsColumn('delivery_number', $LANG['financial'][19]),
-                 new PluginReportsColumn('immo_number', $LANG['financial'][20]),
-                 new PluginReportsColumnDate('use_date', $LANG['financial'][76]),
-                 new PluginReportsColumnDate('inventory_date', $LANG['financial'][114]),
-                 new PluginReportsColumnLink('budgets_id', $LANG['financial'][87], 'Budget'));
+                 new PluginReportsColumnDate('order_date', __('Order date')),
+                 new PluginReportsColumn('order_number', __('Order number')),
+                 new PluginReportsColumnDate('buy_date', __('Date of purchase')),
+                 new PluginReportsColumn('delivery_date', __('Delivery date')),
+                 new PluginReportsColumn('delivery_number', __('Delivery form')),
+                 new PluginReportsColumn('immo_number', __('Immobilization number')),
+                 new PluginReportsColumnDate('use_date', __('Startup date')),
+                 new PluginReportsColumnDate('inventory_date', __('Date of last physical inventory')),
+                 new PluginReportsColumnLink('budgets_id', __('Budget'), 'Budget'));
 
    $report->setColumns($cols);
 

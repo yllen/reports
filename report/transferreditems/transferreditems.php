@@ -33,11 +33,10 @@
 $USEDBREPLICATE       = 1;
 $DBCONNECION_REQUIRED = 0;
 
-define('GLPI_ROOT', '../../../..');
-include(GLPI_ROOT."/inc/includes.php");
+include("../../../../inc/includes.php");
 
 // Instanciation
-$report= new PluginReportsAutoReport();
+$report= new PluginReportsAutoReport(__('transferreditems_report_title'));
 
 // Search criterias
 new PluginReportsDateIntervalCriteria($report, "`glpi_logs`.`date_mod`");
@@ -50,7 +49,7 @@ foreach (array('Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone',
 }
 
 ksort($types);
-$typecritera = new PluginReportsItemTypeCriteria($report, "itemtype",$LANG['common'][17], $types);
+$typecritera = new PluginReportsItemTypeCriteria($report, "itemtype", __('Type'), $types);
 
 $report->displayCriteriasForm();
 
@@ -59,15 +58,12 @@ if($report->criteriasValidated()) {
    $itemtype = $_POST['itemtype'];
    $table = getTableForItemType($itemtype);
 
-   $columns = array(new PluginReportsColumnLink('items_id', $LANG['common'][16],
-                                                $itemtype, array('with_comment' => 1)),
-                    new PluginReportsColumn('otherserial', $LANG['common'][20]),
-                    new PluginReportsColumn('old_value',
-                                            $LANG['plugin_reports']['transferreditems'][3]),
-                    new PluginReportsColumn('new_value',
-                                            $LANG['plugin_reports']['transferreditems'][4]),
-                    new PluginReportsColumnDateTime('date_mod',
-                                                    $LANG['plugin_reports']['transferreditems'][2]));
+   $columns = array(new PluginReportsColumnLink('items_id', __('Name'), $itemtype,
+                                                array('with_comment' => 1)),
+                    new PluginReportsColumn('otherserial', __('Inventory number')),
+                    new PluginReportsColumn('old_value', __('Source entity', 'reports')),
+                    new PluginReportsColumn('new_value', __('Target entity', 'reports')),
+                    new PluginReportsColumnDateTime('date_mod', __('Transfert date', 'reports')));
    $report->setColumns($columns);
 
    $query = "SELECT `$table`.`id` as `items_id`,

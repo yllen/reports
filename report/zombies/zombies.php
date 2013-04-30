@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,18 +27,18 @@
  --------------------------------------------------------------------------
  */
 
-$USEDBREPLICATE=0;
-$DBCONNECTION_REQUIRED=0;
+$USEDBREPLICATE         = 0;
+$DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport($LANG['plugin_reports']['zombies'][1]);
+$report = new PluginReportsAutoReport(__('zombies_report_title'));
 
-$name = new PluginReportsTextCriteria($report, 'name', $LANG['login'][6]);
+$name = new PluginReportsTextCriteria($report, 'name', __('Login'));
 
-$tab = array(0 => $LANG['choice'][0], 1 => $LANG['choice'][1]);
-$filter = new PluginReportsArrayCriteria($report, 'tickets', $LANG['plugin_reports']['zombies'][2], $tab);
+$tab = array(0 => __('No'),
+             1 => __('Yes'));
+$filter = new PluginReportsArrayCriteria($report, 'tickets', __('With no ticket', 'reports'), $tab);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -48,48 +48,46 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
    $report->delCriteria('tickets');
 
-   $cols = array(
-      new PluginReportsColumnItemCheckbox('id', 'User'),
-      new PluginReportsColumnLink('id2', $LANG['common'][34], 'User', array('with_comment' => true, 'with_navigate' => true)),
-      new PluginReportsColumn('name', $LANG['login'][6], array('sorton' => 'name')),
-      new PluginReportsColumn('email', $LANG['mailing'][118]),
-      new PluginReportsColumn('phone', $LANG['help'][35]),
-      new PluginReportsColumn('location', $LANG['common'][15]),
-      new PluginReportsColumnDate('last_login', $LANG['login'][0], array('sorton' => 'last_login')),
-   );
+   $cols = array(new PluginReportsColumnItemCheckbox('id', 'User'),
+                 new PluginReportsColumnLink('id2', __('User'), 'User',
+                                             array('with_comment' => true,
+                                                   'with_navigate' => true)),
+                 new PluginReportsColumn('name', __('Login'), array('sorton' => 'name')),
+                 new PluginReportsColumn('email', __('Email')),
+                 new PluginReportsColumn('phone', __('Phone')),
+                 new PluginReportsColumn('location', __('Location')),
+                 new PluginReportsColumnDate('last_login', __('Last login'),
+                                             array('sorton' => 'last_login')));
+
    if (!$filter->getParameterValue()) {
-      $cols[] = new PluginReportsColumnInteger('nb1', $LANG['common'][37],  array('with_zero' => false,
-                                                                                  'sorton'    => 'nb1'));
-      $cols[] = new PluginReportsColumnInteger('nb2', $LANG['job'][4],      array('with_zero' => false,
-                                                                                  'sorton' => 'nb2'));
-      $cols[] = new PluginReportsColumnInteger('nb3', $LANG['common'][104], array('with_zero' => false,
-                                                                                  'sorton' => 'nb3'));
-      $cols[] = new PluginReportsColumnInteger('nb4', $LANG['job'][6],      array('with_zero' => false,
-                                                                                  'sorton' => 'nb4'));
+      $cols[] = new PluginReportsColumnInteger('nb1', __('Writer'),  array('with_zero' => false,
+                                                                           'sorton'    => 'nb1'));
+      $cols[] = new PluginReportsColumnInteger('nb2', __('Requester'), array('with_zero' => false,
+                                                                             'sorton'    => 'nb2'));
+      $cols[] = new PluginReportsColumnInteger('nb3', __('Watcher'), array('with_zero' => false,
+                                                                           'sorton'    => 'nb3'));
+      $cols[] = new PluginReportsColumnInteger('nb4', __('Technician'), array('with_zero' => false,
+                                                                              'sorton'    => 'nb4'));
    }
 
    $report->setColumns($cols);
 
    $query = "SELECT `glpi_users`.`id`, `glpi_users`.`id` AS id2, `glpi_users`.`name`, `last_login`,
-                    (
-                       SELECT COUNT(*)
+                    (SELECT COUNT(*)
                        FROM `glpi_tickets`
                        WHERE `glpi_users`.`id` = `glpi_tickets`.`users_id_recipient`
                     ) AS nb1,
-                    (
-                       SELECT COUNT(*)
+                    (SELECT COUNT(*)
                        FROM `glpi_tickets_users`
                        WHERE `glpi_users`.`id` = `glpi_tickets_users`.`users_id`
                              AND `glpi_tickets_users`.`type`=".CommonITILActor::REQUESTER."
                     ) AS nb2,
-                    (
-                       SELECT COUNT(*)
+                    (SELECT COUNT(*)
                        FROM `glpi_tickets_users`
                        WHERE `glpi_users`.`id` = `glpi_tickets_users`.`users_id`
                              AND `glpi_tickets_users`.`type`=".CommonITILActor::OBSERVER."
                     ) AS nb3,
-                    (
-                       SELECT COUNT(*)
+                    (SELECT COUNT(*)
                        FROM `glpi_tickets_users`
                        WHERE `glpi_users`.`id` = `glpi_tickets_users`.`users_id`
                              AND `glpi_tickets_users`.`type`=".CommonITILActor::ASSIGN."

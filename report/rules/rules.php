@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2011 by the reports Development Team.
+ Copyright (C) 2003-2013 by the reports Development Team.
 
  https://forge.indepnet.net/projects/reports
  -------------------------------------------------------------------------
@@ -27,22 +27,16 @@
  --------------------------------------------------------------------------
  */
 
-// Original Author of file: Remi Collet
-// Purpose of file: display the full rule's catalog (all rules, criterias and actions)
-// ----------------------------------------------------------------------
-
-//Options for GLPI 0.71 and newer : need slave db to access the report
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-define('GLPI_ROOT', '../../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ("../../../../inc/includes.php");
 
-plugin_reports_checkRight('reports', "rules","r");
+plugin_reports_checkRight('reports', "rules", "r");
 
+$title = __('rules_report_title');
 
 function plugin_reports_rulelist ($rulecollection, $title) {
-   global $LANG;
 
    Session::checkRight($rulecollection->right,"r");
 
@@ -50,13 +44,13 @@ function plugin_reports_rulelist ($rulecollection, $title) {
    echo "<div class='center'>";
    echo "<table class='tab_cadre' cellpadding='5'>\n";
    echo "<tr><th colspan='6'><a href='".$_SERVER["PHP_SELF"]."'>" .
-         $LANG['plugin_reports']['rules'][1] . "</a> - " . $title . "</th></tr>";
+         __("Rule's catalog", "reports") . "</a> - " . $title . "</th></tr>";
 
-   echo "<tr><th>".$LANG["common"][16]."</th>";
-   echo "<th>".$LANG["joblist"][6]."</th>";
-   echo "<th colspan='2'>".$LANG["rulesengine"][6]."</th>";
-   echo "<th>".$LANG["rulesengine"][7]."</th>";
-   echo "<th>".$LANG["common"][60]."</th></tr>\n";
+   echo "<tr><th>".__('Name')."</th>";
+   echo "<th>".__('Description')."</th>";
+   echo "<th colspan='2'>"._n('Criterion', 'Criteria', 2)."</th>";
+   echo "<th>"._n('Action', 'Actions', 2)."</th>";
+   echo "<th>".__('Active')."</th></tr>\n";
 
    foreach ($rulecollection->RuleList->list as $rule) {
       echo "<tr class='tab_bg_1'>";
@@ -64,9 +58,9 @@ function plugin_reports_rulelist ($rulecollection, $title) {
       echo "<td>" . $rule->fields["description"] . "</td>";
 
       if ($rule->fields["match"] == Rule::AND_MATCHING) {
-         echo "<td>".$LANG['plugin_reports']['rules'][2]."</td>";
+         echo "<td>".__('and')."</td>";
       } else {
-         echo "<td>".$LANG['plugin_reports']['rules'][3]."</td>";
+         echo "<td>".__('or')."</td>";
       }
 
       echo "<td>";
@@ -90,16 +84,16 @@ function plugin_reports_rulelist ($rulecollection, $title) {
       echo "</td>";
 
       if ($rule->fields["is_active"]) {
-         echo "<td>".$LANG["choice"][1]."</td>";
+         echo "<td>".__('Yes')."</td>";
       } else {
-         echo "<td>".$LANG["choice"][0]."</td>";
+         echo "<td>".__('No')."</td>";
       }
       echo "</tr>\n";
    }
    echo "</table></div>\n";
 }
 
-Html::header($LANG['plugin_reports']['rules'][1], $_SERVER['PHP_SELF'], "utils", "report");
+Html::header(__("Rule's catalog"), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 
@@ -107,43 +101,46 @@ $type = (isset($_GET["type"]) ? $_GET["type"] : "");
 
 if ($type == "ldap") {
    $rulecollection = new RuleRightCollection();
-   plugin_reports_rulelist($rulecollection,$LANG["rulesengine"][19]);
+   plugin_reports_rulelist($rulecollection, __('Authorizations assignment rules'));
 
 } else if ($type == "ocs") {
    $rulecollection = new RuleOcsCollection(-1);
-   plugin_reports_rulelist($rulecollection,$LANG["rulesengine"][18]);
+   plugin_reports_rulelist($rulecollection, __('Rules for assigning a computer to an entity'));
 
 } else if ($type == "track") {
    $rulecollection = new RuleTicketCollection();
-   plugin_reports_rulelist($rulecollection,$LANG["rulesengine"][28]);
+   plugin_reports_rulelist($rulecollection, __('Business rules for tickets'));
 
 } else if ($type == "soft") {
    $rulecollection = new RuleSoftwareCategoryCollection();
-   plugin_reports_rulelist($rulecollection,$LANG["rulesengine"][37]);
+   plugin_reports_rulelist($rulecollection, __('Rules for assigning a category to software'));
 
 } else {
    echo "<div class='center'>";
    echo "<table class='tab_cadre' cellpadding='5'>\n";
-   echo "<tr><th>" . $LANG['plugin_reports']['rules'][1]." - ".$LANG["rulesengine"][24]."</th></tr>";
-
+   echo "<tr><th>". sprintf(__('%1$s - %2$s'), __("Rule's catalog"), __('Rule type'))."</th></tr>";
+/*
    if ($CFG_GLPI["use_ocs_mode"] && Session::haveRight("rule_ocs","r")) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
            "<a href='".$_SERVER["PHP_SELF"]."?type=ocs'>".$LANG["rulesengine"][18]."</a></td></tr>";
    }
-
+*/
    if (Session::haveRight("rule_ldap","r")) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
-           "<a href='".$_SERVER["PHP_SELF"]."?type=ldap'>".$LANG["rulesengine"][19]."</a></td></tr>";
+           "<a href='".$_SERVER["PHP_SELF"]."?type=ldap'>".__('Authorizations assignment rules').
+           "</a></td></tr>";
    }
 
    if (Session::haveRight("rule_tracking","r")) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
-           "<a href='".$_SERVER["PHP_SELF"]."?type=track'>".$LANG["rulesengine"][28]."</a></td></tr>";
+           "<a href='".$_SERVER["PHP_SELF"]."?type=track'>".__('Business rules for tickets').
+           "</a></td></tr>";
    }
 
    if (Session::haveRight("rule_softwarecategories","r")) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
-           "<a href='".$_SERVER["PHP_SELF"]."?type=soft'>".$LANG["rulesengine"][37]."</a></td></tr>";
+           "<a href='".$_SERVER["PHP_SELF"]."?type=soft'>".
+             __('Rules for assigning a category to software')."</a></td></tr>";
    }
    echo "</table></div>\n";
 }
