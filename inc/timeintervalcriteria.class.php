@@ -109,7 +109,7 @@ class PluginReportsTimeIntervalCriteria extends PluginReportsAutoCriteria {
             $title = __('Time interval', 'reports');
          }
       }
-      return sprintf(__('%1$s (%2$s)'), "$nbsp;" . $title,
+      return sprintf(__('%1$s (%2$s)'), "&nbsp;" . $title,
                      $this->getParameter('starttime') . "," . $this->getParameter('endtime'));
    }
 
