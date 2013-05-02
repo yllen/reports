@@ -32,7 +32,7 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('softversionsinstallations_report_title'));
+$report = new PluginReportsAutoReport(__('softversionsinstallations_report_title'), 'reports');
 
 $statever = new PluginReportsStatusCriteria($report, 'statever',
                                             __('Software version status', 'reports'));
