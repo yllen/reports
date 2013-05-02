@@ -37,7 +37,7 @@ plugin_reports_checkRight('reports', "rules", "r");
 
 function plugin_reports_rulelist ($rulecollection, $title) {
 
-   Session::checkRight($rulecollection->right,"r");
+   Session::checkRight($rulecollection::$right,"r");
 
    $rulecollection->getCollectionDatas(true, true);
    echo "<div class='center'>";
@@ -77,7 +77,7 @@ function plugin_reports_rulelist ($rulecollection, $title) {
       foreach ($rule->actions as $action) {
          echo $rule->getActionName($action->fields["field"]) . " " .
                RuleAction::getActionByID($action->fields["action_type"]) . " " .
-               stripslashes($rule->getActionValue($action->fields["field"],
+               stripslashes($rule->getActionValue($action->fields["field"],$action->fields["action_type"],
                             $action->fields["value"])) .
                "<br>";
       }
