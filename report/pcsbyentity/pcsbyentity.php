@@ -141,7 +141,7 @@ function doStat ($table, $entity, $header, $level=0) {
       if ($entity) {
          echo $Ent->fields["name"];
       }else {
-         -e('Root entity');
+         _e('Root entity');
       }
       echo "</td>";
       echo "<td class='right'>" . $count["tot"] . "</td>";
