@@ -33,8 +33,8 @@ $DBCONNECTION_REQUIRED  = 0; // Not really a big SQL request
 include ("../../../../inc/includes.php");
 
 includeLocales("equipmentbygroups");
-
-Html::header(__('equipmentbygroups_report_title'), $_SERVER['PHP_SELF'], "utils", "report");
+//TRANS: The name of the report = List all devices of a group, ordered by users
+Html::header(__('equipmentbygroups_report_title', 'reports'), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 
@@ -175,7 +175,7 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
  * @param $result    the resultset of all the devices found
 **/
 function displayUserDevices($type, $result) {
-   global $DB, $CFG_GLPI, $LANG;
+   global $DB, $CFG_GLPI;
 
    $item = new $type();
    while ($data = $DB->fetch_array($result)) {

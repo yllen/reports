@@ -34,7 +34,6 @@ include ("../../../../inc/includes.php");
 
 plugin_reports_checkRight('reports', "rules", "r");
 
-$title = __('rules_report_title');
 
 function plugin_reports_rulelist ($rulecollection, $title) {
 
@@ -44,7 +43,8 @@ function plugin_reports_rulelist ($rulecollection, $title) {
    echo "<div class='center'>";
    echo "<table class='tab_cadre' cellpadding='5'>\n";
    echo "<tr><th colspan='6'><a href='".$_SERVER["PHP_SELF"]."'>" .
-         __("Rule's catalog", "reports") . "</a> - " . $title . "</th></tr>";
+         //TRANS: The name of the report = Rule's catalog
+         __('rules_report_title', 'reports') . "</a> - " . $title . "</th></tr>";
 
    echo "<tr><th>".__('Name')."</th>";
    echo "<th>".__('Description')."</th>";

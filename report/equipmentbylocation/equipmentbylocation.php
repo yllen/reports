@@ -31,8 +31,8 @@ $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
-
-$report = new PluginReportsAutoReport(__('equipmentbylocation_report_title'));
+//TRANS: The name of the report = Number of equipments by location
+$report = new PluginReportsAutoReport(__('equipmentbylocation_report_title', 'reports'));
 
 $report->setColumns(array(new PluginReportsColumn('entity', __('Entity')),
                           new PluginReportsColumn('location', __('Location')),

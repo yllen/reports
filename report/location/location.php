@@ -32,10 +32,9 @@ $DBCONNECTION_REQUIRED = 0; // not really a big SQL request
 
 include ("../../../../inc/includes.php");
 
-// Instantiate Report with Name
-$report = new PluginReportsAutoReport(__('location_report_title'));
+//TRANS: The name of the report = Location tree
+$report = new PluginReportsAutoReport(__('location_report_title', 'reports'));
 
-// Columns title (optional), from $LANG
 $report->setColumns(array(new PluginReportsColumn('entity', __('Entity'),
                                                   array('sorton' => 'entity,location')),
                           new PluginReportsColumn('location', __('Location'),

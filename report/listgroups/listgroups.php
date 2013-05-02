@@ -41,7 +41,8 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('listgroups_report_title'));
+//TRANS: The name of the report = List of groups and members
+$report = new PluginReportsAutoReport(__('listgroups_report_title', 'reports'));
 //$group = new GroupCriteria($report);
 
 $report->setColumns(array(new PluginReportsColumn('completename', __('Entity')),

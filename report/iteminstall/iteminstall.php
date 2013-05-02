@@ -33,7 +33,8 @@ $DBCONNECTION_REQUIRED  = 1;
 // Initialization of the variables
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('iteminstall_report_title'));
+//TRANS: The name of the report = Time before equipment start-up
+$report = new PluginReportsAutoReport(__('iteminstall_report_title', 'reports'));
 
 //Report's search criterias
 $date = new PluginReportsDateIntervalCriteria($report, 'buy_date');

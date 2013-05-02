@@ -32,7 +32,8 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('listequipmentbylocation_report_title'));
+//TRANS: The name of the report = List of equipments by location
+$report = new PluginReportsAutoReport(__('listequipmentbylocation_report_title', 'reports'));
 $loc    = new PluginReportsLocationCriteria($report);
 
 $report->setColumns(array(new PluginReportsColumnType('itemtype', __('Type')),

@@ -35,8 +35,8 @@ $DBCONNECION_REQUIRED = 0;
 
 include("../../../../inc/includes.php");
 
-// Instanciation
-$report= new PluginReportsAutoReport(__('transferreditems_report_title'));
+//TRANS: The name of the report = List of transfered objects
+$report= new PluginReportsAutoReport(__('transferreditems_report_title', 'reports'));
 
 // Search criterias
 new PluginReportsDateIntervalCriteria($report, "`glpi_logs`.`date_mod`");

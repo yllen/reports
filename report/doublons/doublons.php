@@ -27,11 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-// Original Author of file: Remi Collet
-// Purpose of file: Handle configuration for "doublons" report
-// ----------------------------------------------------------------------
-
-
 //***********************REQUETES À REVOIR********************************
 //*************************************************************************
 
@@ -43,7 +38,8 @@ plugin_reports_checkRight('reports', "doublons","r");
 $computer = new Computer();
 $computer->checkGlobal('r');
 
-Html::header(__('doublons_report_title'), $_SERVER['PHP_SELF'], "utils", "report");
+//TRANS: The name of the report = Duplicate computers
+Html::header(__('doublons_report_title', 'report'), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 

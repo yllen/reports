@@ -41,7 +41,8 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('statnightticketsbypriority_report_title'));
+//TRANS: The name of the report = Tickets opened at night, sorted by priority
+$report = new PluginReportsAutoReport(__('statnightticketsbypriority_report_title', 'reports'));
 
 //Report's search criterias
 new PluginReportsDateIntervalCriteria($report, '`glpi_tickets`.`date`', __('Opening date'));

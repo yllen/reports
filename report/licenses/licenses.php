@@ -32,7 +32,8 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('licenses_report_title'));
+//TRANS: The name of the report = Detailed license report
+$report = new PluginReportsAutoReport(__('licenses_report_title', 'reports'));
 
 $license = new PluginReportsSoftwareWithLicenseCriteria($report);
 

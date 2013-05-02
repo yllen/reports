@@ -32,7 +32,8 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('softnotinstalled_report_title'));
+//TRANS: The name of the report = Detailed report of software installation by status
+$report = new PluginReportsAutoReport(__('softnotinstalled_report_title', 'reports'));
 
 $soft = new PluginReportsTextCriteria($report, 'software', _n('Software', 'Software', 1));
 $soft->setSqlField("`glpi_softwares`.`name`");

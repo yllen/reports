@@ -44,9 +44,8 @@ $computer->checkGlobal('r');
 $software = new Software();
 $software->checkGlobal('r');
 
-$title = __('histoinst_report_title');
-Html::header(__("History of last software's installations", "reports"), $_SERVER['PHP_SELF'],
-             "utils", "report");
+//TRANS: The name of the report = History of last software's installations
+Html::header(__('histoinst_report_title', 'reports'), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 

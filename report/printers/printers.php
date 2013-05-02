@@ -32,7 +32,8 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('printers_report_title'));
+//TRANS: The name of the report = Printers
+$report = new PluginReportsAutoReport(__('printers_report_title', 'reports'));
 
 // Definition of the criteria
 $grpcrit = new PluginReportsGroupCriteria($report, 'glpi_printers.groups_id', '', 'is_itemgroup');

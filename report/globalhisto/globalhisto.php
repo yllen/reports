@@ -31,8 +31,8 @@ $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0; // not really a big SQL request
 
 include ("../../../../inc/includes.php");
-
-$report = new PluginReportsAutoReport(__('globalhisto_report_title'));
+//TRANS: The name of the report = Global History (for Test / example only)
+$report = new PluginReportsAutoReport(__('globalhisto_report_title', 'reports'));
 
 //Report's search criterias
 //Possible current values are :

@@ -50,8 +50,8 @@ include ("../../../../inc/includes.php");
  * - etc
  *
  */
-
-$report = new PluginReportsAutoReport(__('infocom_report_title'));
+//TRANS: The name of the report = Financial information
+$report = new PluginReportsAutoReport(__('infocom_report_title', 'reports'));
 
 $ignored = array('Cartridge', 'CartridgeItem', 'Consumable', 'ConsumableItem', 'Software');
 

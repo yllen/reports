@@ -70,12 +70,14 @@ function includeLocales($report_name, $plugin='reports') {
 
    } else {
       // At least defined report name
-      $LANG['plugin_'.$plugin][$report_name] = __($report_name.'_report_title');
+      $name = $report_name.'_report_title';
+      $LANG['plugin_'.$plugin][$report_name] = __($report_name.'_report_title', $plugin);
       // For dev
       if ($LANG['plugin_'.$plugin][$report_name] == $report_name.'_report_title') {
-         Toolbox::logInFile('php-errors', "includeLocales($report_name,$plugin) => not found\n");
+         Toolbox::logInFile('php-errors',
+                            "includeLocales($name, $plugin) => not found\n");
       }
-      return false;
+  //    return false;
    }
 
    return true;

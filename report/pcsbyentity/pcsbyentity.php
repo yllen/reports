@@ -77,11 +77,11 @@ function doStatBis ($table, $entities, $header) {
 
          echo "<tr class='tab_bg_2'><td class='left'>";
          if ($entity) {
-            echo $Ent->fields["name"] . "</td>";
+            echo $Ent->fields["name"];
          } else {
-            echo $LANG["entity"][2] . "</td>";
+            _e('Root entity');
          }
-         echo "<td class='right'>" . $count["tot"] . "</td>";
+         echo "</td><td class='right'>" . $count["tot"] . "</td>";
          $total["tot"] += $count["tot"];
          foreach ($header as $id => $name) {
             echo "<td class='right'>" . $count[$id] . "</td>";
@@ -203,9 +203,9 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
-$title = __('pcsbyentity_report_title');
 plugin_reports_checkRight('reports', "pcsbyentity","r");
-Html::header(__('Number of items by entity', 'reports'), $_SERVER['PHP_SELF'], "utils", "report");
+//TRANS: The name of the report = Number of items by entity
+Html::header(__('pcsbyentity_report_title', 'reports'), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 

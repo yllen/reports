@@ -41,9 +41,8 @@ plugin_reports_checkRight('reports', "histohard","r");
 $computer = new Computer();
 $computer->checkGlobal('r');
 
-$title = __('histohard_report_title');
-Html::header(__("History of last hardware's installations", 'reports'), $_SERVER['PHP_SELF'],
-             "utils","report");
+//TRANS: The name of the report = History of last hardware's installations
+Html::header(__("histohard_report_title", 'reports'), $_SERVER['PHP_SELF'], "utils","report");
 
 Report::title();
 

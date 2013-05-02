@@ -32,7 +32,8 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('searchinfocom_report_title'));
+//TRANS: The name of the report = Search in the financial information (plural)
+$report = new PluginReportsAutoReport(__('searchinfocom_report_title', 'reports'));
 
 //Report's search criterias
 new PluginReportsDateIntervalCriteria($report, 'order_date', __('Order date'));

@@ -34,7 +34,8 @@ $DBCONNECTION_REQUIRED  = 1;
 // Initialization of the variables
 include ("../../../../inc/includes.php");
 
-$report = new PluginReportsAutoReport(__('statticketsbyentity_report_title'));
+//TRANS: The name of the report = Helpdesk requesters and tickets by entity
+$report = new PluginReportsAutoReport(__('statticketsbyentity_report_title', 'reports'));
 
 //Report's search criterias
 $prof = new PluginReportsDropdownCriteria($report, 'profiles_id', 'glpi_profiles',
