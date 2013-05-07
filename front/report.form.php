@@ -90,7 +90,6 @@ foreach ($rap as $plug => $tmp1) {
    foreach ($tmp1 as $section => $tmp2) {
       echo '<optgroup label="'.$tab."&raquo;&nbsp;".$section.'">';
       foreach ($tmp2 as $mod => $name) {
-      	//toolbox::logdebug("tmp", $tmp2, "mod", $mod, "name", $name);
          echo "<option value='$mod' ".($report=="$mod"?"selected":"").">${tab}${tab}$name</option>\n";
       }
       echo "</optgroup>\n";

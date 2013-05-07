@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-02 13:17+0200\n"
-"PO-Revision-Date: 2013-05-02 12:03+0000\n"
+"POT-Creation-Date: 2013-05-07 14:15+0200\n"
+"PO-Revision-Date: 2013-05-07 12:12+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/GLPI_reports/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -72,7 +72,7 @@ msgstr "Número de pendências"
 
 #. TRANS: The name of the report = Applications by locations and versions
 #: report/applicationsbylocation/applicationsbylocation.php:36
-msgid "applicationsbylocations_report_title"
+msgid "applicationsbylocation_report_title"
 msgstr ""
 
 #: report/applicationsbylocation/applicationsbylocation.php:42
@@ -80,18 +80,18 @@ msgid "Applications"
 msgstr "Aplicativos"
 
 #: report/applicationsbylocation/applicationsbylocation.php:45
-#: report/softversioninstallations/softversioninstallations.php:42
+#: report/softversioninstallations/softversioninstallations.php:43
 msgid "Computer status"
 msgstr "Estado de computador"
 
 #: report/doublons/doublons.config.php:40
 #: report/doublons/doublons.config.php:101
-#: report/doublons/doublons.config.php:108 report/doublons/doublons.php:75
-#: report/doublons/doublons.php:332
+#: report/doublons/doublons.config.php:108 report/doublons/doublons.php:71
+#: report/doublons/doublons.php:328
 msgid "Duplicate computers"
 msgstr "Computadores duplicados"
 
-#: report/doublons/doublons.config.php:100 report/doublons/doublons.php:79
+#: report/doublons/doublons.config.php:100 report/doublons/doublons.php:75
 msgid "Report configuration"
 msgstr "Configuração do relatório"
 
@@ -99,15 +99,20 @@ msgstr "Configuração do relatório"
 msgid "Exception list setup"
 msgstr "Definição da lista de exceções"
 
-#: report/doublons/doublons.php:234
+#. TRANS: The name of the report = Duplicate computers
+#: report/doublons/doublons.php:42
+msgid "doublons_report_title"
+msgstr ""
+
+#: report/doublons/doublons.php:230
 msgid "First computer"
 msgstr "Primeiro computador"
 
-#: report/doublons/doublons.php:235
+#: report/doublons/doublons.php:231
 msgid "Second computer"
 msgstr "Segundo computador"
 
-#: report/doublons/doublons.php:251 report/doublons/doublons.php:266
+#: report/doublons/doublons.php:247 report/doublons/doublons.php:262
 msgid "Last inventory date"
 msgstr "Data do último inventário"
 
@@ -177,7 +182,7 @@ msgstr ""
 
 #. TRANS: The name of the report = Licenses by expiration date
 #: report/licensesexpires/licensesexpires.php:36
-msgid "licensesexpire_report_title"
+msgid "licensesexpires_report_title"
 msgstr ""
 
 #: report/licensesexpires/licensesexpires.php:38
@@ -272,7 +277,12 @@ msgstr ""
 msgid "softnotinstalled_report_title"
 msgstr ""
 
-#: report/softversioninstallations/softversioninstallations.php:38
+#. TRANS: The name of the report = Not installed important software (plural)
+#: report/softversioninstallations/softversioninstallations.php:36
+msgid "softversioninstallations_report_title"
+msgstr ""
+
+#: report/softversioninstallations/softversioninstallations.php:39
 msgid "Software version status"
 msgstr ""
 

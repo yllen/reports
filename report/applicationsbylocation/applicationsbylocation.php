@@ -33,7 +33,7 @@ $DBCONNECTION_REQUIRED  = 0;
 include ("../../../../inc/includes.php");
 
 //TRANS: The name of the report = Applications by locations and versions
-$report = new PluginReportsAutoReport(__('applicationsbylocations_report_title', 'reports'));
+$report = new PluginReportsAutoReport(__('applicationsbylocation_report_title', 'reports'));
 
 $softwarecategories = new PluginReportsSoftwareCategoriesCriteria($report, 'softwarecategories',
                                                                   __('Software category'));

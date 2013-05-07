@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-02 14:18+0200\n"
-"PO-Revision-Date: 2013-05-02 12:14+0000\n"
+"POT-Creation-Date: 2013-05-07 14:15+0200\n"
+"PO-Revision-Date: 2013-05-07 12:14+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/projects/p/GLPI_reports/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -71,7 +71,7 @@ msgstr "Nombre déjà en cours"
 
 #. TRANS: The name of the report = Applications by locations and versions
 #: report/applicationsbylocation/applicationsbylocation.php:36
-msgid "applicationsbylocations_report_title"
+msgid "applicationsbylocation_report_title"
 msgstr "Applications par lieux et versions"
 
 #: report/applicationsbylocation/applicationsbylocation.php:42
@@ -79,7 +79,7 @@ msgid "Applications"
 msgstr "Applications"
 
 #: report/applicationsbylocation/applicationsbylocation.php:45
-#: report/softversioninstallations/softversioninstallations.php:42
+#: report/softversioninstallations/softversioninstallations.php:43
 msgid "Computer status"
 msgstr "Statut des ordinateurs"
 
@@ -181,8 +181,8 @@ msgstr "Délai de mise en service des équipements"
 
 #. TRANS: The name of the report = Licenses by expiration date
 #: report/licensesexpires/licensesexpires.php:36
-msgid "licensesexpire_report_title"
-msgstr "Liste des licences par expiration"
+msgid "licensesexpires_report_title"
+msgstr "Liste des licences par date d'expiration"
 
 #: report/licensesexpires/licensesexpires.php:38
 msgid "Valid to"
@@ -241,7 +241,7 @@ msgstr "Inconnu"
 #. TRANS: The name of the report = Printers
 #: report/printers/printers.php:36
 msgid "printers_report_title"
-msgstr "Printers"
+msgstr "Imprimantes"
 
 #: report/printers/printers.php:68
 msgid "Computers in the group"
@@ -276,7 +276,12 @@ msgstr "Recherche dans les informations financières"
 msgid "softnotinstalled_report_title"
 msgstr "Logiciels importants non installés"
 
-#: report/softversioninstallations/softversioninstallations.php:38
+#. TRANS: The name of the report = Not installed important software (plural)
+#: report/softversioninstallations/softversioninstallations.php:36
+msgid "softversioninstallations_report_title"
+msgstr "État détaillé des installations par statut des versions"
+
+#: report/softversioninstallations/softversioninstallations.php:39
 msgid "Software version status"
 msgstr "État détaillé des installations par statut des versions"
 

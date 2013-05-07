@@ -33,7 +33,7 @@ $DBCONNECTION_REQUIRED  = 0;
 include ("../../../../inc/includes.php");
 
 //TRANS: The name of the report = Licenses by expiration date
-$report = new PluginReportsAutoReport(__('licensesexpire_report_title', 'reports'));
+$report = new PluginReportsAutoReport(__('licensesexpires_report_title', 'reports'));
 
 $report->setColumns(array('expire'       => __('Valid to', 'reports'),
                           'name'         => __('License name'),
