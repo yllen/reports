@@ -53,7 +53,7 @@ if ($report->criteriasValidated()) {
                              new PluginReportsColumn('id2', __('ID')),
                              new PluginReportsColumnLink('id', __('Title'), 'Ticket'),
                              new PluginReportsColumn('groupname', __('Group'),
-                                                     array('sorton' => '`groups_id`, `date`'))));
+                                                     array('sorton' => '`glpi_groups_tickets`.`groups_id`, `date`'))));
 
    $query = "SELECT `glpi_tickets`.`priority`, DATE(`glpi_tickets`.`date`) AS date,
                     `glpi_tickets`.`id`, `glpi_tickets`.`id` AS id2,
