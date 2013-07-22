@@ -110,9 +110,6 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $start = $this->getStartDate();
       $end   = $this->getEndDate();
       
-      toolbox::logdebug($start);
-      toolbox::logdebug($end);
-      
       if (($start == 'NULL') && ($end == 'NULL')) {
          return '';
       }
