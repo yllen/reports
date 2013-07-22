@@ -63,20 +63,20 @@ function includeLocales($report_name, $plugin='reports') {
    if (isset ($_SESSION["glpilanguage"])
        && file_exists($prefix . "." . $_SESSION["glpilanguage"].".php")) {
 
-      include_once  ($prefix . "." . $_SESSION["glpilanguage"].".php");
+      include  ($prefix . "." . $_SESSION["glpilanguage"].".php");
 
    } else if (file_exists($prefix . ".en_GB.php")) {
-      include_once  ($prefix . ".en_GB.php");
+      include  ($prefix . ".en_GB.php");
 
    } else {
       // At least defined report name
       $name = $report_name.'_report_title';
       $LANG['plugin_'.$plugin][$report_name] = __($report_name.'_report_title', $plugin);
       // For dev
-      if ($LANG['plugin_'.$plugin][$report_name] == $report_name.'_report_title') {
-         Toolbox::logInFile('php-errors',
-                            "includeLocales($name, $plugin) => not found\n");
-      }
+      //if ($LANG['plugin_'.$plugin][$report_name] == $report_name.'_report_title') {
+      //   Toolbox::logInFile('php-errors',
+      //                      "includeLocales($name, $plugin) => not found\n");
+      //}
   //    return false;
    }
 
@@ -147,6 +147,6 @@ function getUrgencyLabelsArray() {
 
 
 function getReportConfigPage($plugin,$report_name) {
-   return GLPI_ROOT."/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
+   return "/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
 }
 ?>

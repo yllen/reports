@@ -416,11 +416,17 @@ class PluginReportsAutoReport {
          return;
       }
       if (!$HEADER_LOADED) {
+         
+         $title = $this->title;
+         if ($this->subname) {
+            $title = sprintf(__('%1$s - %2$s'), $title, $this->subname);
+         }
+      
          if (isStat($this->name)) {
-            Html::header(sprintf(__('%s'), $this->name), $_SERVER['PHP_SELF'], "maintain", "stat");
+            Html::header($title, $_SERVER['PHP_SELF'], "maintain", "stat");
             Stat::title();
          } else {
-            Html::header(sprintf(__('%s'), $this->name), $_SERVER['PHP_SELF'],
+            Html::header($title, $_SERVER['PHP_SELF'],
                         "utils", "report");
             Report::title();
          }
