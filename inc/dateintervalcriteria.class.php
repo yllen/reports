@@ -57,8 +57,8 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
       $start = $this->getParameter($this->getName()."_1");
       $end   = $this->getParameter($this->getName()."_2");
-
-      return (($start == 'NULL') || ($end == 'NULL') || (($start < $end) ? $start : $end));
+      
+      return ($start == 'NULL' || $end == 'NULL' || $start < $end ? $start : $end);
    }
 
 
@@ -67,7 +67,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $start = $this->getParameter($this->getName()."_1");
       $end   = $this->getParameter($this->getName()."_2");
 
-      return (($start == 'NULL') || ($end == 'NULL') || (($start < $end) ? $end : $start));
+      return ($start=='NULL' || $end=='NULL' || $start < $end ? $end : $start);
    }
 
 
@@ -109,7 +109,10 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
 
       $start = $this->getStartDate();
       $end   = $this->getEndDate();
-
+      
+      toolbox::logdebug($start);
+      toolbox::logdebug($end);
+      
       if (($start == 'NULL') && ($end == 'NULL')) {
          return '';
       }
