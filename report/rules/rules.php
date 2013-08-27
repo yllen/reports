@@ -118,7 +118,7 @@ if ($type == "ldap") {
 } else {
    echo "<div class='center'>";
    echo "<table class='tab_cadre' cellpadding='5'>\n";
-   echo "<tr><th>". sprintf(__('%1$s - %2$s'), __("Rule's catalog"), __('Rule type'))."</th></tr>";
+   echo "<tr><th>". sprintf(__('%1$s - %2$s'), __("rules_report_title", 'reports'), __('Rule type'))."</th></tr>";
 /*
    if ($CFG_GLPI["use_ocs_mode"] && Session::haveRight("rule_ocs","r")) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
