@@ -102,7 +102,7 @@ if ($report->criteriasValidated()) {
 
    $report->setColumns($cols);
    $sel = $type->getParameterValue();
-   if ($sel) {
+   if ($sel && $sel != -1) {
       $types = array($sel);
    } else {
       $types = array_diff($CFG_GLPI['infocom_types'], $ignored);

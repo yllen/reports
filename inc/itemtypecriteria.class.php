@@ -59,12 +59,12 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
                $this->types[$itemtype] = $item->getTypeName();
             }
          }
-         $this->types[''] = __('All');
+         $this->types[-1] = __('All');
 
       } else {
          // No types, use helpdesk_types
          $this->types     = Ticket::getAllTypesForHelpdesk();
-         $this->types[''] = __('All');
+         $this->types[-1] = __('All');
       }
    }
 
