@@ -52,7 +52,7 @@ if ($report->criteriasValidated()) {
    $title    = $report->getFullTitle();
    $itemtype = $type->getParameterValue();
 
-   if ($itemtype && $itemtype != -1) {
+   if ($itemtype && $itemtype != "all") {
       $types = array($itemtype);
    } else {
       $types = array();

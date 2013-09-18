@@ -51,7 +51,6 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       if (is_array($types) && count($types)) {
          // $types is an hashtable of itemtype => display name
          $this->types = $types;
-
       } else if (is_string($types) && isset($CFG_GLPI[$types])) {
          // $types is the name of an configured type hashtable (infocom_types, doc_types, ...)
          foreach($CFG_GLPI[$types] as $itemtype) {
@@ -59,12 +58,11 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
                $this->types[$itemtype] = $item->getTypeName();
             }
          }
-         $this->types[-1] = __('All');
-
+         $this->types['all'] = __('All');
       } else {
          // No types, use helpdesk_types
          $this->types     = Ticket::getAllTypesForHelpdesk();
-         $this->types[-1] = __('All');
+         $this->types['all'] = __('All');
       }
    }
 
@@ -83,6 +81,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
 
 
    public function displayDropdownCriteria() {
+      ksort($this->types);
 
       Dropdown::showFromArray($this->getName(), $this->types,
                               array('value'=> $this->getParameterValue()));
