@@ -70,17 +70,17 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
       $status = $this->getParameterValue();
       switch ($status) {
          case "notold" :
-            $list  = Ticket::getNewStatusArray();
-            $list .= Ticket::getProcessStatusArray();
-            $list .= Ticket::WAITING;
+            $list  = implode("','", Ticket::getNewStatusArray());
+            $list .= implode("','", Ticket::getProcessStatusArray());
+            $list .= "','".Ticket::WAITING;
             break;
 
          case "old" :
-            $list = Ticket::getClosedStatusArray();
+            $list = implode("','", Ticket::getClosedStatusArray());
             break;
 
          case "process" :
-            $list = Ticket::getProcessStatusArray();
+            $list = implode("','", Ticket::getProcessStatusArray());
             break;
 
          case Ticket::INCOMING :
@@ -89,14 +89,14 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
          case Ticket::WAITING :
          case Ticket::SOLVED :
          case Ticket::CLOSED :
-            $list = "'$status'";
+            $list = $status;
             break;
 
          case "all" :
          default :
             return '';
       }
-      return $link . " " . $this->getSqlField() . " IN ($list) ";
+      return $link . " " . $this->getSqlField() . " IN ('".$list."') ";
    }
 
 }
