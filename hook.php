@@ -31,7 +31,7 @@
 function plugin_reports_install() {
 
    // No autoload when plugin is not activated
-   require 'inc/profile.class.php';
+   include_once (GLPI_ROOT."/plugins/reports/inc/profile.class.php");
 
    return PluginReportsProfile::install();
    }
@@ -40,8 +40,8 @@ function plugin_reports_install() {
 function plugin_reports_uninstall() {
    global $DB;
 
-   // No autoload when plugin is not activated
-   require 'inc/profile.class.php';
+   // No autoload when plugin is not activated (if dessactivation before uninstall)
+   include_once (GLPI_ROOT."/plugins/reports/inc/profile.class.php");
 
    return PluginReportsProfile::uninstall();
 }
