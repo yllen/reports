@@ -45,7 +45,12 @@ class PluginReportsColumnTimestamp extends PluginReportsColumn {
       if (!isset($options['extrabold'])) {
          $options['extrabold'] =  "class='b right'";
       }
-
+      
+      if (!isset($options['export_timestamp'])) {
+         $options['export_timestamp'] =  false;
+      }
+      // Export with timestamp
+      $this->export_timestamp = (isset($options['export_timestamp']) ? $options['export_timestamp'] : false);
       // Always display sec ?
       $this->withsec = (isset($options['withsec']) ? $options['withsec'] : false);
 
@@ -56,8 +61,21 @@ class PluginReportsColumnTimestamp extends PluginReportsColumn {
 
 
    function displayValue($output_type, $row) {
-
-      if (isset($row[$this->name])) {
+      
+      if ($this->export_timestamp) {
+         if (isset($row[$this->name])) {
+            if ($output_type == Search::HTML_OUTPUT) {
+               
+               $this->total += intval($row[$this->name]);
+               return Html::timestampToString($row[$this->name], $this->withsec);
+            
+            }
+            $this->total += intval($row[$this->name]);
+            return $row[$this->name];
+         }
+         
+      } elseif (isset($row[$this->name])) {
+      
          $this->total += intval($row[$this->name]);
          return Html::timestampToString($row[$this->name], $this->withsec);
       }
@@ -66,6 +84,9 @@ class PluginReportsColumnTimestamp extends PluginReportsColumn {
 
 
    function displayTotal($output_type) {
+      if ($this->export_timestamp) {
+         return $this->total;
+      }
       return Html::timestampToString($this->total, $this->withsec);
    }
 }
