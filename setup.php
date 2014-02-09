@@ -102,7 +102,7 @@ function isStat($report_name) {
 function plugin_version_reports() {
 
    return array('name'           => _n('Report', 'Reports', 2),
-                'version'        => '1.7.1',
+                'version'        => '1.7.2',
                 'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/reports',
