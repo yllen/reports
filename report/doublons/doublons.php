@@ -49,7 +49,8 @@ $crits = array(0 => Dropdown::EMPTY_VALUE,
                3 => __('Name')." + ".__('Model')." + ".__('Serial number'),
                4 => __('MAC address'),
                5 => __('IP address'),
-               6 => __('Inventory number'));
+               6 => __('Inventory number'),
+               7 => __('Serial number'));
 
 if (isset($_GET["crit"])) {
    $crit = $_GET["crit"];
@@ -200,6 +201,12 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
    if ($crit == 6) {
       $Sql .= " AND A.`otherserial` != ''
                 AND A.`otherserial` = B.`otherserial`";
+
+   } else if ($crit == 7) {
+      $Sql .= " AND A.`serial` NOT IN ($SerialBlacklist)
+                AND A.`serial` != ''
+                AND A.`serial` = B.`serial`";
+
    } else {
       if ($crit & 1) {
          $Sql .= " AND A.`name` != ''
@@ -340,7 +347,7 @@ if ($crit > 0) { // Display result
 Html::footer();
 
 
-function ($url,$crit) {
+function buildBookmarkUrl($url,$crit) {
    return $url."?crit=".$crit;
 }
 
