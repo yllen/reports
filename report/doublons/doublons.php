@@ -340,22 +340,10 @@ if ($crit > 0) { // Display result
 Html::footer();
 
 
-function buildBookmarkUrl($url,$crit) {
+function ($url,$crit) {
    return $url."?crit=".$crit;
 }
 
 
-function getLastOcsUpdate($computers_id) {
-   global $DB;
 
-   $query = "SELECT `last_ocs_update`
-             FROM `glpi_ocslinks`
-             WHERE `computers_id` = '$computers_id'";
-   $results = $DB->query($query);
-
-   if ($DB->numrows($results) > 0) {
-      return $DB->result($results,0,'last_ocs_update');
-   }
-   return '';
-}
 ?>
