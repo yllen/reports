@@ -244,7 +244,6 @@ if ($crit > 0) { // Display result
    if ($col) {
       echo "<th>$col</th>";
    }
-   echo "<th>".__('Last inventory date', 'reports')."</th>";
 
    if ($canedit) {
       echo "<th>&nbsp;</th>";
@@ -259,7 +258,6 @@ if ($crit > 0) { // Display result
    if ($col) {
       echo "<th class='blue'>$col</th>";
    }
-   echo "<th class='blue'>".__('Last inventory date', 'reports')."</th>";
 
    echo "</tr>\n";
 
@@ -298,7 +296,6 @@ if ($crit > 0) { // Display result
       if ($col) {
          echo "<td>" .$data["Aaddr"]. "</td>";
       }
-      echo "<td>" .getLastOcsUpdate($data['AID']). "</td>";
 
       if ($canedit) {
          echo "<td><input type='checkbox' name='item[".$data["BID"]."]' value='1'></td>";
@@ -319,7 +316,6 @@ if ($crit > 0) { // Display result
       if ($col) {
          echo "<td class='blue'>" .$data["Baddr"]. "</td>";
       }
-      echo "<td class='blue'>" .getLastOcsUpdate($data['BID']). "</td>";
 
    echo "</tr>\n";
    }
@@ -333,10 +329,10 @@ if ($crit > 0) { // Display result
    echo "</table>";
    if ($canedit) {
       if ($i) {
-         Html::openArrowMassives("massiveaction_form");
-         Dropdown::showForMassiveAction('Computer');
-         $options = array();
-         Html::closeArrowMassives($options);
+         Html::openMassiveActionsForm('massformCmputer');
+         $massiveactionparams = array('itemtype'         => 'Computer',
+                                      'delete'        => _x('button', 'Delete permanently'));
+         Html::showMassiveActions("Computer", $massiveactionparams);
       }
       Html::closeForm();
    }
