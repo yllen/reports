@@ -38,7 +38,7 @@ class PluginReportsUserCriteria extends PluginReportsDropdownCriteria {
     * @param $name      (default user)
     * @param $label     (default '')
    **/
-   function __construct($report, $name='user', $label='') {
+   function __construct($report, $name='user_id', $label='') {
 
       parent::__construct($report, $name, 'glpi_users', ($label ? $label : _n('User', 'Users', 1)));
    }
