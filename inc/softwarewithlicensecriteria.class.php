@@ -61,6 +61,7 @@ class PluginReportsSoftwareWithLicenseCriteria extends PluginReportsDropdownCrit
 
       if ($DB->numrows($result)) {
          echo "<select name='".$this->getName()."'>";
+         echo "<option value='all' selected>".Dropdown::EMPTY_VALUE."</option>";
          while ($data = $DB->fetch_array($result)) {
             echo "<option value='" . $data["id"] . "'";
             if ($data["id"] == $this->getParameterValue()) {

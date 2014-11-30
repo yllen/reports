@@ -54,7 +54,6 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
       if (!isset($row[$this->name]) || !$row[$this->name]) {
          return '';
       }
-
       if (isset($row[$this->nametype])
           && $row[$this->nametype]
           && (is_null($this->obj) || $this->obj->getType()!=$row[$this->nametype])) {
