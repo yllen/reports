@@ -37,9 +37,9 @@ include ("../../../../inc/includes.php");
 
 includeLocales("histohard");
 
-plugin_reports_checkRight('reports', "histohard","r");
+Session::checkRight("plugin_reports_histohard", READ);
 $computer = new Computer();
-$computer->checkGlobal('r');
+$computer->checkGlobal(READ);
 
 //TRANS: The name of the report = History of last hardware's installations
 Html::header(__("histohard_report_title", 'reports'), $_SERVER['PHP_SELF'], "utils","report");

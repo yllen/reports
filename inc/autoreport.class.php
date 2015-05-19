@@ -257,9 +257,6 @@ class PluginReportsAutoReport {
          }
          echo "<div class='center'><font class='red b'>".__('No item found')."</font></div>";
          Html::footer();
-      } else if (($output_type == Search::PDF_OUTPUT_PORTRAIT)
-                 || ($output_type == Search::PDF_OUTPUT_LANDSCAPE)) {
-         include (GLPI_ROOT . "/lib/ezpdf/class.ezpdf.php");
       } else if ($output_type == Search::HTML_OUTPUT) {
          if (!$HEADER_LOADED) {
             Html::header($title, $_SERVER['PHP_SELF'], "utils", "report");
@@ -302,7 +299,11 @@ class PluginReportsAutoReport {
                   $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
          }
       }
-      plugin_reports_checkRight($this->plug, $this->name, "r");
+      $field = 'plugin_reports_'.$this->name;
+      if ($this->plug != 'reports') {
+         $field = 'plugin_reports_'.$this->plug."_".$this->name;
+      }
+      Session::checkRight($field, READ);
 
       if ($res && ($nbtot > 0)) {
          $nbcols = $DB->num_fields($res);
@@ -389,12 +390,16 @@ class PluginReportsAutoReport {
 
       if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
          if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
-            Html::openArrowMassives("massiveaction_form", true);
-            Dropdown::showForMassiveAction($options['withmassiveaction']);
-            $options = array();
-            Html::closeArrowMassives($options);
-            Html::closeForm();
+            $rand = mt_rand();
+            Html::openMassiveActionsForm('mass'.$options['withmassiveaction'].$rand);
+            Html::showMassiveActions(array('item'      => new $options['withmassiveaction'], 
+                                           'ontop'     => false, 
+                                           'rand'      => $rand, 
+                                           'container' => 'mass'.$options['withmassiveaction'].$rand));
+
+
          }
+            Html::closeForm();
          Html::footer();
       }
    }
@@ -423,16 +428,20 @@ class PluginReportsAutoReport {
          }
       
          if (isStat($this->name)) {
-            Html::header($title, $_SERVER['PHP_SELF'], "maintain", "stat");
+            Html::header($title, $_SERVER['PHP_SELF'], "helpdesk", "stat");
             Stat::title();
          } else {
             Html::header($title, $_SERVER['PHP_SELF'],
-                        "utils", "report");
+                        "tools", "report");
             Report::title();
          }
       }
 
-      plugin_reports_checkRight($this->plug, $this->name, "r");
+      $field = 'plugin_reports_'.$this->name;
+      if ($this->plug != 'reports') {
+         $field = 'plugin_reports_'.$this->plug."_".$this->name;
+      }
+      Session::checkRight($field, READ);
 
       //Display form only if there're criterias
       if (!empty($this->criterias)) {

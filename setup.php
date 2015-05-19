@@ -48,24 +48,23 @@ function plugin_init_reports() {
 
    Plugin::registerClass('PluginReportsProfile', array('addtabon' => array('Profile')));
 
-
-   $PLUGIN_HOOKS['change_profile']['reports'] = array('PluginReportsProfile','changeprofile');
-
-   if (Session::haveRight("config", "w")) {
+   if (Session::haveRight("config", UPDATE)) {
       $PLUGIN_HOOKS['config_page']['reports']     = 'front/config.form.php';
    }
 
-   $PLUGIN_HOOKS['menu_entry']['reports']     = false;
-   $PLUGIN_HOOKS['pre_item_purge']['reports'] = array('Profile' => array('PluginReportsProfile',
-                                                                         'cleanProfile'));
-   $PLUGIN_HOOKS['item_clone']['reports']     = array('Profile' => array('PluginReportsProfile',
-                                                                         'cloneProfile'));
+   $PLUGIN_HOOKS['menu_entry']['reports'] = false;
+   $PLUGIN_HOOKS['item_clone']['reports'] = array('Profile' => array('PluginReportsProfile',
+                                                                     'cloneProfile'));
 
    $rightreport = array ();
    $rightstats  = array ();
 
    foreach (searchReport() as $report => $plug) {
-      if (plugin_reports_haveRight($plug, $report, "r")) {
+      $field = 'plugin_reports_'.$report;
+      if ($plug != 'reports') {
+         $field = 'plugin_reports_'.$plug."_".$report;
+      }      
+      if (Session::haveRight($field, READ)) {
          $tmp = $LANG["plugin_$plug"][$report];
          //If the report's name contains 'stat' then display it in the statistics page
          //(instead of Report page)
@@ -102,11 +101,11 @@ function isStat($report_name) {
 function plugin_version_reports() {
 
    return array('name'           => _n('Report', 'Reports', 2),
-                'version'        => '1.7.3',
-                'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh',
+                'version'        => '1.8.0',
+                'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh, Alexandre Delaunay',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/reports',
-                'minGlpiVersion' => '0.84');
+                'minGlpiVersion' => '0.85');
 }
 
 
@@ -115,44 +114,12 @@ function plugin_reports_check_config() {
 }
 
 
-function plugin_reports_haveRight($plug, $report, $right) {
-
-   $module = ($plug == 'reports' ? $report : $plug.'_'.$report);
-   $matches = array(""  => array("","r","w"), // ne doit pas arriver normalement
-                    "r" => array("r","w"),
-                    "w" => array("w"),
-                    "1" => array("1"),
-                    "0" => array("0","1")); // ne doit pas arriver non plus
-
-   if (isset($_SESSION["glpi_plugin_reports_profile"][$module])
-       && in_array($_SESSION["glpi_plugin_reports_profile"][$module],$matches[$right])) {
-      return true;
-   }
-   return false;
-}
-
-
-function plugin_reports_checkRight($plug, $module, $right) {
-   global $CFG_GLPI;
-
-   if (!plugin_reports_haveRight($plug, $module, $right)) {
-      // Gestion timeout session
-      if (!isset ($_SESSION["glpiID"])) {
-         Html::redirect($CFG_GLPI["root_doc"] . "/index.php");
-         exit();
-      }
-      Html::displayRightError();
-   }
-}
-
-
-
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_reports_check_prerequisites() {
    global $LANG;
 
-   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.85','ge')) {
-      echo "This plugin requires GLPI >= 0.84 and GLPI < 0.85";
+   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
+      echo "This plugin requires GLPI >= 0.85 and GLPI < 0.86";
       return false;
    }
    return true;

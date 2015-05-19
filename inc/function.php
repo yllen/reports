@@ -33,11 +33,15 @@
  *
  * @return tab : an array which contains all the reports found (name => plugin)
 **/
-function searchReport() {
+function searchReport($all = false) {
    global $DB;
 
    $tab = array ();
-   foreach ($DB->request('glpi_plugins', array('state' => Plugin::ACTIVATED)) as $plug) {
+   $filter = array('state' => Plugin::ACTIVATED);
+   if ($all) {
+      $filter = "";
+   }
+   foreach ($DB->request('glpi_plugins', $filter) as $plug) {
       foreach (glob(GLPI_ROOT.'/plugins/'.$plug['directory'].'/report/*', GLOB_ONLYDIR) as $path) {
          $tab[basename($path)] = $plug['directory'];
          includeLocales(basename($path), $plug['directory']);

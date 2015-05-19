@@ -27,20 +27,8 @@
  --------------------------------------------------------------------------
  */
 
-class PluginReportsProfile extends CommonDBTM {
-
-
-   /**
-    * if profile deleted
-    *
-    * @param $prof   Profile  object
-   **/
-   static function cleanProfile(Profile $prof) {
-
-      $plugprof = new self();
-      $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
-   }
-
+class PluginReportsProfile extends Profile {
+   static $rightname = 'profile';
 
    /**
     * if profile cloned
@@ -50,26 +38,16 @@ class PluginReportsProfile extends CommonDBTM {
    static function cloneProfile(Profile $prof) {
       global $DB;
 
-      $plugprof = new self();
-      $crit     = array('profiles_id' => $prof->input['_old_id']);
-      foreach ($DB->request($plugprof->getTable(), $crit) as $data) {
-         $input = ToolBox::addslashes_deep($data);
-         unset($input['id']);
-         $input['profiles_id'] = $prof->getID();
-         $plugprof->add($input);
+      $profile_right = new ProfileRight;
+      $crit          = array('profiles_id' => $prof->input['_old_id'], 
+                             "`name` LIKE 'plugin_reports_%'");
+      $rights = array();
+      foreach ($DB->request($profile_right->getTable(), $crit) as $data) {
+         $rights[$data['name']] = $data['rights'];
       }
+      unset($input['id']);
+      $profile_right->updateProfileRights($prof->getID(), $rights);
    }
-
-
-   static function canCreate() {
-      return Session::haveRight('profile', 'w');
-   }
-
-
-   static function canView() {
-      return Session::haveRight('profile', 'r');
-   }
-
 
    /**
     * @param $prof   Profile object
@@ -77,78 +55,27 @@ class PluginReportsProfile extends CommonDBTM {
    static function showForProfile(Profile $prof){
       global $DB, $LANG;
 
-      $target = Toolbox::getItemTypeFormURL(__CLASS__);
-
-      $profiles_id = $prof->getField('id');
-      $prof->check($profiles_id, 'r');
-      $canedit = $prof->can($profiles_id, 'w');
-
-      $prof = new Profile();
-      if ($profiles_id){
-         $prof->getFromDB($profiles_id);
-      }
-
-      $rights = self::getAllRights(array('profiles_id' => $profiles_id));
+      $canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE));
       if ($canedit) {
-         echo "<form action='".$target."' method='post'>";
-      }
-      echo "<table class='tab_cadre_fixe'>";
-      echo "<tr><th colspan='4' class='center b'>";
-      printf(__('%1$s: %2$s'), __('Rights management by profil', 'reports'), $prof->fields["name"]);
-      echo "</th></tr>";
-
-      $plugname = array();
-      foreach(searchReport() as $key => $plug) {
-         $mod = (($plug == 'reports') ? $key : "${plug}_${key}");
-         echo "<tr class='tab_bg_1'>";
-         if (!isset($plugname[$plug])) {
-            // Retrieve the plugin name
-            $function         = "plugin_version_$plug";
-            $tmp              = $function();
-            $plugname[$plug]  = $tmp['name'];
-         }
-         echo "<td>".$plugname[$plug]."</td>";
-         if (strpos($key,'stat') === false) {
-            echo "<td>"._n('Report', 'Reports', 2)."</td>";
-         } else {
-            echo "<td>".__('Statistics')."</td>";
-         }
-         echo "<td>".$LANG["plugin_$plug"][$key]."</td><td>";
-         if ((isStat($key) && ( $prof->getField('statistic')== 1))
-             || (!isStat($key) && ($prof->getField('reports') == 'r'))) {
-            Profile::dropdownNoneReadWrite($mod, (isset($rights[$mod])?$rights[$mod]:''), 1, 1, 0);
-         } else {
-            // Can't access because missing right from GLPI core
-            // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
-            echo "<input type='hidden' name='$mod' value='NULL'>".__('No Access');
-            echo (isStat($key) ? " **" : " *");
-         }
-         echo "</td></tr>";
+         echo "<form method='post' action='".$prof->getFormURL()."'>";
       }
 
-      if (($prof->getField('statistic')!= 1)
-          || ($prof->getField('reports') != 'r')) {
-         echo "<tr class='b tab_bg_4'><td colspan='4'>";
-         if ($prof->getField('reports')!='r') {
-            echo '*  '.__('No right on Tools / Reports', 'reports').'.<br>';
-         }
-         if ($prof->getField('statistic')!=1) {
-            echo '** '.__('No right on Assistance / Statistics', 'reports').'.';
-         }
-         echo "</td></tr>\n";
-      }
+      $rights = self::getAllRights();
+      $prof->displayRightsChoiceMatrix($rights, 
+                                       array('canedit'       => $canedit,
+                                             'default_class' => 'tab_bg_2',
+                                             'title'         => __('Rights management by profil', 
+                                                                   'reports')));
       if ($canedit) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td class='center' colspan='4'>";
-         echo "<input type='hidden' name='profiles_id' value=$profiles_id>";
-         echo "<input type='submit' name='update_user_profile' value='"._sx('button', 'Update')."'
-                class='submit'>";
-         echo "</td></tr>\n";
-         echo "</table>";
+         echo "<div class='center'>";
+         echo Html::hidden('id', array('value' => $prof->getField('id')));
+         echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
+         echo "</div>\n";
          Html::closeForm();
-      } else {
-         echo "</table>";
       }
+      echo "</div>";
+
+      $prof->showLegend();
    }
 
 
@@ -158,11 +85,11 @@ class PluginReportsProfile extends CommonDBTM {
    static function showForReport($report) {
       global $DB;
 
-      if (empty($report) || !Session::haveRight('profile', 'r')) {
+      if (empty($report) || !Session::haveRight('profile', READ)) {
          return false;
       }
-      $current = self::getAllRights(array('report' => $report), true);
-      $canedit = Session::haveRight('profile', 'w');
+      $current = self::getAllProfilesRights(array("name LIKE '%$report'"));
+      $canedit = Session::haveRight('profile', UPDATE);
 
       if ($canedit) {
          echo "<form action='".$_SERVER['PHP_SELF']."' method='post'>\n";
@@ -171,17 +98,15 @@ class PluginReportsProfile extends CommonDBTM {
       echo "<table class='tab_cadre'>\n";
       echo "<tr><th colspan='2'>".__('Profils rights', 'reports')."</th></tr>\n";
 
-
-      $query = "SELECT `id`, `name`, `statistic`, `reports`
+      $query = "SELECT `id`, `name`
                 FROM `glpi_profiles`
                 ORDER BY `name`";
 
       foreach ($DB->request($query) as $data) {
          echo "<tr class='tab_bg_1'><td>" . $data['name'] . "&nbsp: </td><td>";
-         if ((isStat($report) && ($data['statistic'] == 1))
-             || (!isStat($report) && ($data['reports'] == 'r'))) {
-            Profile::dropdownNoneReadWrite($data['id'], (isset($current[$data['id']])?'r':''),
-                                           1, 1, 0);
+         if ((isStat($report) && Session::haveRight("statistic", READ))
+             || (!isStat($report) && Session::haveRight("reports", READ))) {
+            Profile::dropdownNoneReadWrite($data['id'], $current[$data['id']], 1, 1, 0);
          } else {
             // Can't access because missing right from GLPI core
             // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
@@ -212,61 +137,19 @@ class PluginReportsProfile extends CommonDBTM {
       }
    }
 
-
-   /**
-    * @param $input
-   **/
-   static function updateForProfile($input) {
-
-      $prof = new self();
-      $current = self::getAllRights(array('profiles_id' => $input['profiles_id']),
-                                          true);
-
-      foreach(searchReport() as $key => $plug) {
-         $mod = ($plug=='reports' ? $key : "${plug}_${key}");
-
-         if ($input[$mod] == 'r') {
-            if (isset($current[$mod])) {
-               unset($current[$mod]);
-            } else {
-               // Give right
-               $prof->add(array('profiles_id' => $input['profiles_id'],
-                                'report'      => $mod,
-                                'access'      => 'r'));
-            }
-         }
-      }
-      foreach ($current as $mod => $data) {
-         $prof->delete($data);
-      }
-   }
-
-
    /**
     * @param $input
    **/
    static function updateForReport($input) {
-
-      $prof    = new self();
+      $prof    = new Profile();
       $report  = $input['report'];
-      $current = self::getAllRights(array('report' => $report), true);
 
-      foreach($input as $key => $right) {
-         if (is_numeric($key) && $right=='r') {
-            if (isset($current[$key])) {
-               unset($current [$key]);
-            } else {
-               // Give right
-               $prof->add(array('profiles_id' => $key,
-                                'report'      => $report,
-                                'access'      => 'r'));
-            }
-         } else {
-            unset($input [$key]);
+      foreach($input as $profiles_id => $right) {
+         if (is_numeric($profiles_id)) {
+            $prof->update(array('id'                       => $profiles_id,
+                                '_plugin_reports_'.$report => $right));
+            // TODO Check here with another plugin
          }
-      }
-      foreach ($current as $key => $data) {
-         $prof->delete($data);
       }
    }
 
@@ -277,42 +160,40 @@ class PluginReportsProfile extends CommonDBTM {
    function updateRights($reports) {
       global $DB;
 
+      $profile_right = new ProfileRight;
+
       $rights = array();
       foreach ($reports as $report => $plug) {
          if ($plug == 'reports') {
-            $rights[$report] = 1;
+            $rights["plugin_reports_$report"] = 1;
          } else {
-            $rights["${plug}_${report}"] = 1;
+            $rights["plugin_reports_${plug}_${report}"] = 1;
          }
       }
 
       $current_rights = array();
-      $query = "SELECT DISTINCT `report`
-                FROM `glpi_plugin_reports_profiles`";
+      $query = "SELECT DISTINCT `name`
+                FROM `glpi_profilerights`
+                WHERE `name` LIKE 'plugin_reports_%'";
       foreach ($DB->request($query) as $data) {
-         $current_rights[$data['report']] = 1;
+         $current_rights[$data['name']] = 1;
       }
 
-      // Removed report
+      // Remove old reports
       foreach($current_rights as $right => $value) {
          if (!isset($rights[$right])) {
             // Delete the lines for old reports
-            $this->deleteByCriteria(array('report' => $right));
+            $profile_right->deleteByCriteria(array('name' => $right));
          } else {
             unset($rights[$right]);
          }
       }
 
-      // Added report
-      foreach ($rights as $right => $val) {
-         $DB->query("INSERT INTO `".$this->getTable()."`
-                            (`profiles_id`, `report`, `access`)
-                     VALUES (4, '$right', 'r')");
-
-         // For immediate availability
-         if ($_SESSION['glpiactiveprofile']['id'] == 4) {
-            $_SESSION['glpi_plugin_reports_profile'][$right] = 'r';
-         }
+      // Add new reports
+      $rights_name = array_keys($rights);
+      ProfileRight::addProfileRights($rights_name);
+      if ($_SESSION['glpiactiveprofile']['id'] == 4) {
+         $profile_right->updateProfileRights(4, $rights);
       }
    }
 
@@ -321,26 +202,39 @@ class PluginReportsProfile extends CommonDBTM {
     * @param $crit
     * @param $full   (false by default)
    **/
-   static function getAllRights($crit, $full=false) {
+   static function getAllProfilesRights($crit, $full=false) {
       global $DB;
 
       $tab = array();
 
-      foreach ($DB->request('glpi_plugin_reports_profiles', $crit) as $data) {
-         if (isset($crit['report'])) {
-            $tab[$data['profiles_id']] = ($full ? $data : $data['access']);
-         } else {
-            $tab[$data['report']] = ($full ? $data : $data['access']);
-         }
+      foreach ($DB->request('glpi_profilerights', $crit) as $data) {
+         $tab[$data['profiles_id']] = ($full ? $data : $data['rights']);
       }
       return $tab;
    }
 
+   static function getAllRights() {
+      global $LANG;
+      $rights = array();
+      foreach(searchReport() as $key => $plug) {
+         $mod = (($plug == 'reports') ? $key : "${plug}_${key}");
+         if (!isset($plugname[$plug])) {
+            // Retrieve the plugin name
+            $function         = "plugin_version_$plug";
+            $tmp              = $function();
+            $plugname[$plug]  = $tmp['name'];
+         }
 
-   static function changeprofile() {
-
-      $crit = array('profiles_id' => $_SESSION['glpiactiveprofile']['id']);
-      $_SESSION['glpi_plugin_reports_profile'] = self::getAllRights($crit);
+         $field = 'plugin_reports_'.$key;
+         if ($plug != 'reports') {
+            $field = 'plugin_reports_'.$plug."_".$key;
+         }
+      
+         $rights[] = array('itemtype' => 'PluginReportsReport',
+                           'label'    => $plugname[$plug]." - ".$LANG["plugin_$plug"][$key], 
+                           'field'    => $field);
+      }
+      return $rights;
    }
 
 
@@ -359,25 +253,18 @@ class PluginReportsProfile extends CommonDBTM {
    static function install() {
       global $DB;
 
-      $create = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_profiles` (
-                    `id` int(11) NOT NULL auto_increment,
-                    `profiles_id` int(11) NOT NULL DEFAULT '0',
-                    `report` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-                    `access` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-                  PRIMARY KEY (`id`),
-                  KEY `report` (`report`),
-                  KEY `profiles_id` (`profiles_id`))
-                  ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
-
-      if (TableExists('glpi_plugin_reports_profiles')) { //1.1 ou 1.2
-
-         if (FieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
-            $query = "ALTER TABLE `glpi_plugin_reports_profiles`
-                      CHANGE `ID` `id` int(11) NOT NULL auto_increment";
-            $DB->query($query) or die("CHANGE ID: ".$DB->error());
-         }
-
+      if (TableExists('glpi_plugin_reports_profiles')) { 
          if (!FieldExists('glpi_plugin_reports_profiles','profiles_id')) { // version < 1.5.0
+            $create = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_profiles` (
+                          `id` int(11) NOT NULL auto_increment,
+                          `profiles_id` int(11) NOT NULL DEFAULT '0',
+                          `report` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+                          `access` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+                        PRIMARY KEY (`id`),
+                        KEY `report` (`report`),
+                        KEY `profiles_id` (`profiles_id`))
+                        ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+
             $query = "RENAME TABLE `glpi_plugin_reports_profiles`
                                 TO `glpi_plugin_reports_oldprofiles`";
             $DB->query($query) or die("SAVE TABLE profiles: ".$DB->error());
@@ -398,8 +285,24 @@ class PluginReportsProfile extends CommonDBTM {
             $query = "DROP TABLE `glpi_plugin_reports_oldprofiles`";
             $DB->query($query) or die("DROP TABLE oldprofiles: ".$DB->error());
          }
-      } else {
-         $DB->query($create) or die("CREATE TABLE profiles: ".$DB->error());
+      }
+
+
+      // -- SINCE 0.85 --
+      //Add new rights in glpi_profilerights table
+      $profile = new self();
+      foreach ($profile->getAllRights() as $data) {
+         if (countElementsInTable("glpi_profilerights", "`name` = '".$data['field']."'") == 0) {
+            ProfileRight::addProfileRights(array($data['field']));
+            $_SESSION['glpiactiveprofile'][$data['field']] = 0;
+         }
+      }
+      
+      //Migration old rights in new ones
+      if (TableExists('glpi_plugin_reports_profiles')) {
+         foreach ($DB->request("SELECT `id` FROM `glpi_profiles`") as $prof) {
+            self::migrateOneProfile($prof['id']);
+         }
       }
 
       return true;
@@ -419,7 +322,9 @@ class PluginReportsProfile extends CommonDBTM {
          $DB->query($query) or die($DB->error());
       }
 
-      return true;
+      //delete profiles
+      $profile_right = new ProfileRight;
+      return $profile_right->deleteByCriteria(array("name LIKE 'plugin_reports_%'"));
    }
 
 
@@ -429,8 +334,8 @@ class PluginReportsProfile extends CommonDBTM {
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
       if ($item->getType() == 'Profile') {
-         if ($item->fields['interface'] != 'helpdesk') {
-            return array(1 => _n('Report', 'Reports', 2));
+         if ($item->getField('interface') == 'central') {
+            return PluginReportsReport::getTypeName(2);
          }
       }
       return '';
@@ -441,13 +346,57 @@ class PluginReportsProfile extends CommonDBTM {
 
       if ($item->getType() == 'Profile') {
          if ($item->getField('interface') == 'central') {
+            $ID = $item->getField('id');
+
             $prof = new self();
             $prof->updatePluginRights();
+            
             self::showForProfile($item);
          }
       }
       return true;
    }
 
+   /**
+    * @since 0.85
+    * migrate a right value from old system to the new one
+    * @param  [string] $old_right
+    * @return [integer] new right
+    * @see ../../config/define.php
+    */
+   static function translateARight($old_right) {
+      switch ($old_right) {
+         case '': 
+            return 0;
+         case 'r' :
+            return READ;
+         case 'w':
+            return ALLSTANDARDRIGHT;
+         case '0':
+         case '1':
+            return $old_right;
+            
+         default :
+            return 0;
+      }
+   }
+   
+   /**
+   * @since 0.85
+   * Migration rights from old system to the new one for one profile
+   * @param $profiles_id the profile ID
+   */
+   static function migrateOneProfile($profiles_id) {
+      global $DB;
+
+      $profile_right = new ProfileRight;
+      $new_rights = array();
+      
+      foreach ($DB->request('glpi_plugin_reports_profiles', "`profiles_id`='$profiles_id'") as $old_profile_data) {
+         $new_right = self::translateARight($old_profile_data['access']);
+         $new_rights["plugin_reports_".$old_profile_data['report']] = $new_right;
+      }
+      $profile_right->updateProfileRights($profiles_id, $new_rights);
+   }  
 }
 ?>

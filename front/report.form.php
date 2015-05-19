@@ -29,7 +29,7 @@
 
 include_once ("../../../inc/includes.php");
 
-Session::checkRight('profile', 'r');
+Session::checkRight('profile', READ);
 
 Plugin::load('reports', true);
 
@@ -46,11 +46,12 @@ if (isset($_POST['report'])) {
 $prof = new PluginReportsProfile();
 
 if (isset($_POST['delete']) && $report) {
-   Session::checkRight('profile', 'w');
-   $prof->deleteByCriteria(array('report' => $report));
+   $profile_right = new ProfileRight;
+   $profile_right->deleteByCriteria(array('name' => "plugin_reports_$report"));
+   ProfileRight::addProfileRights(array("plugin_reports_$report"));
 
 } else  if (isset($_POST['update']) && $report) {
-   Session::checkRight('profile', 'w');
+   Session::checkRight('profile', UPDATE);
    PluginReportsProfile::updateForReport($_POST);
 }
 

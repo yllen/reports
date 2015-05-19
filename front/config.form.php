@@ -30,21 +30,21 @@
 include_once ("../../../inc/includes.php");
 Plugin::load('reports');
 
-Session::checkSeveralRightsOr(array("config"  => "w",
-                                    "profile" => "w"));
+Session::checkSeveralRightsOr(array("config"  => UPDATE,
+                                    "profile" => UPDATE));
 Html::header(__('Setup'), $_SERVER['PHP_SELF'], "config", "plugins");
 
 echo "<div class='center'>";
 echo "<table class='tab_cadre'>";
 echo "<tr><th>".__('Reports plugin configuration', 'reports')."</th></tr>";
 
-if (Session::haveRight("profile","w")) {
+if (Session::haveRight("profile",UPDATE)) {
    echo "<tr class='tab_bg_1 center'><td>";
    echo "<a href='report.form.php'>".__('Reports plugin configuration', 'reports')."</a>";
    echo "</td/></tr>\n";
 }
 
-if (Session::haveRight("config","w")) {
+if (Session::haveRight("config",UPDATE)) {
    foreach (searchReport() as $report => $plug) {
       $url = getReportConfigPage($plug, $report);
       $file = GLPI_ROOT.getReportConfigPage($plug, $report);

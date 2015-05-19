@@ -31,7 +31,7 @@
 // Original Author of file: Dévi Balpe
 // ----------------------------------------------------------------------
 
-class PluginReportsReport extends CommonGLPI {
+class PluginReportsReport extends CommonDBTM {
 
 
    /**
@@ -46,5 +46,17 @@ class PluginReportsReport extends CommonGLPI {
       return _n('Report', 'Reports', $nb);
    }
 
+   /**
+    * Get rights for an item _ may be overload by object
+    *
+    * @since version 0.85
+    *
+    * @param $interface   string   (defalt 'central')
+    *
+    * @return array of rights to display
+   **/
+   function getRights($interface='central') {
+      return array(READ => __('Read'));
+   }
 }
 ?>

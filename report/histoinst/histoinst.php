@@ -38,11 +38,11 @@ include ("../../../../inc/includes.php");
 
 includeLocales("histoinst");
 
-plugin_reports_checkRight('reports', "histoinst","r");
+Session::checkRight("plugin_reports_histoinst", READ);
 $computer = new Computer();
-$computer->checkGlobal('r');
+$computer->checkGlobal(READ);
 $software = new Software();
-$software->checkGlobal('r');
+$software->checkGlobal(READ);
 
 //TRANS: The name of the report = History of last software's installations
 Html::header(__('histoinst_report_title', 'reports'), $_SERVER['PHP_SELF'], "utils", "report");

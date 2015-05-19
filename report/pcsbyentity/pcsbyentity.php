@@ -203,7 +203,7 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
-plugin_reports_checkRight('reports', "pcsbyentity","r");
+Session::checkRight("plugin_reports_pcsbyentity", READ);
 //TRANS: The name of the report = Number of items by entity
 Html::header(__('pcsbyentity_report_title', 'reports'), $_SERVER['PHP_SELF'], "utils", "report");
 

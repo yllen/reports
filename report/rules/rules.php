@@ -24,20 +24,20 @@
 
  You should have received a copy of the GNU General Public License
  along with reports. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
- */
+ -------------------------------------------------------------------------
+- */
 
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
-plugin_reports_checkRight('reports', "rules", "r");
+Session::checkRight("plugin_reports_rules", READ);
 
 
 function plugin_reports_rulelist ($rulecollection, $title) {
 
-   Session::checkRight($rulecollection::$right,"r");
+   Session::checkRight($rulecollection::$rightname,READ);
 
    $rulecollection->getCollectionDatas(true, true);
    echo "<div class='center'>";
@@ -120,24 +120,24 @@ if ($type == "ldap") {
    echo "<table class='tab_cadre' cellpadding='5'>\n";
    echo "<tr><th>". sprintf(__('%1$s - %2$s'), __("rules_report_title", 'reports'), __('Rule type'))."</th></tr>";
 /*
-   if ($CFG_GLPI["use_ocs_mode"] && Session::haveRight("rule_ocs","r")) {
+   if ($CFG_GLPI["use_ocs_mode"] && Session::haveRight("rule_ocs", READ)) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
            "<a href='".$_SERVER["PHP_SELF"]."?type=ocs'>".$LANG["rulesengine"][18]."</a></td></tr>";
    }
 */
-   if (Session::haveRight("rule_ldap","r")) {
+   if (Session::haveRight("rule_ldap", READ)) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
            "<a href='".$_SERVER["PHP_SELF"]."?type=ldap'>".__('Authorizations assignment rules').
            "</a></td></tr>";
    }
 
-   if (Session::haveRight("rule_tracking","r")) {
+   if (Session::haveRight("rule_tracking", READ)) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
            "<a href='".$_SERVER["PHP_SELF"]."?type=track'>".__('Business rules for tickets').
            "</a></td></tr>";
    }
 
-   if (Session::haveRight("rule_softwarecategories","r")) {
+   if (Session::haveRight("rule_softwarecategories", READ)) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
            "<a href='".$_SERVER["PHP_SELF"]."?type=soft'>".
              __('Rules for assigning a category to software')."</a></td></tr>";
