@@ -39,7 +39,7 @@ class PluginReportsProfile extends Profile {
       global $DB;
 
       $profile_right = new ProfileRight;
-      $crit          = array('profiles_id' => $prof->input['_old_id'], 
+      $crit          = array('profiles_id' => $prof->input['_old_id'],
                              "`name` LIKE 'plugin_reports_%'");
       $rights = array();
       foreach ($DB->request($profile_right->getTable(), $crit) as $data) {
@@ -56,15 +56,16 @@ class PluginReportsProfile extends Profile {
       global $DB, $LANG;
 
       $canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE));
+
       if ($canedit) {
          echo "<form method='post' action='".$prof->getFormURL()."'>";
       }
 
       $rights = self::getAllRights();
-      $prof->displayRightsChoiceMatrix($rights, 
+      $prof->displayRightsChoiceMatrix($rights,
                                        array('canedit'       => $canedit,
                                              'default_class' => 'tab_bg_2',
-                                             'title'         => __('Rights management by profil', 
+                                             'title'         => __('Rights management by profil',
                                                                    'reports')));
       if ($canedit) {
          echo "<div class='center'>";
@@ -75,7 +76,6 @@ class PluginReportsProfile extends Profile {
       }
       echo "</div>";
 
-      $prof->showLegend();
    }
 
 
@@ -188,13 +188,13 @@ class PluginReportsProfile extends Profile {
             unset($rights[$right]);
          }
       }
-
+/*
       // Add new reports
       $rights_name = array_keys($rights);
       ProfileRight::addProfileRights($rights_name);
       if ($_SESSION['glpiactiveprofile']['id'] == 4) {
          $profile_right->updateProfileRights(4, $rights);
-      }
+      }*/
    }
 
 
@@ -213,9 +213,12 @@ class PluginReportsProfile extends Profile {
       return $tab;
    }
 
+
    static function getAllRights() {
       global $LANG;
+
       $rights = array();
+
       foreach(searchReport() as $key => $plug) {
          $mod = (($plug == 'reports') ? $key : "${plug}_${key}");
          if (!isset($plugname[$plug])) {
@@ -224,17 +227,17 @@ class PluginReportsProfile extends Profile {
             $tmp              = $function();
             $plugname[$plug]  = $tmp['name'];
          }
-
          $field = 'plugin_reports_'.$key;
          if ($plug != 'reports') {
             $field = 'plugin_reports_'.$plug."_".$key;
          }
-      
+
          $rights[] = array('itemtype' => 'PluginReportsReport',
-                           'label'    => $plugname[$plug]." - ".$LANG["plugin_$plug"][$key], 
+                           'label'    => $plugname[$plug]." - ".$LANG["plugin_$plug"][$key],
                            'field'    => $field);
       }
       return $rights;
+
    }
 
 
@@ -253,18 +256,14 @@ class PluginReportsProfile extends Profile {
    static function install() {
       global $DB;
 
-      if (TableExists('glpi_plugin_reports_profiles')) { 
-         if (!FieldExists('glpi_plugin_reports_profiles','profiles_id')) { // version < 1.5.0
-            $create = "CREATE TABLE IF NOT EXISTS `glpi_plugin_reports_profiles` (
-                          `id` int(11) NOT NULL auto_increment,
-                          `profiles_id` int(11) NOT NULL DEFAULT '0',
-                          `report` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-                          `access` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-                        PRIMARY KEY (`id`),
-                        KEY `report` (`report`),
-                        KEY `profiles_id` (`profiles_id`))
-                        ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+      if (TableExists('glpi_plugin_reports_profiles')) {
+         if (FieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
+            $query = "ALTER TABLE `glpi_plugin_reports_profiles`
+                      CHANGE `ID` `id` int(11) NOT NULL auto_increment";
+            $DB->queryOrDie($query, "CHANGE ID: ".$DB->error());
+         }
 
+         if (!FieldExists('glpi_plugin_reports_profiles','profiles_id')) { // version < 1.5.0
             $query = "RENAME TABLE `glpi_plugin_reports_profiles`
                                 TO `glpi_plugin_reports_oldprofiles`";
             $DB->query($query) or die("SAVE TABLE profiles: ".$DB->error());
@@ -285,24 +284,25 @@ class PluginReportsProfile extends Profile {
             $query = "DROP TABLE `glpi_plugin_reports_oldprofiles`";
             $DB->query($query) or die("DROP TABLE oldprofiles: ".$DB->error());
          }
-      }
 
 
-      // -- SINCE 0.85 --
-      //Add new rights in glpi_profilerights table
-      $profile = new self();
-      foreach ($profile->getAllRights() as $data) {
-         if (countElementsInTable("glpi_profilerights", "`name` = '".$data['field']."'") == 0) {
-            ProfileRight::addProfileRights(array($data['field']));
-            $_SESSION['glpiactiveprofile'][$data['field']] = 0;
+         // -- SINCE 0.85 --
+         //Add new rights in glpi_profilerights table
+         $profileRight = new ProfileRight();
+         $query = "SELECT *
+                   FROM `glpi_plugin_reports_profiles`";
+
+         foreach ($DB->request($query) as $data) {
+            $right['profiles_id']   = $data['profiles_id'];
+            $right['name']          = "plugin_report_".$data['report'];
+            $droit                  = $data['access'];
+            if ($droit == 'r') {
+               $right['rights'] = 1;
+               $profileRight->add($right);
+            }
          }
-      }
-      
-      //Migration old rights in new ones
-      if (TableExists('glpi_plugin_reports_profiles')) {
-         foreach ($DB->request("SELECT `id` FROM `glpi_profiles`") as $prof) {
-            self::migrateOneProfile($prof['id']);
-         }
+
+      } else { // new install
       }
 
       return true;
@@ -350,7 +350,7 @@ class PluginReportsProfile extends Profile {
 
             $prof = new self();
             $prof->updatePluginRights();
-            
+
             self::showForProfile($item);
          }
       }
@@ -364,39 +364,8 @@ class PluginReportsProfile extends Profile {
     * @return [integer] new right
     * @see ../../config/define.php
     */
-   static function translateARight($old_right) {
-      switch ($old_right) {
-         case '': 
-            return 0;
-         case 'r' :
-            return READ;
-         case 'w':
-            return ALLSTANDARDRIGHT;
-         case '0':
-         case '1':
-            return $old_right;
-            
-         default :
-            return 0;
-      }
-   }
-   
-   /**
-   * @since 0.85
-   * Migration rights from old system to the new one for one profile
-   * @param $profiles_id the profile ID
-   */
-   static function migrateOneProfile($profiles_id) {
-      global $DB;
 
-      $profile_right = new ProfileRight;
-      $new_rights = array();
-      
-      foreach ($DB->request('glpi_plugin_reports_profiles', "`profiles_id`='$profiles_id'") as $old_profile_data) {
-         $new_right = self::translateARight($old_profile_data['access']);
-         $new_rights["plugin_reports_".$old_profile_data['report']] = $new_right;
-      }
-      $profile_right->updateProfileRights($profiles_id, $new_rights);
-   }  
+
+
 }
 ?>
