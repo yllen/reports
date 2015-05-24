@@ -1,29 +1,32 @@
 <?php
-/*
+/**
  * @version $Id$
  -------------------------------------------------------------------------
- reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2013 by the reports Development Team.
+  LICENSE
 
- https://forge.indepnet.net/projects/reports
- -------------------------------------------------------------------------
+ This file is part of Reports plugin for GLPI.
 
- LICENSE
-
- This file is part of reports.
-
- reports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Reports is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- reports is distributed in the hope that it will be useful,
+ Reports is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with reports. If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU Affero General Public License
+ along with Reports. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   reports
+ @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
+ @copyright Copyright (c) 2009-2015 Reports plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.indepnet.net/projects/reports
+ @link      http://www.glpi-project.org/
+ @since     2009
  --------------------------------------------------------------------------
 */
 
@@ -63,7 +66,7 @@ function plugin_init_reports() {
       $field = 'plugin_reports_'.$report;
       if ($plug != 'reports') {
          $field = 'plugin_reports_'.$plug."_".$report;
-      }      
+      }
       if (Session::haveRight($field, READ)) {
          $tmp = $LANG["plugin_$plug"][$report];
          //If the report's name contains 'stat' then display it in the statistics page
@@ -103,7 +106,7 @@ function plugin_version_reports() {
    return array('name'           => _n('Report', 'Reports', 2),
                 'version'        => '1.8.0',
                 'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh, Alexandre Delaunay',
-                'license'        => 'GPLv2+',
+                'license'        => 'GPLv3+',
                 'homepage'       => 'https://forge.indepnet.net/projects/reports',
                 'minGlpiVersion' => '0.85');
 }
@@ -116,7 +119,6 @@ function plugin_reports_check_config() {
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_reports_check_prerequisites() {
-   global $LANG;
 
    if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
       echo "This plugin requires GLPI >= 0.85 and GLPI < 0.86";
