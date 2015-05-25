@@ -1,34 +1,34 @@
 <?php
-/*
+/**
  * @version $Id$
  -------------------------------------------------------------------------
- reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2013 by the reports Development Team.
+  LICENSE
 
- https://forge.indepnet.net/projects/reports
- -------------------------------------------------------------------------
+ This file is part of Reports plugin for GLPI.
 
- LICENSE
-
- This file is part of reports.
-
- reports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Reports is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- reports is distributed in the hope that it will be useful,
+ Reports is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with reports. If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU Affero General Public License
+ along with Reports. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   reports
+ @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
+ @copyright Copyright (c) 2009-2015 Reports plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.indepnet.net/projects/reports
+ @link      http://www.glpi-project.org/
+ @since     2009
  --------------------------------------------------------------------------
  */
-
-//***********************REQUETES À REVOIR********************************
-//*************************************************************************
 
 include ("../../../../inc/includes.php");
 
@@ -120,12 +120,12 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
       }
    }
 
-   $Sql = "SELECT A.`id` AS AID, 
+   $Sql = "SELECT A.`id` AS AID,
                   A.`name` AS Aname,
-                  A_ipa.`name` AS Aaddr, 
+                  A_ipa.`name` AS Aaddr,
                   A.`entities_id` AS entity,
 
-                  B.`id` AS BID, 
+                  B.`id` AS BID,
                   B.`name` AS Bname,
                   B_ipa.`name` AS Baddr
 
@@ -177,11 +177,11 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
       $MacBlacklist .= ",'44:45:53:54:42:00', 'BA:D0:BE:EF:FA:CE', '00:53:45:00:00:00',
                          '80:00:60:0F:E8:00'";
    }
-   $Sql = "SELECT A.`id` AS AID, 
+   $Sql = "SELECT A.`id` AS AID,
                   A.`name` AS Aname,
-                  A_np.`mac` AS Aaddr, 
+                  A_np.`mac` AS Aaddr,
                   A.`entities_id` AS entity,
-                  B.`id` AS BID, 
+                  B.`id` AS BID,
                   B.`name` AS Bname,
                   B_np.`mac` AS Baddr
 
@@ -334,7 +334,7 @@ if ($crit > 0) { // Display result
       echo "<td>";
       if ($ocs_installed) {
          echo getLastOcsUpdate($data['AID']);
-      } 
+      }
       echo "</td>";
       if ($canedit) {
          echo "<td><input type='checkbox' name='item[".$data["BID"]."]' value='1'></td>";
@@ -373,11 +373,11 @@ if ($crit > 0) { // Display result
    echo "</table>";
    if ($canedit) {
       if ($i) {
-         Html::openArrowMassives("massiveaction_form");
-         Dropdown::showForMassiveAction('Computer');
-         $options = array();
-         Html::closeArrowMassives($options);
-      }
+         Html::openMassiveActionsForm('massformCmputer');
+         $massiveactionparams = array('container'         => 'Computer',
+                                      'delete'        => _x('button', 'Delete permanently'));
+         Html::showMassiveActions($massiveactionparams);
+               }
       Html::closeForm();
    }
 }

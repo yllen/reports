@@ -1,29 +1,32 @@
 <?php
-/*
+/**
  * @version $Id$
  -------------------------------------------------------------------------
- reports - Additional reports plugin for GLPI
- Copyright (C) 2003-2013 by the reports Development Team.
+  LICENSE
 
- https://forge.indepnet.net/projects/reports
- -------------------------------------------------------------------------
+ This file is part of Reports plugin for GLPI.
 
- LICENSE
-
- This file is part of reports.
-
- reports is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
+ Reports is free software: you can redistribute it and/or modify
+ it under the terms of the GNU Affero General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
  (at your option) any later version.
 
- reports is distributed in the hope that it will be useful,
+ Reports is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ GNU Affero General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with reports. If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU Affero General Public License
+ along with Reports. If not, see <http://www.gnu.org/licenses/>.
+
+ @package   reports
+ @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
+ @copyright Copyright (c) 2009-2015 Reports plugin team
+ @license   AGPL License 3.0 or (at your option) any later version
+            http://www.gnu.org/licenses/agpl-3.0-standalone.html
+ @link      https://forge.indepnet.net/projects/reports
+ @link      http://www.glpi-project.org/
+ @since     2009
  --------------------------------------------------------------------------
  */
 
@@ -79,7 +82,7 @@ function displaySearchForm() {
    echo "<form action='" . $_SERVER["PHP_SELF"] . "' method='post'>";
    echo "<table class='tab_cadre' cellpadding='5'>";
    echo "<tr class='tab_bg_1 center'>";
-   echo "<td>";
+   echo "<td width='300'>";
    echo __('Group')."&nbsp;&nbsp;";
    Group::dropdown(array('name =>'  => "group",
                          'value'    => $_GET["group"],
