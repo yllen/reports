@@ -20,7 +20,7 @@
  along with Reports. If not, see <http://www.gnu.org/licenses/>.
 
  @package   reports
- @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
+ @authors    Nelly Mahu-Lasson, Remi Collet
  @copyright Copyright (c) 2009-2015 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html

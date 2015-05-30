@@ -20,7 +20,7 @@
  along with Reports. If not, see <http://www.gnu.org/licenses/>.
 
  @package   reports
- @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
+ @authors    Nelly Mahu-Lasson, Remi Collet
  @copyright Copyright (c) 2009-2015 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
@@ -255,6 +255,7 @@ if ($crit > 0) { // Display result
    // save crit for massive action
    $_SESSION['plugin_reports_doublons_crit'] = $crit;
 
+   $rand = mt_rand();
    if ($canedit) {
       echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"".
             $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
@@ -373,11 +374,12 @@ if ($crit > 0) { // Display result
    echo "</table>";
    if ($canedit) {
       if ($i) {
-         Html::openMassiveActionsForm('massformCmputer');
-         $massiveactionparams = array('container'         => 'Computer',
-                                      'delete'        => _x('button', 'Delete permanently'));
+         Html::openMassiveActionsForm('massformComputer');
+         $massiveactionparams = array('num_displayed'    => $i,
+                                      'container'        => 'Computer',
+                                      'specific_actions' => array('delete' => _x('button', 'Delete permanently')));
          Html::showMassiveActions($massiveactionparams);
-               }
+      }
       Html::closeForm();
    }
 }
