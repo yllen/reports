@@ -304,6 +304,7 @@ class PluginReportsProfile extends Profile {
                $profileRight->add($right);
             }
          }
+         $DB->query("DROP TABLE `glpi_plugin_reports_profiles`");
 
       } else { // new install
       }
