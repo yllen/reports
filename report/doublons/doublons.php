@@ -377,7 +377,8 @@ if ($crit > 0) { // Display result
          Html::openMassiveActionsForm('massformComputer');
          $massiveactionparams = array('num_displayed'    => $i,
                                       'container'        => 'Computer',
-                                      'specific_actions' => array('delete' => _x('button', 'Delete permanently')));
+                                      'ontop'            => false,
+                                      'forcecreate'      => true,);
          Html::showMassiveActions($massiveactionparams);
       }
       Html::closeForm();

@@ -47,6 +47,14 @@ class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
    }
 
 
+   function showTitle($output_type, &$num) {
+
+      echo Search::showHeaderItem($output_type,
+                                  Html::getCheckAllAsCheckbox('massform'.get_class($this->obj)), $num);
+
+   }
+
+
    function displayValue($output_type, $row) {
 
       if (!isset($row[$this->name]) || !$row[$this->name]) {

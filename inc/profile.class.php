@@ -91,7 +91,7 @@ class PluginReportsProfile extends Profile {
       if (empty($report) || !Session::haveRight('profile', READ)) {
          return false;
       }
-      $current = self::getAllProfilesRights(array("name = 'plugin_reports_$report'"));
+      $current = self::getAllProfilesRights(array("name LIKE '%$report'"));
       $canedit = Session::haveRight('profile', UPDATE);
 
       if ($canedit) {
@@ -109,8 +109,9 @@ class PluginReportsProfile extends Profile {
          echo "<tr class='tab_bg_1'><td>" . $data['name'] . "&nbsp: </td><td>";
          if ((isStat($report) && Session::haveRight("statistic", READ))
              || (!isStat($report) && Session::haveRight("reports", READ))) {
-            Profile::dropdownNoneReadWrite($data['id'], 
-                (isset($current[$data['id']])?$current[$data['id']]:0), 1, 1, 0);
+            Profile::dropdownNoneReadWrite($data['id'],
+                                           (isset($current[$data['id']])?$current[$data['id']]:0),
+                                           1, 1, 0);
          } else {
             // Can't access because missing right from GLPI core
             // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
@@ -130,9 +131,7 @@ class PluginReportsProfile extends Profile {
          echo "<tr class='tab_bg_1'><td colspan='2' class='center'>";
          echo "<input type='hidden' name='report' value='$report'>";
          echo "<input type='submit' name='update' value='"._sx('button', 'Update')."' ".
-                "class='submit'>&nbsp;&nbsp;&nbsp;";
-         echo "<input type='submit' name='delete' value='"._sx('button', 'Delete permanently')."'
-                class='submit'>";
+                "class='submit'>";
          echo "</td></tr>\n";
          echo "</table>\n";
          Html::closeForm();
@@ -145,19 +144,21 @@ class PluginReportsProfile extends Profile {
     * @param $input
    **/
    static function updateForReport($input) {
+
       $prof    = new ProfileRight();
       $report  = $input['report'];
-      $current = self::getAllProfilesRights(array("name = 'plugin_reports_$report'"), true);
+      $current = self::getAllProfilesRights(array("name LIKE '%$report'"), true);
 
       foreach($input as $profiles_id => $right) {
          if (is_numeric($profiles_id)) {
             if (isset($current[$profiles_id])) {
                if ($current[$profiles_id]['rights'] != $right) {
                   if ($right) {
-                     $prof->update(array('id'     => $current[$profiles_id]['id'],
-                                         'rights' => $right));
+                     $prof->add(array('profiles_id' => $profiles_id,
+                                      'name'        => "plugin_reports_$report",
+                                      'rights'      => $right));
                   } else {
-                     $prof->delete(array('id'     => $current[$profiles_id]['id']));
+                      $prof->delete(array('id' => $current[$profiles_id]['id']));
                   }
                }
             } else if ($right) {
@@ -375,15 +376,5 @@ class PluginReportsProfile extends Profile {
       return true;
    }
 
-   /**
-    * @since 0.85
-    * migrate a right value from old system to the new one
-    * @param  [string] $old_right
-    * @return [integer] new right
-    * @see ../../config/define.php
-    */
-
-
-
-}
+  }
 ?>

@@ -296,17 +296,19 @@ class PluginReportsAutoReport {
          Html::printPager($start, $nbtot, $_SERVER['PHP_SELF'], $param);
       }
 
-      if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
-         if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
-            echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"".
-                  $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
-         }
-      }
       $field = 'plugin_reports_'.$this->name;
       if ($this->plug != 'reports') {
          $field = 'plugin_reports_'.$this->plug."_".$this->name;
       }
+
       Session::checkRight($field, READ);
+
+      if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
+         if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
+            Html::openMassiveActionsForm('massform'.$options['withmassiveaction']);
+            Html::showMassiveActions(array('container' => $options['withmassiveaction']));
+         }
+      }
 
       if ($res && ($nbtot > 0)) {
          $nbcols = $DB->num_fields($res);
@@ -393,16 +395,10 @@ class PluginReportsAutoReport {
 
       if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
          if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
-            $rand = mt_rand();
-            Html::openMassiveActionsForm('mass'.$options['withmassiveaction'].$rand);
-            Html::showMassiveActions(array('item'      => new $options['withmassiveaction'],
-                                           'ontop'     => false,
-                                           'rand'      => $rand,
-                                           'container' => 'mass'.$options['withmassiveaction'].$rand));
-
-
-         }
+            Html::showMassiveActions(array('container' => $options['withmassiveaction'],
+                                           'ontop'     => false));
             Html::closeForm();
+         }
          Html::footer();
       }
    }
