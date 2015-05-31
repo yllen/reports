@@ -257,8 +257,7 @@ if ($crit > 0) { // Display result
 
    $rand = mt_rand();
    if ($canedit) {
-      echo "<form method='post' name='massiveaction_form' id='massiveaction_form' action=\"".
-            $CFG_GLPI["root_doc"]."/front/massiveaction.php\">";
+      Html::openMassiveActionsForm('massformComputer');
    }
    echo "<table class='tab_cadrehov' cellpadding='5'>" .
       "<tr><th colspan='$colspan'>" . __('First computer', 'reports') . "</th>" .
@@ -314,7 +313,7 @@ if ($crit > 0) { // Display result
       }
       echo "<tr class='tab_bg_2'>";
       if ($canedit) {
-         echo "<td><input type='checkbox' name='item[".$data["AID"]."]' value='1'></td>";
+         echo "<td>" . Html::getMassiveActionCheckBox('Computer', $data["AID"]) . "</td>";
       }
       echo "<td class='b'>".$data["AID"]."</td>";
       if ($comp->getFromDB($data["AID"])) {
@@ -338,7 +337,7 @@ if ($crit > 0) { // Display result
       }
       echo "</td>";
       if ($canedit) {
-         echo "<td><input type='checkbox' name='item[".$data["BID"]."]' value='1'></td>";
+         echo "<td>" . Html::getMassiveActionCheckBox('Computer', $data["BID"]) . "</td>";
       }
       echo "<td class='b blue'>".$data["BID"]."</td>";
       if ($comp->getFromDB($data["BID"])) {
@@ -374,9 +373,8 @@ if ($crit > 0) { // Display result
    echo "</table>";
    if ($canedit) {
       if ($i) {
-         Html::openMassiveActionsForm('massformComputer');
          $massiveactionparams = array('num_displayed'    => $i,
-                                      'container'        => 'Computer',
+                                      'container'        => 'massformComputer',
                                       'ontop'            => false,
                                       'forcecreate'      => true,);
          Html::showMassiveActions($massiveactionparams);
