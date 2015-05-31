@@ -91,7 +91,7 @@ class PluginReportsProfile extends Profile {
       if (empty($report) || !Session::haveRight('profile', READ)) {
          return false;
       }
-      $current = self::getAllProfilesRights(array("name = 'plugin_report_$report'"));
+      $current = self::getAllProfilesRights(array("name = 'plugin_reports_$report'"));
       $canedit = Session::haveRight('profile', UPDATE);
 
       if ($canedit) {
@@ -147,7 +147,7 @@ class PluginReportsProfile extends Profile {
    static function updateForReport($input) {
       $prof    = new ProfileRight();
       $report  = $input['report'];
-      $current = self::getAllProfilesRights(array("name = 'plugin_report_$report'"), true);
+      $current = self::getAllProfilesRights(array("name = 'plugin_reports_$report'"), true);
 
       foreach($input as $profiles_id => $right) {
          if (is_numeric($profiles_id)) {
@@ -162,7 +162,7 @@ class PluginReportsProfile extends Profile {
                }
             } else if ($right) {
                $prof->add(array('profiles_id' => $profiles_id,
-                                'name'        => "plugin_report_$report",
+                                'name'        => "plugin_reports_$report",
                                 'rights'      => $right));
             }
             // TODO Check here with another plugin
@@ -311,7 +311,7 @@ class PluginReportsProfile extends Profile {
 
          foreach ($DB->request($query) as $data) {
             $right['profiles_id']   = $data['profiles_id'];
-            $right['name']          = "plugin_report_".$data['report'];
+            $right['name']          = "plugin_reports_".$data['report'];
             $droit                  = $data['access'];
             if ($droit == 'r') {
                $right['rights'] = 1;
