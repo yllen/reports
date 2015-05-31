@@ -338,12 +338,14 @@ class PluginReportsProfile extends Profile {
 
       foreach ($tables as $table) {
          $query = "DROP TABLE IF EXISTS `$table`";
-         $DB->query($query) or die($DB->error());
+         $DB->queryOrDie($query, $DB->error());
       }
 
-      //delete profiles
-      $profile_right = new ProfileRight;
-      return $profile_right->deleteByCriteria(array("name LIKE 'plugin_reports_%'"));
+      //Delete rights associated with the plugin
+      $query = "DELETE *
+                FROM `glpi_profilerights`
+                WHERE `name` LIKE 'plugin_reports_%'";
+      $DB->queryOrDie($query, $DB->error());
    }
 
 
