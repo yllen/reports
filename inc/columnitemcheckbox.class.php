@@ -60,13 +60,12 @@ class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
       if (!isset($row[$this->name]) || !$row[$this->name]) {
          return '';
       }
-
       if ($this->obj
           && ($output_type == Search::HTML_OUTPUT)
-          && $this->obj->can($row[$this->name], 'w')) {
-         return "<input type='checkbox' name='item[".$row[$this->name]."]' value='1'>";
+          && $this->obj->can($row[$this->name], UPDATE)) {
+         return Html::getMassiveActionCheckBox(get_class($this->obj), $row[$this->name]);
       }
-
+      
       return '';
    }
 }
