@@ -91,7 +91,7 @@ class PluginReportsProfile extends Profile {
       if (empty($report) || !Session::haveRight('profile', READ)) {
          return false;
       }
-      $current = self::getAllProfilesRights(array("name LIKE '%$report'"));
+      $current = self::getAllProfilesRights(array("name = 'plugin_report_$report'"));
       $canedit = Session::haveRight('profile', UPDATE);
 
       if ($canedit) {
@@ -109,7 +109,8 @@ class PluginReportsProfile extends Profile {
          echo "<tr class='tab_bg_1'><td>" . $data['name'] . "&nbsp: </td><td>";
          if ((isStat($report) && Session::haveRight("statistic", READ))
              || (!isStat($report) && Session::haveRight("reports", READ))) {
-            Profile::dropdownNoneReadWrite($data['id'], $current[$data['id']], 1, 1, 0);
+            Profile::dropdownNoneReadWrite($data['id'], 
+                (isset($current[$data['id']])?$current[$data['id']]:0), 1, 1, 0);
          } else {
             // Can't access because missing right from GLPI core
             // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
@@ -144,13 +145,26 @@ class PluginReportsProfile extends Profile {
     * @param $input
    **/
    static function updateForReport($input) {
-      $prof    = new Profile();
+      $prof    = new ProfileRight();
       $report  = $input['report'];
+      $current = self::getAllProfilesRights(array("name = 'plugin_report_$report'"), true);
 
       foreach($input as $profiles_id => $right) {
          if (is_numeric($profiles_id)) {
-            $prof->update(array('id'                       => $profiles_id,
-                                '_plugin_reports_'.$report => $right));
+            if (isset($current[$profiles_id])) {
+               if ($current[$profiles_id]['rights'] != $right) {
+                  if ($right) {
+                     $prof->update(array('id'     => $current[$profiles_id]['id'],
+                                         'rights' => $right));
+                  } else {
+                     $prof->delete(array('id'     => $current[$profiles_id]['id']));
+                  }
+               }
+            } else if ($right) {
+               $prof->add(array('profiles_id' => $profiles_id,
+                                'name'        => "plugin_report_$report",
+                                'rights'      => $right));
+            }
             // TODO Check here with another plugin
          }
       }

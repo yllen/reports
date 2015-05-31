@@ -40,7 +40,7 @@ Html::header(__('Reports plugin configuration', 'reports'), $_SERVER['PHP_SELF']
              'plugins');
 
 require_once "../inc/profile.class.php";
-
+Toolbox::logDebug($_POST);
 $report='';
 if (isset($_POST['report'])) {
    $report=$_POST['report'];
