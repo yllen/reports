@@ -165,15 +165,8 @@ class PluginReportsProfile extends Profile {
       foreach($input as $profiles_id => $right) {
          if (is_numeric($profiles_id)) {
             if (isset($current[$profiles_id])) {
-               if ($current[$profiles_id]['rights'] != $right) {
-                  if ($right) {
-                     // Unused case as right can only be 0/1 (for now)
-                     $prof->update(array('id'     => $current[$profiles_id]['id'],
-                                         'rights' => $right));
-                  } else {
-                     $prof->delete(array('id' => $current[$profiles_id]['id']));
-                  }
-               }
+               $prof->update(array('id'     => $current[$profiles_id]['id'],
+                                   'rights' => $right));
             } else if ($right) {
                $prof->add(array('profiles_id' => $profiles_id,
                                 'name'        => $rightname,
