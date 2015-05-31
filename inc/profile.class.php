@@ -41,6 +41,7 @@ class PluginReportsProfile extends Profile {
    static function cloneProfile(Profile $prof) {
       global $DB;
 
+      ///TODO check if needed, as core should already do this.
       $profile_right = new ProfileRight;
       $crit          = array('profiles_id' => $prof->input['_old_id'],
                              "`name` LIKE 'plugin_reports_%'");
@@ -88,10 +89,13 @@ class PluginReportsProfile extends Profile {
    static function showForReport($report) {
       global $DB;
 
+      /* call from front/config.form.php
+       * $report = "bar" (from reports) or "foo_bar" (other plugins)
+       */
       if (empty($report) || !Session::haveRight('profile', READ)) {
          return false;
       }
-      $current = self::getAllProfilesRights(array("name LIKE '%$report'"));
+      $current = self::getAllProfilesRights(array("name = 'plugin_reports_$report'"));
       $canedit = Session::haveRight('profile', UPDATE);
 
       if ($canedit) {
@@ -107,8 +111,13 @@ class PluginReportsProfile extends Profile {
 
       foreach ($DB->request($query) as $data) {
          echo "<tr class='tab_bg_1'><td>" . $data['name'] . "&nbsp: </td><td>";
-         if ((isStat($report) && Session::haveRight("statistic", READ))
-             || (!isStat($report) && Session::haveRight("reports", READ))) {
+
+         $profrights = ProfileRight::getProfileRights($data['id'], array('statistic', 'reports'));
+         $canstat    = (isset($profrights['statistic']) && $profrights['statistic']);
+         $canreport  = (isset($profrights['reports'])   && $profrights['reports']);
+
+         if ((isStat($report) && $canstat)
+             || (!isStat($report) && $canreport)) {
             Profile::dropdownNoneReadWrite($data['id'],
                                            (isset($current[$data['id']])?$current[$data['id']]:0),
                                            1, 1, 0);
@@ -145,25 +154,29 @@ class PluginReportsProfile extends Profile {
    **/
    static function updateForReport($input) {
 
-      $prof    = new ProfileRight();
-      $report  = $input['report'];
-      $current = self::getAllProfilesRights(array("name LIKE '%$report'"), true);
+      /* call from front/config.form.php
+       * $report = "bar" (from reports) or "foo_bar" (other plugins)
+       */
+      $prof      = new ProfileRight();
+      $report    = $input['report'];
+      $rightname = "plugin_reports_$report";
+      $current   = self::getAllProfilesRights(array("name = '$rightname'"), true);
 
       foreach($input as $profiles_id => $right) {
          if (is_numeric($profiles_id)) {
             if (isset($current[$profiles_id])) {
                if ($current[$profiles_id]['rights'] != $right) {
                   if ($right) {
-                     $prof->add(array('profiles_id' => $profiles_id,
-                                      'name'        => "plugin_reports_$report",
-                                      'rights'      => $right));
+                     // Unused case as right can only be 0/1 (for now)
+                     $prof->update(array('id'     => $current[$profiles_id]['id'],
+                                         'rights' => $right));
                   } else {
-                      $prof->delete(array('id' => $current[$profiles_id]['id']));
+                     $prof->delete(array('id' => $current[$profiles_id]['id']));
                   }
                }
             } else if ($right) {
                $prof->add(array('profiles_id' => $profiles_id,
-                                'name'        => "plugin_reports_$report",
+                                'name'        => $rightname,
                                 'rights'      => $right));
             }
             // TODO Check here with another plugin
