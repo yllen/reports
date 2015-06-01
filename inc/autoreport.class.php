@@ -303,15 +303,15 @@ class PluginReportsAutoReport {
 
       Session::checkRight($field, READ);
 
-      if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
-         if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
-            $massformid = 'massform'.$options['withmassiveaction'];
-            Html::openMassiveActionsForm($massformid);
-            Html::showMassiveActions(array('container' => $massformid));
-         }
-      }
-
       if ($res && ($nbtot > 0)) {
+         if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
+            if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
+               $massformid = 'massform'.$options['withmassiveaction'];
+              Html::openMassiveActionsForm($massformid);
+               Html::showMassiveActions(array('container' => $massformid));
+            }
+         }
+
          $nbcols = $DB->num_fields($res);
          $nbrows = $DB->numrows($res);
 
@@ -391,16 +391,16 @@ class PluginReportsAutoReport {
 
                echo Search::showEndLine($output_type);
          }
-      }
-      echo Search::showFooter($output_type, $title);
+         echo Search::showFooter($output_type, $title);
 
-      if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
-         if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
-            Html::showMassiveActions(array('container' => $massformid,
-                                           'ontop'     => false));
-            Html::closeForm();
+         if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
+            if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
+               Html::showMassiveActions(array('container' => $massformid,
+                                              'ontop'     => false));
+               Html::closeForm();
+            }
+            Html::footer();
          }
-         Html::footer();
       }
    }
 
