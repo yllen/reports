@@ -304,6 +304,7 @@ if ($crit > 0) { // Display result
    }
 
    $comp = new Computer();
+   $ids  = array();
    $result = $DBread->query($Sql);
    for ($prev=-1, $i=0 ; $data = $DBread->fetch_array($result) ; $i++) {
       if ($prev != $data["entity"]) {
@@ -313,7 +314,12 @@ if ($crit > 0) { // Display result
       }
       echo "<tr class='tab_bg_2'>";
       if ($canedit) {
-         echo "<td>" . Html::getMassiveActionCheckBox('Computer', $data["AID"]) . "</td>";
+         if (isset($ids[$data["AID"]])) {
+            echo "<td>&nbsp;</td>";
+         } else {
+            $ids[$data["AID"]] = true;
+            echo "<td>" . Html::getMassiveActionCheckBox('Computer', $data["AID"]) . "</td>";
+         }
       }
       echo "<td class='b'>".$data["AID"]."</td>";
       if ($comp->getFromDB($data["AID"])) {
@@ -337,7 +343,12 @@ if ($crit > 0) { // Display result
       }
       echo "</td>";
       if ($canedit) {
-         echo "<td>" . Html::getMassiveActionCheckBox('Computer', $data["BID"]) . "</td>";
+         if (isset($ids[$data["BID"]])) {
+            echo "<td>&nbsp;</td>";
+         } else {
+            $ids[$data["BID"]] = true;
+            echo "<td>" . Html::getMassiveActionCheckBox('Computer', $data["BID"]) . "</td>";
+         }
       }
       echo "<td class='b blue'>".$data["BID"]."</td>";
       if ($comp->getFromDB($data["BID"])) {
