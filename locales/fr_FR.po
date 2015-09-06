@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-31 14:29+0200\n"
-"PO-Revision-Date: 2015-05-31 12:36+0000\n"
+"POT-Creation-Date: 2015-09-06 20:43+0200\n"
+"PO-Revision-Date: 2015-09-06 18:44+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/yllen/GLPI_reports/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,11 @@ msgstr "_report_title"
 msgid "Rights management by report"
 msgstr "Gestion des droits par rapport"
 
-#: inc/autoreport.class.php:450
+#: front/report.form.php:68
+msgid "Reports"
+msgstr "Rapports"
+
+#: inc/autoreport.class.php:452
 msgid "Search criteria"
 msgstr "Critères de recherche"
 
@@ -49,19 +53,19 @@ msgstr "Période"
 msgid "At least"
 msgstr "Au moins"
 
-#: inc/profile.class.php:71
+#: inc/profile.class.php:72
 msgid "Rights management by profil"
 msgstr "Droits des profils"
 
-#: inc/profile.class.php:102
+#: inc/profile.class.php:106
 msgid "Profils rights"
 msgstr "Gestion des droits"
 
-#: inc/profile.class.php:124
+#: inc/profile.class.php:133
 msgid "No right on Assistance / Statistics"
 msgstr "Pas de droit sur Assistance / Statistiques"
 
-#: inc/profile.class.php:126
+#: inc/profile.class.php:135
 msgid "No right on Tools / Reports"
 msgstr "Pas de droit sur Outils / Rapports"
 
@@ -86,7 +90,7 @@ msgstr "Statut des ordinateurs"
 #: report/doublons/doublons.config.php:39
 #: report/doublons/doublons.config.php:100
 #: report/doublons/doublons.config.php:107 report/doublons/doublons.php:76
-#: report/doublons/doublons.php:369
+#: report/doublons/doublons.php:379
 msgid "Duplicate computers"
 msgstr "Ordinateurs en doublons"
 
@@ -103,15 +107,15 @@ msgstr "Configuration des listes d'exceptions"
 msgid "doublons_report_title"
 msgstr "Ordinateurs en doublons"
 
-#: report/doublons/doublons.php:264
+#: report/doublons/doublons.php:263
 msgid "First computer"
 msgstr "Premier ordinateur"
 
-#: report/doublons/doublons.php:265
+#: report/doublons/doublons.php:264
 msgid "Second computer"
 msgstr "Second ordinateur"
 
-#: report/doublons/doublons.php:281 report/doublons/doublons.php:296
+#: report/doublons/doublons.php:280 report/doublons/doublons.php:295
 msgid "Last inventory date"
 msgstr "Date du dernier inventaire"
 

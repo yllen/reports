@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-31 14:29+0200\n"
+"POT-Creation-Date: 2015-09-06 20:43+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,11 @@ msgstr ""
 msgid "Rights management by report"
 msgstr ""
 
-#: inc/autoreport.class.php:450
+#: front/report.form.php:68
+msgid "Reports"
+msgstr ""
+
+#: inc/autoreport.class.php:452
 msgid "Search criteria"
 msgstr ""
 
@@ -47,19 +51,19 @@ msgstr ""
 msgid "At least"
 msgstr ""
 
-#: inc/profile.class.php:71
+#: inc/profile.class.php:72
 msgid "Rights management by profil"
 msgstr ""
 
-#: inc/profile.class.php:102
+#: inc/profile.class.php:106
 msgid "Profils rights"
 msgstr ""
 
-#: inc/profile.class.php:124
+#: inc/profile.class.php:133
 msgid "No right on Assistance / Statistics"
 msgstr ""
 
-#: inc/profile.class.php:126
+#: inc/profile.class.php:135
 msgid "No right on Tools / Reports"
 msgstr ""
 
@@ -84,7 +88,7 @@ msgstr ""
 #: report/doublons/doublons.config.php:39
 #: report/doublons/doublons.config.php:100
 #: report/doublons/doublons.config.php:107 report/doublons/doublons.php:76
-#: report/doublons/doublons.php:369
+#: report/doublons/doublons.php:379
 msgid "Duplicate computers"
 msgstr ""
 
@@ -101,15 +105,15 @@ msgstr ""
 msgid "doublons_report_title"
 msgstr ""
 
-#: report/doublons/doublons.php:264
+#: report/doublons/doublons.php:263
 msgid "First computer"
 msgstr ""
 
-#: report/doublons/doublons.php:265
+#: report/doublons/doublons.php:264
 msgid "Second computer"
 msgstr ""
 
-#: report/doublons/doublons.php:281 report/doublons/doublons.php:296
+#: report/doublons/doublons.php:280 report/doublons/doublons.php:295
 msgid "Last inventory date"
 msgstr ""
 
