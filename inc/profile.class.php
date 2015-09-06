@@ -163,6 +163,9 @@ class PluginReportsProfile extends Profile {
       $current   = self::getAllProfilesRights(array("name = '$rightname'"), true);
 
       foreach($input as $profiles_id => $right) {
+         if ($right == 'NULL') {
+            $right = 0;
+         }
          if (is_numeric($profiles_id)) {
             if (isset($current[$profiles_id])) {
                $prof->update(array('id'     => $current[$profiles_id]['id'],
