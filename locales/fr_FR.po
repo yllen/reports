@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-06 20:43+0200\n"
-"PO-Revision-Date: 2015-09-06 18:44+0000\n"
+"POT-Creation-Date: 2015-10-02 11:50+0200\n"
+"PO-Revision-Date: 2015-10-02 09:58+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/yllen/GLPI_reports/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -19,23 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: front/config.form.php:42 front/config.form.php:46 front/report.form.php:39
-#: front/report.form.php:65 report/doublons/doublons.config.php:98
+#: front/report.form.php:65
 msgid "Reports plugin configuration"
 msgstr "Configuration du plugin"
-
-#: front/config.form.php:58 inc/function.php:81
-msgid "_report_title"
-msgstr "_report_title"
 
 #: front/report.form.php:66
 msgid "Rights management by report"
 msgstr "Gestion des droits par rapport"
 
-#: front/report.form.php:68
-msgid "Reports"
-msgstr "Rapports"
-
-#: inc/autoreport.class.php:452
+#: inc/autoreport.class.php:451
 msgid "Search criteria"
 msgstr "Critères de recherche"
 
@@ -48,6 +40,10 @@ msgstr "Période"
 #: inc/timeintervalcriteria.class.php:112
 msgid "Time interval"
 msgstr "Période"
+
+#: inc/function.php:81
+msgid "_report_title"
+msgstr "_report_title"
 
 #: inc/prioritycriteria.class.php:79
 msgid "At least"
@@ -87,25 +83,18 @@ msgstr "Applications"
 msgid "Computer status"
 msgstr "Statut des ordinateurs"
 
-#: report/doublons/doublons.config.php:39
-#: report/doublons/doublons.config.php:100
-#: report/doublons/doublons.config.php:107 report/doublons/doublons.php:76
-#: report/doublons/doublons.php:379
-msgid "Duplicate computers"
-msgstr "Ordinateurs en doublons"
-
-#: report/doublons/doublons.config.php:99 report/doublons/doublons.php:80
-msgid "Report configuration"
-msgstr "Configuration du rapport"
-
-#: report/doublons/doublons.config.php:115
-msgid "Exception list setup"
-msgstr "Configuration des listes d'exceptions"
-
 #. TRANS: The name of the report = Duplicate computers
 #: report/doublons/doublons.php:42
 msgid "doublons_report_title"
 msgstr "Ordinateurs en doublons"
+
+#: report/doublons/doublons.php:76 report/doublons/doublons.php:379
+msgid "Duplicate computers"
+msgstr "Ordinateurs en doublons"
+
+#: report/doublons/doublons.php:80
+msgid "Report configuration"
+msgstr "Configuration du rapport"
 
 #: report/doublons/doublons.php:263
 msgid "First computer"
@@ -283,15 +272,15 @@ msgstr "Logiciels importants non installés"
 
 #. TRANS: The name of the report = Not installed important software (plural)
 #: report/softversioninstallations/softversioninstallations.php:39
-msgid "softversionsinstallations_report_title"
-msgstr " État détaillé des installations par statut des versions"
+msgid "softversioninstallations_report_title"
+msgstr "Installation des versions de logiciels"
 
 #: report/softversioninstallations/softversioninstallations.php:42
 msgid "Software version status"
 msgstr "État détaillé des installations par statut des versions"
 
 #. TRANS: The name of the report = Tickets opened at night, sorted by priority
-#: report/statnightticketsbypriority/statnightticketsbypriority.php:48
+#: report/statnightticketsbypriority/statnightticketsbypriority.php:39
 msgid "statnightticketsbypriority_report_title"
 msgstr "Tickets ouverts la nuit"
 

@@ -24,7 +24,7 @@
  @copyright Copyright (c) 2009-2015 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
- @link      https://forge.indepnet.net/projects/reports
+ @link      https://forge.glpi-project.org/projects/reports
  @link      http://www.glpi-project.org/
  @since     2009
  --------------------------------------------------------------------------
@@ -106,17 +106,16 @@ Html::closeForm();
 if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
    $IPBlacklist = "A_ipa.`name` != ''
                    AND A_ipa.`name` != '0.0.0.0'";
-   if (TableExists("glpi_plugin_reports_doublons_backlists")) {
-      $res  =$DB->query("SELECT `addr`
-                         FROM `glpi_plugin_reports_doublons_backlists`
-                         WHERE `type` = '2'");
 
-      while ($data = $DB->fetch_array($res)) {
-         if (strpos($data["addr"], '%')) {
-            $IPBlacklist .= " AND A_ipa.`name` NOT LIKE '".addslashes($data["addr"])."'";
-         } else {
-            $IPBlacklist .= " AND B_ipa.`name` != '".addslashes($data["addr"])."'";
-         }
+   $res  =$DB->query("SELECT `value`
+                      FROM `glpi_blacklists`
+                      WHERE `type` = '1'");
+
+   while ($data = $DB->fetch_array($res)) {
+      if (strpos($data["value"], '%')) {
+         $IPBlacklist .= " AND A_ipa.`name` NOT LIKE '".addslashes($data["value"])."'";
+      } else {
+         $IPBlacklist .= " AND B_ipa.`name` != '".addslashes($data["value"])."'";
       }
    }
 
@@ -166,16 +165,17 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
 
 } else if ($crit == 4) { // Search Duplicate Mac Address - From glpi_computer_device
    $MacBlacklist = "''";
-   if (TableExists("glpi_plugin_reports_doublons_backlists")) {
-      $res = $DB->query("SELECT `addr`
-                         FROM `glpi_plugin_reports_doublons_backlists`
-                         WHERE `type` = '1'");
-      while ($data = $DB->fetch_array($res)) {
-         $MacBlacklist .= ",'".addslashes($data["addr"])."'";
-      }
-   } else {
+
+   $res = $DB->query("SELECT `value`
+                      FROM `glpi_blacklists`
+                      WHERE `type` = '2'");
+   while ($data = $DB->fetch_array($res)) {
+      $MacBlacklist .= ",'".addslashes($data["value"])."'";
+   }
+
+   if (empty($MacBlacklist)) {
       $MacBlacklist .= ",'44:45:53:54:42:00', 'BA:D0:BE:EF:FA:CE', '00:53:45:00:00:00',
-                         '80:00:60:0F:E8:00'";
+                        '80:00:60:0F:E8:00'";
    }
    $Sql = "SELECT A.`id` AS AID,
                   A.`name` AS Aname,
@@ -209,14 +209,14 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
 
 } else if ($crit > 0) { // Search Duplicate Name and/ord Serial or Otherserial - From glpi_computers
    $SerialBlacklist = "''";
-   if (TableExists("glpi_plugin_reports_doublons_backlists")) {
-      $res = $DB->query("SELECT `addr`
-                         FROM `glpi_plugin_reports_doublons_backlists`
-                         WHERE `type` = '3'");
-      while ($data = $DB->fetch_array($res)) {
-         $SerialBlacklist .= ",'".addslashes($data["addr"])."'";
-      }
+
+   $res = $DB->query("SELECT `value`
+                      FROM `glpi__blacklists`
+                      WHERE `type` = '3'");
+   while ($data = $DB->fetch_array($res)) {
+      $SerialBlacklist .= ",'".addslashes($data["value"])."'";
    }
+
    $Sql = "SELECT A.`id` AS AID, A.`name` AS Aname,
                   A.`entities_id` AS entity,
                   B.`id` AS BID, B.`name` AS Bname
@@ -414,4 +414,3 @@ function getLastOcsUpdate($computers_id) {
    }
    return '';
 }
-?>

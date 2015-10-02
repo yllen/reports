@@ -24,7 +24,7 @@
  @copyright Copyright (c) 2009-2015 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
- @link      https://forge.indepnet.net/projects/reports
+ @link      https://forge.glpi-project.org/projects/reports
  @link      http://www.glpi-project.org/
  @since     2009
  --------------------------------------------------------------------------
@@ -154,6 +154,5 @@ function getUrgencyLabelsArray() {
 
 
 function getReportConfigPage($plugin,$report_name) {
-   return GLPI_ROOT."/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
+   return "/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
 }
-?>
