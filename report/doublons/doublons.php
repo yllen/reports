@@ -206,7 +206,7 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
    $SerialBlacklist = "''";
 
    $res = $DB->query("SELECT `value`
-                      FROM `glpi__blacklists`
+                      FROM `glpi_blacklists`
                       WHERE `type` = '3'");
    while ($data = $DB->fetch_array($res)) {
       $SerialBlacklist .= ",'".addslashes($data["value"])."'";
