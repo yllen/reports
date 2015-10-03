@@ -24,7 +24,7 @@
  @copyright Copyright (c) 2009-2015 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
- @link      https://forge.indepnet.net/projects/reports
+ @link      https://forge.glpi-project.org/projects/reports
  @link      http://www.glpi-project.org/
  @since     2009
  --------------------------------------------------------------------------
@@ -104,8 +104,8 @@ function isStat($report_name) {
 function plugin_version_reports() {
 
    return array('name'           => _n('Report', 'Reports', 2),
-                'version'        => '1.8.1',
-                'author'         => 'Nelly Mahu-Lasson, Remi Collet, Walid Nouh, Alexandre Delaunay',
+                'version'        => '1.9.0',
+                'author'         => 'Nelly Mahu-Lasson, Remi Collet',
                 'license'        => 'GPLv3+',
                 'homepage'       => 'https://forge.indepnet.net/projects/reports',
                 'minGlpiVersion' => '0.85');
@@ -120,10 +120,9 @@ function plugin_reports_check_config() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_reports_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
-      echo "This plugin requires GLPI >= 0.85 and GLPI < 0.86";
+   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'0.91','ge')) {
+      echo "This plugin requires GLPI >= 0.85 and GLPI < 0.91";
       return false;
    }
    return true;
 }
-?>

@@ -24,7 +24,7 @@
  @copyright Copyright (c) 2009-2015 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
- @link      https://forge.indepnet.net/projects/reports
+ @link      https://forge.glpi-project.org/projects/reports
  @link      http://www.glpi-project.org/
  @since     2009
  --------------------------------------------------------------------------
@@ -37,7 +37,6 @@ include ("../../../../inc/includes.php");
 
 //TRANS: The name of the report = Detailed report of software installation by status
 $report = new PluginReportsAutoReport(__('softnotinstalled_report_title', 'reports'));
-
 $soft = new PluginReportsTextCriteria($report, 'software', _n('Software', 'Software', 1));
 $soft->setSqlField("`glpi_softwares`.`name`");
 
@@ -99,4 +98,3 @@ if ($report->criteriasValidated()) {
 } else {
    Html::footer();
 }
-?>

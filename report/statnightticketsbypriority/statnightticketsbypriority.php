@@ -20,23 +20,14 @@
  along with Reports. If not, see <http://www.gnu.org/licenses/>.
 
  @package   reports
- @authors    Nelly Mahu-Lasson, Remi Collet
+ @authors    Nelly Mahu-Lasson, Remi Collet, Benoit Machiavello
  @copyright Copyright (c) 2009-2015 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
- @link      https://forge.indepnet.net/projects/reports
+ @link      https://forge.glpi-project.org/projects/reports
  @link      http://www.glpi-project.org/
  @since     2009
  --------------------------------------------------------------------------
- */
-
-/*
- * ----------------------------------------------------------------------
- * Original Author of file: Benoit Machiavello
- *
- * Purpose of file:
- *    Generate group members report
- * ----------------------------------------------------------------------
  */
 
 $USEDBREPLICATE         = 1;
@@ -89,4 +80,3 @@ if ($report->criteriasValidated()) {
    $report->setSqlRequest($query);
    $report->execute();
 }
-?>
