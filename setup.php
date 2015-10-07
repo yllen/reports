@@ -107,7 +107,7 @@ function plugin_version_reports() {
                 'version'        => '1.9.0',
                 'author'         => 'Nelly Mahu-Lasson, Remi Collet',
                 'license'        => 'GPLv3+',
-                'homepage'       => 'https://forge.indepnet.net/projects/reports',
+                'homepage'       => 'https://forge.glpi-project.org/projects/reports',
                 'minGlpiVersion' => '0.85');
 }
 
