@@ -34,26 +34,6 @@ class PluginReportsProfile extends Profile {
    static $rightname = 'profile';
 
    /**
-    * if profile cloned
-    *
-    * @param $prof   Profile  object
-   **/
-   static function cloneProfile(Profile $prof) {
-      global $DB;
-
-      ///TODO check if needed, as core should already do this.
-      $profile_right = new ProfileRight;
-      $crit          = array('profiles_id' => $prof->input['_old_id'],
-                             "`name` LIKE 'plugin_reports_%'");
-      $rights = array();
-      foreach ($DB->request($profile_right->getTable(), $crit) as $data) {
-         $rights[$data['name']] = $data['rights'];
-      }
-      unset($input['id']);
-      $profile_right->updateProfileRights($prof->getID(), $rights);
-   }
-
-   /**
     * @param $prof   Profile object
    **/
    static function showForProfile(Profile $prof){
