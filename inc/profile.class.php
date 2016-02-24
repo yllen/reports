@@ -342,10 +342,27 @@ class PluginReportsProfile extends Profile {
     * @see inc/CommonGLPI::getTabNameForItem()
    **/
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $DB;
 
       if ($item->getType() == 'Profile') {
          if ($item->getField('interface') == 'central') {
-            return PluginReportsReport::getTypeName(2);
+            $nb = 0;
+            if (Session::haveRight('reports', READ)) {
+               if ($_SESSION['glpishow_count_on_tabs']) {
+                  $prof = $_SESSION['glpiactiveprofile']['id'];
+                  $query = "SELECT COUNT(*) as cpt
+                            FROM `glpi_profilerights`
+                            WHERE `profiles_id` = ".$_GET['id']."
+                                  AND `name` LIKE 'plugin_reports_%'
+                                  AND `rights` = 1";
+
+                  $result    = $DB->query($query);
+                  $data_nb   = $DB->fetch_assoc($result);
+                  $nb        = $data_nb['cpt'];
+               }
+               return self::createTabEntry(PluginReportsReport::getTypeName(Session::getPluralNumber()),
+                                           $nb);
+            }
          }
       }
       return '';
