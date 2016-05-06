@@ -360,8 +360,7 @@ class PluginReportsProfile extends Profile {
                   $data_nb   = $DB->fetch_assoc($result);
                   $nb        = $data_nb['cpt'];
                }
-               return self::createTabEntry(PluginReportsReport::getTypeName(Session::getPluralNumber()),
-                                           $nb);
+               return self::createTabEntry(PluginReportsReport::getTypeName($nb), $nb);
             }
          }
       }

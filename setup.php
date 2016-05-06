@@ -102,7 +102,7 @@ function isStat($report_name) {
 function plugin_version_reports() {
 
    return array('name'           => _n('Report', 'Reports', 2),
-                'version'        => '1.9.1',
+                'version'        => '1.9.2',
                 'author'         => 'Nelly Mahu-Lasson, Remi Collet',
                 'license'        => 'GPLv3+',
                 'homepage'       => 'https://forge.glpi-project.org/projects/reports',
