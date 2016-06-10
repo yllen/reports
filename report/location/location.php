@@ -42,8 +42,9 @@ $report->setColumns(array(new PluginReportsColumn('entity', __('Entity'),
                                                   array('sorton' => 'entity,location')),
                           new PluginReportsColumn('location', __('Location'),
                                                   array('sorton' => 'location')),
-                          new PluginReportsColumnLink('link', _n('Link', 'Links', 2),'Location',
-                                                  array('sorton' => '`glpi_locations`.`name`'))));
+                          new PluginReportsColumnLink('link', _n('Link', 'Links', 2, 'report'),
+                                                                 'Location',
+                                                      array('sorton' => '`glpi_locations`.`name`'))));
 
 // SQL statement
 $query = "SELECT `glpi_entities`.`completename` AS entity,
