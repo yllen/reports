@@ -4,13 +4,13 @@
 # 
 # Translators:
 # Christian Ruggeri <christian_ruggeri@hotmail.com>, 2013
-# Luis A. Uriarte <luisuriarte@gmail.com>, 2013
+# Luis Angel Uriarte <luisuriarte@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-02 11:50+0200\n"
-"PO-Revision-Date: 2015-10-02 09:52+0000\n"
+"POT-Creation-Date: 2016-06-10 12:21+0200\n"
+"PO-Revision-Date: 2016-06-10 10:26+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: Spanish (Argentina) (http://www.transifex.com/yllen/GLPI_reports/language/es_AR/)\n"
 "MIME-Version: 1.0\n"
@@ -50,19 +50,19 @@ msgstr "_titulo_informe"
 msgid "At least"
 msgstr "Al menos"
 
-#: inc/profile.class.php:72
+#: inc/profile.class.php:52
 msgid "Rights management by profil"
 msgstr "Administración de permisos por perfil"
 
-#: inc/profile.class.php:106
+#: inc/profile.class.php:86
 msgid "Profils rights"
 msgstr "Permisos de Perfiles"
 
-#: inc/profile.class.php:133
+#: inc/profile.class.php:113
 msgid "No right on Assistance / Statistics"
 msgstr "Sin permiso en Asistencia / Estadísticas"
 
-#: inc/profile.class.php:135
+#: inc/profile.class.php:115
 msgid "No right on Tools / Reports"
 msgstr "Sin permiso en Herramientas / Informes"
 
@@ -89,23 +89,19 @@ msgstr "Estado de Computadoras"
 msgid "doublons_report_title"
 msgstr "titulo_informe_equiposduplicados"
 
-#: report/doublons/doublons.php:76 report/doublons/doublons.php:379
+#: report/doublons/doublons.php:76 report/doublons/doublons.php:374
 msgid "Duplicate computers"
 msgstr "Computadoras duplicadas"
 
-#: report/doublons/doublons.php:80
-msgid "Report configuration"
-msgstr "Configuración de informe"
-
-#: report/doublons/doublons.php:263
+#: report/doublons/doublons.php:258
 msgid "First computer"
 msgstr "Primera computadora"
 
-#: report/doublons/doublons.php:264
+#: report/doublons/doublons.php:259
 msgid "Second computer"
 msgstr "Segunda computadora"
 
-#: report/doublons/doublons.php:280 report/doublons/doublons.php:295
+#: report/doublons/doublons.php:275 report/doublons/doublons.php:290
 msgid "Last inventory date"
 msgstr "Fecha de último inventario"
 
@@ -205,6 +201,12 @@ msgstr "titulo_informe_listadegrupos"
 #: report/location/location.php:39
 msgid "location_report_title"
 msgstr "titulo_informe_lugares"
+
+#: report/location/location.php:45
+msgid "Link"
+msgid_plural "Links"
+msgstr[0] ""
+msgstr[1] ""
 
 #. TRANS: The name of the report = Number of items by entity
 #: report/pcsbyentity/pcsbyentity.php:211
