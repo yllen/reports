@@ -92,8 +92,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      Html::showDateField($this->getName()."_1", array('value'      => $this->getStartDate(),
-                                                       'maybeempty' => false));
+      Html::showDateFormItem($this->getName()."_1", $this->getStartDate(), false);
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -104,8 +103,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      Html::showDateField($this->getName()."_2", array('value'      => $this->getEndDate(),
-                                                       'maybeempty' => false));
+      Html::showDateFormItem($this->getName()."_2", $this->getEndDate(), false);
       $this->getReport()->endColumn();
    }
 

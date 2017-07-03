@@ -307,7 +307,7 @@ class PluginReportsAutoReport {
          if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
             if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
                $massformid = 'massform'.$options['withmassiveaction'];
-              Html::openMassiveActionsForm($massformid);
+               Html::openMassiveActionsForm($massformid);
                Html::showMassiveActions(array('container' => $massformid));
             }
          }
