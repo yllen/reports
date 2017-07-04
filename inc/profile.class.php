@@ -98,12 +98,14 @@ class PluginReportsProfile extends Profile {
 
          if ((isStat($report) && $canstat)
              || (!isStat($report) && $canreport)) {
-            Profile::dropdownNoneReadWrite($data['id'],
-                                           (isset($current[$data['id']])?$current[$data['id']]:0),
-                                           1, 1, 0);
+            Profile::dropdownRight($data['id'],
+                                   array('value'    => (isset($current[$data['id']])
+                                                         ? $current[$data['id']] : 0),
+                                          'nonone'  => 0,
+                                          'noread'  => 0,
+                                          'nowrite' => 1));
          } else {
             // Can't access because missing right from GLPI core
-            // Profile::dropdownNoneReadWrite($mod,'',1,0,0);
             echo "<input type='hidden' name='".$data['id']."' value='NULL'>".__('No access')." *";
          }
          echo "</td></tr>\n";
