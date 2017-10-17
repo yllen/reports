@@ -40,7 +40,7 @@ class PluginReportsColumnFloat extends PluginReportsColumn {
    private $decimal   = -1;
 
 
-   function __construct($name, $title, $options=array()) {
+   function __construct($name, $title, $options=[]) {
 
       if (!isset($options['extrafine'])) {
          $options['extrafine'] =  "class='right'";

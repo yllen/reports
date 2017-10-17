@@ -39,7 +39,7 @@ class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
    private $with_comment = 0;
 
 
-   function __construct($name, $itemtype, $options=array()) {
+   function __construct($name, $itemtype, $options=[]) {
 
       parent::__construct($name, '&nbsp;', $options);
 

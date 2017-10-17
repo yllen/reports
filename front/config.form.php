@@ -33,8 +33,8 @@
 include_once ("../../../inc/includes.php");
 Plugin::load('reports');
 
-Session::checkSeveralRightsOr(array("config"  => UPDATE,
-                                    "profile" => UPDATE));
+Session::checkSeveralRightsOr(["config"  => UPDATE,
+                               "profile" => UPDATE]);
 Html::header(__('Setup'), $_SERVER['PHP_SELF'], "config", "plugins");
 
 echo "<div class='center'>";

@@ -39,8 +39,8 @@
 function searchReport($all = false) {
    global $DB;
 
-   $tab = array ();
-   $filter = array('state' => Plugin::ACTIVATED);
+   $tab = [];
+   $filter = ['state' => Plugin::ACTIVATED];
    if ($all) {
       $filter = "";
    }
@@ -100,7 +100,7 @@ function includeLocales($report_name, $plugin='reports') {
  * @param $subname          second level of name to display (default '')
  * @param $group    array   which contains all the fields to use in GROUP BY sql instruction
 **/
-function simpleReport($name, $sql, $cols=array(), $subname="", $group=array()) {
+function simpleReport($name, $sql, $cols=[], $subname="", $group=[]) {
    global $DB, $CFG_GLPI;
 
    $report = new AutoReport($name);
@@ -124,32 +124,32 @@ function simpleReport($name, $sql, $cols=array(), $subname="", $group=array()) {
 
 function getPriorityLabelsArray() {
 
-   return array("1" => Ticket::getPriorityName(1),
-                "2" => Ticket::getPriorityName(2),
-                "3" => Ticket::getPriorityName(3),
-                "4" => Ticket::getPriorityName(4),
-                "5" => Ticket::getPriorityName(5),
-                "6" => Ticket::getPriorityName(6));
+   return ["1" => Ticket::getPriorityName(1),
+           "2" => Ticket::getPriorityName(2),
+           "3" => Ticket::getPriorityName(3),
+           "4" => Ticket::getPriorityName(4),
+           "5" => Ticket::getPriorityName(5),
+           "6" => Ticket::getPriorityName(6)];
 }
 
 
 function getImpactLabelsArray() {
 
-   return array("1" => Ticket::getImpactName(1),
-                "2" => Ticket::getImpactName(2),
-                "3" => Ticket::getImpactName(3),
-                "4" => Ticket::getImpactName(4),
-                "5" => Ticket::getImpactName(5));
+   return ["1" => Ticket::getImpactName(1),
+           "2" => Ticket::getImpactName(2),
+           "3" => Ticket::getImpactName(3),
+           "4" => Ticket::getImpactName(4),
+           "5" => Ticket::getImpactName(5)];
 }
 
 
 function getUrgencyLabelsArray() {
 
-   return array("1" => Ticket::getUrgencyName(1),
-                "2" => Ticket::getUrgencyName(2),
-                "3" => Ticket::getUrgencyName(3),
-                "4" => Ticket::getUrgencyName(4),
-                "5" => Ticket::getUrgencyName(5));
+   return ["1" => Ticket::getUrgencyName(1),
+           "2" => Ticket::getUrgencyName(2),
+           "3" => Ticket::getUrgencyName(3),
+           "4" => Ticket::getUrgencyName(4),
+           "5" => Ticket::getUrgencyName(5)];
 }
 
 

@@ -49,7 +49,7 @@ class PluginReportsColumn {
    protected $withtotal;
 
 
-   function __construct($name, $title, $options=array()) {
+   function __construct($name, $title, $options=[]) {
 
       $this->name      = $name;
       $this->title     = $title;
@@ -85,7 +85,7 @@ class PluginReportsColumn {
       $link  = $_SERVER['PHP_SELF'];
       $first = true;
       foreach ($_REQUEST as $name => $value) {
-         if (!in_array($name,array('sort','order','PHPSESSID'))) {
+         if (!in_array($name, ['sort','order','PHPSESSID'])) {
             $link .= ($first ? '?' : '&amp;');
             $link .= $name .'='.urlencode($value);
             $first = false;

@@ -35,7 +35,7 @@
 **/
 class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
 
-   private $choice = array();
+   private $choice = [];
 
 
    /**

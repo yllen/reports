@@ -38,7 +38,7 @@ class PluginReportsColumnType extends PluginReportsColumn {
    private $obj = NULL;
 
 
-   function __construct($name, $title, $options=array()) {
+   function __construct($name, $title, $options=[]) {
       parent::__construct($name, $title, $options);
    }
 

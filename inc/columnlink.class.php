@@ -40,7 +40,7 @@ class PluginReportsColumnLink extends PluginReportsColumn {
    private $with_navigate = 0;
 
 
-   function __construct($name, $title, $itemtype, $options=array()) {
+   function __construct($name, $title, $itemtype, $options=[]) {
 
       parent::__construct($name, $title, $options);
 

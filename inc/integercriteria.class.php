@@ -93,15 +93,15 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
       $this->getReport()->startColumn();
       if (empty($this->signe)) {
          Dropdown::showFromArray($this->getName()."_sign",
-                                 array('<='    => '<=',
-                                       '>='    => '>='),
-                                 array('value' => Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))));
+                                 ['<='    => '<=',
+                                  '>='    => '>='],
+                                 ['value' => Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))]);
          echo "&nbsp;";
       }
-      $opt = array('value' => $this->getParameterValue(),
-                   'min'   => $this->min,
-                   'max'   => $this->max,
-                   'step'  => 1);
+      $opt = ['value' => $this->getParameterValue(),
+              'min'   => $this->min,
+              'max'   => $this->max,
+              'step'  => 1];
       Dropdown::showNumber($this->getName(), $opt);
       echo '&nbsp; '.$this->unit;
 

@@ -39,7 +39,7 @@ class PluginReportsColumnTimestamp extends PluginReportsColumn {
    private $withsec;
 
 
-   function __construct($name, $title, $options=array()) {
+   function __construct($name, $title, $options=[]) {
 
       if (!isset($options['extrafine'])) {
          $options['extrafine'] =  "class='right'";

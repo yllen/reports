@@ -40,10 +40,10 @@ abstract class PluginReportsAutoCriteria {
    private $name = "";
 
    //Label of the criteria (refers to an entry in the locale file)
-   private $criterias_labels = array ();
+   private $criterias_labels = [];
 
    //Parameters are stored as name => value
-   private $parameters = array ();
+   private $parameters = [];
 
    //Field in the SQL request (can be table.field)
    private $sql_field = "";

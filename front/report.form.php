@@ -50,8 +50,8 @@ $prof = new PluginReportsProfile();
 
 if (isset($_POST['delete']) && $report) {
    $profile_right = new ProfileRight;
-   $profile_right->deleteByCriteria(array('name' => "plugin_reports_$report"));
-   ProfileRight::addProfileRights(array("plugin_reports_$report"));
+   $profile_right->deleteByCriteria(['name' => "plugin_reports_$report"]);
+   ProfileRight::addProfileRights(["plugin_reports_$report"]);
 
 } else  if (isset($_POST['update']) && $report) {
    Session::checkRight('profile', UPDATE);
@@ -66,14 +66,14 @@ echo "<a href='config.form.php'>".__('Reports plugin configuration', 'reports').
 echo __('Rights management by report', 'reports'). "</th></tr>\n";
 
 echo "<tr class='tab_bg_1'><td>".__('Report', 'Reports', 1). "&nbsp; ";
-$query = "SELECT `id`, `name`
-          FROM `glpi_profiles`
-          ORDER BY `name`";
-$result = $DB->query($query);
+
+$result = $DB->request(['FIELDS' => ['id', 'name'],
+                        'FROM'   => 'glpi_profiles',
+                        'ORDER'  => 'name']);
 
 echo "<select name='report'>";
-$plugname = array();
-$rap      = array();
+$plugname = [];
+$rap      = [];
 foreach($tab as $key => $plug) {
    $mod = (($plug == 'reports') ? $key : $plug.'_'.$key);
    if (!isset($plugname[$plug])) {

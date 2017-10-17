@@ -49,11 +49,11 @@ class PluginReportsUserCriteria extends PluginReportsDropdownCriteria {
 
    public function displayDropdownCriteria() {
 
-      User::dropdown(array('name'     => $this->getName(),
-                           'value'    => $this->getParameterValue(),
-                           'right'    => 'all',
-                           'comments' => $this->getDisplayComments(),
-                           'entity'   => $this->getEntityRestrict()));
+      User::dropdown(['name'     => $this->getName(),
+                      'value'    => $this->getParameterValue(),
+                      'right'    => 'all',
+                      'comments' => $this->getDisplayComments(),
+                      'entity'   => $this->getEntityRestrict()]);
    }
 
 }

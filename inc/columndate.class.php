@@ -35,7 +35,7 @@
  */
 class PluginReportsColumnDate extends PluginReportsColumn {
 
-   function __construct($name, $title, $options=array()) {
+   function __construct($name, $title, $options=[]) {
 
       if (!isset($options['extrafine'])) {
          $options['extrafine'] =  "class='center'";

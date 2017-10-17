@@ -39,7 +39,7 @@ class PluginReportsColumnInteger extends PluginReportsColumn {
    private $with_zero = 1;
 
 
-   function __construct($name, $title, $options=array()) {
+   function __construct($name, $title, $options=[]) {
 
       if (!isset($options['extrafine'])) {
          $options['extrafine'] =  "class='right'";

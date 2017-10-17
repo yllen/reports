@@ -55,6 +55,6 @@ class PluginReportsReport extends CommonDBTM {
     * @return array of rights to display
    **/
    function getRights($interface='central') {
-      return array(READ => __('Read'));
+      return [READ => __('Read')];
    }
 }

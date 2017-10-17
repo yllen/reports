@@ -41,7 +41,7 @@ class PluginReportsColumnDropdownLinkedType extends PluginReportsColumn {
    private $type_suffix  = '';
 
 
-   function __construct($nameid, $title, $nametype, $suffix = '', $options=array()) {
+   function __construct($nameid, $title, $nametype, $suffix = '', $options=[]) {
 
       parent::__construct($nameid, $title, $options);
 

@@ -36,7 +36,7 @@
  */
 class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
 
-   private $types = array();
+   private $types = [];
 
 
    /**
@@ -46,7 +46,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
     * @param $types     array
     * @param $ignored   array
    **/
-   function __construct($report, $name='itemtype', $label='', $types=array(), $ignored=array()) {
+   function __construct($report, $name='itemtype', $label='', $types=[], $ignored=[]) {
       global $CFG_GLPI;
 
       parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : __('Item type')));
@@ -87,7 +87,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       ksort($this->types);
 
       Dropdown::showFromArray($this->getName(), $this->types,
-                              array('value'=> $this->getParameterValue()));
+                              ['value'=> $this->getParameterValue()]);
    }
 
 }
