@@ -68,7 +68,7 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
                                                           `glpi_computers`.`locations_id` AS id
                                                    FROM `glpi_computers`
                                                    WHERE is_deleted=0 AND is_template=0
-                                                   ".$dbu-getEntitiesRestrictRequest(" AND ", "glpi_computers")."
+                                                   ".$dbu->getEntitiesRestrictRequest(" AND ", "glpi_computers")."
                                                    GROUP BY `glpi_computers`.`locations_id`) b
                                        ON (a.id = b.id)
                                  ) c

@@ -39,7 +39,7 @@ function doStatBis ($table, $entities, $header) {
    global $DB;
 
    // Compute stat
-   $counts = array();
+   $counts = [];
    foreach ($entities as $entity) {
       // Count for this entity
       $sql = "SELECT `states_id`, count(*) AS cpt
@@ -49,9 +49,9 @@ function doStatBis ($table, $entities, $header) {
                     AND `entities_id` = '$entity'
               GROUP BY `states_id`";
 
-      $result          = $DB->query($sql);
-      $counts[$entity] = array();
-      while ($data = $DB->fetch_array($result)) {
+      $result = $DB->request($sql);
+      $counts[$entity] = [];
+      while ($data = $result->next()) {
          $counts[$entity][$data["states_id"]] = $data["cpt"];
       }
 
@@ -82,7 +82,7 @@ function doStatBis ($table, $entities, $header) {
          if ($entity) {
             echo $Ent->fields["name"];
          } else {
-            _e('Root entity');
+            echo __('Root entity');
          }
          echo "</td><td class='right'>" . $count["tot"] . "</td>";
          $total["tot"] += $count["tot"];
@@ -120,9 +120,9 @@ function doStat ($table, $entity, $header, $level=0) {
                  AND `entities_id` = '$entity'
            GROUP BY `states_id`";
 
-   $result = $DB->query($sql);
-   $count  = array();
-   while ($data = $DB->fetch_array($result)) {
+   $result = $DB->request($sql);
+   $count  = [];
+   while ($data = $result->next()) {
       $count[$data["states_id"]] = $data["cpt"];
    }
 
@@ -143,8 +143,8 @@ function doStat ($table, $entity, $header, $level=0) {
       }
       if ($entity) {
          echo $Ent->fields["name"];
-      }else {
-         _e('Root entity');
+      } else {
+         echo __('Root entity');
       }
       echo "</td>";
       echo "<td class='right'>" . $count["tot"] . "</td>";
@@ -164,12 +164,12 @@ function doStat ($table, $entity, $header, $level=0) {
       for ($i=0 ; $i<$level ; $i++) {
          echo "&nbsp;&nbsp;&nbsp;";
       }
-      _e('Total');
+      echo __('Total');
 
       if ($entity) {
          echo $Ent->fields["name"];
       } else {
-         _e ('Root entity');
+         echo __('Root entity');
       }
       echo "</td>";
       echo "<td class='right'>" . $count["tot"] . "</td>";
@@ -186,13 +186,12 @@ function doStatChilds($table, $entity, $header, &$total, $level) {
    global $DB;
 
    // Search child entities
-   $sql = "SELECT `id`
-           FROM `glpi_entities`
-           WHERE `entities_id` = '$entity'
-           ORDER BY `name`";
-   $result = $DB->query($sql);
+   $result = $DB->request(['SELECT' => ['id', 'name'],
+                           'FROM'   => 'glpi_entities',
+                           'WHERE'  => ['entities_id' => $entity],
+                           'ORDER'  => 'name']);
 
-   while ($data = $DB->fetch_array($result)) {
+   while ($data = $result->next()) {
       $fille = doStat($table, $data["id"], $header, $level);
       foreach ($header as $id => $name) {
          $total[$id] += $fille[$id];
@@ -222,11 +221,11 @@ echo "<tr class='tab_bg_1 center'><th colspan='2'>" . __('Number of items by ent
 echo "<tr class='tab_bg_1'><td class='right'>" . __('Item type') ."</td>";
 echo "<td><select name='type'><option value=''>".Dropdown::EMPTY_VALUE."</option>";
 
-$choix = array('Computer'         => _n('Computer', 'Computers', 2),
-               'Monitor'          => _n('Monitor', 'Monitors', 2),
-               'Printer'          => _n('Printer', 'Printers', 2),
-               'NetworkEquipment' => __('Networking'),
-               'Phone'            => _n('Phone', 'Phones', 2));
+$choix = ['Computer'         => _n('Computer', 'Computers', 2),
+          'Monitor'          => _n('Monitor', 'Monitors', 2),
+          'Printer'          => _n('Printer', 'Printers', 2),
+          'NetworkEquipment' => __('Networking'),
+          'Phone'            => _n('Phone', 'Phones', 2)];
 
 foreach ($choix as $id => $name) {
    $item = new $id();

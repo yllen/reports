@@ -35,19 +35,20 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
+
 //TRANS: The name of the report = List of equipments by location
 $report = new PluginReportsAutoReport(__('listequipmentbylocation_report_title', 'reports'));
 $loc    = new PluginReportsLocationCriteria($report);
 
-$report->setColumns(array(new PluginReportsColumnType('itemtype', __('Type')),
-                          new PluginReportsColumnTypeLink('items_id', __('Item'),
-                                                          'itemtype', array('with_comment' => 1)),
-                          new PluginReportsColumn('serial', __('Serial number')),
-                          new PluginReportsColumn('otherserial', __('Inventory number')),
-                          new PluginReportsColumnModelType('models_id', __('Model'),
-                                                           'itemtype', array('with_comment' => 1)),
-                          new PluginReportsColumnTypeType('types_id', __('Type'),
-                                                          'itemtype', array('with_comment' => 1))));
+$report->setColumns([new PluginReportsColumnType('itemtype', __('Type')),
+                     new PluginReportsColumnTypeLink('items_id', __('Item'), 'itemtype',
+                                                     ['with_comment' => 1]),
+                     new PluginReportsColumn('serial', __('Serial number')),
+                     new PluginReportsColumn('otherserial', __('Inventory number')),
+                     new PluginReportsColumnModelType('models_id', __('Model'), 'itemtype',
+                                                      ['with_comment' => 1]),
+                     new PluginReportsColumnTypeType('types_id', __('Type'), 'itemtype',
+                                                     ['with_comment' => 1])]);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -74,14 +75,16 @@ else {
 
 function getSqlSubRequest($itemtype,$loc,$obj) {
 
+   $dbu = new DbUtils();
+
    $table     = getTableForItemType($itemtype);
    $models_id = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Model'));
    $types_id  = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Type'));
-   $fields    = array('name'        => 'name',
-                      'serial'      => 'serial',
-                      'otherserial' => 'otherserial',
-                      $models_id    => 'models_id',
-                      $types_id     => 'types_id');
+   $fields    = ['name'        => 'name',
+                 'serial'      => 'serial',
+                 'otherserial' => 'otherserial',
+                 $models_id    => 'models_id',
+                 $types_id     => 'types_id'];
 
    $query_where = "SELECT '$itemtype' AS itemtype,
                           `$table`.`id` AS items_id,
@@ -98,7 +101,7 @@ function getSqlSubRequest($itemtype,$loc,$obj) {
    $query_where .= " FROM `$table` ";
 
    if ($obj->isEntityAssign()) {
-      $query_where .= getEntitiesRestrictRequest('WHERE', "$table");
+      $query_where .= $dbu->getEntitiesRestrictRequest('WHERE', "$table");
    } else {
       $query_where .= 'WHERE 1';
    }

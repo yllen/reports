@@ -35,6 +35,8 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = Search in the financial information (plural)
 $report = new PluginReportsAutoReport(__('searchinfocom_report_title', 'reports'));
 
@@ -59,18 +61,18 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    // Report Columns
-   $cols = array(new PluginReportsColumnType('itemtype', __('Type')),
-                 new PluginReportsColumnTypeLink('items_id', __('Item'), 'itemtype',
-                                                 array('with_comment' => 1)),
-                 new PluginReportsColumnDate('order_date', __('Order date')),
-                 new PluginReportsColumn('order_number', __('Order number')),
-                 new PluginReportsColumnDate('buy_date', __('Date of purchase')),
-                 new PluginReportsColumn('delivery_date', __('Delivery date')),
-                 new PluginReportsColumn('delivery_number', __('Delivery form')),
-                 new PluginReportsColumn('immo_number', __('Immobilization number')),
-                 new PluginReportsColumnDate('use_date', __('Startup date')),
-                 new PluginReportsColumnDate('inventory_date', __('Date of last physical inventory')),
-                 new PluginReportsColumnLink('budgets_id', __('Budget'), 'Budget'));
+   $cols = [new PluginReportsColumnType('itemtype', __('Type')),
+            new PluginReportsColumnTypeLink('items_id', __('Item'), 'itemtype',
+                                            ['with_comment' => 1]),
+            new PluginReportsColumnDate('order_date', __('Order date')),
+            new PluginReportsColumn('order_number', __('Order number')),
+            new PluginReportsColumnDate('buy_date', __('Date of purchase')),
+            new PluginReportsColumn('delivery_date', __('Delivery date')),
+            new PluginReportsColumn('delivery_number', __('Delivery form')),
+            new PluginReportsColumn('immo_number', __('Immobilization number')),
+            new PluginReportsColumnDate('use_date', __('Startup date')),
+            new PluginReportsColumnDate('inventory_date', __('Date of last physical inventory')),
+            new PluginReportsColumnLink('budgets_id', __('Budget'), 'Budget')];
 
    $report->setColumns($cols);
 
@@ -79,7 +81,7 @@ if ($report->criteriasValidated()) {
            FROM `glpi_infocoms`
            WHERE `itemtype` NOT IN ('Software', 'CartridgeItem', 'ConsumableItem')".
            $report->addSqlCriteriasRestriction().
-           getEntitiesRestrictRequest('AND', 'glpi_infocoms').
+           $dbu->getEntitiesRestrictRequest('AND', 'glpi_infocoms').
           "ORDER BY `itemtype`";
 
    $report->setGroupBy('itemtype');

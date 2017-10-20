@@ -38,18 +38,20 @@ Session::checkRight("plugin_reports_doublons", READ);
 $computer = new Computer();
 $computer->checkGlobal(READ);
 
+$dbu      = new DbUtils();
+
 //TRANS: The name of the report = Duplicate computers
 Html::header(__('doublons_report_title', 'report'), $_SERVER['PHP_SELF'], "utils", "report");
 
 Report::title();
 
-$crits = array(0 => Dropdown::EMPTY_VALUE,
-               1 => __('Name'),
-               2 => __('Model')." + ".__('Serial number'),
-               3 => __('Name')." + ".__('Model')." + ".__('Serial number'),
-               4 => __('MAC address'),
-               5 => __('IP address'),
-               6 => __('Inventory number'));
+$crits = [0 => Dropdown::EMPTY_VALUE,
+          1 => __('Name'),
+          2 => __('Model')." + ".__('Serial number'),
+          3 => __('Name')." + ".__('Model')." + ".__('Serial number'),
+          4 => __('MAC address'),
+          5 => __('IP address'),
+          6 => __('Inventory number')];
 
 if (isset($_GET["crit"])) {
    $crit = $_GET["crit"];
@@ -66,7 +68,7 @@ if (isset($_GET["crit"])) {
 $rand  = mt_rand();
 
 // check OCS install
-$plugin = new Plugin;
+$plugin        = new Plugin;
 $ocs_installed = $plugin->isInstalled('ocsinventoryng');
 
 // ---------- Form ------------
@@ -87,7 +89,7 @@ if ($crit > 0) {
    echo "<td>";
    //Add parameters to uri to be saved as bookmarks
    $_SERVER["REQUEST_URI"] = buildBookmarkUrl($_SERVER["REQUEST_URI"],$crit);
-   Bookmark::showSaveButton(Bookmark::SEARCH,'Computer');
+   SavedSearch::showSaveButton(SavedSearch::SEARCH,'Computer');
    echo "</td>";
 }
 echo"</tr>\n";
@@ -148,7 +150,7 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
                ON  B_ipa.`itemtype` = 'NetworkName'
                AND B_ipa.`items_id` = B_nn.`id`
 
-            ".getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
+            ".$dbu->getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
                  AND ($IPBlacklist)
                  AND A.`is_template` = '0'
                  AND B.`is_template` = '0'
@@ -192,7 +194,7 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
                ON  B_np.`itemtype` = 'Computer'
                AND B_np.`items_id` = B.`id`
 
-            ".getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
+            ".$dbu->getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
                  AND A_np.`mac` = B_np.`mac`
                  AND A_np.`mac` NOT IN ($MacBlacklist)
                  AND A.`is_template` = '0'
@@ -217,7 +219,7 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
                   B.`id` AS BID, B.`name` AS Bname
            FROM `glpi_computers` A,
                 `glpi_computers` B " .
-           getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
+           $dbu->getEntitiesRestrictRequest(" WHERE ", "A", "entities_id") ."
                  AND B.`id` > A.`id`
                  AND A.`entities_id` = B.`entities_id`
                  AND A.`is_template` = '0'
@@ -299,7 +301,7 @@ if ($crit > 0) { // Display result
    }
 
    $comp = new Computer();
-   $ids  = array();
+   $ids  =[];
    $result = $DBread->query($Sql);
    for ($prev=-1, $i=0 ; $data = $DBread->fetch_array($result) ; $i++) {
       if ($prev != $data["entity"]) {
@@ -379,10 +381,10 @@ if ($crit > 0) { // Display result
    echo "</table>";
    if ($canedit) {
       if ($i) {
-         $massiveactionparams = array('num_displayed'    => $i,
-                                      'container'        => 'massformComputer',
-                                      'ontop'            => false,
-                                      'forcecreate'      => true,);
+         $massiveactionparams = ['num_displayed'    => $i,
+                                 'container'        => 'massformComputer',
+                                 'ontop'            => false,
+                                 'forcecreate'      => true];
          Html::showMassiveActions($massiveactionparams);
       }
       Html::closeForm();
@@ -399,13 +401,14 @@ function buildBookmarkUrl($url,$crit) {
 function getLastOcsUpdate($computers_id) {
    global $DB;
 
-   $query = "SELECT `last_ocs_update`
-             FROM `glpi_plugin_ocsinventoryng_ocslinks`
-             WHERE `computers_id` = '$computers_id'";
-   $results = $DB->query($query);
+   $query = $DB->request(['SELECT' => 'last_ocs_update',
+                          'FROM'   => 'glpi_plugin_ocsinventoryng_ocslinks',
+                          'WHERE'  => ['computers_id' => $computers_id]]);
 
-   if ($DB->numrows($results) > 0) {
-      return $DB->result($results,0,'last_ocs_update');
+   if (count($query) > 0) {
+      foreach ($query as $id => $row) {
+         return $row['last_ocs_update'];
+      }
    }
    return '';
 }

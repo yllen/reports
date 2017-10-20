@@ -35,16 +35,16 @@ $DBCONNECTION_REQUIRED = 0; // not really a big SQL request
 
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = Location tree
 $report = new PluginReportsAutoReport(__('location_report_title', 'reports'));
 
-$report->setColumns(array(new PluginReportsColumn('entity', __('Entity'),
-                                                  array('sorton' => 'entity,location')),
-                          new PluginReportsColumn('location', __('Location'),
-                                                  array('sorton' => 'location')),
-                          new PluginReportsColumnLink('link', _n('Link', 'Links', 2, 'report'),
-                                                                 'Location',
-                                                      array('sorton' => '`glpi_locations`.`name`'))));
+$report->setColumns([new PluginReportsColumn('entity', __('Entity'),
+                                             ['sorton' => 'entity,location']),
+                     new PluginReportsColumn('location', __('Location'), ['sorton' => 'location']),
+                     new PluginReportsColumnLink('link', _n('Link', 'Links', 2, 'report'),
+                                                 'Location', ['sorton' => '`glpi_locations`.`name`'])]);
 
 // SQL statement
 $query = "SELECT `glpi_entities`.`completename` AS entity,
@@ -52,7 +52,7 @@ $query = "SELECT `glpi_entities`.`completename` AS entity,
                  `glpi_locations`.`id` AS link
           FROM `glpi_locations`
           LEFT JOIN `glpi_entities` ON (`glpi_locations`.`entities_id` = `glpi_entities`.`id`)" .
-          getEntitiesRestrictRequest(" WHERE ", "glpi_locations") .
+          $dbu->getEntitiesRestrictRequest(" WHERE ", "glpi_locations") .
           $report->getOrderBy('entity');
 
 $report->setGroupBy('entity');

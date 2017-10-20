@@ -35,8 +35,10 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = Not installed important software (plural)
-$report = new PluginReportsAutoReport(__('softversioninstallations_report_title', 'reports'));
+$report   = new PluginReportsAutoReport(__('softversioninstallations_report_title', 'reports'));
 
 $statever = new PluginReportsStatusCriteria($report, 'statever',
                                             __('Software version status', 'reports'));
@@ -54,17 +56,15 @@ if ($report->criteriasValidated()) {
 
    $report->setSubNameAuto();
 
-   $report->setColumns(array(new PluginReportsColumnLink('software', _n('Software', 'Software', 1),
-                                                         'Software',
-                                                         array('sorton' => 'software,version')),
-                             new PluginReportsColumnLink('version', __('Version'),
-                                                         'SoftwareVersion'),
-                             new PluginReportsColumn('statever', __('Status')),
-                             new PluginReportsColumnLink('computer', __('Computer'),'Computer',
-                                                         array('sorton' => 'glpi_computers.name')),
-                             new PluginReportsColumn('statecpt', __('Status')),
-                             new PluginReportsColumn('location', __('Location'),
-                                                     array('sorton' => 'location'))));
+   $report->setColumns([new PluginReportsColumnLink('software', _n('Software', 'Software', 1),
+                                                    'Software', ['sorton' => 'software,version']),
+                        new PluginReportsColumnLink('version', __('Version'), 'SoftwareVersion'),
+                        new PluginReportsColumn('statever', __('Status')),
+                        new PluginReportsColumnLink('computer', __('Computer'),'Computer',
+                                                    ['sorton' => 'glpi_computers.name']),
+                        new PluginReportsColumn('statecpt', __('Status')),
+                        new PluginReportsColumn('location', __('Location'),
+                                                ['sorton' => 'location'])]);
 
    $query = "SELECT `glpi_softwareversions`.`softwares_id` AS software,
                     `glpi_softwareversions`.`id` AS version,
@@ -84,7 +84,7 @@ if ($report->criteriasValidated()) {
                   ON (`state_ver`.`id` = `glpi_softwareversions`.`states_id`)
              LEFT JOIN `glpi_states` state_cpt
                   ON (`state_cpt`.`id` = `glpi_computers`.`states_id`) ".
-             getEntitiesRestrictRequest('WHERE', 'glpi_softwareversions') .
+             $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_softwareversions') .
              $report->addSqlCriteriasRestriction().
              $report->getOrderby('software', true);
 

@@ -59,22 +59,26 @@ echo "<tr class='tab_bg_2'><th>". __('Date of inventory', 'reports') . "</th>" .
       "<th>". __("Computer's name") . "</th>".
       "<th>". sprintf(__('%1$s (%2$s)'), _n('Software', 'Software', 1), __('version'))."</th></tr>\n";
 
-$sql = "SELECT a.`date_mod` AS dat, a.`new_value`, `glpi_computers`.`id` AS cid, `name`,
-               a.`user_name`
-        FROM (SELECT `date_mod`, `new_value`, `user_name`, `items_id`, `id`
-              FROM `glpi_logs`
-              WHERE `glpi_logs`.`date_mod` > DATE_SUB(Now(), INTERVAL 21 DAY)
-                    AND `linked_action` = '" .Log::HISTORY_INSTALL_SOFTWARE ."'
-                    AND `itemtype` = 'Computer') a
-        LEFT JOIN `glpi_computers` ON (a.`items_id` = `glpi_computers`.`id`)
-        WHERE `glpi_computers`.`entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
-        ORDER BY a.`id` DESC
+$sql = "SELECT  `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `itemtype_link`,
+               `old_value`, `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`,
+               `items_id`, `entities_id`
+        FROM `glpi_logs`
+        LEFT JOIN `glpi_computers` ON (`glpi_logs`.`items_id` = `glpi_computers`.`id`)
+        WHERE `glpi_logs`.`date_mod` > DATE_SUB(Now(), INTERVAL 21 DAY)
+              AND `itemtype` = 'Computer'
+              AND `linked_action` = '" .Log::HISTORY_INSTALL_SOFTWARE ."'
+              AND `entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
+        ORDER BY `glpi_logs`.`id` DESC
         LIMIT 0,200";
-$result = $DB->query($sql);
+
+$result = $DB->request($sql);
 
 $prev = "";
 $class = "tab_bg_2";
-while ($data = $DB->fetch_array($result)) {
+while ($data = $result->next()) {
+   if (empty($data["name"])) {
+      $data["name"] = "(".$data["cid"].")";
+   }
    if ($prev == $data["dat"].$data["name"]) {
       echo "<br />";
    } else {

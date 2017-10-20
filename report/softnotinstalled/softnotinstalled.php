@@ -35,9 +35,11 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = Detailed report of software installation by status
 $report = new PluginReportsAutoReport(__('softnotinstalled_report_title', 'reports'));
-$soft = new PluginReportsTextCriteria($report, 'software', _n('Software', 'Software', 1));
+$soft   = new PluginReportsTextCriteria($report, 'software', _n('Software', 'Software', 1));
 $soft->setSqlField("`glpi_softwares`.`name`");
 
 $report->displayCriteriasForm();
@@ -47,18 +49,17 @@ if ($report->criteriasValidated()) {
 
    $report->setSubNameAuto();
 
-   $report->setColumns(array(new PluginReportsColumnLink('computer', __('Computer'),'Computer',
-                                                         array('sorton' => 'glpi_computers.name')),
-                             new PluginReportsColumn('operatingsystems', __('Operating system'),
-                                                     array('sorton' => 'operatingsystems')),
-                             new PluginReportsColumn('state', __('Status'),
-                                                     array('sorton' => 'state')),
-                             new PluginReportsColumn('entity', __('Entity'),
-                                                     array('sorton' => 'entity,location')),
-                             new PluginReportsColumn('location',
-                                                     sprintf(__('%1$s - %2$s'), __('Location'),
-                                                             __('Computer')),
-                                                     array('sorton' => 'location'))));
+   $report->setColumns([new PluginReportsColumnLink('computer', __('Computer'),'Computer',
+                                                    ['sorton' => 'glpi_computers.name']),
+                        new PluginReportsColumn('operatingsystems', __('Operating system'),
+                                                ['sorton' => 'operatingsystems']),
+                        new PluginReportsColumn('state', __('Status'), ['sorton' => 'state']),
+                        new PluginReportsColumn('entity', __('Entity'),
+                                                ['sorton' => 'entity,location']),
+                        new PluginReportsColumn('location',
+                                                sprintf(__('%1$s - %2$s'), __('Location'),
+                                                         __('Computer')),
+                                                ['sorton' => 'location'])]);
 
    $query = "SELECT `glpi_computers`.`id` AS computer,
                     `glpi_states`.`name` AS state,
@@ -68,13 +69,16 @@ if ($report->criteriasValidated()) {
              FROM `glpi_computers`
              LEFT JOIN `glpi_states`
                   ON (`glpi_states`.`id` = `glpi_computers`.`states_id`)
+             LEFT JOIN `glpi_items_operatingsystems`
+                  ON (`glpi_items_operatingsystems`.`items_id` = `glpi_computers`.`id`
+                      AND `glpi_items_operatingsystems`.`itemtype` = 'Computer')
              LEFT JOIN `glpi_operatingsystems`
-                  ON (`glpi_operatingsystems`.`id` = `glpi_computers`.`operatingsystems_id`)
+                  ON (`glpi_operatingsystems`.`id` = `glpi_items_operatingsystems`.`operatingsystems_id`)
              LEFT JOIN `glpi_locations`
                   ON (`glpi_locations`.`id` = `glpi_computers`.`locations_id`)
              LEFT JOIN `glpi_entities`
                   ON (`glpi_entities`.`id` = `glpi_computers`.`entities_id`) ".
-             getEntitiesRestrictRequest('WHERE', 'glpi_computers') ."
+             $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_computers') ."
                    AND `glpi_computers`.`is_template` = 0
                    AND `glpi_computers`.`is_deleted` = 0
                    AND `glpi_computers`.`id`
@@ -88,7 +92,7 @@ if ($report->criteriasValidated()) {
                              INNER JOIN `glpi_computers`
                                  ON (`glpi_computers_softwareversions`.`computers_id`
                                        = `glpi_computers`.`id`) ".
-                             getEntitiesRestrictRequest('WHERE', 'glpi_computers') .
+                             $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_computers') .
                                     $report->addSqlCriteriasRestriction().")".
              $report->getOrderby('computer', true);
 

@@ -58,7 +58,8 @@ echo "<tr><th>".__('Date of inventory', 'reports'). "</th>" .
       "<th>". __('Modification', 'reports') . "</th></tr>\n";
 
 $sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `itemtype_link`,
-               `old_value`, `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`
+               `old_value`, `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`,
+               `items_id`,`entities_id`
         FROM `glpi_logs`
         LEFT JOIN `glpi_computers` ON (`glpi_logs`.`items_id` = `glpi_computers`.`id`)
         WHERE `glpi_logs`.`date_mod` > DATE_SUB(Now(), INTERVAL 21 DAY)
@@ -68,14 +69,18 @@ $sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `item
                                       ".Log::HISTORY_DELETE_DEVICE.",
                                       ".Log::HISTORY_UPDATE_DEVICE.",
                                       ".Log::HISTORY_ADD_DEVICE.")
-              AND `glpi_computers`.`entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
+              AND `entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
         ORDER BY `glpi_logs`.`id` DESC
         LIMIT 0,100";
-$result = $DB->query($sql);
+
+$result = $DB->request($sql);
 
 $prev  = "";
 $class = "tab_bg_2";
-while ($data = $DB->fetch_array($result)) {
+while ($data = $result->next()) {
+   if (empty($data["name"])) {
+      $data["name"] = "(".$data["cid"].")";
+   }
    if ($prev == $data["dat"].$data["name"]) {
       echo "</td></tr><tr class='" . $prevclass ." top'><td></td><td></td><td></td><td>";
    } else {
@@ -117,7 +122,7 @@ while ($data = $DB->fetch_array($result)) {
             if ($item = getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
-            $change = sprintf(__('%1$s: %1$s'), __('Delete the component'), $data["old_value"]);
+            $change = sprintf(__('%1$s: %2$s'), __('Delete the component'), $data["old_value"]);
             break;
 
          case Log::HISTORY_DISCONNECT_DEVICE :

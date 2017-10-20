@@ -34,19 +34,19 @@ $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
+$dbu = new DbUtils();
 
 //TRANS: The name of the report = Licenses by expiration date
 $report = new PluginReportsAutoReport(__('licensesexpires_report_title', 'reports'));
 
-$report->setColumns(array('expire'       => __('Valid to', 'reports'),
-                          'name'         => __('License name'),
-                          'software'     => sprintf(__('%1$s - %2$s'),
-                                                    _n('Software', 'Software', 1),
-                                                     __('Purchase version')),
-                          'serial'       => __('Serial number'),
-                          'completename' => __('Entity'),
-                          'comments'     => __('Comments'),
-                          'ordinateur'   => __('Computer')));
+$report->setColumns(['expire'       => __('Valid to', 'reports'),
+                     'name'         => __('License name'),
+                     'software'     => sprintf(__('%1$s - %2$s'), _n('Software', 'Software', 1),
+                                               __('Purchase version')),
+                     'serial'       => __('Serial number'),
+                     'completename' => __('Entity'),
+                     'comments'     => __('Comments'),
+                     'ordinateur'   => __('Computer')]);
 
 $query = "SELECT `glpi_softwarelicenses`.`expire`,
                  `glpi_softwarelicenses`.`name`,
@@ -70,10 +70,9 @@ $query = "SELECT `glpi_softwarelicenses`.`expire`,
                ON (`glpi_computers`.`id` = `glpi_computers_softwarelicenses`.`computers_id`)
           WHERE `glpi_softwares`.`is_deleted` = '0'
                 AND `glpi_softwares`.`is_template` = '0' " .
-                getEntitiesRestrictRequest(' AND ', 'glpi_softwarelicenses') ."
+                $dbu->getEntitiesRestrictRequest(' AND ', 'glpi_softwarelicenses') ."
           ORDER BY `glpi_softwarelicenses`.`expire`, `name`";
-
-$report->setGroupBy(array('expire',
-                          'name'));
+toolbox::logdebug("query", $query);
+$report->setGroupBy(['expire', 'name']);
 $report->setSqlRequest($query);
 $report->execute();

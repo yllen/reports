@@ -35,6 +35,8 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = Applications by locations and versions
 $report = new PluginReportsAutoReport(__('applicationsbylocation_report_title', 'reports'));
 
@@ -59,21 +61,17 @@ if ($report->criteriasValidated()) {
 
    $report->setSubNameAuto();
 
-   $report->setColumns(array(new PluginReportsColumnLink('soft', _n('Software', 'Software', 1),
-                                                         'Software',
-                                                         array('sorton' => 'soft,version')),
-                             new PluginReportsColumnLink('locat', _n('Location', 'Locations', 1),
-                                                         'Location',
-                                                         array('sorton' => 'glpi_locations.name')),
-                             new PluginReportsColumnLink('computer', _n('Computer', 'Computers', 1),
-                                                         'Computer',
-                                                         array('sorton' => 'glpi_computers.name')),
-                             new PluginReportsColumn('statecpt', _n('Status', 'Statuses', 1)),
-                             new PluginReportsColumnLink('version', __('Version name'),
-                                                         'SoftwareVersion'),
-                             new PluginReportsColumnLink('user', _n('User', 'Users', 1), 'User',
-                                                         array('sorton' => 'glpi_users.name'))
-                      ));
+   $report->setColumns([new PluginReportsColumnLink('soft', _n('Software', 'Software', 1),
+                                                    'Software', ['sorton' => 'soft,version']),
+                        new PluginReportsColumnLink('locat', _n('Location', 'Locations', 1),
+                                                    'Location', ['sorton' => 'glpi_locations.name']),
+                        new PluginReportsColumnLink('computer', _n('Computer', 'Computers', 1),
+                                                    'Computer', ['sorton' => 'glpi_computers.name']),
+                        new PluginReportsColumn('statecpt', _n('Status', 'Statuses', 1)),
+                        new PluginReportsColumnLink('version', __('Version name'),
+                                                    'SoftwareVersion'),
+                        new PluginReportsColumnLink('user', _n('User', 'Users', 1), 'User',
+                                                    ['sorton' => 'glpi_users.name'])]);
 
    $query = "SELECT `glpi_softwareversions`.`softwares_id` AS soft,
                     `glpi_softwareversions`.`name` AS software,
@@ -99,7 +97,7 @@ if ($report->criteriasValidated()) {
                   ON (`state_ver`.`id` = `glpi_softwareversions`.`states_id`)
              LEFT JOIN `glpi_states` state_cpt
                   ON (`state_cpt`.`id` = `glpi_computers`.`states_id`) ".
-             getEntitiesRestrictRequest('WHERE', 'glpi_softwareversions') .
+             $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_softwareversions') .
              $report->addSqlCriteriasRestriction().
              "ORDER BY soft ASC, locat ASC";
 

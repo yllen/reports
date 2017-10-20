@@ -240,7 +240,7 @@ class PluginReportsAutoReport {
       }
 
       $res   = $DB->query($this->sql);
-      $nbtot = ($res ? $DB->numrows($res) : 0);
+      $nbtot = ($res ? $DB->numrows($res): 0);
       if ($limit) {
          $start = (isset ($_GET["start"]) ? $_GET["start"] : 0);
          if ($start >= $nbtot) {
@@ -346,7 +346,7 @@ class PluginReportsAutoReport {
          echo Search::showEndLine($output_type);
 
          $prev = "";
-         for ($row_num = 2 ; $row = $DB->fetch_assoc($res) ; $row_num++) {
+         for ($row_num = 2 ; $row = $DB->fetch_assoc($res); $row_num++) {
             $crt = "";
             foreach ($this->group_by as $colname) {
                if (isset ($row[$colname])) {
