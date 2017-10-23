@@ -40,8 +40,8 @@ $report = new PluginReportsAutoReport(__('zombies_report_title', 'reports'));
 
 $name = new PluginReportsTextCriteria($report, 'name', __('Login'));
 
-$tab = array(0 => __('No'),
-             1 => __('Yes'));
+$tab = [0 => __('No'),
+        1 => __('Yes')];
 $filter = new PluginReportsArrayCriteria($report, 'tickets', __('With no ticket', 'reports'), $tab);
 
 //Display criterias form is needed
@@ -52,26 +52,24 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
    $report->delCriteria('tickets');
 
-   $cols = array(new PluginReportsColumnItemCheckbox('id', 'User'),
-                 new PluginReportsColumnLink('id2', __('User'), 'User',
-                                             array('with_comment' => true,
-                                                   'with_navigate' => true)),
-                 new PluginReportsColumn('name', __('Login'), array('sorton' => 'name')),
-                 new PluginReportsColumn('email', __('Email')),
-                 new PluginReportsColumn('phone', __('Phone')),
-                 new PluginReportsColumn('location', __('Location')),
-                 new PluginReportsColumnDate('last_login', __('Last login'),
-                                             array('sorton' => 'last_login')));
+   $cols = [new PluginReportsColumnItemCheckbox('id', 'User'),
+            new PluginReportsColumnLink('id2', __('User'), 'User', ['with_comment' => true,
+                                                                    'with_navigate' => true]),
+            new PluginReportsColumn('name', __('Login'), ['sorton' => 'name']),
+            new PluginReportsColumn('email', __('Email')),
+            new PluginReportsColumn('phone', __('Phone')),
+            new PluginReportsColumn('location', __('Location')),
+            new PluginReportsColumnDate('last_login', __('Last login'), ['sorton' => 'last_login'])];
 
    if (!$filter->getParameterValue()) {
-      $cols[] = new PluginReportsColumnInteger('nb1', __('Writer'),  array('with_zero' => false,
-                                                                           'sorton'    => 'nb1'));
-      $cols[] = new PluginReportsColumnInteger('nb2', __('Requester'), array('with_zero' => false,
-                                                                             'sorton'    => 'nb2'));
-      $cols[] = new PluginReportsColumnInteger('nb3', __('Watcher'), array('with_zero' => false,
-                                                                           'sorton'    => 'nb3'));
-      $cols[] = new PluginReportsColumnInteger('nb4', __('Technician'), array('with_zero' => false,
-                                                                              'sorton'    => 'nb4'));
+      $cols[] = new PluginReportsColumnInteger('nb1', __('Writer'), ['with_zero' => false,
+                                                                     'sorton'    => 'nb1']);
+      $cols[] = new PluginReportsColumnInteger('nb2', __('Requester'), ['with_zero' => false,
+                                                                        'sorton'    => 'nb2']);
+      $cols[] = new PluginReportsColumnInteger('nb3', __('Watcher'), ['with_zero' => false,
+                                                                      'sorton'    => 'nb3']);
+      $cols[] = new PluginReportsColumnInteger('nb4', __('Technician'), ['with_zero' => false,
+                                                                         'sorton'    => 'nb4']);
    }
 
    $report->setColumns($cols);
@@ -116,7 +114,7 @@ if ($report->criteriasValidated()) {
    $query .= $report->getOrderBy('name');
 
    $report->setSqlRequest($query);
-   $report->execute(array('withmassiveaction' => 'User'));
+   $report->execute(['withmassiveaction' => 'User']);
 
 } else {
    Html::Footer();

@@ -42,10 +42,10 @@ $report= new PluginReportsAutoReport(__('transferreditems_report_title', 'report
 // Search criterias
 new PluginReportsDateIntervalCriteria($report, "`glpi_logs`.`date_mod`");
 
-$types = array();
-foreach (array('Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer',
-               'Software','SoftwareLicense') as $type) {
-   $label       = call_user_func(array($type, 'getTypeName'));
+$types = [];
+foreach (['CartridgeItem', 'Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone',
+          'Printer', 'Software','SoftwareLicense'] as $type) {
+   $label       = call_user_func([$type, 'getTypeName']);
    $types[$type] = $label;
 }
 
@@ -59,17 +59,22 @@ if($report->criteriasValidated()) {
    $itemtype = $_POST['itemtype'];
    $table = getTableForItemType($itemtype);
 
-   $columns = array(new PluginReportsColumnLink('items_id', __('Name'), $itemtype,
-                                                array('with_comment' => 1)),
-                    new PluginReportsColumn('otherserial', __('Inventory number')),
-                    new PluginReportsColumn('old_value', __('Source entity', 'reports')),
-                    new PluginReportsColumn('new_value', __('Target entity', 'reports')),
-                    new PluginReportsColumnDateTime('date_mod', __('Transfert date', 'reports')));
+   $columns = [new PluginReportsColumnLink('items_id', __('Name'), $itemtype,
+                                           ['with_comment' => 1]),
+               new PluginReportsColumn('otherserial', __('Inventory number')),
+               new PluginReportsColumn('old_value', __('Source entity', 'reports')),
+               new PluginReportsColumn('new_value', __('Target entity', 'reports')),
+               new PluginReportsColumnDateTime('date_mod', __('Transfert date', 'reports'))];
    $report->setColumns($columns);
 
+   $otherserial = '';
+   if (($itemtype != 'CartridgeItem')
+         && ($itemtype != 'ConsumableItem')) {
+      $otherserial = "`$table`.`otherserial`,";
+   }
    $query = "SELECT `$table`.`id` as `items_id`,
                     `$table`.`name`,
-                    `$table`.`otherserial`,
+                    $otherserial
                     `glpi_logs`.`date_mod` as `date_mod`,
                     `glpi_logs`.`itemtype` as `itemtype`,
                     `glpi_logs`.`old_value`,

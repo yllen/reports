@@ -37,6 +37,8 @@ $DBCONNECTION_REQUIRED  = 1;
 // Initialization of the variables
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = Helpdesk requesters and tickets by entity
 $report = new PluginReportsAutoReport(__('statticketsbyentity_report_title', 'reports'));
 
@@ -52,23 +54,23 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $cols = array(new PluginReportsColumn('name', __('Entity'),
-                                         array('sorton' => '`glpi_entities`.`completename`')),
-                 new PluginReportsColumnInteger('nbusers', __('Users count', 'reports'),
-                                                array('withtotal' => true,
-                                                      'sorton'    => 'nbusers')),
-                 new PluginReportsColumnInteger('number', __('Tickets count', 'reports'),
-                                                array('withtotal' => true,
-                                                      'sorton'    => 'number')),
-                 new PluginReportsColumnDateTime('mindate', __('Older', 'reports'),
-                                                 array('sorton' => 'mindate')),
-                 new PluginReportsColumnDateTime('maxdate', __('Newer', 'reports'),
-                                                 array('sorton' => 'maxdate')));
+   $cols = [new PluginReportsColumn('name', __('Entity'),
+                                    ['sorton' => '`glpi_entities`.`completename`']),
+            new PluginReportsColumnInteger('nbusers', __('Users count', 'reports'),
+                                           ['withtotal' => true,
+                                            'sorton'    => 'nbusers']),
+            new PluginReportsColumnInteger('number', __('Tickets count', 'reports'),
+                                           ['withtotal' => true,
+                                            'sorton'    => 'number']),
+            new PluginReportsColumnDateTime('mindate', __('Older', 'reports'),
+                                            ['sorton' => 'mindate']),
+            new PluginReportsColumnDateTime('maxdate', __('Newer', 'reports'),
+                                            ['sorton' => 'maxdate'])];
    $report->setColumns($cols);
 
    $subcpt = "SELECT COUNT(*)
               FROM `glpi_profiles_users`
-              WHERE `glpi_profiles_users`.`entities_id`=`glpi_entities`.`id` ".
+              WHERE `glpi_profiles_users`.`entities_id` = `glpi_entities`.`id` ".
               $prof->getSqlCriteriasRestriction();
 
    $query = "SELECT `glpi_entities`.`completename` AS name,
@@ -79,12 +81,12 @@ if ($report->criteriasValidated()) {
              FROM `glpi_entities`
              INNER JOIN `glpi_tickets` ON (`glpi_tickets`.`entities_id`=`glpi_entities`.`id`)
              WHERE NOT `glpi_tickets`.`is_deleted` ".
-                   getEntitiesRestrictRequest('AND', "glpi_entities") .
+                   $dbu->getEntitiesRestrictRequest('AND', "glpi_entities") .
             "GROUP BY `glpi_entities`.`id`".
             $report->getOrderBy('name');
 
    $report->setSqlRequest($query);
-   $report->execute(array('withtotal'=>true));
+   $report->execute(['withtotal'=>true]);
 
 } else {
    Html::footer();
