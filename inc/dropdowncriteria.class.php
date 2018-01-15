@@ -249,10 +249,10 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    **/
    public function displayDropdownCriteria() {
 
-      $options = array('name'     => $this->getName(),
-                       'value'    => $this->getParameterValue(),
-                       'comments' => $this->getDisplayComments(),
-                       'entity'   => $this->getEntityRestrict());
+      $options = ['name'     => $this->getName(),
+                  'value'    => $this->getParameterValue(),
+                  'comments' => $this->getDisplayComments(),
+                  'entity'   => $this->getEntityRestrict()];
 
       if ($this->condition) {
          $options['condition'] = $this->condition;
