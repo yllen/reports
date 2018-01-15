@@ -84,7 +84,7 @@ function getSqlSubRequest($itemtype,$loc,$obj) {
    $fields    = ['name'        => 'name',
                  'serial'      => 'serial',
                  'otherserial' => 'otherserial',
-            'states_id'        => 'states_id',
+                 'states_id'   => 'states_id',
                  $models_id    => 'models_id',
                  $types_id     => 'types_id'];
 
@@ -96,8 +96,8 @@ function getSqlSubRequest($itemtype,$loc,$obj) {
    foreach ($fields as $field => $alias) {
       if ($obj->isField($field)) {
          if ($field == 'states_id') {
-            $query_where .= ", glpi_states.name as statename";
-            $join = "LEFT JOIN glpi_states on glpi_states.id = $table.states_id ";
+            $query_where .= ", `glpi_states`.`name` as statename";
+            $join = "LEFT JOIN `glpi_states`ON `glpi_states`.`id` = `$table`.`states_id` ";
          } else {
             $query_where .= ", `$table`.`$field` AS $alias";
          }
