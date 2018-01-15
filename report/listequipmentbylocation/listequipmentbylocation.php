@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -43,6 +43,7 @@ $loc    = new PluginReportsLocationCriteria($report);
 $report->setColumns([new PluginReportsColumnType('itemtype', __('Type')),
                      new PluginReportsColumnTypeLink('items_id', __('Item'), 'itemtype',
                                                      ['with_comment' => 1]),
+         new PluginReportsColumn('statename', __('Status')),
                      new PluginReportsColumn('serial', __('Serial number')),
                      new PluginReportsColumn('otherserial', __('Inventory number')),
                      new PluginReportsColumnModelType('models_id', __('Model'), 'itemtype',
@@ -83,6 +84,7 @@ function getSqlSubRequest($itemtype,$loc,$obj) {
    $fields    = ['name'        => 'name',
                  'serial'      => 'serial',
                  'otherserial' => 'otherserial',
+            'states_id'        => 'states_id',
                  $models_id    => 'models_id',
                  $types_id     => 'types_id'];
 
@@ -90,15 +92,23 @@ function getSqlSubRequest($itemtype,$loc,$obj) {
                           `$table`.`id` AS items_id,
                           `$table`.`locations_id`";
 
+   $join = "";
    foreach ($fields as $field => $alias) {
       if ($obj->isField($field)) {
-         $query_where .= ", `$table`.`$field` AS $alias";
+         if ($field == 'states_id') {
+            $query_where .= ", glpi_states.name as statename";
+            $join = "LEFT JOIN glpi_states on glpi_states.id = $table.states_id ";
+         } else {
+            $query_where .= ", `$table`.`$field` AS $alias";
+         }
       } else {
          $query_where .= ", '' AS $alias";
       }
    }
 
-   $query_where .= " FROM `$table` ";
+
+   $query_where .= " FROM `$table`
+                   $join ";
 
    if ($obj->isEntityAssign()) {
       $query_where .= $dbu->getEntitiesRestrictRequest('WHERE', "$table");
