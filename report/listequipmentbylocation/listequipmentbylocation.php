@@ -61,7 +61,8 @@ if ($report->criteriasValidated()) {
    $query = getSqlSubRequest("Computer",$loc,new Computer());
    foreach($CFG_GLPI["infocom_types"] as $itemtype) {
       $obj = new $itemtype;
-      if ($obj->isField('locations_id')) {
+      if ($obj->isField('locations_id')
+          && ($itemtype != "Computer")) {
          $query.= "UNION (".getSqlSubRequest($itemtype,$loc,$obj).")";
       }
    }
