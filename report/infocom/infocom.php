@@ -137,7 +137,7 @@ if ($report->criteriasValidated()) {
       }
 
       $typeclass = $itemtype.'Type';
-      $typetable = getTableForItemType($typeclass);
+      $typetable = $dbu->getTableForItemType($typeclass);
 
       if ($DB->tableExists($typetable)) {
          $typeitem  = new $typeclass;
@@ -151,7 +151,7 @@ if ($report->criteriasValidated()) {
       }
 
       $modelclass = $itemtype.'Model';
-      $modeltable = getTableForItemType($modelclass);
+      $modeltable = $dbu->etTableForItemType($modelclass);
       if ($itemtype == 'SoftwareLicense') {
          $select .= ", CONCAT(glpi_softwares.name,' ',buyversion.name) AS model";
          $from .= "LEFT JOIN `glpi_softwareversions` AS buyversion

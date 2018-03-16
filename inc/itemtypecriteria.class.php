@@ -51,13 +51,15 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
 
       parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : __('Item type')));
 
+      $dbu = new DbUtils();
+
       if (is_array($types) && count($types)) {
          // $types is an hashtable of itemtype => display name
          $this->types = $types;
       } else if (is_string($types) && isset($CFG_GLPI[$types])) {
          // $types is the name of an configured type hashtable (infocom_types, doc_types, ...)
          foreach($CFG_GLPI[$types] as $itemtype) {
-            if (($item = getItemForItemtype($itemtype)) && !in_array($itemtype, $ignored)) {
+            if (($item = $dbu->getItemForItemtype($itemtype)) && !in_array($itemtype, $ignored)) {
                $this->types[$itemtype] = $item->getTypeName();
             }
          }
@@ -72,8 +74,9 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
 
    function getSubName() {
 
+      $dbu = new DbUtils();
       $itemtype = $this->getParameterValue();
-      if ($itemtype && ($item = getItemForItemtype($itemtype))) {
+      if ($itemtype && ($item = $dbu->getItemForItemtype($itemtype))) {
          $name = $item->getTypeName();
       } else {
          // All

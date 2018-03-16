@@ -44,7 +44,8 @@ class PluginReportsColumnLink extends PluginReportsColumn {
 
       parent::__construct($name, $title, $options);
 
-      $this->obj = getItemForItemtype($itemtype);
+      $dbu = new DbUtils();
+      $this->obj = $dbu->getItemForItemtype($itemtype);
 
       if (isset($options['with_comment'])) {
          $this->with_comment = $options['with_comment'];

@@ -79,9 +79,9 @@ function getSqlSubRequest($itemtype,$loc,$obj) {
 
    $dbu = new DbUtils();
 
-   $table     = getTableForItemType($itemtype);
-   $models_id = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Model'));
-   $types_id  = getForeignKeyFieldForTable(getTableForItemType($itemtype.'Type'));
+   $table     = $dbu->getTableForItemType($itemtype);
+   $models_id = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($itemtype.'Model'));
+   $types_id  = $dbu->getForeignKeyFieldForTable($dbu->getTableForItemType($itemtype.'Type'));
    $fields    = ['name'        => 'name',
                  'serial'      => 'serial',
                  'otherserial' => 'otherserial',

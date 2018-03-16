@@ -54,6 +54,8 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
 
    function displayValue($output_type, $row) {
 
+      $dbu = new DbUtils();
+
       if (!isset($row[$this->name]) || !$row[$this->name]) {
          return '';
       }
@@ -61,7 +63,7 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
           && $row[$this->nametype]
           && (is_null($this->obj) || $this->obj->getType()!=$row[$this->nametype])) {
 
-         if (!($this->obj = getItemForItemtype($row[$this->nametype]))) {
+         if (!($this->obj = $dbu->getItemForItemtype($row[$this->nametype]))) {
             $this->obj = NULL;
          }
       }

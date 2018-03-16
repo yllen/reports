@@ -158,7 +158,7 @@ if ($report->criteriasValidated()) {
          if ($itemtype == 'total') {
             $name = __('Total');
 
-         } else if ($item = getItemForItemtype($itemtype)) {
+         } else if ($item = $dbu->getItemForItemtype($itemtype)) {
             $name = $item->getTypeName();
 
          } else {

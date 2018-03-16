@@ -66,10 +66,12 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
       parent::__construct($report, $name, $name, $label);
 
+      $dbu = new DbUtils();
+
       $this->condition = $condition;
 
       if (empty($tableortype)) {
-         $this->table = getTableNameForForeignKeyField($name);
+         $this->table = $dbu->getTableNameForForeignKeyField($name);
 
       } else if (preg_match("/^glpi_/", $tableortype)) {
          $this->table = $tableortype;
@@ -78,7 +80,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
          $this->table = NOT_AVAILABLE;
 
       } else {
-         $this->table = getTableForItemType($tableortype);
+         $this->table = $dbu->getTableForItemType($tableortype);
       }
    }
 
@@ -95,7 +97,9 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
     * Get criteria's related table
    **/
    public function getItemType() {
-      return getItemTypeForTable($this->table);
+
+      $dbu = new DbUtils();
+      return $dbu->getItemTypeForTable($this->table);
    }
 
 

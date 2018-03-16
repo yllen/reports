@@ -205,6 +205,8 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 Session::checkRight("plugin_reports_pcsbyentity", READ);
 //TRANS: The name of the report = Number of items by entity
 Html::header(__('pcsbyentity_report_title', 'reports'), $_SERVER['PHP_SELF'], "utils", "report");
@@ -278,9 +280,9 @@ if (isset($_POST["type"]) && $_POST["type"] != '') {
    echo "</tr>\n";
 
    if (isset($_POST["sort"]) && ($_POST["sort"] > 0)) {
-      doStatBis(getTableForItemType($_POST["type"]), $_SESSION["glpiactiveentities"], $header);
+      doStatBis($dbu->getTableForItemType($_POST["type"]), $_SESSION["glpiactiveentities"], $header);
    } else {
-      doStat(getTableForItemType($_POST["type"]), $_SESSION["glpiactive_entity"], $header);
+      doStat($dbu->getTableForItemType($_POST["type"]), $_SESSION["glpiactive_entity"], $header);
    }
    echo "</table></div>";
 }

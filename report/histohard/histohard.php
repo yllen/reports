@@ -39,6 +39,7 @@ includeLocales("histohard");
 
 Session::checkRight("plugin_reports_histohard", READ);
 $computer = new Computer();
+$dbu      = new DbUtils();
 $computer->checkGlobal(READ);
 
 //TRANS: The name of the report = History of last hardware's installations
@@ -101,7 +102,7 @@ while ($data = $result->next()) {
       switch ($data["linked_action"]) {
          case Log::HISTORY_ADD_DEVICE :
             $field = NOT_AVAILABLE;
-            if ($item = getItemForItemtype($data["itemtype_link"])) {
+            if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
             $change = sprintf(__('%1$s: %2$s'), __('Add the component'), $data[ "new_value"]);
@@ -110,7 +111,7 @@ while ($data = $result->next()) {
          case Log::HISTORY_UPDATE_DEVICE :
             $field = NOT_AVAILABLE;
             $change = '';
-            if ($item = getItemForItemtype($data["itemtype_link"])) {
+            if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
                $field  = $item->getTypeName();
                $change = sprintf(__('%1$s: %2$s'), $item->getSpecifityLabel(), "");
             }
@@ -119,14 +120,14 @@ while ($data = $result->next()) {
 
          case Log::HISTORY_DELETE_DEVICE :
             $field = NOT_AVAILABLE;
-            if ($item = getItemForItemtype($data["itemtype_link"])) {
+            if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
             $change = sprintf(__('%1$s: %2$s'), __('Delete the component'), $data["old_value"]);
             break;
 
          case Log::HISTORY_DISCONNECT_DEVICE :
-            if (!($item = getItemForItemtype($data["itemtype_link"]))) {
+            if (!($item = $dbu->getItemForItemtype($data["itemtype_link"]))) {
                continue;
             }
             $field  = $item->getTypeName();
@@ -134,7 +135,7 @@ while ($data = $result->next()) {
             break;
 
          case Log::HISTORY_CONNECT_DEVICE :
-            if (!($item = getItemForItemtype($data["itemtype_link"]))) {
+            if (!($item = $dbu->getItemForItemtype($data["itemtype_link"]))) {
                continue;
             }
             $field  = $item->getTypeName();

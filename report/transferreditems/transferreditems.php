@@ -36,6 +36,8 @@ $DBCONNECION_REQUIRED = 0;
 
 include("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = List of transfered objects
 $report= new PluginReportsAutoReport(__('transferreditems_report_title', 'reports'));
 
@@ -57,7 +59,7 @@ $report->displayCriteriasForm();
 // Declare columns
 if($report->criteriasValidated()) {
    $itemtype = $_POST['itemtype'];
-   $table = getTableForItemType($itemtype);
+   $table = $dbu->getTableForItemType($itemtype);
 
    $columns = [new PluginReportsColumnLink('items_id', __('Name'), $itemtype,
                                            ['with_comment' => 1]),

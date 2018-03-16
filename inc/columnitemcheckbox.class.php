@@ -43,7 +43,8 @@ class PluginReportsColumnItemCheckbox extends PluginReportsColumn {
 
       parent::__construct($name, '&nbsp;', $options);
 
-      $this->obj = getItemForItemtype($itemtype);
+      $dbu = new DbUtils();
+      $this->obj = $dbu->getItemForItemtype($itemtype);
    }
 
 

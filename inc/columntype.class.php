@@ -45,12 +45,14 @@ class PluginReportsColumnType extends PluginReportsColumn {
 
    function displayValue($output_type, $row) {
 
+      $dbu = new DbUtils();
+
       if (!isset($row[$this->name])
           || !$row[$this->name]) {
          return '';
       }
 
-      if (!($value = getItemForItemtype($row[$this->name]))) {
+      if (!($value = $dbu->getItemForItemtype($row[$this->name]))) {
          return $value;
       }
 

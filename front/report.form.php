@@ -74,7 +74,7 @@ $result = $DB->request(['FIELDS' => ['id', 'name'],
 echo "<select name='report'>";
 $plugname = [];
 $rap      = [];
-foreach($tab as $key => $plug) {
+foreach ($tab as $key => $plug) {
    $mod = (($plug == 'reports') ? $key : $plug.'_'.$key);
    if (!isset($plugname[$plug])) {
       // Retrieve the plugin name
@@ -86,6 +86,7 @@ foreach($tab as $key => $plug) {
                             : sprintf(__('%1$s - %2$s'), __('Tools'), __('Report', 'Reports', 2)));
 
    $rap[$plug][$section][$mod] = $LANG["plugin_$plug"][$key];
+
 }
 
 $tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
