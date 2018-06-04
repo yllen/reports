@@ -151,7 +151,7 @@ if ($report->criteriasValidated()) {
       }
 
       $modelclass = $itemtype.'Model';
-      $modeltable = $dbu->etTableForItemType($modelclass);
+      $modeltable = $dbu->getTableForItemType($modelclass);
       if ($itemtype == 'SoftwareLicense') {
          $select .= ", CONCAT(glpi_softwares.name,' ',buyversion.name) AS model";
          $from .= "LEFT JOIN `glpi_softwareversions` AS buyversion
