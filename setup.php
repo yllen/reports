@@ -108,7 +108,7 @@ function plugin_version_reports() {
            'homepage'       => 'https://forge.glpi-project.org/projects/reports',
            'minGlpiVersion' => '9.2',
            'requirements'   => ['glpi' => ['min' => '9.2',
-                                           'max' => '9.3']]];
+                                           'max' => '9.4']]];
 }
 
 
@@ -120,8 +120,8 @@ function plugin_reports_check_config() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_reports_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'9.2','lt') || version_compare(GLPI_VERSION,'9.3','ge')) {
-      echo "This plugin requires GLPI >= 9.2 and GLPI < 9.3";
+   if (version_compare(GLPI_VERSION,'9.2','lt') || version_compare(GLPI_VERSION,'9.4','ge')) {
+      echo "This plugin requires GLPI >= 9.2 and GLPI < 9.4";
       return false;
    }
    return true;
