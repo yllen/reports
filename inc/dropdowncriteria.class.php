@@ -189,6 +189,8 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    public function setEntityRestriction($restriction) {
       global $CFG_GLPI;
 
+      $dbu = new DbUtils();
+
       switch ($restriction) {
          case REPORTS_NO_ENTITY_RESTRICTION :
             $this->entity_restrict = -1;
@@ -199,7 +201,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
             break;
 
          case REPORTS_SUB_ENTITIES :
-            $this->entity_restrict = getSonsOf('glpi_entities',$_SESSION["glpiactive_entity"]);
+            $this->entity_restrict = $dbu->getSonsOf('glpi_entities',$_SESSION["glpiactive_entity"]);
             break;
       }
    }
@@ -272,13 +274,15 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    **/
    public function getSqlCriteriasRestriction($link='AND') {
 
+      $dbu = new DbUtils();
+
       if ($this->getParameterValue() || $this->searchzero) {
          if (!$this->childrens) {
             return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
          }
          if ($this->getParameterValue()) {
             return $link . " " . $this->getSqlField() .
-                   " IN (" . implode(',', getSonsOf($this->getTable(),
+                   " IN (" . implode(',', $dbu->getSonsOf($this->getTable(),
                                                     $this->getParameterValue())) . ") ";
          }
          // 0 + its child means ALL
