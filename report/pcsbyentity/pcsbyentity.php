@@ -285,6 +285,8 @@ if (isset($_POST["type"]) && $_POST["type"] != '') {
       doStat($dbu->getTableForItemType($_POST["type"]), $_SESSION["glpiactive_entity"], $header);
    }
    echo "</table></div>";
+} elseif (isset($_POST["type"]) && $_POST["type"] == '') {
+   echo "<p class='center red'>".__('Selection of type is mandatory', 'reports')."</p>";
 }
 
 Html::footer();

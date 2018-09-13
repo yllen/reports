@@ -375,7 +375,7 @@ if ($crit > 0) { // Display result
    if ($i) {
       printf(__('%1$s: %2$s'), __('Duplicate computers', 'reports'), $i);
    } else {
-      _e('No item found');
+      echo __('No item found');
    }
    echo "</td></tr>\n";
    echo "</table>";

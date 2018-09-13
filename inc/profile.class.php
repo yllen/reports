@@ -110,9 +110,9 @@ class PluginReportsProfile extends Profile {
       }
       echo "<tr class='tab_bg_4'><td colspan='2'>* ";
       if (isStat($report)) {
-         _e('No right on Assistance / Statistics', 'reports');
+         echo __('No right on Assistance / Statistics', 'reports');
       } else {
-         _e('No right on Tools / Reports', 'reports');
+         echo __('No right on Tools / Reports', 'reports');
       }
       echo "</tr>";
 
@@ -259,8 +259,9 @@ class PluginReportsProfile extends Profile {
    }
 
 
-   static function install() {
+   static function install(Migration $mig) {
       global $DB;
+
 
       if ($DB->tableExists('glpi_plugin_reports_profiles')) {
          if ($DB->fieldExists('glpi_plugin_reports_profiles','ID')) { // version installee < 1.4.0
@@ -270,10 +271,8 @@ class PluginReportsProfile extends Profile {
          }
 
          if (!$DB->fieldExists('glpi_plugin_reports_profiles','profiles_id')) { // version < 1.5.0
-            $query = "RENAME TABLE `glpi_plugin_reports_profiles`
-                                TO `glpi_plugin_reports_oldprofiles`";
-            $DB->queryOrDie($query, "SAVE TABLE profiles: ".$DB->error());
-            $DB->queryOrDie($create, "CREATE TABLE profiles: ".$DB->error());
+            $mig->renameTable('glpi_plugin_reports_profiles', 'glpi_plugin_reports_oldprofiles');
+            $mig->executeMigration();
 
             $fields = $DB->list_fields('glpi_plugin_reports_oldprofiles');
             unset($fields['id']);
@@ -287,8 +286,7 @@ class PluginReportsProfile extends Profile {
                $DB->queryOrDie($query, "LOAD TABLE profiles: ".$DB->error());
             }
 
-            $query = "DROP TABLE `glpi_plugin_reports_oldprofiles`";
-            $DB->queryOrDie($query, "DROP TABLE oldprofiles: ".$DB->error());
+            $mig->dropTable('glpi_plugin_reports_oldprofiles');
          }
 
 
@@ -305,16 +303,13 @@ class PluginReportsProfile extends Profile {
                $profileRight->add($right);
             }
          }
-         $DB->query("DROP TABLE `glpi_plugin_reports_profiles`");
-
-      } else { // new install
+         $mig->dropTable('glpi_plugin_reports_profiles');
       }
 
-      return true;
    }
 
 
-   static function uninstall() {
+   static function uninstall(Migration $mig) {
       global $DB;
 
       $tables = ['glpi_plugin_reports_profiles',
@@ -323,8 +318,7 @@ class PluginReportsProfile extends Profile {
                  'glpi_plugin_reports_doublons_backlists'];
 
       foreach ($tables as $table) {
-         $query = "DROP TABLE IF EXISTS `$table`";
-         $DB->queryOrDie($query, $DB->error());
+         $mig->dropTable($table);
       }
 
       //Delete rights associated with the plugin

@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr_TR\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: front/config.form.php:42 front/config.form.php:46 front/report.form.php:39
 #: front/report.form.php:65
@@ -206,6 +206,7 @@ msgstr "konum_rapor_başlığı"
 msgid "Link"
 msgid_plural "Links"
 msgstr[0] "Bağlantı"
+msgstr[1] "Bağlantı"
 
 #. TRANS: The name of the report = Number of items by entity
 #: report/pcsbyentity/pcsbyentity.php:210

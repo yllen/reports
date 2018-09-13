@@ -43,7 +43,7 @@ $loc    = new PluginReportsLocationCriteria($report);
 $report->setColumns([new PluginReportsColumnType('itemtype', __('Type')),
                      new PluginReportsColumnTypeLink('items_id', __('Item'), 'itemtype',
                                                      ['with_comment' => 1]),
-         new PluginReportsColumn('statename', __('Status')),
+                     new PluginReportsColumn('statename', __('Status')),
                      new PluginReportsColumn('serial', __('Serial number')),
                      new PluginReportsColumn('otherserial', __('Inventory number')),
                      new PluginReportsColumnModelType('models_id', __('Model'), 'itemtype',

@@ -5,13 +5,13 @@
 # Translators:
 # Nelly Mahu-Lasson <nini.lasson@orange.fr>, 2013
 # Pierfrancesco Passerini <p.passerini@gmail.com>, 2016
-# Pierfrancesco Passerini <p.passerini@gmail.com>, 2016
+# Pierfrancesco Passerini <p.passerini@gmail.com>, 2016,2018
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-23 19:24+0200\n"
-"PO-Revision-Date: 2017-09-22 09:30+0000\n"
+"PO-Revision-Date: 2018-09-08 18:58+0000\n"
 "Last-Translator: Pierfrancesco Passerini <p.passerini@gmail.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/yllen/GLPI_reports/language/it_IT/)\n"
 "MIME-Version: 1.0\n"
@@ -23,11 +23,11 @@ msgstr ""
 #: front/config.form.php:42 front/config.form.php:46 front/report.form.php:39
 #: front/report.form.php:65
 msgid "Reports plugin configuration"
-msgstr "Configurazione del plugin"
+msgstr "Configurazione del plugin Report"
 
 #: front/report.form.php:66
 msgid "Rights management by report"
-msgstr "Gestione dei diritti per report"
+msgstr "Gestione dei diritti per ogni report"
 
 #: inc/autoreport.class.php:451
 msgid "Search criteria"
@@ -53,11 +53,11 @@ msgstr "Almeno"
 
 #: inc/profile.class.php:52
 msgid "Rights management by profil"
-msgstr "Gestione dei profili"
+msgstr "Gestione dei diritti in base al profilo"
 
 #: inc/profile.class.php:86
 msgid "Profils rights"
-msgstr "Gestione dei diritti"
+msgstr "Diritti dei profili"
 
 #: inc/profile.class.php:113
 msgid "No right on Assistance / Statistics"
@@ -228,7 +228,7 @@ msgstr "Elenco entità"
 
 #: report/pcsbyentity/pcsbyentity.php:249
 msgid "Sort by count"
-msgstr "Ordinato per totale"
+msgstr "Ordinato per numero"
 
 #: report/pcsbyentity/pcsbyentity.php:266
 #: report/pcsbyentity/pcsbyentity.php:273

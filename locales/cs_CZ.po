@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-10-23 19:24+0200\n"
-"PO-Revision-Date: 2018-04-10 10:54+0000\n"
+"PO-Revision-Date: 2018-06-28 08:42+0000\n"
 "Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/yllen/GLPI_reports/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -44,7 +44,7 @@ msgstr "Časový interval"
 
 #: inc/function.php:81
 msgid "_report_title"
-msgstr "nadpis výkazu"
+msgstr "_report_title"
 
 #: inc/prioritycriteria.class.php:79
 msgid "At least"
@@ -60,11 +60,11 @@ msgstr "Oprávnění profilů"
 
 #: inc/profile.class.php:113
 msgid "No right on Assistance / Statistics"
-msgstr "Žádná práva na podporu / statistiky"
+msgstr "Žádná práva na Podporu / Statistiky"
 
 #: inc/profile.class.php:115
 msgid "No right on Tools / Reports"
-msgstr "Žádná práva na nástroje / výkazy"
+msgstr "Žádná práva na Nástroje / Výkazy"
 
 #: inc/timeintervalcriteria.class.php:70 inc/timeintervalcriteria.class.php:79
 msgid "Number pending"
@@ -109,7 +109,7 @@ msgstr "Datum poslední inventarizace"
 #. users
 #: report/equipmentbygroups/equipmentbygroups.php:40
 msgid "equipmentbygroups_report_title"
-msgstr "Seznam všech zařízení skupiny, seřazená podle uživatelů"
+msgstr "Seznam všech zařízení skupiny"
 
 #. TRANS: The name of the report = Number of equipments by location
 #: report/equipmentbylocation/equipmentbylocation.php:38
@@ -123,16 +123,16 @@ msgstr "Globální historie (pouze pro vyzkoušení/příklad)"
 
 #: report/globalhisto/globalhisto.php:64
 msgid "modification of components"
-msgstr "úprava součástek"
+msgstr "změna komponent"
 
 #. TRANS: The name of the report = History of last hardware's installations
 #: report/histohard/histohard.php:45
 msgid "histohard_report_title"
-msgstr "Historie nedávných instalací hardware"
+msgstr "Historie nedávných změn hardware"
 
 #: report/histohard/histohard.php:52
 msgid "History of last hardware's installations"
-msgstr "Historie nedávných instalací hardware"
+msgstr "Historie nedávných změn hardware"
 
 #: report/histohard/histohard.php:54 report/histoinst/histoinst.php:57
 msgid "Date of inventory"
@@ -167,7 +167,7 @@ msgstr "Finanční informace"
 #. TRANS: The name of the report = Time before equipment start-up
 #: report/iteminstall/iteminstall.php:42
 msgid "iteminstall_report_title"
-msgstr "Doba před nasazením do provozu"
+msgstr "Doba od koupě, než bylo nasazeno do provozu"
 
 #. TRANS: The name of the report = Licenses by expiration date
 #: report/licensesexpires/licensesexpires.php:40
@@ -190,7 +190,7 @@ msgstr "Použitá verze"
 #. TRANS: The name of the report = List of equipments by location
 #: report/listequipmentbylocation/listequipmentbylocation.php:40
 msgid "listequipmentbylocation_report_title"
-msgstr "Seznam vybavení dle umístění"
+msgstr "Seznam položek dle umístění"
 
 #. TRANS: The name of the report = List of groups and members
 #: report/listgroups/listgroups.php:41
@@ -208,7 +208,7 @@ msgid_plural "Links"
 msgstr[0] "Odkaz"
 msgstr[1] "Odkazy"
 msgstr[2] "Odkazů"
-msgstr[3] "Odkazů"
+msgstr[3] "Odkazy"
 
 #. TRANS: The name of the report = Number of items by entity
 #: report/pcsbyentity/pcsbyentity.php:210
@@ -217,7 +217,7 @@ msgstr "Počet položek v jednotlivých entitách"
 
 #: report/pcsbyentity/pcsbyentity.php:219
 msgid "Number of items by entity"
-msgstr "Počet položek dle entity"
+msgstr "Počet položek v jednotlivých entitách"
 
 #: report/pcsbyentity/pcsbyentity.php:245
 msgid "Display"
@@ -273,12 +273,12 @@ msgstr "Hledání finančních informací"
 #. status
 #: report/softnotinstalled/softnotinstalled.php:41
 msgid "softnotinstalled_report_title"
-msgstr "Podrobný výkaz instalací software dle stavu"
+msgstr "Nenainstalovaný důležitý software"
 
 #. TRANS: The name of the report = Not installed important software (plural)
 #: report/softversioninstallations/softversioninstallations.php:41
 msgid "softversioninstallations_report_title"
-msgstr "Nenainstalované důležité softwary"
+msgstr "Nenainstalované důležitý software"
 
 #: report/softversioninstallations/softversioninstallations.php:44
 msgid "Software version status"
@@ -287,12 +287,12 @@ msgstr "Stav verzí software"
 #. TRANS: The name of the report = Tickets opened at night, sorted by priority
 #: report/statnightticketsbypriority/statnightticketsbypriority.php:41
 msgid "statnightticketsbypriority_report_title"
-msgstr "Požadavků otevřených v noci, seřazené dle priority"
+msgstr "Požadavky otevřené v noci"
 
 #. TRANS: The name of the report = Helpdesk requesters and tickets by entity
 #: report/statticketsbyentity/statticketsbyentity.php:43
 msgid "statticketsbyentity_report_title"
-msgstr "Žadatelů o podporu a požadavků podle entity"
+msgstr "Zvýšená podpora"
 
 #: report/statticketsbyentity/statticketsbyentity.php:59
 msgid "Users count"
@@ -313,7 +313,7 @@ msgstr "Novější"
 #. TRANS: The name of the report = Tickets no closed, sorted by priority
 #: report/statticketsbypriority/statticketsbypriority.php:41
 msgid "statticketsbypriority_report_title"
-msgstr "Neuzavřené požadavky, seřazené dle priority"
+msgstr "Neuzavřené požadavky"
 
 #. TRANS: The name of the report = List of transfered objects
 #: report/transferreditems/transferreditems.php:40

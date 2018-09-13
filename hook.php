@@ -34,6 +34,8 @@
 function plugin_reports_install() {
    global $DB;
 
+   $migration = new Migration('1.12.0');
+
    // config of doublon report is now in glpi_blacklists
    If ($DB->tableExists("glpi_plugin_reports_doublons_backlists")) {
 
@@ -56,22 +58,30 @@ function plugin_reports_install() {
             }
          }
       }
-      $sql = "DROP TABLE `glpi_plugin_reports_doublons_backlists`";
-      $DB->queryOrDie($query, "0.90 delete glpi_plugin_reports_doublons_backlists ");
+      $migration->dropTable('glpi_plugin_reports_doublons_backlists');
    }
 
    // No autoload when plugin is not activated
    include_once (GLPI_ROOT."/plugins/reports/inc/profile.class.php");
 
-   return PluginReportsProfile::install();
+   PluginReportsProfile::install($migration);
+
+   $migration->executeMigration();
+
+   return true;
    }
 
 
 function plugin_reports_uninstall() {
-   global $DB;
+
+   $migration = new Migration('1.12.0');
 
    // No autoload when plugin is not activated (if dessactivation before uninstall)
    include_once (GLPI_ROOT."/plugins/reports/inc/profile.class.php");
 
-   return PluginReportsProfile::uninstall();
+   return PluginReportsProfile::uninstall($migration);
+
+   $migration->executeMigration();
+
+   return true;
 }

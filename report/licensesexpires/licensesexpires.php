@@ -72,7 +72,7 @@ $query = "SELECT `glpi_softwarelicenses`.`expire`,
                 AND `glpi_softwares`.`is_template` = '0' " .
                 $dbu->getEntitiesRestrictRequest(' AND ', 'glpi_softwarelicenses') ."
           ORDER BY `glpi_softwarelicenses`.`expire`, `name`";
-toolbox::logdebug("query", $query);
+
 $report->setGroupBy(['expire', 'name']);
 $report->setSqlRequest($query);
 $report->execute();
