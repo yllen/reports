@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Kaya Zeren <kayazeren@gmail.com>, 2013,2015-2016
+# Kaya Zeren <kayazeren@gmail.com>, 2013,2015-2016,2018
 # Nelly Mahu-Lasson <nini.lasson@orange.fr>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-23 19:24+0200\n"
-"PO-Revision-Date: 2017-09-23 21:19+0000\n"
+"POT-Creation-Date: 2018-09-13 11:20+0200\n"
+"PO-Revision-Date: 2018-09-14 05:24+0000\n"
 "Last-Translator: Kaya Zeren <kayazeren@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/yllen/GLPI_reports/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -126,23 +126,23 @@ msgid "modification of components"
 msgstr "bileşen değişiklikleri"
 
 #. TRANS: The name of the report = History of last hardware's installations
-#: report/histohard/histohard.php:45
+#: report/histohard/histohard.php:46
 msgid "histohard_report_title"
 msgstr "donanımgeçmişi_rapor_başlığı"
 
-#: report/histohard/histohard.php:52
+#: report/histohard/histohard.php:53
 msgid "History of last hardware's installations"
 msgstr "Son donanım takıldığı tarih"
 
-#: report/histohard/histohard.php:54 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
 msgid "Date of inventory"
 msgstr "Envanter tarihi"
 
-#: report/histohard/histohard.php:58
+#: report/histohard/histohard.php:59
 msgid "Modification"
 msgstr "Değişiklik"
 
-#: report/histohard/histohard.php:151
+#: report/histohard/histohard.php:152
 msgid "The list is limited to 100 items and 21 days"
 msgstr "Liste 100 öge ve 21 günle sınırlıdır"
 
@@ -209,30 +209,34 @@ msgstr[0] "Bağlantı"
 msgstr[1] "Bağlantı"
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:210
+#: report/pcsbyentity/pcsbyentity.php:212
 msgid "pcsbyentity_report_title"
 msgstr "birimegörebilgisayar_rapor_başlığı"
 
-#: report/pcsbyentity/pcsbyentity.php:219
+#: report/pcsbyentity/pcsbyentity.php:221
 msgid "Number of items by entity"
 msgstr "Birime göre öge sayısı"
 
-#: report/pcsbyentity/pcsbyentity.php:245
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Display"
 msgstr "Görünüm"
 
-#: report/pcsbyentity/pcsbyentity.php:246
+#: report/pcsbyentity/pcsbyentity.php:248
 msgid "Entity tree"
 msgstr "Birim ağacı"
 
-#: report/pcsbyentity/pcsbyentity.php:249
+#: report/pcsbyentity/pcsbyentity.php:251
 msgid "Sort by count"
 msgstr "Sayıya göre sıralansın"
 
-#: report/pcsbyentity/pcsbyentity.php:266
-#: report/pcsbyentity/pcsbyentity.php:273
+#: report/pcsbyentity/pcsbyentity.php:268
+#: report/pcsbyentity/pcsbyentity.php:275
 msgid "Unknown"
 msgstr "Bilinmeyen"
+
+#: report/pcsbyentity/pcsbyentity.php:289
+msgid "Selection of type is mandatory"
+msgstr "Türün seçilmesi zorunludur"
 
 #. TRANS: The name of the report = Printers
 #: report/printers/printers.php:41
@@ -314,19 +318,19 @@ msgid "statticketsbypriority_report_title"
 msgstr "önceliğegöreçağrıistatistiği_rapor_başlığı"
 
 #. TRANS: The name of the report = List of transfered objects
-#: report/transferreditems/transferreditems.php:40
+#: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
 msgstr "aktarılmışögeler_rapor_başlığı"
 
-#: report/transferreditems/transferreditems.php:65
+#: report/transferreditems/transferreditems.php:67
 msgid "Source entity"
 msgstr "Kaynak birim"
 
-#: report/transferreditems/transferreditems.php:66
+#: report/transferreditems/transferreditems.php:68
 msgid "Target entity"
 msgstr "Hedef birim"
 
-#: report/transferreditems/transferreditems.php:67
+#: report/transferreditems/transferreditems.php:69
 msgid "Transfert date"
 msgstr "Aktarım tarihi"
 

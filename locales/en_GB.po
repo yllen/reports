@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-23 19:24+0200\n"
-"PO-Revision-Date: 2017-09-22 09:30+0000\n"
+"POT-Creation-Date: 2018-09-13 11:20+0200\n"
+"PO-Revision-Date: 2018-09-13 09:14+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/yllen/GLPI_reports/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -125,23 +125,23 @@ msgid "modification of components"
 msgstr "modification of components"
 
 #. TRANS: The name of the report = History of last hardware's installations
-#: report/histohard/histohard.php:45
+#: report/histohard/histohard.php:46
 msgid "histohard_report_title"
 msgstr "History of last hardware's installations"
 
-#: report/histohard/histohard.php:52
+#: report/histohard/histohard.php:53
 msgid "History of last hardware's installations"
 msgstr "History of last hardware's installations"
 
-#: report/histohard/histohard.php:54 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
 msgid "Date of inventory"
 msgstr "Date of inventory"
 
-#: report/histohard/histohard.php:58
+#: report/histohard/histohard.php:59
 msgid "Modification"
 msgstr "Modification"
 
-#: report/histohard/histohard.php:151
+#: report/histohard/histohard.php:152
 msgid "The list is limited to 100 items and 21 days"
 msgstr "The list is limited to 100 items and 21 days"
 
@@ -208,30 +208,34 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:210
+#: report/pcsbyentity/pcsbyentity.php:212
 msgid "pcsbyentity_report_title"
 msgstr "Number of items by entity "
 
-#: report/pcsbyentity/pcsbyentity.php:219
+#: report/pcsbyentity/pcsbyentity.php:221
 msgid "Number of items by entity"
 msgstr "Number of items by entity"
 
-#: report/pcsbyentity/pcsbyentity.php:245
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Display"
 msgstr "Display"
 
-#: report/pcsbyentity/pcsbyentity.php:246
+#: report/pcsbyentity/pcsbyentity.php:248
 msgid "Entity tree"
 msgstr "Entity tree"
 
-#: report/pcsbyentity/pcsbyentity.php:249
+#: report/pcsbyentity/pcsbyentity.php:251
 msgid "Sort by count"
 msgstr "Sort by count"
 
-#: report/pcsbyentity/pcsbyentity.php:266
-#: report/pcsbyentity/pcsbyentity.php:273
+#: report/pcsbyentity/pcsbyentity.php:268
+#: report/pcsbyentity/pcsbyentity.php:275
 msgid "Unknown"
 msgstr "Unknown"
+
+#: report/pcsbyentity/pcsbyentity.php:289
+msgid "Selection of type is mandatory"
+msgstr ""
 
 #. TRANS: The name of the report = Printers
 #: report/printers/printers.php:41
@@ -313,19 +317,19 @@ msgid "statticketsbypriority_report_title"
 msgstr "Tickets no closed, sorted by priority "
 
 #. TRANS: The name of the report = List of transfered objects
-#: report/transferreditems/transferreditems.php:40
+#: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
 msgstr "List of transfered objects "
 
-#: report/transferreditems/transferreditems.php:65
+#: report/transferreditems/transferreditems.php:67
 msgid "Source entity"
 msgstr ""
 
-#: report/transferreditems/transferreditems.php:66
+#: report/transferreditems/transferreditems.php:68
 msgid "Target entity"
 msgstr ""
 
-#: report/transferreditems/transferreditems.php:67
+#: report/transferreditems/transferreditems.php:69
 msgid "Transfert date"
 msgstr ""
 
