@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -66,10 +66,12 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
       parent::__construct($report, $name, $name, $label);
 
+      $dbu = new DbUtils();
+
       $this->condition = $condition;
 
       if (empty($tableortype)) {
-         $this->table = getTableNameForForeignKeyField($name);
+         $this->table = $dbu->getTableNameForForeignKeyField($name);
 
       } else if (preg_match("/^glpi_/", $tableortype)) {
          $this->table = $tableortype;
@@ -78,7 +80,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
          $this->table = NOT_AVAILABLE;
 
       } else {
-         $this->table = getTableForItemType($tableortype);
+         $this->table = $dbu->getTableForItemType($tableortype);
       }
    }
 
@@ -95,7 +97,9 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
     * Get criteria's related table
    **/
    public function getItemType() {
-      return getItemTypeForTable($this->table);
+
+      $dbu = new DbUtils();
+      return $dbu->getItemTypeForTable($this->table);
    }
 
 
@@ -185,6 +189,8 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    public function setEntityRestriction($restriction) {
       global $CFG_GLPI;
 
+      $dbu = new DbUtils();
+
       switch ($restriction) {
          case REPORTS_NO_ENTITY_RESTRICTION :
             $this->entity_restrict = -1;
@@ -195,7 +201,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
             break;
 
          case REPORTS_SUB_ENTITIES :
-            $this->entity_restrict = getSonsOf('glpi_entities',$_SESSION["glpiactive_entity"]);
+            $this->entity_restrict = $dbu->getSonsOf('glpi_entities',$_SESSION["glpiactive_entity"]);
             break;
       }
    }
@@ -249,10 +255,10 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    **/
    public function displayDropdownCriteria() {
 
-      $options = array('name'     => $this->getName(),
-                       'value'    => $this->getParameterValue(),
-                       'comments' => $this->getDisplayComments(),
-                       'entity'   => $this->getEntityRestrict());
+      $options = ['name'     => $this->getName(),
+                  'value'    => $this->getParameterValue(),
+                  'comments' => $this->getDisplayComments(),
+                  'entity'   => $this->getEntityRestrict()];
 
       if ($this->condition) {
          $options['condition'] = $this->condition;
@@ -268,13 +274,15 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    **/
    public function getSqlCriteriasRestriction($link='AND') {
 
+      $dbu = new DbUtils();
+
       if ($this->getParameterValue() || $this->searchzero) {
          if (!$this->childrens) {
             return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
          }
          if ($this->getParameterValue()) {
             return $link . " " . $this->getSqlField() .
-                   " IN (" . implode(',', getSonsOf($this->getTable(),
+                   " IN (" . implode(',', $dbu->getSonsOf($this->getTable(),
                                                     $this->getParameterValue())) . ") ";
          }
          // 0 + its child means ALL

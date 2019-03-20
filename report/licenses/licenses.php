@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -34,6 +34,8 @@ $USEDBREPLICATE        = 1;
 $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
+
+$dbu = new DbUtils();
 
 //TRANS: The name of the report = Detailed license report
 $report = new PluginReportsAutoReport(__('licenses_report_title', 'reports'));
@@ -50,15 +52,15 @@ if ($report->criteriasValidated()
 
    $report->setSubNameAuto();
 
-   $report->setColumns(array("license" => _n('License', 'Licenses', 2),
-                             "serial"  => __('Serial number'),
-                             "nombre"  => _x('Quantity', 'Number'),
-                             "type"    => __('Type'),
-                             "buy"     => __('Purchase version'),
-                             "used"    => __('Used version', 'reports'),
-                             "expire"  => __('Expiration'),
-                             "comment" => __('Comments'),
-                             "name"    => __('Computer')));
+   $report->setColumns(["license" => _n('License', 'Licenses', 2),
+                        "serial"  => __('Serial number'),
+                        "nombre"  => _x('Quantity', 'Number'),
+                        "type"    => __('Type'),
+                        "buy"     => __('Purchase version'),
+                        "used"    => __('Used version', 'reports'),
+                        "expire"  => __('Expiration'),
+                        "comment" => __('Comments'),
+                        "name"    => __('Computer')]);
 
    $query = "SELECT `glpi_softwarelicenses`.`name` AS license,
                     `glpi_softwarelicenses`.`serial`,
@@ -89,7 +91,7 @@ if ($report->criteriasValidated()
              $report->addSqlCriteriasRestriction("WHERE")."
                    AND `glpi_softwares`.`is_deleted` = '0'
                    AND `glpi_softwares`.`is_template` = '0' " .
-                   getEntitiesRestrictRequest(' AND ', 'glpi_softwares') ."
+                   $dbu->getEntitiesRestrictRequest(' AND ', 'glpi_softwares') ."
              ORDER BY license";
 
    $report->setGroupBy("license");

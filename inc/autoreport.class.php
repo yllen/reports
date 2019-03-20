@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -40,10 +40,10 @@
 **/
 class PluginReportsAutoReport {
 
-   private $criterias       = array ();
-   private $columns         = array ();
-   private $group_by        = array ();
-   private $columns_mapping = array ();
+   private $criterias       = [];
+   private $columns         = [];
+   private $group_by        = [];
+   private $columns_mapping = [];
    private $sql             = "";
    private $name            = "";
    private $subname         = "";
@@ -93,7 +93,7 @@ class PluginReportsAutoReport {
       if (is_array($columns)) {
          $this->group_by = $columns;
       } else {
-         $this->group_by = array($columns);
+         $this->group_by = [$columns];
       }
    }
 
@@ -106,7 +106,7 @@ class PluginReportsAutoReport {
    **/
    function setColumns($columns) {
 
-      $this->columns = array();
+      $this->columns = [];
       foreach ($columns as $name => $column) {
          if ($column instanceof PluginReportsColumn) {
             $this->columns[$column->name] = $column;
@@ -202,7 +202,7 @@ class PluginReportsAutoReport {
     * @return true if form is validated
    **/
    function criteriasValidated() {
-      return isset ($_POST['find']);
+      return isset($_POST['find']);
    }
 
 
@@ -211,7 +211,7 @@ class PluginReportsAutoReport {
     *
     * @param $options   array
    **/
-   function execute($options=array()) {
+   function execute($options=[]) {
       global $DB, $CFG_GLPI, $HEADER_LOADED;
 
       // Require (for pager) when not called by displayCriteriasForm
@@ -240,7 +240,7 @@ class PluginReportsAutoReport {
       }
 
       $res   = $DB->query($this->sql);
-      $nbtot = ($res ? $DB->numrows($res) : 0);
+      $nbtot = ($res ? $DB->numrows($res): 0);
       if ($limit) {
          $start = (isset ($_GET["start"]) ? $_GET["start"] : 0);
          if ($start >= $nbtot) {
@@ -308,7 +308,7 @@ class PluginReportsAutoReport {
             if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
                $massformid = 'massform'.$options['withmassiveaction'];
                Html::openMassiveActionsForm($massformid);
-               Html::showMassiveActions(array('container' => $massformid));
+               Html::showMassiveActions(['container' => $massformid]);
             }
          }
 
@@ -320,12 +320,12 @@ class PluginReportsAutoReport {
          $num = 1;
 
          // fill $sqlcols with default sql query fields so we can validate $columns
-         $sqlcols = array();
+         $sqlcols = [];
          for ($i = 0 ; $i < $nbcols ; $i++) {
             $colname   = $DB->field_name($res, $i);
             $sqlcols[] = $colname;
          }
-         $colsname = array();
+         $colsname = [];
          // if $columns is not empty, display $columns
          if (count($this->columns) > 0) {
             foreach ($this->columns as $colname => $column) {
@@ -346,7 +346,7 @@ class PluginReportsAutoReport {
          echo Search::showEndLine($output_type);
 
          $prev = "";
-         for ($row_num = 2 ; $row = $DB->fetch_assoc($res) ; $row_num++) {
+         for ($row_num = 2 ; $row = $DB->fetch_assoc($res); $row_num++) {
             $crt = "";
             foreach ($this->group_by as $colname) {
                if (isset ($row[$colname])) {
@@ -371,7 +371,7 @@ class PluginReportsAutoReport {
                   $column->showValue($output_type, $row, $num, $row_num);
                } else if ($crt == $prev) {
                   $column->showValue($output_type,
-                                     (($output_type == Search::CSV_OUTPUT) ? $row : array()),
+                                     (($output_type == Search::CSV_OUTPUT) ? $row : []),
                                      $num, $row_num);
                } else {
                   $column->showValue($output_type, $row, $num, $row_num, true);
@@ -395,8 +395,8 @@ class PluginReportsAutoReport {
 
          if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
             if (isset($options['withmassiveaction']) && class_exists($options['withmassiveaction'])) {
-               Html::showMassiveActions(array('container' => $massformid,
-                                              'ontop'     => false));
+               Html::showMassiveActions(['container' => $massformid,
+                                         'ontop'     => false]);
                Html::closeForm();
             }
             Html::footer();
@@ -454,8 +454,8 @@ class PluginReportsAutoReport {
          if ($this->criteriasValidated()) {
             //Add parameters to uri to be saved as bookmarks
             $_SERVER["REQUEST_URI"] = $this->buildBookmarkUrl();
-            Bookmark::showSaveButton(Bookmark::URI,
-                                     (isStat($this->name)?'PluginReportsStat':'PluginReportsReport'));
+            SavedSearch::showSaveButton(SavedSearch::URI,
+                                        (isStat($this->name)?'PluginReportsStat':'PluginReportsReport'));
          }
          echo "</th></tr>\n";
 
@@ -607,11 +607,11 @@ class PluginReportsAutoReport {
       $colsort = $_REQUEST['sort'];
 
       foreach ($this->columns as $colname => $column) {
-         if ($colname==$colsort) {
+         if ($colname == $colsort) {
             return explode(',',$column->sorton);
          }
       }
-      return array();
+      return [];
    }
 
    /**

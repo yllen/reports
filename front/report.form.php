@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -50,8 +50,8 @@ $prof = new PluginReportsProfile();
 
 if (isset($_POST['delete']) && $report) {
    $profile_right = new ProfileRight;
-   $profile_right->deleteByCriteria(array('name' => "plugin_reports_$report"));
-   ProfileRight::addProfileRights(array("plugin_reports_$report"));
+   $profile_right->deleteByCriteria(['name' => "plugin_reports_$report"]);
+   ProfileRight::addProfileRights(["plugin_reports_$report"]);
 
 } else  if (isset($_POST['update']) && $report) {
    Session::checkRight('profile', UPDATE);
@@ -66,15 +66,15 @@ echo "<a href='config.form.php'>".__('Reports plugin configuration', 'reports').
 echo __('Rights management by report', 'reports'). "</th></tr>\n";
 
 echo "<tr class='tab_bg_1'><td>".__('Report', 'Reports', 1). "&nbsp; ";
-$query = "SELECT `id`, `name`
-          FROM `glpi_profiles`
-          ORDER BY `name`";
-$result = $DB->query($query);
+
+$result = $DB->request('glpi_profiles',
+                       ['FIELDS' => ['id', 'name'],
+                        'ORDER'  => 'name']);
 
 echo "<select name='report'>";
-$plugname = array();
-$rap      = array();
-foreach($tab as $key => $plug) {
+$plugname = [];
+$rap      = [];
+foreach ($tab as $key => $plug) {
    $mod = (($plug == 'reports') ? $key : $plug.'_'.$key);
    if (!isset($plugname[$plug])) {
       // Retrieve the plugin name
@@ -86,6 +86,7 @@ foreach($tab as $key => $plug) {
                             : sprintf(__('%1$s - %2$s'), __('Tools'), __('Report', 'Reports', 2)));
 
    $rap[$plug][$section][$mod] = $LANG["plugin_$plug"][$key];
+
 }
 
 $tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";

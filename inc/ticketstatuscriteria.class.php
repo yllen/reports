@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -35,7 +35,7 @@
 **/
 class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
 
-   private $choice = array();
+   private $choice = [];
 
 
    /**
@@ -71,19 +71,37 @@ class PluginReportsTicketStatusCriteria extends PluginReportsArrayCriteria {
    public function getSqlCriteriasRestriction($link='AND') {
 
       $status = $this->getParameterValue();
+
       switch ($status) {
          case "notold" :
-            $list  = implode("','", Ticket::getNewStatusArray());
-            $list .= implode("','", Ticket::getProcessStatusArray());
-            $list .= "','".Ticket::WAITING;
+            $list = Ticket::getAllStatusArray();
+            $check = array_merge(Ticket::getSolvedStatusArray(),
+                                 Ticket::getClosedStatusArray());
+            foreach ($check as $status) {
+               if (isset($list[$status])) {
+                  unset($list[$status]);
+               }
+            }
+            $list = implode("','", array_keys($list));
             break;
 
          case "old" :
-            $list = implode("','", Ticket::getClosedStatusArray());
+            $list = implode("','", array_merge(Ticket::getSolvedStatusArray(),
+                                               Ticket::getClosedStatusArray()));
             break;
 
          case "process" :
             $list = implode("','", Ticket::getProcessStatusArray());
+            break;
+
+         case 'notclosed' :
+            $list = Ticket::getAllStatusArray();
+            foreach (Ticket::getClosedStatusArray() as $status) {
+               if (isset($list[$status])) {
+                  unset($list[$status]);
+               }
+            }
+            $list = implode("','", array_keys($list));
             break;
 
          case Ticket::INCOMING :

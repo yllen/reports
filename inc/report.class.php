@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Dévi Balpe
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -55,6 +55,6 @@ class PluginReportsReport extends CommonDBTM {
     * @return array of rights to display
    **/
    function getRights($interface='central') {
-      return array(READ => __('Read'));
+      return [READ => __('Read')];
    }
 }

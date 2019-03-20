@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -48,26 +48,26 @@ $_GET = getValues($_GET, $_POST);
 
 displaySearchForm();
 
-$sql = "SELECT `id` AS group_id,
-               `name` AS group_name
-        FROM `glpi_groups`
-        WHERE `entities_id` = ".$_SESSION["glpiactive_entity"].
-              (isset($_GET["groups_id"]) && $_GET["groups_id"]
-                     ? " AND `glpi_groups`.`id` = ".$_GET["groups_id"] : "") . "
-        ORDER BY `name`";
+$where = ['entities_id' => [$_SESSION["glpiactive_entity"]]];
+if (isset($_GET["groups_id"]) && $_GET["groups_id"]) {
+   $where = ['entities_id' => [$_SESSION["glpiactive_entity"]],
+             'id'          => $_GET['groups_id']];
+}
 
-$result = $DB->query($sql);
+$result = $DB->request('glpi_groups', ['SELECT' => ['id', 'name'],
+                                       'WHERE'  => $where,
+                                       'ORDER'  => 'name']);
 $last_group_id = -1;
 
-while ($datas = $DB->fetch_array($result)) {
-   if ($last_group_id != $datas["group_id"]) {
+while ($datas = $result->next()) {
+   if ($last_group_id != $datas["id"]) {
       echo "<table class='tab_cadre' cellpadding='5'>";
-      echo "<tr><th>".sprintf(__('%1$s: %2$s'), __('Group'), $datas['group_name'])."</th></th></tr>";
-      $last_group_id = $datas["group_id"];
+      echo "<tr><th>".sprintf(__('%1$s: %2$s'), __('Group'), $datas['name'])."</th></th></tr>";
+      $last_group_id = $datas["id"];
       echo "</table>";
    }
 
-   getObjectsByGroupAndEntity($datas["group_id"], $_SESSION["glpiactive_entity"]);
+   getObjectsByGroupAndEntity($datas["id"], $_SESSION["glpiactive_entity"]);
 }
 
 Html::footer();
@@ -84,10 +84,10 @@ function displaySearchForm() {
    echo "<tr class='tab_bg_1 center'>";
    echo "<td width='300'>";
    echo __('Group')."&nbsp;&nbsp;";
-   Group::dropdown(array('name =>'  => "group",
-                         'value'    => $_GET["group"],
-                         'entity'   => $_SESSION["glpiactive_entity"],
-                         'condition' => "is_itemgroup"));
+   Group::dropdown(['name =>'  => "group",
+                    'value'    => $_GET["group"],
+                    'entity'   => $_SESSION["glpiactive_entity"],
+                    'condition' => "is_itemgroup"]);
    echo "</td>";
 
    // Display Reset search
@@ -137,24 +137,22 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
 
    $display_header = false;
 
-   $types = array('Computer', 'Monitor', 'NetworkEquipment', 'Phone', 'Printer');
+   $types = ['Computer', 'Monitor', 'NetworkEquipment', 'Phone', 'Printer'];
    foreach ($types as $type) {
       $item = new $type();
 
-      $query = "SELECT `".$item->getTable()."`.`id`, `name`, `groups_id`, `serial`, `otherserial`,
-                       `immo_number`, `suppliers_id`, `buy_date`
-                FROM `".$item->getTable()."`
-                LEFT JOIN `glpi_infocoms`
-                     ON (`".$item->getTable()."`.`id` = `glpi_infocoms`.`items_id`
-                         AND `itemtype` = '$type')
-                WHERE `groups_id` = '$group_id'
-                      AND `".$item->getTable()."`.`entities_id` = '$entity'
-                      AND `is_template` = '0'
-                      AND `is_deleted` = '0'";
+      $query = $DB->request(['SELECT'    => [$item->getTable().'.id', 'name', 'groups_id', 'serial',
+                                          'otherserial', 'immo_number', 'suppliers_id', 'buy_date'],
+                             'FROM'      => $item->getTable(),
+                             'LEFT JOIN' =>  ['glpi_infocoms' => ['FKEY' => [$item->getTable() => 'id',
+                                                                             'glpi_infocoms'   => 'items_id'],
+                                                                             ['itemtype' => $type]]],
+                              'WHERE'     => ['groups_id'                      => $group_id,
+                                              $item->getTable().'.entities_id' => $entity,
+                                              'is_template'                    => 0,
+                                              'is_deleted'                     => 0]]);
 
-      $result = $DB->query($query);
-
-      if ($DB->numrows($result) > 0) {
+      if (count($query) > 0) {
          if (!$display_header) {
             echo "<br><table class='tab_cadre_fixehov'>";
             echo "<tr><th>" .__('Type'). "</th><th>" .__('Name'). "</th>";
@@ -164,7 +162,7 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
             echo "</tr>";
             $display_header = true;
          }
-         displayUserDevices($type, $result);
+         displayUserDevices($type, $query);
       }
    }
    echo "</table>";
@@ -181,14 +179,14 @@ function displayUserDevices($type, $result) {
    global $DB, $CFG_GLPI;
 
    $item = new $type();
-   while ($data = $DB->fetch_array($result)) {
+   while ($data = $result->next()) {
       $link = $data["name"];
       $url  = Toolbox::getItemTypeFormURL("$type");
       $link = "<a href='" . $url . "?id=" . $data["id"] . "'>" . $link .
-               (($CFG_GLPI["is_ids_visible"] || empty ($link)) ? " (" . $data["id"] . ")" : "") .
+               (($CFG_GLPI["is_ids_visible"] || empty ($link)) ? " (" . $data["groups_id"] . ")" : "") .
                "</a>";
       $linktype = "";
-      if (isset ($groups[$data["groups_id"]])) {
+      if (isset ($groups[$data["id"]])) {
          $linktype = sprintf(__('%1$s %2$s'), __('Group'), $groups[$data["groups_id"]]);
       }
 

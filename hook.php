@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -34,14 +34,14 @@
 function plugin_reports_install() {
    global $DB;
 
-   // config of doublon report is now in glpi_blacklists
-   If (TableExists("glpi_plugin_reports_doublons_backlists")) {
-      $query = "SELECT *
-                FROM `glpi_plugin_reports_doublons_backlists`";
+   $migration = new Migration('1.13.0');
 
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result)  >0) {
-            while ($data = $DB->fetch_assoc($result)) {
+   // config of doublon report is now in glpi_blacklists
+   If ($DB->tableExists("glpi_plugin_reports_doublons_backlists")) {
+
+      if ($result = $DB->request('glpi_plugin_reports_doublons_backlists')) {
+         if (count($result) > 0) {
+            while ($data = $result->next()) {
                $data = toolbox::addslashes_deep($data);
                if ($data['type'] == 1) {
                   $type = 2;
@@ -58,22 +58,30 @@ function plugin_reports_install() {
             }
          }
       }
-      $sql = "DROP TABLE `glpi_plugin_reports_doublons_backlists`";
-      $DB->queryOrDie($query, "0.90 delete glpi_plugin_reports_doublons_backlists ");
+      $migration->dropTable('glpi_plugin_reports_doublons_backlists');
    }
 
    // No autoload when plugin is not activated
    include_once (GLPI_ROOT."/plugins/reports/inc/profile.class.php");
 
-   return PluginReportsProfile::install();
+   PluginReportsProfile::install($migration);
+
+   $migration->executeMigration();
+
+   return true;
    }
 
 
 function plugin_reports_uninstall() {
-   global $DB;
+
+   $migration = new Migration('1.13.0');
 
    // No autoload when plugin is not activated (if dessactivation before uninstall)
    include_once (GLPI_ROOT."/plugins/reports/inc/profile.class.php");
 
-   return PluginReportsProfile::uninstall();
+   return PluginReportsProfile::uninstall($migration);
+
+   $migration->executeMigration();
+
+   return true;
 }

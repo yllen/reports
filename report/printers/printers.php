@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -34,6 +34,8 @@ $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
+
+$dbu = new DbUtils();
 
 //TRANS: The name of the report = Printers
 $report = new PluginReportsAutoReport(__('printers_report_title', 'reports'));
@@ -49,32 +51,30 @@ $report->displayCriteriasForm();
 if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
-   $cols = array(
-      new PluginReportsColumnLink('id', __('Name'), 'Printer',
-                                  array('with_navigate' => true,
-                                        'sorton'        => 'glpi_printers.name')),
-      new PluginReportsColumn('state', __('Status')),
-      new PluginReportsColumn('manu', __('Manufacturer')),
-      new PluginReportsColumn('model', __('Model'),
-                              array('sorton' => 'glpi_manufacturers.name, glpi_printermodels.name')),
-      new PluginReportsColumn('serial', __('Serial number')),
-      new PluginReportsColumn('otherserial', __('Inventory number')),
-      new PluginReportsColumn('immo_number', __('Immobilization number')),
-      new PluginReportsColumnDate('buy_date', __('Date of purchase'),
-                                  array('sorton' => 'glpi_infocoms.buy_date')),
-      new PluginReportsColumnDate('use_date', __('Startup date'),
-                                  array('sorton' => 'glpi_infocoms.use_date')),
-      new PluginReportsColumnInteger('last_pages_counter', __('Printed pages')),
-      new PluginReportsColumnLink('user', __('User'), 'User'),
-      new PluginReportsColumnLink('groupe', __('Group'), 'Group',
-                                  array('sorton' => 'glpi_groups.name')),
-      new PluginReportsColumnInteger('compgrp', __('Computers in the group', 'reports')),
-      new PluginReportsColumnInteger('usergrp', __('Users in the group', 'reports')),
-      new PluginReportsColumnLink('location', __('Location'), 'Location',
-                                  array('sorton' => 'glpi_locations.completename')),
-      new PluginReportsColumnInteger('comploc', __('Computers in the location', 'reports')),
-      new PluginReportsColumnInteger('userloc', __('Users in the location', 'reports'))
-   );
+   $cols = [new PluginReportsColumnLink('id', __('Name'), 'Printer',
+                                        ['with_navigate' => true,
+                                         'sorton'        => 'glpi_printers.name']),
+            new PluginReportsColumn('state', __('Status')),
+            new PluginReportsColumn('manu', __('Manufacturer')),
+            new PluginReportsColumn('model', __('Model'),
+                                    ['sorton' => 'glpi_manufacturers.name, glpi_printermodels.name']),
+            new PluginReportsColumn('serial', __('Serial number')),
+            new PluginReportsColumn('otherserial', __('Inventory number')),
+            new PluginReportsColumn('immo_number', __('Immobilization number')),
+            new PluginReportsColumnDate('buy_date', __('Date of purchase'),
+                                        ['sorton' => 'glpi_infocoms.buy_date']),
+            new PluginReportsColumnDate('use_date', __('Startup date'),
+                                        ['sorton' => 'glpi_infocoms.use_date']),
+            new PluginReportsColumnInteger('last_pages_counter', __('Printed pages')),
+            new PluginReportsColumnLink('user', __('User'), 'User'),
+            new PluginReportsColumnLink('groupe', __('Group'), 'Group',
+                                        ['sorton' => 'glpi_groups.name']),
+            new PluginReportsColumnInteger('compgrp', __('Computers in the group', 'reports')),
+            new PluginReportsColumnInteger('usergrp', __('Users in the group', 'reports')),
+            new PluginReportsColumnLink('location', __('Location'), 'Location',
+                                        ['sorton' => 'glpi_locations.completename']),
+            new PluginReportsColumnInteger('comploc', __('Computers in the location', 'reports')),
+            new PluginReportsColumnInteger('userloc', __('Users in the location', 'reports'))];
 
    $report->setColumns($cols);
 
@@ -122,7 +122,7 @@ if ($report->criteriasValidated()) {
                                          AND `glpi_infocoms`.`items_id`=`glpi_printers`.`id`)
            LEFT JOIN `glpi_locations` ON (`glpi_locations`.`id`=`glpi_printers`.`locations_id`)
            LEFT JOIN `glpi_groups` ON (`glpi_groups`.`id`=`glpi_printers`.`groups_id`) ".
-           getEntitiesRestrictRequest('WHERE', 'glpi_printers').
+           $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_printers').
            $report->addSqlCriteriasRestriction().
            $report->getOrderBy('groupe');
 

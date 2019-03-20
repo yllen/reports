@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -38,19 +38,21 @@ class PluginReportsColumnType extends PluginReportsColumn {
    private $obj = NULL;
 
 
-   function __construct($name, $title, $options=array()) {
+   function __construct($name, $title, $options=[]) {
       parent::__construct($name, $title, $options);
    }
 
 
    function displayValue($output_type, $row) {
 
+      $dbu = new DbUtils();
+
       if (!isset($row[$this->name])
           || !$row[$this->name]) {
          return '';
       }
 
-      if (!($value = getItemForItemtype($row[$this->name]))) {
+      if (!($value = $dbu->getItemForItemtype($row[$this->name]))) {
          return $value;
       }
 

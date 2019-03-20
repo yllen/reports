@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Benoit Machiavello
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -39,6 +39,7 @@ includeLocales("histohard");
 
 Session::checkRight("plugin_reports_histohard", READ);
 $computer = new Computer();
+$dbu      = new DbUtils();
 $computer->checkGlobal(READ);
 
 //TRANS: The name of the report = History of last hardware's installations
@@ -58,7 +59,8 @@ echo "<tr><th>".__('Date of inventory', 'reports'). "</th>" .
       "<th>". __('Modification', 'reports') . "</th></tr>\n";
 
 $sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `itemtype_link`,
-               `old_value`, `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`
+               `old_value`, `new_value`, `glpi_computers`.`id` AS cid, `name`, `user_name`,
+               `items_id`,`entities_id`
         FROM `glpi_logs`
         LEFT JOIN `glpi_computers` ON (`glpi_logs`.`items_id` = `glpi_computers`.`id`)
         WHERE `glpi_logs`.`date_mod` > DATE_SUB(Now(), INTERVAL 21 DAY)
@@ -68,14 +70,18 @@ $sql = "SELECT `glpi_logs`.`date_mod` AS dat, `linked_action`, `itemtype`, `item
                                       ".Log::HISTORY_DELETE_DEVICE.",
                                       ".Log::HISTORY_UPDATE_DEVICE.",
                                       ".Log::HISTORY_ADD_DEVICE.")
-              AND `glpi_computers`.`entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
+              AND `entities_id` = '" . $_SESSION["glpiactive_entity"] ."'
         ORDER BY `glpi_logs`.`id` DESC
         LIMIT 0,100";
-$result = $DB->query($sql);
+
+$result = $DB->request($sql);
 
 $prev  = "";
 $class = "tab_bg_2";
-while ($data = $DB->fetch_array($result)) {
+while ($data = $result->next()) {
+   if (empty($data["name"])) {
+      $data["name"] = "(".$data["cid"].")";
+   }
    if ($prev == $data["dat"].$data["name"]) {
       echo "</td></tr><tr class='" . $prevclass ." top'><td></td><td></td><td></td><td>";
    } else {
@@ -96,7 +102,7 @@ while ($data = $DB->fetch_array($result)) {
       switch ($data["linked_action"]) {
          case Log::HISTORY_ADD_DEVICE :
             $field = NOT_AVAILABLE;
-            if ($item = getItemForItemtype($data["itemtype_link"])) {
+            if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
             $change = sprintf(__('%1$s: %2$s'), __('Add the component'), $data[ "new_value"]);
@@ -105,7 +111,7 @@ while ($data = $DB->fetch_array($result)) {
          case Log::HISTORY_UPDATE_DEVICE :
             $field = NOT_AVAILABLE;
             $change = '';
-            if ($item = getItemForItemtype($data["itemtype_link"])) {
+            if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
                $field  = $item->getTypeName();
                $change = sprintf(__('%1$s: %2$s'), $item->getSpecifityLabel(), "");
             }
@@ -114,14 +120,14 @@ while ($data = $DB->fetch_array($result)) {
 
          case Log::HISTORY_DELETE_DEVICE :
             $field = NOT_AVAILABLE;
-            if ($item = getItemForItemtype($data["itemtype_link"])) {
+            if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
                $field = $item->getTypeName();
             }
-            $change = sprintf(__('%1$s: %1$s'), __('Delete the component'), $data["old_value"]);
+            $change = sprintf(__('%1$s: %2$s'), __('Delete the component'), $data["old_value"]);
             break;
 
          case Log::HISTORY_DISCONNECT_DEVICE :
-            if (!($item = getItemForItemtype($data["itemtype_link"]))) {
+            if (!($item = $dbu->getItemForItemtype($data["itemtype_link"]))) {
                continue;
             }
             $field  = $item->getTypeName();
@@ -129,7 +135,7 @@ while ($data = $DB->fetch_array($result)) {
             break;
 
          case Log::HISTORY_CONNECT_DEVICE :
-            if (!($item = getItemForItemtype($data["itemtype_link"]))) {
+            if (!($item = $dbu->getItemForItemtype($data["itemtype_link"]))) {
                continue;
             }
             $field  = $item->getTypeName();

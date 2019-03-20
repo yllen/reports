@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -92,8 +92,8 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      Html::showDateField($this->getName()."_1", array('value'      => $this->getStartDate(),
-                                                       'maybeempty' => false));
+      Html::showDateField($this->getName()."_1", ['value'      => $this->getStartDate(),
+                                                  'maybeempty' => false]);
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
@@ -104,8 +104,8 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $this->getReport()->endColumn();
 
       $this->getReport()->startColumn();
-      Html::showDateField($this->getName()."_2", array('value'      => $this->getEndDate(),
-                                                       'maybeempty' => false));
+      Html::showDateField($this->getName()."_2", ['value'      => $this->getEndDate(),
+                                                  'maybeempty' => false]);
       $this->getReport()->endColumn();
    }
 

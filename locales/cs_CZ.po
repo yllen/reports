@@ -4,103 +4,104 @@
 # 
 # Translators:
 # David Stepan <stepand@tiscali.cz>, 2015
+# Pavel Borecki <pavel.borecki@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-10 12:21+0200\n"
-"PO-Revision-Date: 2016-06-10 10:26+0000\n"
-"Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
+"POT-Creation-Date: 2018-09-13 11:20+0200\n"
+"PO-Revision-Date: 2018-09-13 11:43+0000\n"
+"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/yllen/GLPI_reports/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
 
 #: front/config.form.php:42 front/config.form.php:46 front/report.form.php:39
 #: front/report.form.php:65
 msgid "Reports plugin configuration"
-msgstr "Konfigurace pluginu Reporty"
+msgstr "Nastavení zásuvného modulu Výkazy"
 
 #: front/report.form.php:66
 msgid "Rights management by report"
-msgstr ""
+msgstr "Správa oprávnění dle výkazu"
 
 #: inc/autoreport.class.php:451
 msgid "Search criteria"
 msgstr "Vyhledávací kritéria"
 
-#: inc/dateintervalcriteria.class.php:148
+#: inc/dateintervalcriteria.class.php:150
 #: inc/timeintervalcriteria.class.php:110
 msgid "Date interval"
-msgstr ""
+msgstr "Období"
 
-#: inc/dateintervalcriteria.class.php:150
+#: inc/dateintervalcriteria.class.php:152
 #: inc/timeintervalcriteria.class.php:112
 msgid "Time interval"
-msgstr ""
+msgstr "Časový interval"
 
 #: inc/function.php:81
 msgid "_report_title"
-msgstr ""
+msgstr "_report_title"
 
 #: inc/prioritycriteria.class.php:79
 msgid "At least"
-msgstr ""
+msgstr "Přinejmenším"
 
 #: inc/profile.class.php:52
 msgid "Rights management by profil"
-msgstr ""
+msgstr "Správa oprávnění dle profilu"
 
 #: inc/profile.class.php:86
 msgid "Profils rights"
-msgstr ""
+msgstr "Oprávnění profilů"
 
 #: inc/profile.class.php:113
 msgid "No right on Assistance / Statistics"
-msgstr ""
+msgstr "Žádná práva na Podporu / Statistiky"
 
 #: inc/profile.class.php:115
 msgid "No right on Tools / Reports"
-msgstr ""
+msgstr "Žádná práva na Nástroje / Výkazy"
 
 #: inc/timeintervalcriteria.class.php:70 inc/timeintervalcriteria.class.php:79
 msgid "Number pending"
-msgstr ""
+msgstr "Počet čekajících"
 
 #. TRANS: The name of the report = Applications by locations and versions
-#: report/applicationsbylocation/applicationsbylocation.php:39
+#: report/applicationsbylocation/applicationsbylocation.php:41
 msgid "applicationsbylocation_report_title"
-msgstr ""
+msgstr "Aplikace podle umístění a verzí"
 
-#: report/applicationsbylocation/applicationsbylocation.php:45
+#: report/applicationsbylocation/applicationsbylocation.php:47
 msgid "Applications"
 msgstr "Aplikace"
 
-#: report/applicationsbylocation/applicationsbylocation.php:48
-#: report/softversioninstallations/softversioninstallations.php:46
+#: report/applicationsbylocation/applicationsbylocation.php:50
+#: report/softversioninstallations/softversioninstallations.php:48
 msgid "Computer status"
 msgstr "Stav počítače"
 
 #. TRANS: The name of the report = Duplicate computers
-#: report/doublons/doublons.php:42
+#: report/doublons/doublons.php:44
 msgid "doublons_report_title"
-msgstr ""
+msgstr "Duplicitní počítače"
 
-#: report/doublons/doublons.php:76 report/doublons/doublons.php:374
+#: report/doublons/doublons.php:78 report/doublons/doublons.php:376
 msgid "Duplicate computers"
-msgstr ""
+msgstr "Duplicitní počítače"
 
-#: report/doublons/doublons.php:258
+#: report/doublons/doublons.php:260
 msgid "First computer"
 msgstr "První počítač"
 
-#: report/doublons/doublons.php:259
+#: report/doublons/doublons.php:261
 msgid "Second computer"
 msgstr "Druhý počítač"
 
-#: report/doublons/doublons.php:275 report/doublons/doublons.php:290
+#: report/doublons/doublons.php:277 report/doublons/doublons.php:292
 msgid "Last inventory date"
 msgstr "Datum poslední inventarizace"
 
@@ -108,233 +109,238 @@ msgstr "Datum poslední inventarizace"
 #. users
 #: report/equipmentbygroups/equipmentbygroups.php:40
 msgid "equipmentbygroups_report_title"
-msgstr ""
+msgstr "Seznam všech zařízení skupiny"
 
 #. TRANS: The name of the report = Number of equipments by location
 #: report/equipmentbylocation/equipmentbylocation.php:38
 msgid "equipmentbylocation_report_title"
-msgstr ""
+msgstr "Počet zařízení v jednotlivých umístěních"
 
 #. TRANS: The name of the report = Global History (for Test / example only)
 #: report/globalhisto/globalhisto.php:38
 msgid "globalhisto_report_title"
-msgstr ""
+msgstr "Globální historie (pouze pro vyzkoušení/příklad)"
 
-#: report/globalhisto/globalhisto.php:69
+#: report/globalhisto/globalhisto.php:64
 msgid "modification of components"
-msgstr ""
+msgstr "změna komponent"
 
 #. TRANS: The name of the report = History of last hardware's installations
-#: report/histohard/histohard.php:45
+#: report/histohard/histohard.php:46
 msgid "histohard_report_title"
-msgstr ""
+msgstr "Historie nedávných změn hardware"
 
-#: report/histohard/histohard.php:52
+#: report/histohard/histohard.php:53
 msgid "History of last hardware's installations"
-msgstr ""
+msgstr "Historie nedávných změn hardware"
 
-#: report/histohard/histohard.php:54 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
 msgid "Date of inventory"
 msgstr "Datum inventarizace"
 
-#: report/histohard/histohard.php:58
+#: report/histohard/histohard.php:59
 msgid "Modification"
 msgstr "Změna"
 
-#: report/histohard/histohard.php:146
+#: report/histohard/histohard.php:152
 msgid "The list is limited to 100 items and 21 days"
 msgstr "Seznam je omezen na 100 položek a 21 dní"
 
 #. TRANS: The name of the report = History of last software's installations
 #: report/histoinst/histoinst.php:47
 msgid "histoinst_report_title"
-msgstr ""
+msgstr "Historie nedávných instalací software"
 
 #: report/histoinst/histoinst.php:54
 msgid "History of last software's installations"
-msgstr ""
+msgstr "Historie nedávných instalací software"
 
-#: report/histoinst/histoinst.php:99
+#: report/histoinst/histoinst.php:103
 msgid "The list is limited to 200 items and 21 days"
 msgstr "Seznam je omezen na 200 položek a 21 dní"
 
 #. TRANS: The name of the report = Financial information
-#: report/infocom/infocom.php:53
+#: report/infocom/infocom.php:55
 msgid "infocom_report_title"
-msgstr ""
+msgstr "Finanční informace"
 
 #. TRANS: The name of the report = Time before equipment start-up
-#: report/iteminstall/iteminstall.php:40
+#: report/iteminstall/iteminstall.php:42
 msgid "iteminstall_report_title"
-msgstr ""
+msgstr "Doba od koupě, než bylo nasazeno do provozu"
 
 #. TRANS: The name of the report = Licenses by expiration date
-#: report/licensesexpires/licensesexpires.php:39
+#: report/licensesexpires/licensesexpires.php:40
 msgid "licensesexpires_report_title"
-msgstr ""
+msgstr "Licence dle data skončení platnosti"
 
-#: report/licensesexpires/licensesexpires.php:41
+#: report/licensesexpires/licensesexpires.php:42
 msgid "Valid to"
-msgstr ""
+msgstr "Platné do"
 
 #. TRANS: The name of the report = Detailed license report
-#: report/licenses/licenses.php:39
+#: report/licenses/licenses.php:41
 msgid "licenses_report_title"
-msgstr ""
+msgstr "Podrobný výkaz o licencích"
 
-#: report/licenses/licenses.php:58
+#: report/licenses/licenses.php:60
 msgid "Used version"
 msgstr "Použitá verze"
 
 #. TRANS: The name of the report = List of equipments by location
-#: report/listequipmentbylocation/listequipmentbylocation.php:39
+#: report/listequipmentbylocation/listequipmentbylocation.php:40
 msgid "listequipmentbylocation_report_title"
-msgstr ""
+msgstr "Seznam položek dle umístění"
 
 #. TRANS: The name of the report = List of groups and members
-#: report/listgroups/listgroups.php:39
+#: report/listgroups/listgroups.php:41
 msgid "listgroups_report_title"
-msgstr ""
+msgstr "Seznam skupin a jejich členů"
 
 #. TRANS: The name of the report = Location tree
-#: report/location/location.php:39
+#: report/location/location.php:41
 msgid "location_report_title"
-msgstr ""
+msgstr "Strom umístění"
 
-#: report/location/location.php:45
+#: report/location/location.php:46
 msgid "Link"
 msgid_plural "Links"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Odkaz"
+msgstr[1] "Odkazy"
+msgstr[2] "Odkazů"
+msgstr[3] "Odkazy"
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:211
+#: report/pcsbyentity/pcsbyentity.php:212
 msgid "pcsbyentity_report_title"
-msgstr ""
+msgstr "Počet položek v jednotlivých entitách"
 
-#: report/pcsbyentity/pcsbyentity.php:220
+#: report/pcsbyentity/pcsbyentity.php:221
 msgid "Number of items by entity"
-msgstr ""
+msgstr "Počet položek v jednotlivých entitách"
 
-#: report/pcsbyentity/pcsbyentity.php:246
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Display"
 msgstr "Zobrazit"
 
-#: report/pcsbyentity/pcsbyentity.php:247
+#: report/pcsbyentity/pcsbyentity.php:248
 msgid "Entity tree"
 msgstr "Strom entit"
 
-#: report/pcsbyentity/pcsbyentity.php:250
+#: report/pcsbyentity/pcsbyentity.php:251
 msgid "Sort by count"
-msgstr ""
+msgstr "Seřadit dle počtu"
 
-#: report/pcsbyentity/pcsbyentity.php:267
-#: report/pcsbyentity/pcsbyentity.php:274
+#: report/pcsbyentity/pcsbyentity.php:268
+#: report/pcsbyentity/pcsbyentity.php:275
 msgid "Unknown"
 msgstr "Neznámý"
 
-#. TRANS: The name of the report = Printers
-#: report/printers/printers.php:39
-msgid "printers_report_title"
-msgstr ""
+#: report/pcsbyentity/pcsbyentity.php:289
+msgid "Selection of type is mandatory"
+msgstr "Výběr typu je povinný"
 
-#: report/printers/printers.php:71
+#. TRANS: The name of the report = Printers
+#: report/printers/printers.php:41
+msgid "printers_report_title"
+msgstr "Tiskárny"
+
+#: report/printers/printers.php:72
 msgid "Computers in the group"
 msgstr "Počítače ve skupině"
 
-#: report/printers/printers.php:72
+#: report/printers/printers.php:73
 msgid "Users in the group"
 msgstr "Uživatelé ve skupině"
 
-#: report/printers/printers.php:75
+#: report/printers/printers.php:76
 msgid "Computers in the location"
 msgstr "Počítače v umístění"
 
-#: report/printers/printers.php:76
+#: report/printers/printers.php:77
 msgid "Users in the location"
 msgstr "Uživatelé v umístění"
 
 #. TRANS: The name of the report = Rule's catalog
-#: report/rules/rules.php:50 report/rules/rules.php:99
-#: report/rules/rules.php:124
+#: report/rules/rules.php:50 report/rules/rules.php:98
+#: report/rules/rules.php:115
 msgid "rules_report_title"
-msgstr ""
+msgstr "Katalog pravidel"
 
 #. TRANS: The name of the report = Search in the financial information
 #. (plural)
-#: report/searchinfocom/searchinfocom.php:39
+#: report/searchinfocom/searchinfocom.php:41
 msgid "searchinfocom_report_title"
-msgstr ""
+msgstr "Hledání finančních informací"
 
 #. TRANS: The name of the report = Detailed report of software installation by
 #. status
-#: report/softnotinstalled/softnotinstalled.php:39
+#: report/softnotinstalled/softnotinstalled.php:41
 msgid "softnotinstalled_report_title"
-msgstr ""
+msgstr "Nenainstalovaný důležitý software"
 
 #. TRANS: The name of the report = Not installed important software (plural)
-#: report/softversioninstallations/softversioninstallations.php:39
+#: report/softversioninstallations/softversioninstallations.php:41
 msgid "softversioninstallations_report_title"
-msgstr ""
+msgstr "Nenainstalované důležitý software"
 
-#: report/softversioninstallations/softversioninstallations.php:42
+#: report/softversioninstallations/softversioninstallations.php:44
 msgid "Software version status"
-msgstr ""
+msgstr "Stav verzí software"
 
 #. TRANS: The name of the report = Tickets opened at night, sorted by priority
-#: report/statnightticketsbypriority/statnightticketsbypriority.php:39
+#: report/statnightticketsbypriority/statnightticketsbypriority.php:41
 msgid "statnightticketsbypriority_report_title"
-msgstr ""
+msgstr "Požadavky otevřené v noci"
 
 #. TRANS: The name of the report = Helpdesk requesters and tickets by entity
-#: report/statticketsbyentity/statticketsbyentity.php:41
+#: report/statticketsbyentity/statticketsbyentity.php:43
 msgid "statticketsbyentity_report_title"
-msgstr ""
+msgstr "Zvýšená podpora"
 
-#: report/statticketsbyentity/statticketsbyentity.php:57
+#: report/statticketsbyentity/statticketsbyentity.php:59
 msgid "Users count"
 msgstr "Počet uživatelů"
 
-#: report/statticketsbyentity/statticketsbyentity.php:60
+#: report/statticketsbyentity/statticketsbyentity.php:62
 msgid "Tickets count"
 msgstr "Počet požadavků"
 
-#: report/statticketsbyentity/statticketsbyentity.php:63
+#: report/statticketsbyentity/statticketsbyentity.php:65
 msgid "Older"
 msgstr "Starší"
 
-#: report/statticketsbyentity/statticketsbyentity.php:65
+#: report/statticketsbyentity/statticketsbyentity.php:67
 msgid "Newer"
 msgstr "Novější"
 
 #. TRANS: The name of the report = Tickets no closed, sorted by priority
-#: report/statticketsbypriority/statticketsbypriority.php:39
+#: report/statticketsbypriority/statticketsbypriority.php:41
 msgid "statticketsbypriority_report_title"
-msgstr ""
+msgstr "Neuzavřené požadavky"
 
 #. TRANS: The name of the report = List of transfered objects
-#: report/transferreditems/transferreditems.php:40
+#: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
-msgstr ""
-
-#: report/transferreditems/transferreditems.php:65
-msgid "Source entity"
-msgstr ""
-
-#: report/transferreditems/transferreditems.php:66
-msgid "Target entity"
-msgstr ""
+msgstr "Seznam přenesených objektů"
 
 #: report/transferreditems/transferreditems.php:67
+msgid "Source entity"
+msgstr "Zdrojová entita"
+
+#: report/transferreditems/transferreditems.php:68
+msgid "Target entity"
+msgstr "Cílová entita"
+
+#: report/transferreditems/transferreditems.php:69
 msgid "Transfert date"
-msgstr ""
+msgstr "Datum přenosu"
 
 #. TRANS: The name of the report = Users with no right
 #: report/zombies/zombies.php:39
 msgid "zombies_report_title"
-msgstr ""
+msgstr "Uživatelé bez oprávnění"
 
 #: report/zombies/zombies.php:45
 msgid "With no ticket"
-msgstr ""
+msgstr "Bez požadavků"

@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -54,7 +54,6 @@ function plugin_reports_rulelist ($rulecollection, $title) {
    echo "<th colspan='2'>"._n('Criterion', 'Criteria', 2)."</th>";
    echo "<th>"._n('Action', 'Actions', 2)."</th>";
    echo "<th>".__('Active')."</th></tr>\n";
-
    foreach ($rulecollection->RuleList->list as $rule) {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . $rule->fields["name"] . "</td>";
@@ -106,14 +105,6 @@ if ($type == "ldap") {
    $rulecollection = new RuleRightCollection();
    plugin_reports_rulelist($rulecollection, __('Authorizations assignment rules'));
 
-} else if ($type == "ocs") {
-   $rulecollection = new RuleOcsCollection(-1);
-   plugin_reports_rulelist($rulecollection, __('Rules for assigning a computer to an entity'));
-
-} else if ($type == "track") {
-   $rulecollection = new RuleTicketCollection();
-   plugin_reports_rulelist($rulecollection, __('Business rules for tickets'));
-
 } else if ($type == "soft") {
    $rulecollection = new RuleSoftwareCategoryCollection();
    plugin_reports_rulelist($rulecollection, __('Rules for assigning a category to software'));
@@ -124,15 +115,10 @@ if ($type == "ldap") {
    echo "<tr><th>". sprintf(__('%1$s - %2$s'), __("rules_report_title", 'reports'), __('Rule type')).
         "</th></tr>";
 
+
    if (Session::haveRight("rule_ldap", READ)) {
       echo "<tr class='tab_bg_1'><td class='center b'>".
            "<a href='".$_SERVER["PHP_SELF"]."?type=ldap'>".__('Authorizations assignment rules').
-           "</a></td></tr>";
-   }
-
-   if (Session::haveRight("rule_tracking", READ)) {
-      echo "<tr class='tab_bg_1'><td class='center b'>".
-           "<a href='".$_SERVER["PHP_SELF"]."?type=track'>".__('Business rules for tickets').
            "</a></td></tr>";
    }
 

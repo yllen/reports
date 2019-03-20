@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -37,19 +37,16 @@ include ("../../../../inc/includes.php");
 //TRANS: The name of the report = Number of equipments by location
 $report = new PluginReportsAutoReport(__('equipmentbylocation_report_title', 'reports'));
 
-$report->setColumns(array(new PluginReportsColumn('entity', __('Entity')),
-                          new PluginReportsColumn('location', __('Location')),
-                          new PluginReportsColumnInteger('computernumber',
-                                                          _n('Computer', 'Computers', 2)),
-                          new PluginReportsColumnInteger('networknumber',
-                                                         _n('Network', 'Networks', 2)),
-                          new PluginReportsColumnInteger('monitornumber',
-                                                         _n('Monitor', 'Monitors', 2)),
-                          new PluginReportsColumnInteger('printernumber',
-                                                         _n('Printer', 'Printers', 2)),
-                          new PluginReportsColumnInteger('peripheralnumber',
-                                                          _n('Device', 'Devices', 2)),
-                          new PluginReportsColumnInteger('phonenumber', _n('Phone', 'Phones', 2))));
+$dbu = new DbUtils();
+
+$report->setColumns([new PluginReportsColumn('entity', __('Entity')),
+                     new PluginReportsColumn('location', __('Location')),
+                     new PluginReportsColumnInteger('computernumber', _n('Computer', 'Computers', 2)),
+                     new PluginReportsColumnInteger('networknumber',  _n('Network', 'Networks', 2)),
+                     new PluginReportsColumnInteger('monitornumber', _n('Monitor', 'Monitors', 2)),
+                     new PluginReportsColumnInteger('printernumber', _n('Printer', 'Printers', 2)),
+                     new PluginReportsColumnInteger('peripheralnumber', _n('Device', 'Devices', 2)),
+                     new PluginReportsColumnInteger('phonenumber', _n('Phone', 'Phones', 2))]);
 
 $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`,
                  i.`monitornumber`, i.`printernumber`, j.`peripheralnumber`, l.`phonenumber`
@@ -66,12 +63,12 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
                                         FROM `glpi_locations`
                                         LEFT JOIN `glpi_entities`
                                           ON (`glpi_locations`.`entities_id`=`glpi_entities`.`id`) ".
-                                        getEntitiesRestrictRequest(" WHERE ", "glpi_locations").") a
+                                        $dbu->getEntitiesRestrictRequest(" WHERE ", "glpi_locations").") a
                                   LEFT OUTER JOIN (SELECT count(*) AS computernumber,
                                                           `glpi_computers`.`locations_id` AS id
                                                    FROM `glpi_computers`
                                                    WHERE is_deleted=0 AND is_template=0
-                                                   ".getEntitiesRestrictRequest(" AND ", "glpi_computers")."
+                                                   ".$dbu->getEntitiesRestrictRequest(" AND ", "glpi_computers")."
                                                    GROUP BY `glpi_computers`.`locations_id`) b
                                        ON (a.id = b.id)
                                  ) c
@@ -79,7 +76,7 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
                                                     `glpi_networkequipments`.`locations_id` AS id
                                              FROM `glpi_networkequipments`
                                              WHERE is_deleted=0 AND is_template=0
-                                             ".getEntitiesRestrictRequest(" AND ", "glpi_networkequipments")."
+                                             ".$dbu->getEntitiesRestrictRequest(" AND ", "glpi_networkequipments")."
                                              GROUP BY `glpi_networkequipments`.`locations_id`) d
                                  ON (c.id = d.id)
                            ) e
@@ -87,7 +84,7 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
                                               `glpi_monitors`.`locations_id` AS id
                                        FROM `glpi_monitors`
                                        WHERE is_deleted=0 AND is_template=0
-                                       ".getEntitiesRestrictRequest(" AND ", "glpi_monitors")."
+                                       ".$dbu->getEntitiesRestrictRequest(" AND ", "glpi_monitors")."
                                        GROUP BY `glpi_monitors`.`locations_id`) f
                            ON (e.id = f.id)
                      ) g
@@ -95,7 +92,7 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
                                         `glpi_printers`.`locations_id` AS id
                                  FROM `glpi_printers`
                                  WHERE is_deleted=0 AND is_template=0
-                                 ".getEntitiesRestrictRequest(" AND ", "glpi_printers")."
+                                 ".$dbu->getEntitiesRestrictRequest(" AND ", "glpi_printers")."
                                  GROUP BY `glpi_printers`.`locations_id`) h
                      ON (g.id = h.id)
                ) i
@@ -103,14 +100,14 @@ $query = "SELECT i.`entity`, i.`location`, i.`computernumber`, i.`networknumber`
                                   `glpi_peripherals`.`locations_id` AS id
                               FROM `glpi_peripherals`
                               WHERE is_deleted=0 AND is_template=0
-                              ".getEntitiesRestrictRequest(" AND ", "glpi_peripherals")."
+                              ".$dbu->getEntitiesRestrictRequest(" AND ", "glpi_peripherals")."
                               GROUP BY `glpi_peripherals`.`locations_id`) j
                ON (i.id = j.id)
           LEFT OUTER JOIN (SELECT count(*) AS phonenumber,
                                   `glpi_phones`.`locations_id` AS id
                            FROM `glpi_phones`
                            WHERE is_deleted=0 AND is_template=0
-                           ".getEntitiesRestrictRequest(" AND ", "glpi_phones")."
+                           ".$dbu->getEntitiesRestrictRequest(" AND ", "glpi_phones")."
                            GROUP BY `glpi_phones`.`locations_id`) l
                ON (i.id = l.id)
           ORDER BY i.entity, i.location";

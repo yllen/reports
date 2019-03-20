@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -40,7 +40,7 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
    private $nametype     = '';
 
 
-   function __construct($nameid, $title, $nametype, $options=array()) {
+   function __construct($nameid, $title, $nametype, $options=[]) {
 
       parent::__construct($nameid, $title, $options);
 
@@ -54,6 +54,8 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
 
    function displayValue($output_type, $row) {
 
+      $dbu = new DbUtils();
+
       if (!isset($row[$this->name]) || !$row[$this->name]) {
          return '';
       }
@@ -61,7 +63,7 @@ class PluginReportsColumnTypeLink extends PluginReportsColumn {
           && $row[$this->nametype]
           && (is_null($this->obj) || $this->obj->getType()!=$row[$this->nametype])) {
 
-         if (!($this->obj = getItemForItemtype($row[$this->nametype]))) {
+         if (!($this->obj = $dbu->getItemForItemtype($row[$this->nametype]))) {
             $this->obj = NULL;
          }
       }

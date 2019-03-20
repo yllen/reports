@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Benoit Machiavello
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -35,16 +35,18 @@ $DBCONNECTION_REQUIRED = 0;
 
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = List of groups and members
 $report = new PluginReportsAutoReport(__('listgroups_report_title', 'reports'));
 //$group = new GroupCriteria($report);
 
-$report->setColumns(array(new PluginReportsColumn('completename', __('Entity')),
-                          new PluginReportsColumnLink('groupid', __('Group'), 'Group'),
-                          new PluginReportsColumnLink('userid', __('Login'), 'User'),
-                          new PluginReportsColumn('firstname', __('First name')),
-                          new PluginReportsColumn('realname', __('Surname')),
-                          new PluginReportsColumnDateTime('last_login', __('Last login'))));
+$report->setColumns([new PluginReportsColumn('completename', __('Entity')),
+                     new PluginReportsColumnLink('groupid', __('Group'), 'Group'),
+                     new PluginReportsColumnLink('userid', __('Login'), 'User'),
+                     new PluginReportsColumn('firstname', __('First name')),
+                     new PluginReportsColumn('realname', __('Surname')),
+                     new PluginReportsColumnDateTime('last_login', __('Last login'))]);
 
 $query = "SELECT `glpi_entities`.`completename`,
                  `glpi_groups`.`id` AS groupid,
@@ -57,10 +59,9 @@ $query = "SELECT `glpi_entities`.`completename`,
           LEFT JOIN `glpi_users` ON (`glpi_groups_users`.`users_id` = `glpi_users`.`id`
                                      AND `glpi_users`.`is_deleted` = '0' )
           LEFT JOIN `glpi_entities` ON (`glpi_groups`.`entities_id` = `glpi_entities`.`id`)".
-          getEntitiesRestrictRequest(" WHERE ", "glpi_groups") ."
+          $dbu->getEntitiesRestrictRequest(" WHERE ", "glpi_groups") ."
           ORDER BY `completename`, `glpi_groups`.`name`, `glpi_users`.`name`";
 
-$report->setGroupBy(array('completename',
-                          'groupid'));
+$report->setGroupBy(['completename', 'groupid']);
 $report->setSqlRequest($query);
 $report->execute();

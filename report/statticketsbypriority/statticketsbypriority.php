@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -35,11 +35,14 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = Tickets no closed, sorted by priority
 $report = new PluginReportsAutoReport(__('statticketsbypriority_report_title', 'reports'));
 
 //Report's search criterias
 new PluginReportsDateIntervalCriteria($report, '`glpi_tickets`.`date`', __('Opening date'));
+new PluginReportsTicketStatusCriteria($report);
 
 //Display criterias form is needed
 $report->displayCriteriasForm();
@@ -49,14 +52,14 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $report->setColumns(array(new PluginReportsColumnMap('priority', __('Priority'), array(),
-                                                        array('sorton' => '`priority`, `date`')),
-                             new PluginReportsColumnDateTime('date', __('Opening date'),
-                                                             array('sorton' => '`date`')),
-                             new PluginReportsColumn('id2', __('ID')),
-                             new PluginReportsColumnLink('id', __('Title'), 'Ticket'),
-                             new PluginReportsColumn('groupname', __('Group'),
-                                                     array('sorton' => '`glpi_groups_tickets`.`groups_id`, `date`'))));
+   $report->setColumns([new PluginReportsColumnMap('priority', __('Priority'), [],
+                                                   ['sorton' => '`priority`, `date`']),
+                        new PluginReportsColumnDateTime('date', __('Opening date'),
+                                                        ['sorton' => '`date`']),
+                        new PluginReportsColumn('id2', __('ID')),
+                        new PluginReportsColumnLink('id', __('Title'), 'Ticket'),
+                        new PluginReportsColumn('groupname', __('Assigned to groups'),
+                                                ['sorton' => '`glpi_groups_tickets`.`groups_id`, `date`'])]);
 
    $query = "SELECT `glpi_tickets`.`priority`, DATE(`glpi_tickets`.`date`) AS date,
                     `glpi_tickets`.`id`, `glpi_tickets`.`id` AS id2,
@@ -66,10 +69,12 @@ if ($report->criteriasValidated()) {
                   ON (`glpi_groups_tickets`.`tickets_id` = `glpi_tickets`.`id`
                       AND `glpi_groups_tickets`.`type` = '".CommonITILActor::ASSIGN."')
              LEFT JOIN `glpi_groups` ON (`glpi_groups_tickets`.`groups_id` = `glpi_groups`.`id`)
-             WHERE `glpi_tickets`.`status` NOT IN ('solved', 'closed')
+             WHERE `glpi_tickets`.`status` NOT IN ('".implode("', '",
+                                                              array_merge(Ticket::getSolvedStatusArray(),
+                                                                          Ticket::getClosedStatusArray()))."')
                   AND NOT `glpi_tickets`.`is_deleted` ".
                   $report->addSqlCriteriasRestriction() .
-                  getEntitiesRestrictRequest(' AND ', 'glpi_tickets').
+                  $dbu->getEntitiesRestrictRequest(' AND ', 'glpi_tickets').
              $report->getOrderBy('priority');
 
    $report->setSqlRequest($query);

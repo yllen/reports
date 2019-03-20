@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-10 12:21+0200\n"
-"PO-Revision-Date: 2016-06-10 10:26+0000\n"
+"POT-Creation-Date: 2018-09-13 11:20+0200\n"
+"PO-Revision-Date: 2018-09-13 09:14+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/yllen/GLPI_reports/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -32,12 +32,12 @@ msgstr "Gerenciamento de permissões por relatório"
 msgid "Search criteria"
 msgstr "Critérios de pesquisa"
 
-#: inc/dateintervalcriteria.class.php:148
+#: inc/dateintervalcriteria.class.php:150
 #: inc/timeintervalcriteria.class.php:110
 msgid "Date interval"
 msgstr "Intervalo de data"
 
-#: inc/dateintervalcriteria.class.php:150
+#: inc/dateintervalcriteria.class.php:152
 #: inc/timeintervalcriteria.class.php:112
 msgid "Time interval"
 msgstr "Intervalo de hora"
@@ -71,37 +71,37 @@ msgid "Number pending"
 msgstr "Número de pendências"
 
 #. TRANS: The name of the report = Applications by locations and versions
-#: report/applicationsbylocation/applicationsbylocation.php:39
+#: report/applicationsbylocation/applicationsbylocation.php:41
 msgid "applicationsbylocation_report_title"
 msgstr "Aplicativos por localização e versão"
 
-#: report/applicationsbylocation/applicationsbylocation.php:45
+#: report/applicationsbylocation/applicationsbylocation.php:47
 msgid "Applications"
 msgstr "Aplicativos"
 
-#: report/applicationsbylocation/applicationsbylocation.php:48
-#: report/softversioninstallations/softversioninstallations.php:46
+#: report/applicationsbylocation/applicationsbylocation.php:50
+#: report/softversioninstallations/softversioninstallations.php:48
 msgid "Computer status"
 msgstr "Estado de computador"
 
 #. TRANS: The name of the report = Duplicate computers
-#: report/doublons/doublons.php:42
+#: report/doublons/doublons.php:44
 msgid "doublons_report_title"
 msgstr "Computadores duplicados"
 
-#: report/doublons/doublons.php:76 report/doublons/doublons.php:374
+#: report/doublons/doublons.php:78 report/doublons/doublons.php:376
 msgid "Duplicate computers"
 msgstr "Computadores duplicados"
 
-#: report/doublons/doublons.php:258
+#: report/doublons/doublons.php:260
 msgid "First computer"
 msgstr "Primeiro computador"
 
-#: report/doublons/doublons.php:259
+#: report/doublons/doublons.php:261
 msgid "Second computer"
 msgstr "Segundo computador"
 
-#: report/doublons/doublons.php:275 report/doublons/doublons.php:290
+#: report/doublons/doublons.php:277 report/doublons/doublons.php:292
 msgid "Last inventory date"
 msgstr "Data do último inventário"
 
@@ -121,28 +121,28 @@ msgstr "Número de equipamentos por localização"
 msgid "globalhisto_report_title"
 msgstr "Histórico global (apenas para teste/exemplo)"
 
-#: report/globalhisto/globalhisto.php:69
+#: report/globalhisto/globalhisto.php:64
 msgid "modification of components"
 msgstr "modificação de componentes"
 
 #. TRANS: The name of the report = History of last hardware's installations
-#: report/histohard/histohard.php:45
+#: report/histohard/histohard.php:46
 msgid "histohard_report_title"
 msgstr "Histórico das últimas instalações de hardware"
 
-#: report/histohard/histohard.php:52
+#: report/histohard/histohard.php:53
 msgid "History of last hardware's installations"
 msgstr "Histórico das últimas instalações de hardware"
 
-#: report/histohard/histohard.php:54 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
 msgid "Date of inventory"
 msgstr "Data do inventário"
 
-#: report/histohard/histohard.php:58
+#: report/histohard/histohard.php:59
 msgid "Modification"
 msgstr "Modificação"
 
-#: report/histohard/histohard.php:146
+#: report/histohard/histohard.php:152
 msgid "The list is limited to 100 items and 21 days"
 msgstr "A lista é limitada a 100 itens e 21 dias"
 
@@ -155,178 +155,182 @@ msgstr "Histórico das últimas instalações de software"
 msgid "History of last software's installations"
 msgstr "Histórico das instalações dos últimos softwares"
 
-#: report/histoinst/histoinst.php:99
+#: report/histoinst/histoinst.php:103
 msgid "The list is limited to 200 items and 21 days"
 msgstr "A lista é limitada a 200 itens e 21 dias"
 
 #. TRANS: The name of the report = Financial information
-#: report/infocom/infocom.php:53
+#: report/infocom/infocom.php:55
 msgid "infocom_report_title"
 msgstr "Informações financeiras"
 
 #. TRANS: The name of the report = Time before equipment start-up
-#: report/iteminstall/iteminstall.php:40
+#: report/iteminstall/iteminstall.php:42
 msgid "iteminstall_report_title"
 msgstr "Horário antes do equipamento iniciar"
 
 #. TRANS: The name of the report = Licenses by expiration date
-#: report/licensesexpires/licensesexpires.php:39
+#: report/licensesexpires/licensesexpires.php:40
 msgid "licensesexpires_report_title"
 msgstr "Licenças por data de expiração"
 
-#: report/licensesexpires/licensesexpires.php:41
+#: report/licensesexpires/licensesexpires.php:42
 msgid "Valid to"
 msgstr "Válido até"
 
 #. TRANS: The name of the report = Detailed license report
-#: report/licenses/licenses.php:39
+#: report/licenses/licenses.php:41
 msgid "licenses_report_title"
 msgstr "Relatório detalhado da licença"
 
-#: report/licenses/licenses.php:58
+#: report/licenses/licenses.php:60
 msgid "Used version"
 msgstr "Versão usada"
 
 #. TRANS: The name of the report = List of equipments by location
-#: report/listequipmentbylocation/listequipmentbylocation.php:39
+#: report/listequipmentbylocation/listequipmentbylocation.php:40
 msgid "listequipmentbylocation_report_title"
 msgstr "Lista de equipamentos por localização"
 
 #. TRANS: The name of the report = List of groups and members
-#: report/listgroups/listgroups.php:39
+#: report/listgroups/listgroups.php:41
 msgid "listgroups_report_title"
 msgstr "Lista de grupos por localização"
 
 #. TRANS: The name of the report = Location tree
-#: report/location/location.php:39
+#: report/location/location.php:41
 msgid "location_report_title"
 msgstr "Árvore de localizações"
 
-#: report/location/location.php:45
+#: report/location/location.php:46
 msgid "Link"
 msgid_plural "Links"
 msgstr[0] ""
 msgstr[1] ""
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:211
+#: report/pcsbyentity/pcsbyentity.php:212
 msgid "pcsbyentity_report_title"
 msgstr "Número de itens por entidade"
 
-#: report/pcsbyentity/pcsbyentity.php:220
+#: report/pcsbyentity/pcsbyentity.php:221
 msgid "Number of items by entity"
 msgstr "Número de itens por entidade"
 
-#: report/pcsbyentity/pcsbyentity.php:246
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Display"
 msgstr "Exibir"
 
-#: report/pcsbyentity/pcsbyentity.php:247
+#: report/pcsbyentity/pcsbyentity.php:248
 msgid "Entity tree"
 msgstr "Árvore de entidades"
 
-#: report/pcsbyentity/pcsbyentity.php:250
+#: report/pcsbyentity/pcsbyentity.php:251
 msgid "Sort by count"
 msgstr "Organizar por número"
 
-#: report/pcsbyentity/pcsbyentity.php:267
-#: report/pcsbyentity/pcsbyentity.php:274
+#: report/pcsbyentity/pcsbyentity.php:268
+#: report/pcsbyentity/pcsbyentity.php:275
 msgid "Unknown"
 msgstr "Desconhecido"
 
+#: report/pcsbyentity/pcsbyentity.php:289
+msgid "Selection of type is mandatory"
+msgstr ""
+
 #. TRANS: The name of the report = Printers
-#: report/printers/printers.php:39
+#: report/printers/printers.php:41
 msgid "printers_report_title"
 msgstr "Impressoras"
 
-#: report/printers/printers.php:71
+#: report/printers/printers.php:72
 msgid "Computers in the group"
 msgstr "Computador no grupo"
 
-#: report/printers/printers.php:72
+#: report/printers/printers.php:73
 msgid "Users in the group"
 msgstr "Usuários no grupo"
 
-#: report/printers/printers.php:75
+#: report/printers/printers.php:76
 msgid "Computers in the location"
 msgstr "Computadores no local"
 
-#: report/printers/printers.php:76
+#: report/printers/printers.php:77
 msgid "Users in the location"
 msgstr "Usuários no local"
 
 #. TRANS: The name of the report = Rule's catalog
-#: report/rules/rules.php:50 report/rules/rules.php:99
-#: report/rules/rules.php:124
+#: report/rules/rules.php:50 report/rules/rules.php:98
+#: report/rules/rules.php:115
 msgid "rules_report_title"
 msgstr "Catálogo da regra"
 
 #. TRANS: The name of the report = Search in the financial information
 #. (plural)
-#: report/searchinfocom/searchinfocom.php:39
+#: report/searchinfocom/searchinfocom.php:41
 msgid "searchinfocom_report_title"
 msgstr "Pesquisa nas informações financeiras"
 
 #. TRANS: The name of the report = Detailed report of software installation by
 #. status
-#: report/softnotinstalled/softnotinstalled.php:39
+#: report/softnotinstalled/softnotinstalled.php:41
 msgid "softnotinstalled_report_title"
 msgstr "Relatório detalhado da instalação de software por estado"
 
 #. TRANS: The name of the report = Not installed important software (plural)
-#: report/softversioninstallations/softversioninstallations.php:39
+#: report/softversioninstallations/softversioninstallations.php:41
 msgid "softversioninstallations_report_title"
 msgstr ""
 
-#: report/softversioninstallations/softversioninstallations.php:42
+#: report/softversioninstallations/softversioninstallations.php:44
 msgid "Software version status"
 msgstr "Estado da versão do software"
 
 #. TRANS: The name of the report = Tickets opened at night, sorted by priority
-#: report/statnightticketsbypriority/statnightticketsbypriority.php:39
+#: report/statnightticketsbypriority/statnightticketsbypriority.php:41
 msgid "statnightticketsbypriority_report_title"
 msgstr "Chamados abertos à noite, ordenados por prioridade"
 
 #. TRANS: The name of the report = Helpdesk requesters and tickets by entity
-#: report/statticketsbyentity/statticketsbyentity.php:41
+#: report/statticketsbyentity/statticketsbyentity.php:43
 msgid "statticketsbyentity_report_title"
 msgstr "Usuários e chamados por prioridade"
 
-#: report/statticketsbyentity/statticketsbyentity.php:57
+#: report/statticketsbyentity/statticketsbyentity.php:59
 msgid "Users count"
 msgstr "Número de usuários"
 
-#: report/statticketsbyentity/statticketsbyentity.php:60
+#: report/statticketsbyentity/statticketsbyentity.php:62
 msgid "Tickets count"
 msgstr "Número de chamados"
 
-#: report/statticketsbyentity/statticketsbyentity.php:63
+#: report/statticketsbyentity/statticketsbyentity.php:65
 msgid "Older"
 msgstr "Mais antigos"
 
-#: report/statticketsbyentity/statticketsbyentity.php:65
+#: report/statticketsbyentity/statticketsbyentity.php:67
 msgid "Newer"
 msgstr "Mais novo"
 
 #. TRANS: The name of the report = Tickets no closed, sorted by priority
-#: report/statticketsbypriority/statticketsbypriority.php:39
+#: report/statticketsbypriority/statticketsbypriority.php:41
 msgid "statticketsbypriority_report_title"
 msgstr "Chamados não fechados, ordenados por prioridade"
 
 #. TRANS: The name of the report = List of transfered objects
-#: report/transferreditems/transferreditems.php:40
+#: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
 msgstr "Lista de objetos transferidos"
 
-#: report/transferreditems/transferreditems.php:65
+#: report/transferreditems/transferreditems.php:67
 msgid "Source entity"
 msgstr "Entidade fonte"
 
-#: report/transferreditems/transferreditems.php:66
+#: report/transferreditems/transferreditems.php:68
 msgid "Target entity"
 msgstr "Entidade alvo"
 
-#: report/transferreditems/transferreditems.php:67
+#: report/transferreditems/transferreditems.php:69
 msgid "Transfert date"
 msgstr "Data de transferência"
 

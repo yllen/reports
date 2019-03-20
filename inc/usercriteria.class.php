@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -41,7 +41,7 @@ class PluginReportsUserCriteria extends PluginReportsDropdownCriteria {
     * @param $name      (default user)
     * @param $label     (default '')
    **/
-   function __construct($report, $name='user', $label='') {
+   function __construct($report, $name='users_id', $label='') {
 
       parent::__construct($report, $name, 'glpi_users', ($label ? $label : _n('User', 'Users', 1)));
    }
@@ -49,11 +49,11 @@ class PluginReportsUserCriteria extends PluginReportsDropdownCriteria {
 
    public function displayDropdownCriteria() {
 
-      User::dropdown(array('name'     => $this->getName(),
-                           'value'    => $this->getParameterValue(),
-                           'right'    => 'all',
-                           'comments' => $this->getDisplayComments(),
-                           'entity'   => $this->getEntityRestrict()));
+      User::dropdown(['name'     => $this->getName(),
+                      'value'    => $this->getParameterValue(),
+                      'right'    => 'all',
+                      'comments' => $this->getDisplayComments(),
+                      'entity'   => $this->getEntityRestrict()]);
    }
 
 }

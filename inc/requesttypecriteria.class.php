@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -52,8 +52,8 @@ class PluginReportsRequestTypeCriteria extends PluginReportsDropdownCriteria {
    //Dropdown priorities is not a generic dropdown, so the function needs to be overwritten
    public function displayDropdownCriteria() {
 
-      Dropdown::show('RequestType', array('name'  => $this->getName(),
-                                          'value' => $this->getParameterValue()));
+      Dropdown::show('RequestType', ['name'  => $this->getName(),
+                                     'value' => $this->getParameterValue()]);
    }
 
 

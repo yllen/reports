@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -49,7 +49,7 @@ function plugin_init_reports() {
 
    Plugin::registerClass('PluginReportsStat');
 
-   Plugin::registerClass('PluginReportsProfile', array('addtabon' => array('Profile')));
+   Plugin::registerClass('PluginReportsProfile', ['addtabon' => ['Profile']]);
 
    if (Session::haveRight("config", UPDATE)) {
       $PLUGIN_HOOKS['config_page']['reports']     = 'front/config.form.php';
@@ -57,8 +57,8 @@ function plugin_init_reports() {
 
    $PLUGIN_HOOKS['menu_entry']['reports'] = false;
 
-   $rightreport = array ();
-   $rightstats  = array ();
+   $rightreport = [];
+   $rightstats  = [];
 
    foreach (searchReport() as $report => $plug) {
       $field = 'plugin_reports_'.$report;
@@ -71,12 +71,12 @@ function plugin_init_reports() {
          //(instead of Report page)
          if (isStat($report)) {
             if (!isset($PLUGIN_HOOKS['stats'][$plug])) {
-               $PLUGIN_HOOKS['stats'][$plug] = array();
+               $PLUGIN_HOOKS['stats'][$plug] = [];
             }
             $PLUGIN_HOOKS['stats'][$plug]["report/$report/$report.php"] = $tmp;
          } else {
             if (!isset($PLUGIN_HOOKS['reports'][$plug])) {
-               $PLUGIN_HOOKS['reports'][$plug] = array();
+               $PLUGIN_HOOKS['reports'][$plug] = [];
             }
             $PLUGIN_HOOKS['reports'][$plug]["report/$report/$report.php"] = $tmp;
          }
@@ -101,12 +101,14 @@ function isStat($report_name) {
 
 function plugin_version_reports() {
 
-   return array('name'           => _n('Report', 'Reports', 2),
-                'version'        => '1.10',
-                'author'         => 'Nelly Mahu-Lasson, Remi Collet',
-                'license'        => 'GPLv3+',
-                'homepage'       => 'https://forge.glpi-project.org/projects/reports',
-                'minGlpiVersion' => '0.85');
+   return ['name'           => _n('Report', 'Reports', 2),
+           'version'        => '1.13.0',
+           'author'         => 'Nelly Mahu-Lasson, Remi Collet',
+           'license'        => 'GPLv3+',
+           'homepage'       => 'https://forge.glpi-project.org/projects/reports',
+           'minGlpiVersion' => '9.4',
+           'requirements'   => ['glpi' => ['min' => '9.4',
+                                           'max' => '9.5']]];
 }
 
 
@@ -118,8 +120,8 @@ function plugin_reports_check_config() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_reports_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.85','lt') || version_compare(GLPI_VERSION,'9.2','ge')) {
-      echo "This plugin requires GLPI >= 0.85 and GLPI < 9.2";
+   if (version_compare(GLPI_VERSION,'9.4','lt') || version_compare(GLPI_VERSION,'9.5','ge')) {
+      echo "This plugin requires GLPI >= 9.4 and GLPI < 9.5";
       return false;
    }
    return true;

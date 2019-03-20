@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -40,10 +40,10 @@ abstract class PluginReportsAutoCriteria {
    private $name = "";
 
    //Label of the criteria (refers to an entry in the locale file)
-   private $criterias_labels = array ();
+   private $criterias_labels = [];
 
    //Parameters are stored as name => value
-   private $parameters = array ();
+   private $parameters = [];
 
    //Field in the SQL request (can be table.field)
    private $sql_field = "";

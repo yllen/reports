@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -49,7 +49,7 @@ class PluginReportsColumn {
    protected $withtotal;
 
 
-   function __construct($name, $title, $options=array()) {
+   function __construct($name, $title, $options=[]) {
 
       $this->name      = $name;
       $this->title     = $title;
@@ -85,7 +85,7 @@ class PluginReportsColumn {
       $link  = $_SERVER['PHP_SELF'];
       $first = true;
       foreach ($_REQUEST as $name => $value) {
-         if (!in_array($name,array('sort','order','PHPSESSID'))) {
+         if (!in_array($name, ['sort','order','PHPSESSID'])) {
             $link .= ($first ? '?' : '&amp;');
             $link .= $name .'='.urlencode($value);
             $first = false;

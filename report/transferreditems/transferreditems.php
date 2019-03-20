@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Stéphane Savona
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -36,16 +36,18 @@ $DBCONNECION_REQUIRED = 0;
 
 include("../../../../inc/includes.php");
 
+$dbu = new DbUtils();
+
 //TRANS: The name of the report = List of transfered objects
 $report= new PluginReportsAutoReport(__('transferreditems_report_title', 'reports'));
 
 // Search criterias
 new PluginReportsDateIntervalCriteria($report, "`glpi_logs`.`date_mod`");
 
-$types = array();
-foreach (array('Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer',
-               'Software','SoftwareLicense') as $type) {
-   $label       = call_user_func(array($type, 'getTypeName'));
+$types = [];
+foreach (['CartridgeItem', 'Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone',
+          'Printer', 'Software','SoftwareLicense'] as $type) {
+   $label       = call_user_func([$type, 'getTypeName']);
    $types[$type] = $label;
 }
 
@@ -57,19 +59,24 @@ $report->displayCriteriasForm();
 // Declare columns
 if($report->criteriasValidated()) {
    $itemtype = $_POST['itemtype'];
-   $table = getTableForItemType($itemtype);
+   $table = $dbu->getTableForItemType($itemtype);
 
-   $columns = array(new PluginReportsColumnLink('items_id', __('Name'), $itemtype,
-                                                array('with_comment' => 1)),
-                    new PluginReportsColumn('otherserial', __('Inventory number')),
-                    new PluginReportsColumn('old_value', __('Source entity', 'reports')),
-                    new PluginReportsColumn('new_value', __('Target entity', 'reports')),
-                    new PluginReportsColumnDateTime('date_mod', __('Transfert date', 'reports')));
+   $columns = [new PluginReportsColumnLink('items_id', __('Name'), $itemtype,
+                                           ['with_comment' => 1]),
+               new PluginReportsColumn('otherserial', __('Inventory number')),
+               new PluginReportsColumn('old_value', __('Source entity', 'reports')),
+               new PluginReportsColumn('new_value', __('Target entity', 'reports')),
+               new PluginReportsColumnDateTime('date_mod', __('Transfert date', 'reports'))];
    $report->setColumns($columns);
 
+   $otherserial = '';
+   if (($itemtype != 'CartridgeItem')
+         && ($itemtype != 'ConsumableItem')) {
+      $otherserial = "`$table`.`otherserial`,";
+   }
    $query = "SELECT `$table`.`id` as `items_id`,
                     `$table`.`name`,
-                    `$table`.`otherserial`,
+                    $otherserial
                     `glpi_logs`.`date_mod` as `date_mod`,
                     `glpi_logs`.`itemtype` as `itemtype`,
                     `glpi_logs`.`old_value`,

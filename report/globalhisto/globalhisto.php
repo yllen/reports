@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -52,36 +52,25 @@ if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
    //Names of the columns to be displayed
-   $report->setColumns(array('id'            => __('ID'),
-                             'date_mod'      => __('Date'),
-                             'user_name'     => __('User'),
-                             'linked_action' => _x('noun','Update')));
+   $report->setColumns(['id'            => __('ID'),
+                        'date_mod'      => __('Date'),
+                        'user_name'     => __('User'),
+                        'linked_action' => _x('noun','Update')]);
 
    //Colunmns mappings if needed
-   $columns_mappings = array('linked_action'
-                              => array(Log::HISTORY_DELETE_ITEM
-                                          => __('Delete the item'),
-                                       Log::HISTORY_RESTORE_ITEM
-                                          => __('Restore the item'),
-                                       Log::HISTORY_ADD_DEVICE
-                                          => __('Add the component'),
-                                       Log::HISTORY_UPDATE_DEVICE
-                                          => __('modification of components', 'reports'),
-                                       Log::HISTORY_DELETE_DEVICE
-                                          => __('Delete the component'),
-                                       Log::HISTORY_INSTALL_SOFTWARE
-                                          => __('Install the software'),
-                                       Log::HISTORY_UNINSTALL_SOFTWARE
-                                          => __('Uninstall the software'),
-                                       Log::HISTORY_DISCONNECT_DEVICE
-                                          => __('Logout'),
-                                       Log::HISTORY_CONNECT_DEVICE
-                                          => __('Connection'),
-                                       Log::HISTORY_LOCK_DEVICE
-                                          => __('Lock the item'),
-                                       Log::HISTORY_UNLOCK_DEVICE
-                                          => __('Unlock the item'),
-                                       Log::HISTORY_LOG_SIMPLE_MESSAGE => ""));
+   $columns_mappings = ['linked_action' => [Log::HISTORY_DELETE_ITEM        => __('Delete the item'),
+                                            Log::HISTORY_RESTORE_ITEM       => __('Restore the item'),
+                                            Log::HISTORY_ADD_DEVICE         => __('Add the component'),
+                                            Log::HISTORY_UPDATE_DEVICE      => __('modification of components',
+                                                                                  'reports'),
+                                            Log::HISTORY_DELETE_DEVICE      => __('Delete the component'),
+                                            Log::HISTORY_INSTALL_SOFTWARE   => __('Install the software'),
+                                            Log::HISTORY_UNINSTALL_SOFTWARE => __('Uninstall the software'),
+                                            Log::HISTORY_DISCONNECT_DEVICE  => __('Logout'),
+                                            Log::HISTORY_CONNECT_DEVICE     => __('Connection'),
+                                            Log::HISTORY_LOCK_DEVICE        => __('Lock the item'),
+                                            Log::HISTORY_UNLOCK_DEVICE      => __('Unlock the item'),
+                                            Log::HISTORY_LOG_SIMPLE_MESSAGE => ""]];
 
    $report->setColumnsMappings($columns_mappings);
 

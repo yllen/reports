@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -93,15 +93,15 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
       $this->getReport()->startColumn();
       if (empty($this->signe)) {
          Dropdown::showFromArray($this->getName()."_sign",
-                                 array('<='    => '<=',
-                                       '>='    => '>='),
-                                 array('value' => Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))));
+                                 ['<='    => '<=',
+                                  '>='    => '>='],
+                                 ['value' => Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))]);
          echo "&nbsp;";
       }
-      $opt = array('value' => $this->getParameterValue(),
-                   'min'   => $this->min,
-                   'max'   => $this->max,
-                   'step'  => 1);
+      $opt = ['value' => $this->getParameterValue(),
+              'min'   => $this->min,
+              'max'   => $this->max,
+              'step'  => 1];
       Dropdown::showNumber($this->getName(), $opt);
       echo '&nbsp; '.$this->unit;
 

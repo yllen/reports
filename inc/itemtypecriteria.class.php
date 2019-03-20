@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-9 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -36,7 +36,7 @@
  */
 class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
 
-   private $types = array();
+   private $types = [];
 
 
    /**
@@ -46,10 +46,12 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
     * @param $types     array
     * @param $ignored   array
    **/
-   function __construct($report, $name='itemtype', $label='', $types=array(), $ignored=array()) {
+   function __construct($report, $name='itemtype', $label='', $types=[], $ignored=[]) {
       global $CFG_GLPI;
 
       parent::__construct($report, $name, NOT_AVAILABLE, ($label ? $label : __('Item type')));
+
+      $dbu = new DbUtils();
 
       if (is_array($types) && count($types)) {
          // $types is an hashtable of itemtype => display name
@@ -57,7 +59,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       } else if (is_string($types) && isset($CFG_GLPI[$types])) {
          // $types is the name of an configured type hashtable (infocom_types, doc_types, ...)
          foreach($CFG_GLPI[$types] as $itemtype) {
-            if (($item = getItemForItemtype($itemtype)) && !in_array($itemtype, $ignored)) {
+            if (($item = $dbu->getItemForItemtype($itemtype)) && !in_array($itemtype, $ignored)) {
                $this->types[$itemtype] = $item->getTypeName();
             }
          }
@@ -72,8 +74,9 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
 
    function getSubName() {
 
+      $dbu = new DbUtils();
       $itemtype = $this->getParameterValue();
-      if ($itemtype && ($item = getItemForItemtype($itemtype))) {
+      if ($itemtype && ($item = $dbu->getItemForItemtype($itemtype))) {
          $name = $item->getTypeName();
       } else {
          // All
@@ -87,7 +90,7 @@ class PluginReportsItemTypeCriteria extends PluginReportsDropdownCriteria {
       ksort($this->types);
 
       Dropdown::showFromArray($this->getName(), $this->types,
-                              array('value'=> $this->getParameterValue()));
+                              ['value'=> $this->getParameterValue()]);
    }
 
 }

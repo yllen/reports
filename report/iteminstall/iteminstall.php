@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -35,6 +35,8 @@ $DBCONNECTION_REQUIRED  = 1;
 
 // Initialization of the variables
 include ("../../../../inc/includes.php");
+
+$dbu = new DbUtils();
 
 //TRANS: The name of the report = Time before equipment start-up
 $report = new PluginReportsAutoReport(__('iteminstall_report_title', 'reports'));
@@ -56,12 +58,12 @@ if ($report->criteriasValidated()) {
    $itemtype = $type->getParameterValue();
 
    if ($itemtype && $itemtype != "all") {
-      $types = array($itemtype);
+      $types = [$itemtype];
    } else {
-      $types = array();
+      $types = [];
       $sql   = "SELECT DISTINCT `itemtype`
                 FROM `glpi_infocoms` ".
-                getEntitiesRestrictRequest('WHERE', 'glpi_infocoms').
+                $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_infocoms').
                     $date->getSqlCriteriasRestriction('AND').
                     $budg->getSqlCriteriasRestriction('AND');
       foreach ($DB->request($sql) as $data) {
@@ -69,7 +71,7 @@ if ($report->criteriasValidated()) {
       }
    }
 
-   $result = array();
+   $result = [];
    foreach ($types as $type) {
       if (!class_exists($type)) {
          continue;
@@ -80,14 +82,14 @@ if ($report->criteriasValidated()) {
               FROM `$table`
               INNER JOIN `glpi_infocoms` ON (`glpi_infocoms`.`itemtype`='$type'
                                              AND `glpi_infocoms`.`items_id`=`$table`.`id`)".
-              getEntitiesRestrictRequest('WHERE', $table);
+              $dbu->getEntitiesRestrictRequest('WHERE', $table);
       if ($item->maybeDeleted()) {
          $sql .= " AND NOT `$table`.`is_deleted` ";
       }
       if ($item->maybeTemplate()) {
          $sql .= " AND NOT `$table`.`is_template` ";
       }
-      $result[$type] = array();
+      $result[$type] = [];
 
       // Total of buy equipment
       $crit = $budg->getSqlCriteriasRestriction('AND').
@@ -117,18 +119,18 @@ if ($report->criteriasValidated()) {
          $result[$type]['12+'] = $data['cpt'];
       }
    }
-
+/*
    if ($display_type == Search::HTML_OUTPUT) {
          echo "<div class='center'><table class='tab_cadre_fixe'>";
-         echo "<tr><th>$title</th></tr>\n";
+   //      echo "<tr><th>$title</th></tr>\n";
          echo "</table></div>\n";
    }
-
+*/
    $nbres = count($result);
    if ($nbres > 0) {
       if ($nbres > 1) {
          $nbrows = $nbres*2+2;
-         $result['total'] = array();
+         $result['total'] = [];
          reset($result);
          foreach (next($result) as $key => $val) {
             $result['total'][$key] = 0;
@@ -156,7 +158,7 @@ if ($report->criteriasValidated()) {
          if ($itemtype == 'total') {
             $name = __('Total');
 
-         } else if ($item = getItemForItemtype($itemtype)) {
+         } else if ($item = $dbu->getItemForItemtype($itemtype)) {
             $name = $item->getTypeName();
 
          } else {
@@ -166,6 +168,8 @@ if ($report->criteriasValidated()) {
          $numcol=1;
          echo Search::showNewLine($display_type);
          echo Search::showItem($display_type, $name, $numcol, $row_num, "class='b'");
+         $labels = [];
+         $series = [];
          foreach ($row as $ref => $val) {
             $val = $result[$itemtype][$ref];
             echo Search::showItem($display_type, ($val ? $val : ''), $numcol, $row_num,
@@ -194,10 +198,11 @@ if ($report->criteriasValidated()) {
          $row_num++;
       }
 
+      $stat = new Stat();
+      $stat->displayPieGraph($title, $labels, $series);
       if ($display_type == Search::HTML_OUTPUT) {
          $row = array_pop($result); // Last line : total or single type
          unset($row['buy']);
-         Stat::showGraph(array($title => $row), array('type' => 'pie'));
       }
    } else {
       $nbrows = 1; $nbcols = 1;

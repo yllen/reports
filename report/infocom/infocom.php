@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2017 Reports plugin team
+ @copyright Copyright (c) 2009-2018 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -41,6 +41,8 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ("../../../../inc/includes.php");
 
+global $DB;
+$dbu = new DbUtils();
 /*
  * TODO : add more criteria
  *
@@ -52,7 +54,8 @@ include ("../../../../inc/includes.php");
 //TRANS: The name of the report = Financial information
 $report = new PluginReportsAutoReport(__('infocom_report_title', 'reports'));
 
-$ignored = array('Cartridge', 'CartridgeItem', 'Consumable', 'ConsumableItem', 'Software');
+$ignored = ['Cartridge', 'CartridgeItem', 'Consumable', 'ConsumableItem', 'Software', 'Line',
+            'Certificate'];
 
 $date = new PluginReportsDateIntervalCriteria($report, '`glpi_infocoms`.`buy_date`',
                                               __('Date of purchase'));
@@ -67,42 +70,42 @@ $report->displayCriteriasForm();
 if ($report->criteriasValidated()) {
    $report->setSubNameAuto();
 
-   $cols = array(new PluginReportsColumnType('itemtype', __('Item type')),
-                 new PluginReportsColumn('manufacturer', __('Manufacturer')),
-                 new PluginReportsColumn('type', __('Type')),
-                 new PluginReportsColumn('model', __('Model')),
-                 new PluginReportsColumnTypeLink('itemid', __('Name'), 'itemtype'),
-                 new PluginReportsColumn('serial', __('Serial number')),
-                 new PluginReportsColumn('otherserial', __('Inventory number')),
-                 new PluginReportsColumn('location', __('Location')),
-                 new PluginReportsColumn('building', __('Building number')),
-                 new PluginReportsColumn('room', __('Room number')),
-                 new PluginReportsColumnLink('groups_id', __('Group'), 'Group'),
-                 new PluginReportsColumn('state', __('Status')),
-                 new PluginReportsColumn('immo_number', __('Immobilization number')),
-                 new PluginReportsColumnDate('buy_date', __('Date of purchase')),
-                 new PluginReportsColumnDate('use_date', __('Startup date')),
-                 new PluginReportsColumnDate('warranty_date', __('Start date of warranty')),
-                 new PluginReportsColumnInteger('warranty_duration', __('Warranty duration')),
-                 new PluginReportsColumnInteger('warranty_info', __('Warranty information')),
-                 new PluginReportsColumnLink('suppliers_id', __('Supplier'), "Supplier"),
-                 new PluginReportsColumnDate('order_date', __('Order date')),
-                 new PluginReportsColumn('order_number', __('Order number')),
-                 new PluginReportsColumnDate('delivery_date', __('Delivery date')),
-                 new PluginReportsColumn('delivery_number', __('Delivery form')),
-                 new PluginReportsColumnFloat('value', __('Value')),
-                 new PluginReportsColumnFloat('warranty_value', __('Warranty extension value')),
-                 new PluginReportsColumnInteger('sink_time', __('Amortization duration')),
-                 new PluginReportsColumnInteger('sink_type', __('Amortization type')),
-                 new PluginReportsColumnFloat('sink_coeff',__('Amortization coefficient')),
-                 new PluginReportsColumn('bill', __('Invoice number')),
-                 new PluginReportsColumn('budget', __('Budget')),
-                 new PluginReportsColumnDate('inventory_date', __('Date of last physical inventory')));
+   $cols = [new PluginReportsColumnType('itemtype', __('Item type')),
+            new PluginReportsColumn('manufacturer', __('Manufacturer')),
+            new PluginReportsColumn('type', __('Type')),
+            new PluginReportsColumn('model', __('Model')),
+            new PluginReportsColumnTypeLink('itemid', __('Name'), 'itemtype'),
+            new PluginReportsColumn('serial', __('Serial number')),
+            new PluginReportsColumn('otherserial', __('Inventory number')),
+            new PluginReportsColumn('location', __('Location')),
+            new PluginReportsColumn('building', __('Building number')),
+            new PluginReportsColumn('room', __('Room number')),
+            new PluginReportsColumnLink('groups_id', __('Group'), 'Group'),
+            new PluginReportsColumn('state', __('Status')),
+            new PluginReportsColumn('immo_number', __('Immobilization number')),
+            new PluginReportsColumnDate('buy_date', __('Date of purchase')),
+            new PluginReportsColumnDate('use_date', __('Startup date')),
+            new PluginReportsColumnDate('warranty_date', __('Start date of warranty')),
+            new PluginReportsColumnInteger('warranty_duration', __('Warranty duration')),
+            new PluginReportsColumnInteger('warranty_info', __('Warranty information')),
+            new PluginReportsColumnLink('suppliers_id', __('Supplier'), "Supplier"),
+            new PluginReportsColumnDate('order_date', __('Order date')),
+            new PluginReportsColumn('order_number', __('Order number')),
+            new PluginReportsColumnDate('delivery_date', __('Delivery date')),
+            new PluginReportsColumn('delivery_number', __('Delivery form')),
+            new PluginReportsColumnFloat('value', __('Value')),
+            new PluginReportsColumnFloat('warranty_value', __('Warranty extension value')),
+            new PluginReportsColumnInteger('sink_time', __('Amortization duration')),
+            new PluginReportsColumnInteger('sink_type', __('Amortization type')),
+            new PluginReportsColumnFloat('sink_coeff',__('Amortization coefficient')),
+            new PluginReportsColumn('bill', __('Invoice number')),
+            new PluginReportsColumn('budget', __('Budget')),
+            new PluginReportsColumnDate('inventory_date', __('Date of last physical inventory'))];
 
    $report->setColumns($cols);
    $sel = $type->getParameterValue();
    if ($sel && $sel != "all") {
-      $types = array($sel);
+      $types = [$sel];
    } else {
       $types = array_diff($CFG_GLPI['infocom_types'], $ignored);
    }
@@ -134,8 +137,9 @@ if ($report->criteriasValidated()) {
       }
 
       $typeclass = $itemtype.'Type';
-      $typetable = getTableForItemType($typeclass);
-      if (TableExists($typetable)) {
+      $typetable = $dbu->getTableForItemType($typeclass);
+
+      if ($DB->tableExists($typetable)) {
          $typeitem  = new $typeclass;
          $typefkey  = $typeitem->getForeignKeyField();
 
@@ -147,13 +151,13 @@ if ($report->criteriasValidated()) {
       }
 
       $modelclass = $itemtype.'Model';
-      $modeltable = getTableForItemType($modelclass);
+      $modeltable = $dbu->getTableForItemType($modelclass);
       if ($itemtype == 'SoftwareLicense') {
          $select .= ", CONCAT(glpi_softwares.name,' ',buyversion.name) AS model";
          $from .= "LEFT JOIN `glpi_softwareversions` AS buyversion
                           ON (buyversion.`id` = `glpi_softwarelicenses`.`softwareversions_id_buy`) ";
 
-      } else if (TableExists($modeltable)) {
+      } else if ($DB->tableExists($modeltable)) {
          $modelitem  = new $modelclass();
          $modelitem  = $modelitem->getForeignKeyField();
 
@@ -221,7 +225,7 @@ if ($report->criteriasValidated()) {
       }
 
       if ($item->isEntityAssign()) {
-         $where .= getEntitiesRestrictRequest(" AND ", $table);
+         $where .= $dbu->getEntitiesRestrictRequest(" AND ", $table);
       }
 
       $where .= $budg->getSqlCriteriasRestriction();
