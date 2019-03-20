@@ -401,8 +401,8 @@ function buildBookmarkUrl($url,$crit) {
 function getLastOcsUpdate($computers_id) {
    global $DB;
 
-   $query = $DB->request(['SELECT' => 'last_ocs_update',
-                          'FROM'   => 'glpi_plugin_ocsinventoryng_ocslinks',
+   $query = $DB->request('glpi_plugin_ocsinventoryng_ocslinks',
+                         ['SELECT' => 'last_ocs_update',
                           'WHERE'  => ['computers_id' => $computers_id]]);
 
    if (count($query) > 0) {

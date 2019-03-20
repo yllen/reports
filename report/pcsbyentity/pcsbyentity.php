@@ -186,10 +186,9 @@ function doStatChilds($table, $entity, $header, &$total, $level) {
    global $DB;
 
    // Search child entities
-   $result = $DB->request(['SELECT' => ['id', 'name'],
-                           'FROM'   => 'glpi_entities',
-                           'WHERE'  => ['entities_id' => $entity],
-                           'ORDER'  => 'name']);
+   $result = $DB->request('glpi_entities', ['SELECT' => ['id', 'name'],
+                                            'WHERE'  => ['entities_id' => $entity],
+                                            'ORDER'  => 'name']);
 
    while ($data = $result->next()) {
       $fille = doStat($table, $data["id"], $header, $level);

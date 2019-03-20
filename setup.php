@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -102,13 +102,13 @@ function isStat($report_name) {
 function plugin_version_reports() {
 
    return ['name'           => _n('Report', 'Reports', 2),
-           'version'        => '1.12.0',
+           'version'        => '1.13.0',
            'author'         => 'Nelly Mahu-Lasson, Remi Collet',
            'license'        => 'GPLv3+',
            'homepage'       => 'https://forge.glpi-project.org/projects/reports',
-           'minGlpiVersion' => '9.3',
-           'requirements'   => ['glpi' => ['min' => '9.3',
-                                           'max' => '9.4']]];
+           'minGlpiVersion' => '9.4',
+           'requirements'   => ['glpi' => ['min' => '9.4',
+                                           'max' => '9.5']]];
 }
 
 
@@ -120,8 +120,8 @@ function plugin_reports_check_config() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_reports_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'9.3','lt') || version_compare(GLPI_VERSION,'9.4','ge')) {
-      echo "This plugin requires GLPI >= 9.3 and GLPI < 9.4";
+   if (version_compare(GLPI_VERSION,'9.4','lt') || version_compare(GLPI_VERSION,'9.5','ge')) {
+      echo "This plugin requires GLPI >= 9.4 and GLPI < 9.5";
       return false;
    }
    return true;

@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -67,8 +67,8 @@ echo __('Rights management by report', 'reports'). "</th></tr>\n";
 
 echo "<tr class='tab_bg_1'><td>".__('Report', 'Reports', 1). "&nbsp; ";
 
-$result = $DB->request(['FIELDS' => ['id', 'name'],
-                        'FROM'   => 'glpi_profiles',
+$result = $DB->request('glpi_profiles',
+                       ['FIELDS' => ['id', 'name'],
                         'ORDER'  => 'name']);
 
 echo "<select name='report'>";

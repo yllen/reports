@@ -54,10 +54,9 @@ if (isset($_GET["groups_id"]) && $_GET["groups_id"]) {
              'id'          => $_GET['groups_id']];
 }
 
-$result = $DB->request(['SELECT' => ['id', 'name'],
-                        'FROM'   => 'glpi_groups',
-                        'WHERE'  => $where,
-                        'ORDER'  => 'name']);
+$result = $DB->request('glpi_groups', ['SELECT' => ['id', 'name'],
+                                       'WHERE'  => $where,
+                                       'ORDER'  => 'name']);
 $last_group_id = -1;
 
 while ($datas = $result->next()) {

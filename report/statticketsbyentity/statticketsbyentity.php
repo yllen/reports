@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -68,6 +68,7 @@ if ($report->criteriasValidated()) {
                                             ['sorton' => 'maxdate'])];
    $report->setColumns($cols);
 
+
    $subcpt = "SELECT COUNT(*)
               FROM `glpi_profiles_users`
               WHERE `glpi_profiles_users`.`entities_id` = `glpi_entities`.`id` ".
@@ -86,7 +87,7 @@ if ($report->criteriasValidated()) {
             $report->getOrderBy('name');
 
    $report->setSqlRequest($query);
-   $report->execute(['withtotal'=>true]);
+   $report->execute(['withtotal' => true]);
 
 } else {
    Html::footer();

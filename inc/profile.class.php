@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2019 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -85,9 +85,8 @@ class PluginReportsProfile extends Profile {
       echo "<table class='tab_cadre'>\n";
       echo "<tr><th colspan='2'>".__('Profils rights', 'reports')."</th></tr>\n";
 
-      foreach ($DB->request(['SELECT' => ['id', 'name'],
-                             'FROM'   => 'glpi_profiles',
-                             'ORDER'  => 'name']) as $data) {
+      foreach ($DB->request('glpi_profiles',['SELECT' => ['id', 'name'],
+                                             'ORDER'  => 'name']) as $data) {
          echo "<tr class='tab_bg_1'><td>" . $data['name'] . "&nbsp: </td><td>";
 
          $profrights = ProfileRight::getProfileRights($data['id'], ['statistic', 'reports']);
@@ -179,8 +178,8 @@ class PluginReportsProfile extends Profile {
       }
 
       $current_rights = [];
-      foreach ($DB->request(['SELECT DISTINCT' => 'name',
-                             'FROM'            => 'glpi_profilerights',
+      foreach ($DB->request('glpi_profilerights',
+                            ['SELECT ' => 'name', 'DISTINCT' => true,
                              'WHERE'           => ['name' => ['LIKE', 'plugin_reports_%']]]) as $data) {
          $current_rights[$data['name']] = 1;
       }
@@ -294,7 +293,7 @@ class PluginReportsProfile extends Profile {
          //Add new rights in glpi_profilerights table
          $profileRight = new ProfileRight();
 
-         foreach ($DB->request(['FROM' => 'glpi_plugin_reports_profiles']) as $data) {
+         foreach ($DB->request('glpi_plugin_reports_profiles') as $data) {
             $right['profiles_id']   = $data['profiles_id'];
             $right['name']          = "plugin_reports_".$data['report'];
             $droit                  = $data['access'];
@@ -342,8 +341,8 @@ class PluginReportsProfile extends Profile {
                if ($_SESSION['glpishow_count_on_tabs']) {
                   $prof = $_SESSION['glpiactiveprofile']['id'];
 
-                  $query = $DB->request(['FROM'  => 'glpi_profilerights',
-                                         'COUNT' => 'cpt',
+                  $query = $DB->request('glpi_profilerights',
+                                        ['COUNT' => 'cpt',
                                          'WHERE' => ['profiles_id' => $_GET['id'],
                                                      'name'        => ['LIKE', 'plugin_reports_%'],
                                                      'rights'      => 1]]);
