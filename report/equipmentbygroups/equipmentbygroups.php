@@ -87,7 +87,7 @@ function displaySearchForm() {
    Group::dropdown(['name =>'  => "group",
                     'value'    => $_GET["group"],
                     'entity'   => $_SESSION["glpiactive_entity"],
-                    'condition' => "is_itemgroup"]);
+                    'condition' => ['is_itemgroup' => 1]]);
    echo "</td>";
 
    // Display Reset search
