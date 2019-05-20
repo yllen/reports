@@ -179,7 +179,7 @@ class PluginReportsProfile extends Profile {
 
       $current_rights = [];
       foreach ($DB->request('glpi_profilerights',
-                            ['SELECT ' => 'name', 'DISTINCT' => true,
+                            ['SELECT DISTINCT' => 'name',
                              'WHERE'           => ['name' => ['LIKE', 'plugin_reports_%']]]) as $data) {
          $current_rights[$data['name']] = 1;
       }

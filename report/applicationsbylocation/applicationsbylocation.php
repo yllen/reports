@@ -103,4 +103,6 @@ if ($report->criteriasValidated()) {
 
    $report->setSqlRequest($query);
    $report->execute();
+} else {
+   Html::footer();
 }

@@ -261,7 +261,7 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
                   'entity'   => $this->getEntityRestrict()];
 
       if ($this->condition) {
-         $options['condition'] = $this->condition;
+         $options['condition'] = [$this->condition];
       }
       Dropdown::show($this->getItemType(), $options);
    }
