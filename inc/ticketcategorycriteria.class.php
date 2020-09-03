@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2019 Reports plugin team
+ @copyright Copyright (c) 2009-2020 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -45,7 +45,7 @@ class PluginReportsTicketCategoryCriteria extends PluginReportsDropdownCriteria 
    function __construct($report, $name='itilcategories_id', $label='', $type='') {
 
       parent::__construct($report, $name, 'glpi_itilcategories',
-                          ($label ? $label : _n('Categorie of ticket', 'Categories of tickets', 1)),
+                          ($label ? $label : _n('Ticket category', 'Ticket categories', 1)),
                           $type);
    }
 

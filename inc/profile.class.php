@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2019 Reports plugin team
+ @copyright Copyright (c) 2009-2020 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -179,8 +179,9 @@ class PluginReportsProfile extends Profile {
 
       $current_rights = [];
       foreach ($DB->request('glpi_profilerights',
-                            ['SELECT DISTINCT' => 'name',
-                             'WHERE'           => ['name' => ['LIKE', 'plugin_reports_%']]]) as $data) {
+                            ['SELECT'   => 'name',
+                             'DISTINCT' => true,
+                             'WHERE'    => ['name' => ['LIKE', 'plugin_reports_%']]]) as $data) {
          $current_rights[$data['name']] = 1;
       }
 
