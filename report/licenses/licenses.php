@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2020 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -74,11 +74,12 @@ if ($report->criteriasValidated()
              FROM `glpi_softwarelicenses`
              LEFT JOIN `glpi_softwares`
                   ON (`glpi_softwarelicenses`.`softwares_id` = `glpi_softwares`.`id`)
-             LEFT JOIN `glpi_computers_softwarelicenses`
+             LEFT JOIN `glpi_items_softwarelicenses`
                   ON (`glpi_softwarelicenses`.`id`
-                        = `glpi_computers_softwarelicenses`.`softwarelicenses_id`)
+                        = `glpi_items_softwarelicenses`.`softwarelicenses_id`)
              LEFT JOIN `glpi_computers`
-                  ON (`glpi_computers`.`id` = `glpi_computers_softwarelicenses`.`computers_id`)
+                  ON (`glpi_computers`.`id` = `glpi_items_softwarelicenses`.`items_id`
+                      AND `glpi_items_softwarelicenses`.`itemtype` = 'Computer')
              LEFT JOIN `glpi_softwareversions` AS buyversion
                   ON (buyversion.`id` = `glpi_softwarelicenses`.`softwareversions_id_buy`)
              LEFT JOIN `glpi_softwareversions` AS useversion

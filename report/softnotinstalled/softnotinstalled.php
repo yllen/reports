@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2020 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -86,12 +86,12 @@ if ($report->criteriasValidated()) {
                              FROM `glpi_softwares`
                              INNER JOIN `glpi_softwareversions`
                                  ON (`glpi_softwares`.`id` = `glpi_softwareversions`.`softwares_id`)
-                             INNER JOIN `glpi_computers_softwareversions`
-                                 ON (`glpi_computers_softwareversions`.`softwareversions_id`
+                             INNER JOIN `glpi_items_softwareversions`
+                                 ON (`glpi_items_softwareversions`.`softwareversions_id`
                                        = `glpi_softwareversions`.`id`)
                              INNER JOIN `glpi_computers`
-                                 ON (`glpi_computers_softwareversions`.`computers_id`
-                                       = `glpi_computers`.`id`) ".
+                                 ON (`glpi_items_softwareversions`.`items_id` = `glpi_computers`.`id`
+                                     AND `glpi_items_softwareversions`.`itemtype` = 'Computer') ".
                              $dbu->getEntitiesRestrictRequest('WHERE', 'glpi_computers') .
                                     $report->addSqlCriteriasRestriction().")".
              $report->getOrderby('computer', true);

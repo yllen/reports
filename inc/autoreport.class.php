@@ -312,7 +312,7 @@ class PluginReportsAutoReport {
             }
          }
 
-         $nbcols = $DB->num_fields($res);
+         $nbcols = $DB->numFields($res);
          $nbrows = $DB->numrows($res);
 
          echo Search::showHeader($output_type, $nbrows, $nbcols, true);
@@ -322,7 +322,7 @@ class PluginReportsAutoReport {
          // fill $sqlcols with default sql query fields so we can validate $columns
          $sqlcols = [];
          for ($i = 0 ; $i < $nbcols ; $i++) {
-            $colname   = $DB->field_name($res, $i);
+            $colname   = $DB->fieldName($res, $i);
             $sqlcols[] = $colname;
          }
          $colsname = [];
