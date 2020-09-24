@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Stéphane Savona
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2020 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -45,9 +45,10 @@ $report= new PluginReportsAutoReport(__('transferreditems_report_title', 'report
 new PluginReportsDateIntervalCriteria($report, "`glpi_logs`.`date_mod`");
 
 $types = [];
-foreach (['CartridgeItem', 'Computer', 'Monitor', 'NetworkEquipment', 'Peripheral', 'Phone',
-          'Printer', 'Software','SoftwareLicense'] as $type) {
-   $label       = call_user_func([$type, 'getTypeName']);
+foreach (['CartridgeItem', 'Computer', 'Enclosure', 'Monitor', 'NetworkEquipment',
+          'PassiveDCEquipment', 'PDU', 'Peripheral', 'Phone', 'Printer', 'Rack', 'Software',
+         'SoftwareLicense'] as $type) {
+   $label        = call_user_func([$type, 'getTypeName']);
    $types[$type] = $label;
 }
 

@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2020 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -92,8 +92,7 @@ function displaySearchForm() {
 
    // Display Reset search
    echo "<td>";
-   echo "<a href='" . $CFG_GLPI["root_doc"] .
-         "/plugins/reports/report/equipmentbygroups/equipmentbygroups.php?reset_search=reset_search'>".
+   echo "<a href='" . Plugin::getPhpDir('reports')."/report/equipmentbygroups/equipmentbygroups.php?reset_search=reset_search'>".
          "<img title='" . __s('Blank') . "' alt='" . __s('Blank') . "' src='" .
          $CFG_GLPI["root_doc"] . "/pics/reset.png' class='calendrier'></a>";
    echo "</td>";
@@ -133,20 +132,22 @@ function resetSearch() {
  * @param $entity    the current entity
 **/
 function getObjectsByGroupAndEntity($group_id, $entity) {
-   global $DB;
+   global $DB, $CFG_GLPI;
 
    $display_header = false;
 
-   $types = ['Computer', 'Monitor', 'NetworkEquipment', 'Phone', 'Printer'];
-   foreach ($types as $type) {
-      $item = new $type();
-
+   foreach ($CFG_GLPI["asset_types"] as $key => $itemtype) {
+      if (($itemtype == 'Certificate') || ($itemtype == 'SoftwareLicense')) {
+         unset($CFG_GLPI["asset_types"][$key]);
+      }
+      $item = new $itemtype();
+      if ($item->isField('groups_id')) {
       $query = $DB->request(['SELECT'    => [$item->getTable().'.id', 'name', 'groups_id', 'serial',
-                                          'otherserial', 'immo_number', 'suppliers_id', 'buy_date'],
+                                             'otherserial', 'immo_number', 'suppliers_id', 'buy_date'],
                              'FROM'      => $item->getTable(),
-                             'LEFT JOIN' =>  ['glpi_infocoms' => ['FKEY' => [$item->getTable() => 'id',
-                                                                             'glpi_infocoms'   => 'items_id'],
-                                                                             ['itemtype' => $type]]],
+                             'LEFT JOIN' => ['glpi_infocoms' => ['FKEY' => [$item->getTable() => 'id',
+                                                                            'glpi_infocoms'   => 'items_id'],
+                                                                           ['itemtype' => $itemtype]]],
                               'WHERE'     => ['groups_id'                      => $group_id,
                                               $item->getTable().'.entities_id' => $entity,
                                               'is_template'                    => 0,
@@ -162,8 +163,9 @@ function getObjectsByGroupAndEntity($group_id, $entity) {
             echo "</tr>";
             $display_header = true;
          }
-         displayUserDevices($type, $query);
+         displayUserDevices($itemtype, $query);
       }
+   }
    }
    echo "</table>";
 }

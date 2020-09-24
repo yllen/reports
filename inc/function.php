@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2019 Reports plugin team
+ @copyright Copyright (c) 2009-2020 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -45,7 +45,7 @@ function searchReport($all = false) {
       $filter = "";
    }
    foreach ($DB->request('glpi_plugins', $filter) as $plug) {
-      foreach (glob(GLPI_ROOT.'/plugins/'.$plug['directory'].'/report/*', GLOB_ONLYDIR) as $path) {
+      foreach (glob(Plugin::getPhpDir($plug['directory'])."/report/*", GLOB_ONLYDIR) as $path) {
          $tab[basename($path)] = $plug['directory'];
          includeLocales(basename($path), $plug['directory']);
       }
@@ -65,7 +65,7 @@ function searchReport($all = false) {
 function includeLocales($report_name, $plugin='reports') {
    global $CFG_GLPI, $LANG;
 
-   $prefix = GLPI_ROOT . "/plugins/$plugin/report/". $report_name ."/" . $report_name;
+   $prefix = Plugin::getPhpDir('repots'). "/plugins/$plugin/report/". $report_name ."/" . $report_name;
 
    if (isset ($_SESSION["glpilanguage"])
        && file_exists($prefix . "." . $_SESSION["glpilanguage"].".php")) {

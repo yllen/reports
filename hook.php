@@ -62,7 +62,7 @@ function plugin_reports_install() {
    }
 
    // No autoload when plugin is not activated
-   include_once (GLPI_ROOT."/plugins/reports/inc/profile.class.php");
+   include_once (Plugin::getPhpDir('reports')."/inc/profile.class.php");
 
    PluginReportsProfile::install($migration);
 
@@ -77,7 +77,7 @@ function plugin_reports_uninstall() {
    $migration = new Migration('1.13.0');
 
    // No autoload when plugin is not activated (if dessactivation before uninstall)
-   include_once (GLPI_ROOT."/plugins/reports/inc/profile.class.php");
+   include_once (Plugin::getPhpDir('reports')."/inc/profile.class.php");
 
    return PluginReportsProfile::uninstall($migration);
 
