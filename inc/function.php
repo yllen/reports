@@ -65,7 +65,7 @@ function searchReport($all = false) {
 function includeLocales($report_name, $plugin='reports') {
    global $CFG_GLPI, $LANG;
 
-   $prefix = Plugin::getPhpDir('repots'). "/plugins/$plugin/report/". $report_name ."/" . $report_name;
+   $prefix = Plugin::getPhpDir($plugin). "/report/". $report_name ."/" . $report_name;
 
    if (isset ($_SESSION["glpilanguage"])
        && file_exists($prefix . "." . $_SESSION["glpilanguage"].".php")) {
