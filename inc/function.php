@@ -80,7 +80,8 @@ function includeLocales($report_name, $plugin='reports') {
       $name = $report_name.'_report_title';
       $LANG['plugin_'.$plugin][$report_name] = __($report_name.'_report_title', $plugin);
       // For dev
-      if ($LANG['plugin_'.$plugin][$report_name] == $report_name.'_report_title') {
+      if (($_SESSION['glpi_use_mode'] == Session::DEBUG_MODE)
+          && ($LANG['plugin_'.$plugin][$report_name] == $report_name.'_report_title')) {
          Toolbox::logInFile('php-errors',
                             "includeLocales($name, $plugin) => not found\n");
       }
