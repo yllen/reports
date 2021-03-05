@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-13 11:20+0200\n"
-"PO-Revision-Date: 2018-09-13 09:14+0000\n"
+"POT-Creation-Date: 2020-09-16 17:33+0200\n"
+"PO-Revision-Date: 2021-03-05 12:54+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: Croatian (Croatia) (http://www.transifex.com/yllen/GLPI_reports/language/hr_HR/)\n"
 "MIME-Version: 1.0\n"
@@ -58,11 +58,11 @@ msgstr "Upravljanje pravima po profilu"
 msgid "Profils rights"
 msgstr "Prava profila"
 
-#: inc/profile.class.php:113
+#: inc/profile.class.php:112
 msgid "No right on Assistance / Statistics"
 msgstr "Nema prava na pomoć / statistiku"
 
-#: inc/profile.class.php:115
+#: inc/profile.class.php:114
 msgid "No right on Tools / Reports"
 msgstr "Nema prava na alatima / izvještajima"
 
@@ -89,19 +89,19 @@ msgstr "Status računala"
 msgid "doublons_report_title"
 msgstr "doublons_report_title"
 
-#: report/doublons/doublons.php:78 report/doublons/doublons.php:376
+#: report/doublons/doublons.php:79 report/doublons/doublons.php:377
 msgid "Duplicate computers"
 msgstr "Duplicirana računala"
 
-#: report/doublons/doublons.php:260
+#: report/doublons/doublons.php:261
 msgid "First computer"
 msgstr "Prvo računalo"
 
-#: report/doublons/doublons.php:261
+#: report/doublons/doublons.php:262
 msgid "Second computer"
 msgstr "Drugo računalo"
 
-#: report/doublons/doublons.php:277 report/doublons/doublons.php:292
+#: report/doublons/doublons.php:278 report/doublons/doublons.php:293
 msgid "Last inventory date"
 msgstr "Zadnji datum inventoriranja"
 
@@ -121,10 +121,6 @@ msgstr "equipmentbylocation_report_title"
 msgid "globalhisto_report_title"
 msgstr "globalhisto_report_title"
 
-#: report/globalhisto/globalhisto.php:64
-msgid "modification of components"
-msgstr "promjene komponenti"
-
 #. TRANS: The name of the report = History of last hardware's installations
 #: report/histohard/histohard.php:46
 msgid "histohard_report_title"
@@ -134,7 +130,7 @@ msgstr "histohard_report_title"
 msgid "History of last hardware's installations"
 msgstr "Povijest instalacija hardvera"
 
-#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55
 msgid "Date of inventory"
 msgstr "Datum inventoriranja"
 
@@ -142,7 +138,7 @@ msgstr "Datum inventoriranja"
 msgid "Modification"
 msgstr "Promjena"
 
-#: report/histohard/histohard.php:152
+#: report/histohard/histohard.php:156
 msgid "The list is limited to 100 items and 21 days"
 msgstr "Popis je ograničen na 100 stavaka i 21 dan"
 
@@ -192,6 +188,10 @@ msgstr "Korištena inačica"
 msgid "listequipmentbylocation_report_title"
 msgstr "listequipmentbylocation_report_title"
 
+#: report/listequipmentbylocation/listequipmentbylocation.php:78
+msgid "Location not selected"
+msgstr ""
+
 #. TRANS: The name of the report = List of groups and members
 #: report/listgroups/listgroups.php:41
 msgid "listgroups_report_title"
@@ -210,32 +210,32 @@ msgstr[1] ""
 msgstr[2] ""
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:212
+#: report/pcsbyentity/pcsbyentity.php:211
 msgid "pcsbyentity_report_title"
 msgstr "pcsbyentity_report_title"
 
-#: report/pcsbyentity/pcsbyentity.php:221
+#: report/pcsbyentity/pcsbyentity.php:220
 msgid "Number of items by entity"
 msgstr "Broj stavki po entitetu"
 
-#: report/pcsbyentity/pcsbyentity.php:247
+#: report/pcsbyentity/pcsbyentity.php:246
 msgid "Display"
 msgstr "Prikaz"
 
-#: report/pcsbyentity/pcsbyentity.php:248
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Entity tree"
 msgstr "Stablo entiteta "
 
-#: report/pcsbyentity/pcsbyentity.php:251
+#: report/pcsbyentity/pcsbyentity.php:250
 msgid "Sort by count"
 msgstr "Poredaj po broju"
 
-#: report/pcsbyentity/pcsbyentity.php:268
-#: report/pcsbyentity/pcsbyentity.php:275
+#: report/pcsbyentity/pcsbyentity.php:267
+#: report/pcsbyentity/pcsbyentity.php:274
 msgid "Unknown"
 msgstr "Nepoznato"
 
-#: report/pcsbyentity/pcsbyentity.php:289
+#: report/pcsbyentity/pcsbyentity.php:288
 msgid "Selection of type is mandatory"
 msgstr ""
 
@@ -318,20 +318,32 @@ msgstr "Novije"
 msgid "statticketsbypriority_report_title"
 msgstr "statticketsbypriority_report_title"
 
+#: report/statusertask/statusertask.php:39
+msgid "statusertask_report_title"
+msgstr ""
+
+#: report/statusertask/statusertask.php:42
+msgid "Tasks created"
+msgstr ""
+
+#: report/statusertask/statusertask.php:56
+msgid "Number created tasks"
+msgstr ""
+
 #. TRANS: The name of the report = List of transfered objects
 #: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
 msgstr "transferreditems_report_title"
 
-#: report/transferreditems/transferreditems.php:67
+#: report/transferreditems/transferreditems.php:68
 msgid "Source entity"
 msgstr "Izvorni entitet"
 
-#: report/transferreditems/transferreditems.php:68
+#: report/transferreditems/transferreditems.php:69
 msgid "Target entity"
 msgstr "Ciljni entitet"
 
-#: report/transferreditems/transferreditems.php:69
+#: report/transferreditems/transferreditems.php:70
 msgid "Transfert date"
 msgstr "Prenešen datum"
 

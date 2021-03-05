@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Nelly Mahu-Lasson <nini.lasson@orange.fr>, 2013,2015-2016,2018,2020
+# Nelly Mahu-Lasson <nini.lasson@orange.fr>, 2013,2015-2016,2018,2020-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-16 17:33+0200\n"
-"PO-Revision-Date: 2020-09-16 15:38+0000\n"
+"PO-Revision-Date: 2021-03-05 12:59+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: French (France) (http://www.transifex.com/yllen/GLPI_reports/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -317,7 +317,7 @@ msgid "statticketsbypriority_report_title"
 msgstr "Tickets non fermés"
 
 #: report/statusertask/statusertask.php:39
-msgid "usertask_report_title"
+msgid "statusertask_report_title"
 msgstr "Liste des tâches par utilisateur"
 
 #: report/statusertask/statusertask.php:42

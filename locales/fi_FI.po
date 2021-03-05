@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-13 11:20+0200\n"
-"PO-Revision-Date: 2018-09-22 05:40+0000\n"
-"Last-Translator: Markku Vepsä\n"
+"POT-Creation-Date: 2020-09-16 17:33+0200\n"
+"PO-Revision-Date: 2021-03-05 12:54+0000\n"
+"Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/yllen/GLPI_reports/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,11 +58,11 @@ msgstr "Oikeuksien hallinta profiileittain"
 msgid "Profils rights"
 msgstr "Profiilioikeudet"
 
-#: inc/profile.class.php:113
+#: inc/profile.class.php:112
 msgid "No right on Assistance / Statistics"
 msgstr "Ei oikeutta Tukeen / Tilastoihin"
 
-#: inc/profile.class.php:115
+#: inc/profile.class.php:114
 msgid "No right on Tools / Reports"
 msgstr "Ei oikeutta Työkaluihin / Raportteihin"
 
@@ -89,19 +89,19 @@ msgstr "Tietokoneen tila"
 msgid "doublons_report_title"
 msgstr "Tietokoneiden kaksoiskappaleet"
 
-#: report/doublons/doublons.php:78 report/doublons/doublons.php:376
+#: report/doublons/doublons.php:79 report/doublons/doublons.php:377
 msgid "Duplicate computers"
 msgstr "Tietokoneiden kaksoiskappaleet"
 
-#: report/doublons/doublons.php:260
+#: report/doublons/doublons.php:261
 msgid "First computer"
 msgstr "Ensimmäinen tietokone"
 
-#: report/doublons/doublons.php:261
+#: report/doublons/doublons.php:262
 msgid "Second computer"
 msgstr "Toinen tietokone"
 
-#: report/doublons/doublons.php:277 report/doublons/doublons.php:292
+#: report/doublons/doublons.php:278 report/doublons/doublons.php:293
 msgid "Last inventory date"
 msgstr "Viimeisin inventointipäivä"
 
@@ -121,10 +121,6 @@ msgstr "Laitteiden määrä sijainnin mukaan"
 msgid "globalhisto_report_title"
 msgstr "Globaali historia (testi/esimerkki)"
 
-#: report/globalhisto/globalhisto.php:64
-msgid "modification of components"
-msgstr "komponenttien muutokset"
-
 #. TRANS: The name of the report = History of last hardware's installations
 #: report/histohard/histohard.php:46
 msgid "histohard_report_title"
@@ -134,7 +130,7 @@ msgstr "Viimeisten laitteistoasennusten historia"
 msgid "History of last hardware's installations"
 msgstr "Viimeisten laitteistoasennusten historia"
 
-#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55
 msgid "Date of inventory"
 msgstr "Inventointipäivä"
 
@@ -142,7 +138,7 @@ msgstr "Inventointipäivä"
 msgid "Modification"
 msgstr "Muutos"
 
-#: report/histohard/histohard.php:152
+#: report/histohard/histohard.php:156
 msgid "The list is limited to 100 items and 21 days"
 msgstr "Luettelo on rajoitettu 100 kohteeseen ja 21 päivään"
 
@@ -192,6 +188,10 @@ msgstr "Käytetty versio"
 msgid "listequipmentbylocation_report_title"
 msgstr "Luettelo laitteista sijainnin mukaan"
 
+#: report/listequipmentbylocation/listequipmentbylocation.php:78
+msgid "Location not selected"
+msgstr ""
+
 #. TRANS: The name of the report = List of groups and members
 #: report/listgroups/listgroups.php:41
 msgid "listgroups_report_title"
@@ -209,32 +209,32 @@ msgstr[0] "Linkki"
 msgstr[1] "Linkit"
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:212
+#: report/pcsbyentity/pcsbyentity.php:211
 msgid "pcsbyentity_report_title"
 msgstr "Kohteiden lukumäärä yksiköittäin"
 
-#: report/pcsbyentity/pcsbyentity.php:221
+#: report/pcsbyentity/pcsbyentity.php:220
 msgid "Number of items by entity"
 msgstr "Kohteiden lukumäärä yksiköittäin"
 
-#: report/pcsbyentity/pcsbyentity.php:247
+#: report/pcsbyentity/pcsbyentity.php:246
 msgid "Display"
 msgstr "Näytä"
 
-#: report/pcsbyentity/pcsbyentity.php:248
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Entity tree"
 msgstr "Yksiköittäin"
 
-#: report/pcsbyentity/pcsbyentity.php:251
+#: report/pcsbyentity/pcsbyentity.php:250
 msgid "Sort by count"
 msgstr "Lukumäärän mukaan"
 
-#: report/pcsbyentity/pcsbyentity.php:268
-#: report/pcsbyentity/pcsbyentity.php:275
+#: report/pcsbyentity/pcsbyentity.php:267
+#: report/pcsbyentity/pcsbyentity.php:274
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: report/pcsbyentity/pcsbyentity.php:289
+#: report/pcsbyentity/pcsbyentity.php:288
 msgid "Selection of type is mandatory"
 msgstr "Tyypin valinta on pakollinen"
 
@@ -317,20 +317,32 @@ msgstr "Uudempi"
 msgid "statticketsbypriority_report_title"
 msgstr "Tiketit, joita ei ole suljettu, prioriteetin mukaan"
 
+#: report/statusertask/statusertask.php:39
+msgid "statusertask_report_title"
+msgstr ""
+
+#: report/statusertask/statusertask.php:42
+msgid "Tasks created"
+msgstr ""
+
+#: report/statusertask/statusertask.php:56
+msgid "Number created tasks"
+msgstr ""
+
 #. TRANS: The name of the report = List of transfered objects
 #: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
 msgstr "Luettelo siirretyistä kohteista"
 
-#: report/transferreditems/transferreditems.php:67
+#: report/transferreditems/transferreditems.php:68
 msgid "Source entity"
 msgstr "Lähdeyksikkö"
 
-#: report/transferreditems/transferreditems.php:68
+#: report/transferreditems/transferreditems.php:69
 msgid "Target entity"
 msgstr "Kohdeyksikkö"
 
-#: report/transferreditems/transferreditems.php:69
+#: report/transferreditems/transferreditems.php:70
 msgid "Transfert date"
 msgstr "Siirtopäivä"
 

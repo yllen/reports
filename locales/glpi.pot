@@ -314,7 +314,7 @@ msgid "statticketsbypriority_report_title"
 msgstr ""
 
 #: report/statusertask/statusertask.php:39
-msgid "usertask_report_title"
+msgid "statusertask_report_title"
 msgstr ""
 
 #: report/statusertask/statusertask.php:42
