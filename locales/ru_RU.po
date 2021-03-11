@@ -4,13 +4,13 @@
 # 
 # Translators:
 # Nelly Mahu-Lasson <nini.lasson@orange.fr>, 2013
-# Nikolay <techobsl@yandex.ru>, 2017
+# Nikolai Petrov <techobsl@yandex.ru>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-13 11:20+0200\n"
-"PO-Revision-Date: 2018-09-13 09:14+0000\n"
+"POT-Creation-Date: 2020-09-16 17:33+0200\n"
+"PO-Revision-Date: 2021-03-05 12:54+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/yllen/GLPI_reports/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -58,11 +58,11 @@ msgstr "Управление правами по профилям"
 msgid "Profils rights"
 msgstr "Права для профиля"
 
-#: inc/profile.class.php:113
+#: inc/profile.class.php:112
 msgid "No right on Assistance / Statistics"
 msgstr "Нет прав на просмотр данных"
 
-#: inc/profile.class.php:115
+#: inc/profile.class.php:114
 msgid "No right on Tools / Reports"
 msgstr "Нет прав для отчетов"
 
@@ -89,19 +89,19 @@ msgstr "Статус компьютера"
 msgid "doublons_report_title"
 msgstr "Дубликаты компьютеров"
 
-#: report/doublons/doublons.php:78 report/doublons/doublons.php:376
+#: report/doublons/doublons.php:79 report/doublons/doublons.php:377
 msgid "Duplicate computers"
 msgstr "Дубликаты компьютеров"
 
-#: report/doublons/doublons.php:260
+#: report/doublons/doublons.php:261
 msgid "First computer"
 msgstr "Первый компьютер"
 
-#: report/doublons/doublons.php:261
+#: report/doublons/doublons.php:262
 msgid "Second computer"
 msgstr "Последний компьютер"
 
-#: report/doublons/doublons.php:277 report/doublons/doublons.php:292
+#: report/doublons/doublons.php:278 report/doublons/doublons.php:293
 msgid "Last inventory date"
 msgstr "Дата последней инвентаризации"
 
@@ -121,10 +121,6 @@ msgstr "Количество устройст по местоположения�
 msgid "globalhisto_report_title"
 msgstr "Общая история (для теста или примера)"
 
-#: report/globalhisto/globalhisto.php:64
-msgid "modification of components"
-msgstr "изменемения компонентов"
-
 #. TRANS: The name of the report = History of last hardware's installations
 #: report/histohard/histohard.php:46
 msgid "histohard_report_title"
@@ -134,7 +130,7 @@ msgstr "История установок оборудования"
 msgid "History of last hardware's installations"
 msgstr "История установок оборудования"
 
-#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55
 msgid "Date of inventory"
 msgstr "Дата инвентаризации"
 
@@ -142,7 +138,7 @@ msgstr "Дата инвентаризации"
 msgid "Modification"
 msgstr "Изменения"
 
-#: report/histohard/histohard.php:152
+#: report/histohard/histohard.php:156
 msgid "The list is limited to 100 items and 21 days"
 msgstr "Ограничения списка: 100 объектов, 21 день"
 
@@ -192,6 +188,10 @@ msgstr "Используется версия"
 msgid "listequipmentbylocation_report_title"
 msgstr "Список обрудования по местоположению"
 
+#: report/listequipmentbylocation/listequipmentbylocation.php:78
+msgid "Location not selected"
+msgstr ""
+
 #. TRANS: The name of the report = List of groups and members
 #: report/listgroups/listgroups.php:41
 msgid "listgroups_report_title"
@@ -211,32 +211,32 @@ msgstr[2] "Ссылки"
 msgstr[3] "Ссылки"
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:212
+#: report/pcsbyentity/pcsbyentity.php:211
 msgid "pcsbyentity_report_title"
 msgstr "Количество объектов по организациям"
 
-#: report/pcsbyentity/pcsbyentity.php:221
+#: report/pcsbyentity/pcsbyentity.php:220
 msgid "Number of items by entity"
 msgstr "Количество объектов по организациям"
 
-#: report/pcsbyentity/pcsbyentity.php:247
+#: report/pcsbyentity/pcsbyentity.php:246
 msgid "Display"
 msgstr "Отобразить"
 
-#: report/pcsbyentity/pcsbyentity.php:248
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Entity tree"
 msgstr "Дерево организаций"
 
-#: report/pcsbyentity/pcsbyentity.php:251
+#: report/pcsbyentity/pcsbyentity.php:250
 msgid "Sort by count"
 msgstr "Сортировать по величине"
 
-#: report/pcsbyentity/pcsbyentity.php:268
-#: report/pcsbyentity/pcsbyentity.php:275
+#: report/pcsbyentity/pcsbyentity.php:267
+#: report/pcsbyentity/pcsbyentity.php:274
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: report/pcsbyentity/pcsbyentity.php:289
+#: report/pcsbyentity/pcsbyentity.php:288
 msgid "Selection of type is mandatory"
 msgstr ""
 
@@ -319,20 +319,32 @@ msgstr "Новее"
 msgid "statticketsbypriority_report_title"
 msgstr "Незакрытые заявки, по приоритету"
 
+#: report/statusertask/statusertask.php:39
+msgid "statusertask_report_title"
+msgstr ""
+
+#: report/statusertask/statusertask.php:42
+msgid "Tasks created"
+msgstr ""
+
+#: report/statusertask/statusertask.php:56
+msgid "Number created tasks"
+msgstr ""
+
 #. TRANS: The name of the report = List of transfered objects
 #: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
 msgstr "Список перенесенныйх объектов"
 
-#: report/transferreditems/transferreditems.php:67
+#: report/transferreditems/transferreditems.php:68
 msgid "Source entity"
 msgstr "Исходная организация"
 
-#: report/transferreditems/transferreditems.php:68
+#: report/transferreditems/transferreditems.php:69
 msgid "Target entity"
 msgstr "Целевая организация"
 
-#: report/transferreditems/transferreditems.php:69
+#: report/transferreditems/transferreditems.php:70
 msgid "Transfert date"
 msgstr "Дата переноса"
 

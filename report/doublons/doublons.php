@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -70,6 +70,7 @@ $rand  = mt_rand();
 // check OCS install
 $plugin        = new Plugin;
 $ocs_installed = $plugin->isInstalled('ocsinventoryng');
+$fi_installed = $plugin->isInstalled('fusioninventory');
 
 // ---------- Form ------------
 echo "<form action='".$_SERVER["PHP_SELF"]."' method='post'>";
@@ -108,7 +109,7 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
                       FROM `glpi_blacklists`
                       WHERE `type` = '1'");
 
-   while ($data = $DB->fetch_array($res)) {
+   while ($data = $DB->fetchArray($res)) {
       if (strpos($data["value"], '%')) {
          $IPBlacklist .= " AND A_ipa.`name` NOT LIKE '".addslashes($data["value"])."'";
       } else {
@@ -166,7 +167,7 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
    $res = $DB->query("SELECT `value`
                       FROM `glpi_blacklists`
                       WHERE `type` = '2'");
-   while ($data = $DB->fetch_array($res)) {
+   while ($data = $DB->fetchArray($res)) {
       $MacBlacklist .= ",'".addslashes($data["value"])."'";
    }
 
@@ -210,7 +211,7 @@ if ($crit == 5) { // Search Duplicate IP Address - From glpi_networking_ports
    $res = $DB->query("SELECT `value`
                       FROM `glpi_blacklists`
                       WHERE `type` = '3'");
-   while ($data = $DB->fetch_array($res)) {
+   while ($data = $DB->fetchArray($res)) {
       $SerialBlacklist .= ",'".addslashes($data["value"])."'";
    }
 
@@ -303,7 +304,7 @@ if ($crit > 0) { // Display result
    $comp = new Computer();
    $ids  =[];
    $result = $DBread->query($Sql);
-   for ($prev=-1, $i=0 ; $data = $DBread->fetch_array($result) ; $i++) {
+   for ($prev=-1, $i=0 ; $data = $DBread->fetchArray($result) ; $i++) {
       if ($prev != $data["entity"]) {
          $prev = $data["entity"];
          echo "<tr class='tab_bg_4'><td class='center' colspan='$colspan'>".
@@ -335,7 +336,7 @@ if ($crit > 0) { // Display result
          echo "<td>" .$data["Aaddr"]. "</td>";
       }
       echo "<td>";
-      if ($ocs_installed) {
+      if ($ocs_installed || $fi_installed) {
          echo getLastOcsUpdate($data['AID']);
       }
       echo "</td>";
@@ -364,7 +365,7 @@ if ($crit > 0) { // Display result
          echo "<td class='blue'>" .$data["Baddr"]. "</td>";
       }
       echo "<td class='blue'>";
-      if ($ocs_installed) {
+      if ($ocs_installed || $fi_installed) {
          echo getLastOcsUpdate($data['BID']);
       }
       echo "</td>";
@@ -401,14 +402,24 @@ function buildBookmarkUrl($url,$crit) {
 function getLastOcsUpdate($computers_id) {
    global $DB;
 
-   $query = $DB->request('glpi_plugin_ocsinventoryng_ocslinks',
-                         ['SELECT' => 'last_ocs_update',
+   if ($DB->tableExists('glpi_plugin_ocsinventoryng_ocslinks')) {
+      $table = 'glpi_plugin_ocsinventoryng_ocslinks';
+      $field = 'last_ocs_update';
+   }
+   if ($DB->tableExists('glpi_plugin_fusioninventory_inventorycomputercomputers')) {
+      $table = 'glpi_plugin_fusioninventory_inventorycomputercomputers';
+      $field = 'last_fusioninventory_update';
+   }
+
+   $query = $DB->request($table,
+                         ['SELECT' => $field,
                           'WHERE'  => ['computers_id' => $computers_id]]);
 
    if (count($query) > 0) {
       foreach ($query as $id => $row) {
-         return $row['last_ocs_update'];
+         return $row[$field];
       }
    }
+
    return '';
 }

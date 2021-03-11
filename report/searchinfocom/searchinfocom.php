@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -79,7 +79,9 @@ if ($report->criteriasValidated()) {
    // Build SQL request
    $sql = "SELECT *
            FROM `glpi_infocoms`
-           WHERE `itemtype` NOT IN ('Software', 'CartridgeItem', 'ConsumableItem')".
+           WHERE `itemtype` NOT IN ('Cartridge', 'CartridgeItem', 'Consumable', 'ConsumableItem',
+                                    'Software', 'Line', 'Certificate', 'Appliance', 'Domain',
+                                    'Item_DeviceSimcard', 'SoftwareLicense')".
            $report->addSqlCriteriasRestriction().
            $dbu->getEntitiesRestrictRequest('AND', 'glpi_infocoms').
           "ORDER BY `itemtype`";

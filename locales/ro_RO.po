@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-13 11:20+0200\n"
-"PO-Revision-Date: 2018-09-13 09:14+0000\n"
+"POT-Creation-Date: 2020-09-16 17:33+0200\n"
+"PO-Revision-Date: 2021-03-05 12:54+0000\n"
 "Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: Romanian (Romania) (http://www.transifex.com/yllen/GLPI_reports/language/ro_RO/)\n"
 "MIME-Version: 1.0\n"
@@ -58,11 +58,11 @@ msgstr "Managementul drepturilor pe profil"
 msgid "Profils rights"
 msgstr "Managementul drepturilor"
 
-#: inc/profile.class.php:113
+#: inc/profile.class.php:112
 msgid "No right on Assistance / Statistics"
 msgstr "Fără drepturi pe Asistenţă / Statistici"
 
-#: inc/profile.class.php:115
+#: inc/profile.class.php:114
 msgid "No right on Tools / Reports"
 msgstr "Fără drepturi pe Instrumente / Rapoarte"
 
@@ -89,19 +89,19 @@ msgstr "Status calculatoare"
 msgid "doublons_report_title"
 msgstr "Calculatoare dublate"
 
-#: report/doublons/doublons.php:78 report/doublons/doublons.php:376
+#: report/doublons/doublons.php:79 report/doublons/doublons.php:377
 msgid "Duplicate computers"
 msgstr "Calculatoare duplicate"
 
-#: report/doublons/doublons.php:260
+#: report/doublons/doublons.php:261
 msgid "First computer"
 msgstr "Primul calculator"
 
-#: report/doublons/doublons.php:261
+#: report/doublons/doublons.php:262
 msgid "Second computer"
 msgstr "Calculatorul secund"
 
-#: report/doublons/doublons.php:277 report/doublons/doublons.php:292
+#: report/doublons/doublons.php:278 report/doublons/doublons.php:293
 msgid "Last inventory date"
 msgstr "Data ultimului inventar"
 
@@ -121,10 +121,6 @@ msgstr "Număr echipamente pe locaţie"
 msgid "globalhisto_report_title"
 msgstr "Istoric global "
 
-#: report/globalhisto/globalhisto.php:64
-msgid "modification of components"
-msgstr "Modificare elemente"
-
 #. TRANS: The name of the report = History of last hardware's installations
 #: report/histohard/histohard.php:46
 msgid "histohard_report_title"
@@ -134,7 +130,7 @@ msgstr "Istoric ultimele modificări hard"
 msgid "History of last hardware's installations"
 msgstr "Istoric al ultimelor modificări hardware"
 
-#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55
 msgid "Date of inventory"
 msgstr "Data inventarului"
 
@@ -142,7 +138,7 @@ msgstr "Data inventarului"
 msgid "Modification"
 msgstr "Modificare"
 
-#: report/histohard/histohard.php:152
+#: report/histohard/histohard.php:156
 msgid "The list is limited to 100 items and 21 days"
 msgstr "Listă limitată la 100 evenimente şi 21 zile"
 
@@ -192,6 +188,10 @@ msgstr "Versiune utilizată"
 msgid "listequipmentbylocation_report_title"
 msgstr "Lista echipamente pe locaţie"
 
+#: report/listequipmentbylocation/listequipmentbylocation.php:78
+msgid "Location not selected"
+msgstr ""
+
 #. TRANS: The name of the report = List of groups and members
 #: report/listgroups/listgroups.php:41
 msgid "listgroups_report_title"
@@ -210,32 +210,32 @@ msgstr[1] ""
 msgstr[2] ""
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:212
+#: report/pcsbyentity/pcsbyentity.php:211
 msgid "pcsbyentity_report_title"
 msgstr "Număr echipamente pe entitate"
 
-#: report/pcsbyentity/pcsbyentity.php:221
+#: report/pcsbyentity/pcsbyentity.php:220
 msgid "Number of items by entity"
 msgstr "Număr echipamente pe entitate"
 
-#: report/pcsbyentity/pcsbyentity.php:247
+#: report/pcsbyentity/pcsbyentity.php:246
 msgid "Display"
 msgstr "Afişaj"
 
-#: report/pcsbyentity/pcsbyentity.php:248
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Entity tree"
 msgstr "Arborescenţă entităţi"
 
-#: report/pcsbyentity/pcsbyentity.php:251
+#: report/pcsbyentity/pcsbyentity.php:250
 msgid "Sort by count"
 msgstr "Sortat după număr"
 
-#: report/pcsbyentity/pcsbyentity.php:268
-#: report/pcsbyentity/pcsbyentity.php:275
+#: report/pcsbyentity/pcsbyentity.php:267
+#: report/pcsbyentity/pcsbyentity.php:274
 msgid "Unknown"
 msgstr "Necunoscut"
 
-#: report/pcsbyentity/pcsbyentity.php:289
+#: report/pcsbyentity/pcsbyentity.php:288
 msgid "Selection of type is mandatory"
 msgstr ""
 
@@ -318,20 +318,32 @@ msgstr "Mai recente"
 msgid "statticketsbypriority_report_title"
 msgstr "Tichete neînchise"
 
+#: report/statusertask/statusertask.php:39
+msgid "statusertask_report_title"
+msgstr ""
+
+#: report/statusertask/statusertask.php:42
+msgid "Tasks created"
+msgstr ""
+
+#: report/statusertask/statusertask.php:56
+msgid "Number created tasks"
+msgstr ""
+
 #. TRANS: The name of the report = List of transfered objects
 #: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
 msgstr "Lista obiectelor transferate"
 
-#: report/transferreditems/transferreditems.php:67
+#: report/transferreditems/transferreditems.php:68
 msgid "Source entity"
 msgstr "Entitate sursă"
 
-#: report/transferreditems/transferreditems.php:68
+#: report/transferreditems/transferreditems.php:69
 msgid "Target entity"
 msgstr "Entitate destinaţie"
 
-#: report/transferreditems/transferreditems.php:69
+#: report/transferreditems/transferreditems.php:70
 msgid "Transfert date"
 msgstr "Data transfer"
 

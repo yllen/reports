@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -64,10 +64,11 @@ $query = "SELECT `glpi_softwarelicenses`.`expire`,
                ON (buyversion.`id` = `glpi_softwarelicenses`.`softwareversions_id_buy`)
           LEFT JOIN `glpi_entities`
                ON (`glpi_softwares`.`entities_id` = `glpi_entities`.`id`)
-          LEFT JOIN `glpi_computers_softwarelicenses`
-               ON (`glpi_softwarelicenses`.`id` = `glpi_computers_softwarelicenses`.`softwarelicenses_id`)
+          LEFT JOIN `glpi_items_softwarelicenses`
+               ON (`glpi_softwarelicenses`.`id` = `glpi_items_softwarelicenses`.`softwarelicenses_id`)
           LEFT JOIN `glpi_computers`
-               ON (`glpi_computers`.`id` = `glpi_computers_softwarelicenses`.`computers_id`)
+               ON (`glpi_computers`.`id` = `glpi_items_softwarelicenses`.`items_id`
+                   AND `glpi_items_softwarelicenses`.`itemtype` = 'Computer')
           WHERE `glpi_softwares`.`is_deleted` = '0'
                 AND `glpi_softwares`.`is_template` = '0' " .
                 $dbu->getEntitiesRestrictRequest(' AND ', 'glpi_softwarelicenses') ."

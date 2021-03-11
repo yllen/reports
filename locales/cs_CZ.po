@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# David Stepan <stepand@tiscali.cz>, 2015
+# David Stepan <stepand@tiscali.cz>, 2015,2019
 # Pavel Borecki <pavel.borecki@gmail.com>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - reports plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-13 11:20+0200\n"
-"PO-Revision-Date: 2018-09-13 11:43+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>\n"
+"POT-Creation-Date: 2020-09-16 17:33+0200\n"
+"PO-Revision-Date: 2021-03-05 12:54+0000\n"
+"Last-Translator: Nelly Mahu-Lasson <nini.lasson@orange.fr>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/yllen/GLPI_reports/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,11 +58,11 @@ msgstr "Správa oprávnění dle profilu"
 msgid "Profils rights"
 msgstr "Oprávnění profilů"
 
-#: inc/profile.class.php:113
+#: inc/profile.class.php:112
 msgid "No right on Assistance / Statistics"
 msgstr "Žádná práva na Podporu / Statistiky"
 
-#: inc/profile.class.php:115
+#: inc/profile.class.php:114
 msgid "No right on Tools / Reports"
 msgstr "Žádná práva na Nástroje / Výkazy"
 
@@ -89,19 +89,19 @@ msgstr "Stav počítače"
 msgid "doublons_report_title"
 msgstr "Duplicitní počítače"
 
-#: report/doublons/doublons.php:78 report/doublons/doublons.php:376
+#: report/doublons/doublons.php:79 report/doublons/doublons.php:377
 msgid "Duplicate computers"
 msgstr "Duplicitní počítače"
 
-#: report/doublons/doublons.php:260
+#: report/doublons/doublons.php:261
 msgid "First computer"
 msgstr "První počítač"
 
-#: report/doublons/doublons.php:261
+#: report/doublons/doublons.php:262
 msgid "Second computer"
 msgstr "Druhý počítač"
 
-#: report/doublons/doublons.php:277 report/doublons/doublons.php:292
+#: report/doublons/doublons.php:278 report/doublons/doublons.php:293
 msgid "Last inventory date"
 msgstr "Datum poslední inventarizace"
 
@@ -119,11 +119,7 @@ msgstr "Počet zařízení v jednotlivých umístěních"
 #. TRANS: The name of the report = Global History (for Test / example only)
 #: report/globalhisto/globalhisto.php:38
 msgid "globalhisto_report_title"
-msgstr "Globální historie (pouze pro vyzkoušení/příklad)"
-
-#: report/globalhisto/globalhisto.php:64
-msgid "modification of components"
-msgstr "změna komponent"
+msgstr "globalhisto_report_title "
 
 #. TRANS: The name of the report = History of last hardware's installations
 #: report/histohard/histohard.php:46
@@ -134,7 +130,7 @@ msgstr "Historie nedávných změn hardware"
 msgid "History of last hardware's installations"
 msgstr "Historie nedávných změn hardware"
 
-#: report/histohard/histohard.php:55 report/histoinst/histoinst.php:57
+#: report/histohard/histohard.php:55
 msgid "Date of inventory"
 msgstr "Datum inventarizace"
 
@@ -142,7 +138,7 @@ msgstr "Datum inventarizace"
 msgid "Modification"
 msgstr "Změna"
 
-#: report/histohard/histohard.php:152
+#: report/histohard/histohard.php:156
 msgid "The list is limited to 100 items and 21 days"
 msgstr "Seznam je omezen na 100 položek a 21 dní"
 
@@ -192,6 +188,10 @@ msgstr "Použitá verze"
 msgid "listequipmentbylocation_report_title"
 msgstr "Seznam položek dle umístění"
 
+#: report/listequipmentbylocation/listequipmentbylocation.php:78
+msgid "Location not selected"
+msgstr ""
+
 #. TRANS: The name of the report = List of groups and members
 #: report/listgroups/listgroups.php:41
 msgid "listgroups_report_title"
@@ -211,32 +211,32 @@ msgstr[2] "Odkazů"
 msgstr[3] "Odkazy"
 
 #. TRANS: The name of the report = Number of items by entity
-#: report/pcsbyentity/pcsbyentity.php:212
+#: report/pcsbyentity/pcsbyentity.php:211
 msgid "pcsbyentity_report_title"
 msgstr "Počet položek v jednotlivých entitách"
 
-#: report/pcsbyentity/pcsbyentity.php:221
+#: report/pcsbyentity/pcsbyentity.php:220
 msgid "Number of items by entity"
 msgstr "Počet položek v jednotlivých entitách"
 
-#: report/pcsbyentity/pcsbyentity.php:247
+#: report/pcsbyentity/pcsbyentity.php:246
 msgid "Display"
 msgstr "Zobrazit"
 
-#: report/pcsbyentity/pcsbyentity.php:248
+#: report/pcsbyentity/pcsbyentity.php:247
 msgid "Entity tree"
 msgstr "Strom entit"
 
-#: report/pcsbyentity/pcsbyentity.php:251
+#: report/pcsbyentity/pcsbyentity.php:250
 msgid "Sort by count"
 msgstr "Seřadit dle počtu"
 
-#: report/pcsbyentity/pcsbyentity.php:268
-#: report/pcsbyentity/pcsbyentity.php:275
+#: report/pcsbyentity/pcsbyentity.php:267
+#: report/pcsbyentity/pcsbyentity.php:274
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: report/pcsbyentity/pcsbyentity.php:289
+#: report/pcsbyentity/pcsbyentity.php:288
 msgid "Selection of type is mandatory"
 msgstr "Výběr typu je povinný"
 
@@ -319,20 +319,32 @@ msgstr "Novější"
 msgid "statticketsbypriority_report_title"
 msgstr "Neuzavřené požadavky"
 
+#: report/statusertask/statusertask.php:39
+msgid "statusertask_report_title"
+msgstr ""
+
+#: report/statusertask/statusertask.php:42
+msgid "Tasks created"
+msgstr ""
+
+#: report/statusertask/statusertask.php:56
+msgid "Number created tasks"
+msgstr ""
+
 #. TRANS: The name of the report = List of transfered objects
 #: report/transferreditems/transferreditems.php:42
 msgid "transferreditems_report_title"
 msgstr "Seznam přenesených objektů"
 
-#: report/transferreditems/transferreditems.php:67
+#: report/transferreditems/transferreditems.php:68
 msgid "Source entity"
 msgstr "Zdrojová entita"
 
-#: report/transferreditems/transferreditems.php:68
+#: report/transferreditems/transferreditems.php:69
 msgid "Target entity"
 msgstr "Cílová entita"
 
-#: report/transferreditems/transferreditems.php:69
+#: report/transferreditems/transferreditems.php:70
 msgid "Transfert date"
 msgstr "Datum přenosu"
 

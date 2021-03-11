@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -55,7 +55,7 @@ $dbu = new DbUtils();
 $report = new PluginReportsAutoReport(__('infocom_report_title', 'reports'));
 
 $ignored = ['Cartridge', 'CartridgeItem', 'Consumable', 'ConsumableItem', 'Software', 'Line',
-            'Certificate'];
+            'Certificate', 'Appliance', 'Domain', 'Item_DeviceSimcard', 'SoftwareLicense'];
 
 $date = new PluginReportsDateIntervalCriteria($report, '`glpi_infocoms`.`buy_date`',
                                               __('Date of purchase'));

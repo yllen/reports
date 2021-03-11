@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -73,11 +73,12 @@ if ($report->criteriasValidated()) {
                     `state_cpt`.`name` AS statecpt,
                     `glpi_locations`.`completename` as location
              FROM `glpi_softwareversions`
-             INNER JOIN `glpi_computers_softwareversions`
-                  ON (`glpi_computers_softwareversions`.`softwareversions_id`
+             INNER JOIN `glpi_items_softwareversions`
+                  ON (`glpi_items_softwareversions`.`softwareversions_id`
                         = `glpi_softwareversions`.`id`)
              INNER JOIN `glpi_computers`
-                  ON (`glpi_computers_softwareversions`.`computers_id` = `glpi_computers`.`id`)
+                  ON (`glpi_items_softwareversions`.`items_id` = `glpi_computers`.`id`
+                      AND `glpi_items_softwareversions`.`itemtype` = 'Computer')
              LEFT JOIN `glpi_locations`
                   ON (`glpi_locations`.`id` = `glpi_computers`.`locations_id`)
              LEFT JOIN `glpi_states` state_ver

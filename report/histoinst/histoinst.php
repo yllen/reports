@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -54,7 +54,7 @@ echo "<tr class='tab_bg_1 center'>".
       "<th colspan='4'>" . __("History of last software's installations", "reports") .
       "</th></tr>\n";
 
-echo "<tr class='tab_bg_2'><th>". __('Date of inventory', 'reports') . "</th>" .
+echo "<tr class='tab_bg_2'><th>". __('Update date') . "</th>" .
       "<th>". __('User') . "</th>".
       "<th>". __("Computer's name") . "</th>".
       "<th>". sprintf(__('%1$s (%2$s)'), _n('Software', 'Software', 1), __('version'))."</th></tr>\n";

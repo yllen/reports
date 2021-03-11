@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Benoit Machiavello
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -98,48 +98,52 @@ while ($data = $result->next()) {
    }
    $field = "";
    if ($data["linked_action"]) {
+      $action_label = Log::getLinkedActionLabel($data["linked_action"]);
    // Yes it is an internal device
       switch ($data["linked_action"]) {
          case Log::HISTORY_ADD_DEVICE :
+         case Log::HISTORY_CONNECT_DEVICE :
             $field = NOT_AVAILABLE;
             if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
-               $field = $item->getTypeName();
+               if ($item instanceof Item_Devices) {
+                  $field = $item->getDeviceTypeName(1);
+               } else {
+                  $field = $item->getTypeName(1);
+               }
             }
-            $change = sprintf(__('%1$s: %2$s'), __('Add the component'), $data[ "new_value"]);
+            $change = sprintf(__('%1$s: %2$s'), $action_label, $data[ "new_value"]);
             break;
 
          case Log::HISTORY_UPDATE_DEVICE :
             $field = NOT_AVAILABLE;
             $change = '';
-            if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
-               $field  = $item->getTypeName();
-               $change = sprintf(__('%1$s: %2$s'), $item->getSpecifityLabel(), "");
+            $linktype_field = explode('#', $data["itemtype_link"]);
+            $linktype       = $linktype_field[0];
+            $fieldval          = $linktype_field[1];
+            $devicetype     = $linktype::getDeviceType();
+            $field          = $devicetype;
+            $specif_fields  = $linktype::getSpecificities();
+            if (isset($specif_fields[$fieldval]['short name'])) {
+               $field   = $devicetype;
+               $field .= " (".$specif_fields[$fieldval]['short name'].")";
             }
-            $change .= $data[ "old_value"]."'&nbsp;<strong>--></strong>&nbsp;'".$data[ "new_value"]."'";
+            //TRANS: %1$s is the old_value, %2$s is the new_value
+            $change  = sprintf(__('%1$s: %2$s'),
+                              sprintf(__('%1$s (%2$s)'), $action_label, $field),
+                              sprintf(__('%1$s by %2$s'), $data["old_value"], $data[ "new_value"]));
             break;
 
          case Log::HISTORY_DELETE_DEVICE :
+         case Log::HISTORY_DISCONNECT_DEVICE :
             $field = NOT_AVAILABLE;
             if ($item = $dbu->getItemForItemtype($data["itemtype_link"])) {
-               $field = $item->getTypeName();
+            if ($item instanceof Item_Devices) {
+                  $field = $item->getDeviceTypeName(1);
+               } else {
+                  $field = $item->getTypeName(1);
+               }
             }
-            $change = sprintf(__('%1$s: %2$s'), __('Delete the component'), $data["old_value"]);
-            break;
-
-         case Log::HISTORY_DISCONNECT_DEVICE :
-            if (!($item = $dbu->getItemForItemtype($data["itemtype_link"]))) {
-               continue;
-            }
-            $field  = $item->getTypeName();
-            $change = sprintf(__('%1$s: %2$s'), __('Logout'), $data["old_value"]);
-            break;
-
-         case Log::HISTORY_CONNECT_DEVICE :
-            if (!($item = $dbu->getItemForItemtype($data["itemtype_link"]))) {
-               continue;
-            }
-            $field  = $item->getTypeName();
-            $change = sprintf(__('%1$s: %2$s'), __('Logout'), $data["new_value"]);
+            $change = sprintf(__('%1$s: %2$s'), $action_label, $data["old_value"]);
             break;
       }//fin du switch
    }

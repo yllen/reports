@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -40,7 +40,11 @@ include ("../../../../inc/includes.php");
 $report = new PluginReportsAutoReport(__('listequipmentbylocation_report_title', 'reports'));
 $loc    = new PluginReportsLocationCriteria($report);
 
-$report->setColumns([new PluginReportsColumnType('itemtype', __('Type')),
+
+$ignored = ['Cartridge', 'CartridgeItem', 'Consumable', 'ConsumableItem', 'Software', 'Line',
+            'Certificate', 'Appliance', 'Domain', 'Item_DeviceSimcard', 'SoftwareLicense'];
+
+$report->setColumns([new PluginReportsColumnType('itemtype', __('Type'), $ignored),
                      new PluginReportsColumnTypeLink('items_id', __('Item'), 'itemtype',
                                                      ['with_comment' => 1]),
                      new PluginReportsColumn('statename', __('Status')),
@@ -55,24 +59,26 @@ $report->setColumns([new PluginReportsColumnType('itemtype', __('Type')),
 $report->displayCriteriasForm();
 
 //If criterias have been validated
-if ($report->criteriasValidated()) {
-   $report->setSubNameAuto();
+if ($report->criteriasValidated() && ($loc->getParameterValue() != 0)) {
+      $report->setSubNameAuto();
 
-   $query = getSqlSubRequest("Computer",$loc,new Computer());
-   foreach($CFG_GLPI["infocom_types"] as $itemtype) {
-      $obj = new $itemtype;
-      if ($obj->isField('locations_id')
-          && ($itemtype != "Computer")) {
-         $query.= "UNION (".getSqlSubRequest($itemtype,$loc,$obj).")";
+      $query = getSqlSubRequest("Computer", $loc, new Computer());
+      foreach($CFG_GLPI["infocom_types"] as $itemtype) {
+         $obj = new $itemtype;
+         if ($obj->isField('locations_id') && ($itemtype != "Computer")) {
+            $query.= "UNION (".getSqlSubRequest($itemtype,$loc,$obj).")";
+         }
       }
-   }
-   $report->setGroupBy("entity","itemtype");
-   $report->setSqlRequest($query);
-   $report->execute();
-}
-else {
+
+      $report->setGroupBy("entity","itemtype");
+      $report->setSqlRequest($query);
+      $report->execute();
+
+} else {
+   echo "<p class='red center'>". __('Location not selected', 'reports')."</p>";
    Html::footer();
 }
+
 
 
 function getSqlSubRequest($itemtype,$loc,$obj) {
@@ -98,7 +104,7 @@ function getSqlSubRequest($itemtype,$loc,$obj) {
       if ($obj->isField($field)) {
          if ($field == 'states_id') {
             $query_where .= ", `glpi_states`.`name` as statename";
-            $join = "LEFT JOIN `glpi_states`ON `glpi_states`.`id` = `$table`.`states_id` ";
+            $join .= " LEFT JOIN `glpi_states`ON `glpi_states`.`id` = `$table`.`states_id` ";
          } else {
             $query_where .= ", `$table`.`$field` AS $alias";
          }

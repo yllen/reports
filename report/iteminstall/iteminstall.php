@@ -21,7 +21,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2018 Reports plugin team
+ @copyright Copyright (c) 2009-2021 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -43,7 +43,12 @@ $report = new PluginReportsAutoReport(__('iteminstall_report_title', 'reports'))
 
 //Report's search criterias
 $date = new PluginReportsDateIntervalCriteria($report, 'buy_date');
-$type = new PluginReportsItemTypeCriteria($report, 'itemtype', '', 'infocom_types');
+
+$ignored = ['Cartridge', 'CartridgeItem', 'Consumable', 'ConsumableItem', 'Software', 'Line',
+            'Certificate', 'Appliance', 'Domain', 'Item_DeviceSimcard', 'SoftwareLicense'];
+
+$type = new PluginReportsItemTypeCriteria($report, 'itemtype', '', 'infocom_types', $ignored);
+
 $budg = new PluginReportsDropdownCriteria($report, 'budgets_id', 'glpi_budgets', __('Budget'));
 
 //Display criterias form is needed
@@ -69,6 +74,7 @@ if ($report->criteriasValidated()) {
       foreach ($DB->request($sql) as $data) {
          $types[] = $data['itemtype'];
       }
+
    }
 
    $result = [];
