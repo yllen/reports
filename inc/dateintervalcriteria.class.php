@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
   LICENSE
 
@@ -38,7 +37,6 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
    function __construct($report, $name='date-interval', $label='', $start='', $end='') {
 
       parent::__construct($report, $name, $name, $label);
-
       $this->addCriteriaLabel($this->getName()."_1",
                               ($start ? $start : ($label ? __('After') : __('Start date'))));
       $this->addCriteriaLabel($this->getName()."_2",
@@ -61,7 +59,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $start = $this->getParameter($this->getName()."_1");
       $end   = $this->getParameter($this->getName()."_2");
 
-      return (($start == 'NULL') || ($end == 'NULL') || ($start < $end) ? $start : $end);
+      return (empty($start) || empty($end) || ($start < $end) ? $start : $end);
    }
 
 
@@ -70,14 +68,14 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $start = $this->getParameter($this->getName()."_1");
       $end   = $this->getParameter($this->getName()."_2");
 
-      return (($start == 'NULL') || ($end == 'NULL') || ($start < $end) ? $end : $start);
+      return (empty($start) || empty($end) || ($start < $end) ? $end : $start);
    }
 
 
    public function setDefaultValues() {
 
-      $this->setStartDate('NULL');
-      $this->setEndDate('NULL');
+      $this->setStartDate('');
+      $this->setEndDate('');
    }
 
 
@@ -115,20 +113,20 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $start = $this->getStartDate();
       $end   = $this->getEndDate();
 
-      if (($start == 'NULL') && ($end == 'NULL')) {
+      if (empty($start) && empty($end)) {
          return '';
       }
 
       $sql = '';
-      if ($start != 'NULL') {
+      if (!empty($start)) {
          $sql .= $this->getSqlField() . ">= '" . $this->getStartDate() . " 00:00:00'";
       }
 
-      if (($start != 'NULL') && ($end != 'NULL')) {
+      if (!empty($start) && !empty($end)) {
          $sql .= ' AND ';
       }
 
-      if ($end != 'NULL') {
+      if (!empty($end)) {
          $sql .= $this->getSqlField() . "<='" . $this->getEndDate() . " 23:59:59' ";
       }
 
@@ -142,7 +140,7 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
       $end   = $this->getEndDate();
       $title = $this->getCriteriaLabel($this->getName());
 
-      if (($start == 'NULL') && ($end == 'NULL')) {
+      if (empty($start) && empty($end)) {
          return '';
       }
       if (empty($title)) {
@@ -153,11 +151,11 @@ class PluginReportsDateIntervalCriteria extends PluginReportsAutoCriteria {
          }
       }
 
-      if ($start == 'NULL') {
+      if (empty($start)) {
          return $title . ', ' . sprintf(__('%1$s %2$s'), __('Before'), Html::convDate($end));
       }
 
-      if ($end == 'NULL') {
+      if (empty($end)) {
          return $title . ', ' . sprintf(__('%1$s %2$s'), __('After'), Html::convDate($start));
       }
 
