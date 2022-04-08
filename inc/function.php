@@ -154,6 +154,6 @@ function getUrgencyLabelsArray() {
 }
 
 
-function getReportConfigPage($plugin,$report_name) {
-   return "/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
-}
+//function getReportConfigPage($plugin,$report_name) {
+//   return "/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
+//}

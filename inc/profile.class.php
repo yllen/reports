@@ -340,15 +340,15 @@ class PluginReportsProfile extends Profile {
             $nb = 0;
             if (Session::haveRight('reports', READ)) {
                if ($_SESSION['glpishow_count_on_tabs']) {
-                  $prof = $_SESSION['glpiactiveprofile']['id'];
+                  // Set number of tasks
+                  $data = $DB->request('glpi_profilerights',
+                                      ['COUNT' => 'cpt',
+                                       'WHERE' => ['profiles_id' => $_GET['id'],
+                                                   'name'        => ['LIKE', 'plugin_reports_%'],
+                                                   'rights'      => 1]])->next();
 
-                  $query = $DB->request('glpi_profilerights',
-                                        ['COUNT' => 'cpt',
-                                         'WHERE' => ['profiles_id' => $_GET['id'],
-                                                     'name'        => ['LIKE', 'plugin_reports_%'],
-                                                     'rights'      => 1]]);
-                  $data_nb   = $query->next();
-                  $nb        = $data_nb['cpt'];
+                  $nb = (isset($data['cpt']) && $data['cpt'] > 0) ? $data['cpt'] : 0;
+
                }
                return self::createTabEntry(PluginReportsReport::getTypeName($nb), $nb);
             }
