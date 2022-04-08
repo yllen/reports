@@ -31,6 +31,8 @@
 
 include_once(Plugin::getPhpDir('reports')."/inc/function.php");
 
+define('PLUGIN_REPORTS_VERSION', '2.0.0');
+
 define ("REPORTS_NO_ENTITY_RESTRICTION", 0);
 define ("REPORTS_CURRENT_ENTITY", 1);
 define ("REPORTS_SUB_ENTITIES", 2);
@@ -101,11 +103,14 @@ function isStat($report_name) {
 function plugin_version_reports() {
 
    return ['name'           => _n('Report', 'Reports', 2),
-           'version'        => '1.14.2',
+           'version'        => PLUGIN_REPORTS_VERSION,
            'author'         => 'Nelly Mahu-Lasson, Remi Collet',
            'license'        => 'GPLv3+',
            'homepage'       => 'https://forge.glpi-project.org/projects/reports',
-           'minGlpiVersion' => '9.5',
-           'requirements'   => ['glpi' => ['min' => '9.5',
-                                           'max' => '9.6']]];
+           'requirements'   => [
+              'glpi' => [
+                 'min' => '10.0',
+                 'max' => '11.0',
+              ]
+           ]];
 }

@@ -54,9 +54,17 @@ class PluginReportsAutoReport {
    function __construct($title='') {
 
       preg_match('@/plugins/(.*)/report/(.*)/@', $_SERVER['SCRIPT_NAME'], $regs);
-      $this->plug = $regs[1];
-      $this->name = $regs[2];
-      includeLocales($this->name, $this->plug);
+      if (isset($regs[1])) {
+         $this->plug = $regs[1];
+         $this->name = $regs[2];
+         includeLocales($this->name, $this->plug);
+      }
+      preg_match('@/marketplace/(.*)/report/(.*)/@', $_SERVER['SCRIPT_NAME'], $regs);
+      if (isset($regs[1])) {
+         $this->plug = $regs[1];
+         $this->name = $regs[2];
+         includeLocales($this->name, $this->plug);
+      }
       $this->setTitle($title);
    }
 
