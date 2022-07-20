@@ -273,13 +273,14 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
     * @see plugins/reports/inc/PluginReportsAutoCriteria::getSqlCriteriasRestriction()
    **/
    public function getSqlCriteriasRestriction($link='AND',$tableName='') {
-
+      
       $dbu = new DbUtils();
-
+      
       if ($this->getParameterValue() || $this->searchzero) {
       
+         $sqlField = $this->getSqlField();
          if($tableName != '') {
-            $sqlField = "`" . $tableName . "`.`" . $sqlField ."` "
+            $sqlField = "`" . $tableName . "`.`" . $sqlField ."` ";
          }
          
          if (!$this->childrens) {
@@ -295,5 +296,4 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
       // Zero => means ALL => no criteria
       return '';
    }
-
 }
