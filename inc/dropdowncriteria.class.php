@@ -272,16 +272,21 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
     *
     * @see plugins/reports/inc/PluginReportsAutoCriteria::getSqlCriteriasRestriction()
    **/
-   public function getSqlCriteriasRestriction($link='AND') {
+   public function getSqlCriteriasRestriction($link='AND',$tableName='') {
 
       $dbu = new DbUtils();
 
       if ($this->getParameterValue() || $this->searchzero) {
+      
+         if($tableName != '') {
+            $sqlField = "`" . $tableName . "`.`" . $sqlField ."` "
+         }
+         
          if (!$this->childrens) {
-            return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
+            return $link . " " . $sqlField . "='" . $this->getParameterValue() . "' ";
          }
          if ($this->getParameterValue()) {
-            return $link . " " . $this->getSqlField() .
+            return $link . " " . $sqlField .
                    " IN (" . implode(',', $dbu->getSonsOf($this->getTable(),
                                                     $this->getParameterValue())) . ") ";
          }
