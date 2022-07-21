@@ -50,7 +50,7 @@ class PluginReportsEntitiesCriteria extends PluginReportsDropdownCriteria {
    /**
     * @param $entity
    **/
-   public function setDefaultLocation($entity) {
+   public function setDefaultEntity($entity) {
       $this->addParameter($this->name, $entity);
    }
 
