@@ -347,6 +347,7 @@ class PluginReportsProfile extends Profile {
                                                      'name'        => ['LIKE', 'plugin_reports_%'],
                                                      'rights'      => 1]]);
                   foreach ($query as $data_nb) {
+                     toolbox::logdebug("data", $data_nb);
                      $nb = $data_nb['cpt'];
                   }
                }

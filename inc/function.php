@@ -152,7 +152,3 @@ function getUrgencyLabelsArray() {
            "5" => Ticket::getUrgencyName(5)];
 }
 
-
-function getReportConfigPage($plugin,$report_name) {
-   return "/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
-}

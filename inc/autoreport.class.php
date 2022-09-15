@@ -52,9 +52,10 @@ class PluginReportsAutoReport {
 
    function __construct($title='') {
 
-      preg_match('@/plugins/(.*)/report/(.*)/@', $_SERVER['SCRIPT_NAME'], $regs);
-      $this->plug = $regs[1];
-      $this->name = $regs[2];
+
+      preg_match('@/(plugins|marketplace)/(.*)/report/(.*)/@', $_SERVER['SCRIPT_NAME'], $regs);
+      $this->plug = $regs[2];
+      $this->name = $regs[3];
       includeLocales($this->name, $this->plug);
       $this->setTitle($title);
    }
