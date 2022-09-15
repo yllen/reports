@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
   LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -96,7 +95,7 @@ if ($crit > 0) {
 echo"</tr>\n";
 
 echo "<tr class='tab_bg_1 center'><td colspan='".(($crit > 0)?'3':'2')."'>";
-echo "<input type='submit' value='valider' class='submit'/>";
+echo Html::submit('', ['value' => 'valider', 'class' => 'btn btn-primary']);
 echo "</td></tr>\n";
 echo "</table>\n";
 Html::closeForm();

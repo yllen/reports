@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
    LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -103,7 +102,8 @@ class PluginReportsProfile extends Profile {
                                     'nowrite' => 1]);
          } else {
             // Can't access because missing right from GLPI core
-            echo "<input type='hidden' name='".$data['id']."' value='NULL'>".__('No access')." *";
+            echo Html::hidden($data['id'], ['value' => 'NULL']);
+            echo __('No access')." *";
          }
          echo "</td></tr>\n";
       }
@@ -117,9 +117,9 @@ class PluginReportsProfile extends Profile {
 
       if ($canedit) {
          echo "<tr class='tab_bg_1'><td colspan='2' class='center'>";
-         echo "<input type='hidden' name='report' value='$report'>";
-         echo "<input type='submit' name='update' value='"._sx('button', 'Update')."' ".
-                "class='submit'>";
+         echo Html::hidden('report', ['value' => $report]);
+         echo Html::submit(_sx('button', 'Update'), ['name' => 'update',
+                                                     'class' => 'btn btn-primary']);
          echo "</td></tr>\n";
          echo "</table>\n";
          Html::closeForm();
@@ -340,15 +340,15 @@ class PluginReportsProfile extends Profile {
             $nb = 0;
             if (Session::haveRight('reports', READ)) {
                if ($_SESSION['glpishow_count_on_tabs']) {
-                  $prof = $_SESSION['glpiactiveprofile']['id'];
 
                   $query = $DB->request('glpi_profilerights',
                                         ['COUNT' => 'cpt',
                                          'WHERE' => ['profiles_id' => $_GET['id'],
                                                      'name'        => ['LIKE', 'plugin_reports_%'],
                                                      'rights'      => 1]]);
-                  $data_nb   = $query->next();
-                  $nb        = $data_nb['cpt'];
+                  foreach ($query as $data_nb) {
+                     $nb = $data_nb['cpt'];
+                  }
                }
                return self::createTabEntry(PluginReportsReport::getTypeName($nb), $nb);
             }

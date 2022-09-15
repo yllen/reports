@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
   LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -274,14 +273,14 @@ class PluginReportsAutoReport {
          foreach ($_POST as $key => $val) {
             if (is_array($val)) {
                foreach ($val as $k => $v) {
-                  echo "<input type='hidden' name='".$key."[$k]' value='$v' >";
+                  echo Html::hidden($key.[$k], ['value' => $v]);
                   if (!empty ($param)) {
                      $param .= "&";
                   }
                   $param .= $key."[".$k."]=".urlencode($v);
                }
             } else {
-               echo "<input type='hidden' name='".$key."' value='$val' >";
+               echo Html::hidden($key, ['value' => $val]);
                if (!empty ($param)) {
                   $param .= "&";
                }
@@ -467,7 +466,8 @@ class PluginReportsAutoReport {
          $this->closeColumn();
 
          echo "<tr class='tab_bg_2'><td colspan='4' class='center'>";
-         echo "<input type='submit' name='find' value='"._sx('button', 'Search')."' class='submit'>";
+         echo Html::submit(_sx('button', 'Search'), ['name' => 'find',
+                                                     'class' => 'btn btn-primary']);
          echo "</td></tr>";
          echo "</table></div>";
          Html::closeForm();

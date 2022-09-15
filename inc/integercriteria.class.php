@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
   LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -95,7 +94,7 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
          Dropdown::showFromArray($this->getName()."_sign",
                                  ['<='    => '<=',
                                   '>='    => '>='],
-                                 ['value' => Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"))]);
+                                 ['value' => Glpi\Toolbox\Sanitizer::unsanitize($this->getParameter($this->getName()."_sign"))]);
          echo "&nbsp;";
       }
       $opt = ['value' => $this->getParameterValue(),
@@ -122,7 +121,7 @@ class PluginReportsIntegerCriteria extends PluginReportsDropdownCriteria {
    function getSign() {
 
       if (empty($this->signe)) {
-         return Toolbox::unclean_cross_side_scripting_deep($this->getParameter($this->getName()."_sign"));
+         return Glpi\Toolbox\Sanitizer::unsanitize($this->getParameter($this->getName()."_sign"));
       }
       return $this->signe;
    }

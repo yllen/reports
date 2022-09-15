@@ -20,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -51,7 +51,7 @@ function plugin_init_reports() {
    Plugin::registerClass('PluginReportsProfile', ['addtabon' => ['Profile']]);
 
    if (Session::haveRight("config", UPDATE)) {
-      $PLUGIN_HOOKS['config_page']['reports']     = 'front/config.form.php';
+      $PLUGIN_HOOKS['config_page']['reports']     = 'front/report.form.php';
    }
 
    $PLUGIN_HOOKS['menu_entry']['reports'] = false;
@@ -101,11 +101,11 @@ function isStat($report_name) {
 function plugin_version_reports() {
 
    return ['name'           => _n('Report', 'Reports', 2),
-           'version'        => '1.14.2',
+           'version'        => '1.15.0',
            'author'         => 'Nelly Mahu-Lasson, Remi Collet',
            'license'        => 'GPLv3+',
            'homepage'       => 'https://forge.glpi-project.org/projects/reports',
-           'minGlpiVersion' => '9.5',
-           'requirements'   => ['glpi' => ['min' => '9.5',
-                                           'max' => '9.6']]];
+           'minGlpiVersion' => '10.0.0',
+           'requirements'   => ['glpi' => ['min' => '10.0.0',
+                                           'max' => '10.1.0']]];
 }

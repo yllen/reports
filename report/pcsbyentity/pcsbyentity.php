@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
   LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -51,7 +50,7 @@ function doStatBis ($table, $entities, $header) {
 
       $result = $DB->request($sql);
       $counts[$entity] = [];
-      while ($data = $result->next()) {
+      foreach ($result as $data) {
          $counts[$entity][$data["states_id"]] = $data["cpt"];
       }
 
@@ -122,7 +121,7 @@ function doStat ($table, $entity, $header, $level=0) {
 
    $result = $DB->request($sql);
    $count  = [];
-   while ($data = $result->next()) {
+   foreach ($result as $data) {
       $count[$data["states_id"]] = $data["cpt"];
    }
 
@@ -190,7 +189,7 @@ function doStatChilds($table, $entity, $header, &$total, $level) {
                                             'WHERE'  => ['entities_id' => $entity],
                                             'ORDER'  => 'name']);
 
-   while ($data = $result->next()) {
+   foreach ($result as $data) {
       $fille = doStat($table, $data["id"], $header, $level);
       foreach ($header as $id => $name) {
          $total[$id] += $fille[$id];
@@ -252,8 +251,10 @@ if (count($_SESSION["glpiactiveentities"]) > 1) {
 }
 
 echo "<tr class='tab_bg_1 center'>".
-     "<td colspan='2'><input type='submit' value='valider' class='submit'/></td>";
-echo "</tr>\n";
+     "<td colspan='2'>";
+ echo Html::submit('valider'), ['class' => 'btn btn-primary']);
+//     <input type='submit' value='valider' class='submit'/></td>";
+echo "</td></tr>\n";
 echo "</table>\n";
 Html::closeForm();
 echo "</div>\n";
