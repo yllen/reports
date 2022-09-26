@@ -1,8 +1,7 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
-  LICENSE
+   LICENSE
 
  This file is part of Reports plugin for GLPI.
 
@@ -20,8 +19,8 @@
  along with Reports. If not, see <http://www.gnu.org/licenses/>.
 
  @package   reports
- @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @authors    Nelly Mahu-Lasson
+ @copyright Copyright (c) 2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -30,23 +29,17 @@
  --------------------------------------------------------------------------
  */
 
-include_once ("../../../inc/includes.php");
-Plugin::load('reports');
+/**
+ * class PluginReportsColumn to manage output
+ */
+class PluginReportsColumnHtml extends PluginReportsColumn {
 
-Session::checkSeveralRightsOr(["config"  => UPDATE,
-                               "profile" => UPDATE]);
-Html::header(__('Setup'), $_SERVER['PHP_SELF'], "config", "plugins");
 
-echo "<div class='center'>";
-echo "<table class='tab_cadre'>";
-echo "<tr><th>".__('Reports plugin configuration', 'reports')."</th></tr>";
+   function displayValue($output_type, $row) {
 
-if (Session::haveRight("profile",UPDATE)) {
-   echo "<tr class='tab_bg_1 center'><td>";
-   echo "<a href='report.form.php'>".__('Reports plugin configuration', 'reports')."</a>";
-   echo "</td/></tr>\n";
+      if (isset($row[$this->name]) && $row[$this->name]) {
+          return htmlspecialchars_decode($row[$this->name]);
+      }
+      return '';
+   }
 }
-
-echo "</table></div>";
-
-Html::footer();

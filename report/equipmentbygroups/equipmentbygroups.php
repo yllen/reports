@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
   LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -59,7 +58,7 @@ $result = $DB->request('glpi_groups', ['SELECT' => ['id', 'name'],
                                        'ORDER'  => 'name']);
 $last_group_id = -1;
 
-while ($datas = $result->next()) {
+foreach ($result as $datas) {
    if ($last_group_id != $datas["id"]) {
       echo "<table class='tab_cadre' cellpadding='5'>";
       echo "<tr><th>".sprintf(__('%1$s: %2$s'), __('Group'), $datas['name'])."</th></th></tr>";
@@ -98,7 +97,7 @@ function displaySearchForm() {
    echo "</td>";
 
    echo "<td>";
-   echo "<input type='submit' value='Valider' class='submit' />";
+   echo Html::submit('', ['value' => 'Valider', 'class' => 'btn btn-primary']);
    echo "</td>";
 
    echo "</tr></table>";
@@ -181,7 +180,7 @@ function displayUserDevices($type, $result) {
    global $DB, $CFG_GLPI;
 
    $item = new $type();
-   while ($data = $result->next()) {
+   foreach ($result as $data) {
       $link = $data["name"];
       $url  = Toolbox::getItemTypeFormURL("$type");
       $link = "<a href='" . $url . "?id=" . $data["id"] . "'>" . $link .

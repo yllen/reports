@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
   LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -153,7 +152,3 @@ function getUrgencyLabelsArray() {
            "5" => Ticket::getUrgencyName(5)];
 }
 
-
-function getReportConfigPage($plugin,$report_name) {
-   return "/plugins/$plugin/report/$report_name/".$report_name.".config".".php";
-}

@@ -1,6 +1,5 @@
 <?php
 /**
- * @version $Id$
  -------------------------------------------------------------------------
   LICENSE
 
@@ -21,7 +20,7 @@
 
  @package   reports
  @authors    Nelly Mahu-Lasson, Remi Collet, Alexandre Delaunay
- @copyright Copyright (c) 2009-2021 Reports plugin team
+ @copyright Copyright (c) 2009-2022 Reports plugin team
  @license   AGPL License 3.0 or (at your option) any later version
             http://www.gnu.org/licenses/agpl-3.0-standalone.html
  @link      https://forge.glpi-project.org/projects/reports
@@ -61,9 +60,9 @@ if (isset($_POST['delete']) && $report) {
 $tab = $prof->updatePluginRights();
 
 echo "<form method='post' action=\"".$_SERVER["PHP_SELF"]."\">";
-echo "<table class='tab_cadre'><tr><th colspan='2'>";
-echo "<a href='config.form.php'>".__('Reports plugin configuration', 'reports')."</a><br>&nbsp;<br>";
-echo __('Rights management by report', 'reports'). "</th></tr>\n";
+echo "<table class='tab_cadre'>";
+echo "<tr><th class='center'>".__('Reports plugin configuration', 'reports')."</th></tr>";
+echo "<tr><th>". __('Rights management by report', 'reports'). "</th></tr>\n";
 
 echo "<tr class='tab_bg_1'><td>".__('Report', 'Reports', 1). "&nbsp; ";
 
@@ -102,9 +101,10 @@ foreach ($rap as $plug => $tmp1) {
    echo "</optgroup>\n";
 }
 
-echo "</select>";
-echo "<td><input type='submit' value='"._sx('button', 'Post')."' class='submit' ></td></tr>";
-echo "</table>";
+echo "</select><td>";
+echo Html::submit(_sx('button', 'Post'), ['class' => 'btn btn-primary']);
+//echo "<td><input type='submit' value='"._sx('button', 'Post')."' class='submit' ></td></tr>";
+echo "</td></tr></table>";
 Html::closeForm();
 
 if ($report) {
