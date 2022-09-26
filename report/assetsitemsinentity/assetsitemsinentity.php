@@ -51,6 +51,8 @@ $ignored = [
 	'Enclosure',
 	'PDU',
 	'PassiveDCEquipment',
+	'DatabaseInstance',
+	'Cable'
 ];
 
 $report->setColumns([
