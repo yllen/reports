@@ -104,7 +104,7 @@ function plugin_version_reports() {
            'version'        => '1.16.0',
            'author'         => 'Nelly Mahu-Lasson, Remi Collet',
            'license'        => 'GPLv3+',
-           'homepage'       => 'https://forge.glpi-project.org/projects/reports',
+           'homepage'       => 'https://github.com/yllen/reports',
            'minGlpiVersion' => '10.0.0',
            'requirements'   => ['glpi' => ['min' => '10.0.0',
                                            'max' => '10.1.0']]];
