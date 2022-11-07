@@ -242,7 +242,7 @@ class PluginReportsAutoReport {
       $res   = $DB->query($this->sql);
       $nbtot = ($res ? $DB->numrows($res): 0);
       if ($limit) {
-         $start = (isset ($_GET["start"]) ? $_GET["start"] : 0);
+         $start = (isset ($_GET["start"]) ? intval($_GET["start"]) : 0);
          if ($start >= $nbtot) {
             $start = 0;
          }
