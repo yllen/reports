@@ -212,8 +212,15 @@ class PluginReportsAutoReport {
     * @param $options   array
    **/
    function execute($options=[]) {
-      global $DB, $CFG_GLPI, $HEADER_LOADED;
+      global $DB, $HEADER_LOADED;
 
+      
+      $field = 'plugin_reports_'.$this->name;
+      if ($this->plug != 'reports') {
+          $field = 'plugin_reports_'.$this->plug."_".$this->name;
+      }
+      Session::checkRight($field, READ);
+      
       // Require (for pager) when not called by displayCriteriasForm
       $this->manageCriteriasValues();
 
@@ -295,13 +302,6 @@ class PluginReportsAutoReport {
 
          Html::printPager($start, $nbtot, $_SERVER['PHP_SELF'], $param);
       }
-
-      $field = 'plugin_reports_'.$this->name;
-      if ($this->plug != 'reports') {
-         $field = 'plugin_reports_'.$this->plug."_".$this->name;
-      }
-
-      Session::checkRight($field, READ);
 
       if ($res && ($nbtot > 0)) {
          if (!isset ($_POST["display_type"]) || ($_POST["display_type"] == Search::HTML_OUTPUT)) {
