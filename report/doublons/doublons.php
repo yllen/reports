@@ -95,7 +95,7 @@ if ($crit > 0) {
 echo"</tr>\n";
 
 echo "<tr class='tab_bg_1 center'><td colspan='".(($crit > 0)?'3':'2')."'>";
-echo Html::submit('', ['value' => 'valider', 'class' => 'btn btn-primary']);
+echo Html::submit(__('Search'), ['value' => 'valider', 'class' => 'btn btn-primary']);
 echo "</td></tr>\n";
 echo "</table>\n";
 Html::closeForm();

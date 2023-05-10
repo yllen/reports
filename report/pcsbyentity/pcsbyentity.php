@@ -252,8 +252,8 @@ if (count($_SESSION["glpiactiveentities"]) > 1) {
 
 echo "<tr class='tab_bg_1 center'>".
      "<td colspan='2'>";
- echo Html::submit('valider'), ['class' => 'btn btn-primary']);
-//     <input type='submit' value='valider' class='submit'/></td>";
+ echo Html::submit(__('Search'), ['class' => 'btn btn-primary']);
+//     <input type='submit' value='Search' class='submit'/></td>";
 echo "</td></tr>\n";
 echo "</table>\n";
 Html::closeForm();
