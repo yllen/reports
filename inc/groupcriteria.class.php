@@ -45,11 +45,11 @@ class PluginReportsGroupCriteria extends PluginReportsDropdownCriteria {
     * @param $name         (default 'groups_id')
     * @param $label        (default '')
     * @param $condition    (default '')
-   **/
-   function __construct($report, $name='groups_id', $label='', $condition='') {
-
-      parent::__construct($report, $name, 'glpi_groups', ($label ? $label : __('Group')),
-                          $condition);
+    * @param $multiple     (default false)
+    **/
+    function __construct($report, $name='groups_id', $label='', $condition='', $multiple = false) {
+        parent::__construct($report, $name, 'glpi_groups', ($label ? $label : __('Group')),
+            $condition, $multiple);
    }
 
 }

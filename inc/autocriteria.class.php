@@ -42,7 +42,7 @@ abstract class PluginReportsAutoCriteria {
    private $criterias_labels = [];
 
    //Parameters are stored as name => value
-   private $parameters = [];
+   protected $parameters = [];
 
    //Field in the SQL request (can be table.field)
    private $sql_field = "";

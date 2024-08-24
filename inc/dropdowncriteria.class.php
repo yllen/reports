@@ -53,21 +53,24 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    // For special condition
    private $condition = '';
 
+    private $multiple = false;
 
-   /**
-    * @param $report
-    * @param $name
-    * @param $tableortype  (default '')
-    * @param $label        (default '')
-    * @param $condition    (default '')
-   **/
-   function __construct($report, $name, $tableortype='', $label='', $condition='') {
 
-      parent::__construct($report, $name, $name, $label);
+    /**
+     * @param $report
+     * @param $name
+     * @param $tableortype  (default '')
+     * @param $label        (default '')
+     * @param $condition    (default '')
+     * @param $multiple     (default false)
+     **/
+    function __construct($report, $name, $tableortype='', $label='', $condition='', $multiple = false) {
+        parent::__construct($report, $name, $name, $label);
 
       $dbu = new DbUtils();
 
       $this->condition = $condition;
+      $this->multiple = $multiple;
 
       if (empty($tableortype)) {
          $this->table = $dbu->getTableNameForForeignKeyField($name);
@@ -123,15 +126,19 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    }
 
 
-   /**
-    * Set default criteria value to 0 and entity restriction to current entity only
-   **/
-   public function setDefaultValues() {
+    /**
+     * Set default criteria value to 0 and entity restriction to current entity only
+     **/
+    public function setDefaultValues() {
+        if (!$this->multiple) {
+            $this->addParameter($this->getName(), 0);
+        } else {
+            $this->addParameter($this->getName(), []);
+        }
 
-      $this->addParameter($this->getName(), 0);
-      $this->setEntityRestriction($_SESSION["glpiactive_entity"]);
-      $this->setDisplayComments();
-   }
+        $this->setEntityRestriction($_SESSION["glpiactive_entity"]);
+        $this->setDisplayComments();
+    }
 
 
    /**
@@ -219,10 +226,18 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
    **/
    public function getSubName() {
 
-      $value = $this->getParameterValue();
-      if ($value) {
-         return $this->getCriteriaLabel()." : ".Dropdown::getDropdownName($this->getTable(), $value);
-      }
+        $value = $this->getParameterValue();
+        if ($value) {
+            if ($this->multiple) {
+                $name = $this->getCriteriaLabel()." : ";
+                $names = [];
+                foreach($value as $v) {
+                    $names[] = Dropdown::getDropdownName($this->getTable(), $v);
+                }
+                return $name . implode(', ', $names);
+            }
+            return $this->getCriteriaLabel()." : ".Dropdown::getDropdownName($this->getTable(), $value);
+        }
 
       if ($this->searchzero) {
          // zero
@@ -259,11 +274,40 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
                   'comments' => $this->getDisplayComments(),
                   'entity'   => $this->getEntityRestrict()];
 
-      if ($this->condition) {
-         $options['condition'] = [$this->condition];
-      }
-      Dropdown::show($this->getItemType(), $options);
-   }
+        if ($this->condition) {
+            $options['condition'] = [$this->condition];
+        }
+
+        if ($this->multiple) {
+            $options['multiple'] = true;
+            $value = $this->getParameterValue() === 0 || $this->getParameterValue() === '0' ? [] : $this->getParameterValue();
+            $values = is_array($value) ? $value : [$value];
+            $options['used'] = $values;
+            $options['value'] = $values;
+            $options['name'] .= '[]';
+            $options['width'] = '100%';
+        }
+
+        Dropdown::show($this->getItemType(), $options);
+    }
+
+    public function getBookmarkUrl() {
+        if ($this->multiple) {
+            $url = "";
+            foreach ($this->parameters as $parameter => $value) {
+                if (is_array($value)) {
+                    foreach($value as $i => $v) {
+                        $url .= '&' . $parameter . "[$i]=" . $v;
+                    }
+                } else {
+                    $url .= '&' . $parameter . '=' . $value;
+                }
+            }
+            return $url;
+        } else {
+            return parent::getBookmarkUrl();
+        }
+    }
 
 
    /**
@@ -275,19 +319,22 @@ class PluginReportsDropdownCriteria extends PluginReportsAutoCriteria {
 
       $dbu = new DbUtils();
 
-      if ($this->getParameterValue() || $this->searchzero) {
-         if (!$this->childrens) {
-            return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
-         }
-         if ($this->getParameterValue()) {
-            return $link . " " . $this->getSqlField() .
-                   " IN (" . implode(',', $dbu->getSonsOf($this->getTable(),
-                                                    $this->getParameterValue())) . ") ";
-         }
-         // 0 + its child means ALL
-      }
-      // Zero => means ALL => no criteria
-      return '';
-   }
+        if ($this->getParameterValue() || $this->searchzero) {
+            if ($this->multiple && $this->getParameterValue()) {
+                return $link . " " . $this->getSqlField() . " IN (" . implode(',', $this->getParameterValue()) . ") ";
+            }
+            if (!$this->childrens) {
+                return $link . " " . $this->getSqlField() . "='" . $this->getParameterValue() . "' ";
+            }
+            if ($this->getParameterValue()) {
+                return $link . " " . $this->getSqlField() .
+                    " IN (" . implode(',', $dbu->getSonsOf($this->getTable(),
+                        $this->getParameterValue())) . ") ";
+            }
+            // 0 + its child means ALL
+        }
+        // Zero => means ALL => no criteria
+        return '';
+    }
 
 }
