@@ -107,5 +107,5 @@ function plugin_version_reports() {
            'homepage'       => 'https://github.com/yllen/reports',
            'minGlpiVersion' => '10.0.0',
            'requirements'   => ['glpi' => ['min' => '10.0.0',
-                                           'max' => '10.1.0']]];
+                                           'max' => '11.0.2']]];
 }
